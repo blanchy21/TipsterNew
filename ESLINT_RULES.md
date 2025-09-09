@@ -5,10 +5,12 @@ This project uses ESLint to enforce code quality and Next.js best practices.
 ## 🚫 **Enforced Rules**
 
 ### **Image Components**
+
 - **`@next/next/no-img-element: "error"`** - Enforces using Next.js `<Image>` instead of `<img>`
 - **Why**: Better performance, automatic optimization, lazy loading
 
 ### **Next.js Best Practices**
+
 - **`@next/next/no-html-link-for-pages: "error"`** - Use Next.js `<Link>` for internal navigation
 - **`@next/next/no-sync-scripts: "error"`** - Avoid blocking scripts
 - **`@next/next/no-title-in-document-head: "error"`** - Use Next.js `<Head>` component
@@ -21,18 +23,21 @@ This project uses ESLint to enforce code quality and Next.js best practices.
 - **`@next/next/no-styled-jsx-in-document: "error"`** - Proper styled-jsx usage
 
 ### **React Best Practices**
+
 - **`react/jsx-uses-react: "off"`** - Not needed with React 17+
 - **`react/react-in-jsx-scope: "off"`** - Not needed with React 17+
 - **`react/prop-types: "off"`** - Using TypeScript instead
 - **`react-hooks/exhaustive-deps: "warn"`** - Warn about missing dependencies
 
 ### **TypeScript Best Practices**
+
 - **`@typescript-eslint/no-unused-vars: "error"`** - Catch unused variables
 - **`@typescript-eslint/no-explicit-any: "warn"`** - Warn about `any` types
 - **`@typescript-eslint/explicit-function-return-type: "off"`** - Allow type inference
 - **`@typescript-eslint/explicit-module-boundary-types: "off"`** - Allow type inference
 
 ### **General Code Quality**
+
 - **`no-console: "warn"`** - Warn about console statements
 - **`prefer-const: "error"`** - Enforce const when possible
 - **`no-var: "error"`** - Use let/const instead of var
@@ -58,6 +63,7 @@ npm run type-check
 ## 🔧 **VS Code Integration**
 
 The project includes VS Code settings that:
+
 - Auto-fix ESLint issues on save
 - Enable ESLint for TypeScript/React files
 - Auto-format code on save
@@ -65,6 +71,7 @@ The project includes VS Code settings that:
 ## 🚨 **Pre-commit Hooks**
 
 Git hooks are configured to:
+
 - Run ESLint on staged files
 - Fix issues automatically
 - Run TypeScript type checking
@@ -73,16 +80,17 @@ Git hooks are configured to:
 ## 📝 **How to Use**
 
 ### **Correct Image Usage**
+
 ```tsx
 import Image from 'next/image';
 
 // ✅ Correct
-<Image 
-  src="/image.jpg" 
-  alt="Description" 
-  width={300} 
-  height={200} 
-  className="rounded-lg" 
+<Image
+  src="/image.jpg"
+  alt="Description"
+  width={300}
+  height={200}
+  className="rounded-lg"
 />
 
 // ❌ Incorrect - will cause ESLint error
@@ -90,6 +98,7 @@ import Image from 'next/image';
 ```
 
 ### **Fixing Issues**
+
 1. **Auto-fix**: Run `npm run lint:fix`
 2. **Manual fix**: Follow the ESLint error messages
 3. **Check images**: Run `npm run check-images`

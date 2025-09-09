@@ -76,7 +76,13 @@ export default function DebugPage() {
         odds: '2/1',
         gameDate: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(), // Tomorrow
         tipStatus: 'pending' as const,
-        isGameFinished: false
+        isGameFinished: false,
+        user: {
+          id: user.uid,
+          name: user.displayName || 'Test User',
+          handle: `@${user.displayName?.toLowerCase().replace(/\s+/g, '') || 'testuser'}`,
+          avatar: user.photoURL || 'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=96&h=96&fit=crop&crop=face'
+        }
       };
 
       const newPost = await createPost(testTipData);

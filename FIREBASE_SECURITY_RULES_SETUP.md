@@ -1,3 +1,5 @@
+Y
+
 # Firebase Security Rules Setup
 
 ## Problem
@@ -74,7 +76,7 @@ service cloud.firestore {
 }
 ```
 
-4. Click **Publish** to deploy the rules
+1. Click **Publish** to deploy the rules
 
 ## Step 3: Update Storage Security Rules (Optional)
 
@@ -105,7 +107,7 @@ service firebase.storage {
 }
 ```
 
-4. Click **Publish** to deploy the rules
+1. Click **Publish** to deploy the rules
 
 ## Step 4: Test the App
 

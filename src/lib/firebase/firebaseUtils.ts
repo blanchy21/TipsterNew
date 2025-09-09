@@ -636,7 +636,7 @@ export const inspectFirebaseData = async () => {
 };
 
 // Posts Management
-export const createPost = async (postData: Omit<Post, 'id' | 'user' | 'createdAt' | 'likes' | 'comments' | 'views' | 'likedBy'>) => {
+export const createPost = async (postData: Omit<Post, 'id' | 'user' | 'createdAt' | 'likes' | 'comments' | 'views' | 'likedBy'> & { user: Post['user'] }) => {
   if (!db) {
     console.warn("❌ Firebase Firestore not available");
     throw new Error("Firebase Firestore not available");
@@ -647,6 +647,7 @@ export const createPost = async (postData: Omit<Post, 'id' | 'user' | 'createdAt
 
     const newPost = {
       ...postData,
+      userId: postData.user?.id, // Add userId field for security rules
       createdAt: new Date(),
       likes: 0,
       comments: 0,
@@ -658,7 +659,11 @@ export const createPost = async (postData: Omit<Post, 'id' | 'user' | 'createdAt
     const docRef = await addDocument('posts', newPost);
     console.log('✅ Post created successfully with ID:', docRef.id);
 
-    const createdPost = { id: docRef.id, ...newPost };
+    const createdPost = {
+      id: docRef.id,
+      ...newPost,
+      user: postData.user // Ensure user property is included for Post type
+    };
     console.log('📋 Created post object:', createdPost);
 
     return createdPost;
@@ -1058,6 +1063,7 @@ export const createComment = async (postId: string, userId: string, commentData:
 
     const newComment: any = {
       postId,
+      userId: userProfile.id, // Add userId field for security rules
       user: {
         id: userProfile.id,
         name: userProfile.name || 'Anonymous',
