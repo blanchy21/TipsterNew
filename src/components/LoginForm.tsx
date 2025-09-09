@@ -72,7 +72,7 @@ export default function LoginForm({ onSwitchToSignup, onClose }: LoginFormProps)
     <div className="w-full max-w-md mx-auto">
       <div className="text-center mb-8">
         <h2 className="text-3xl font-bold text-white mb-2">Welcome back</h2>
-        <p className="text-white/70">Sign in to your Sports Arena account</p>
+        <p className="text-white/70">Sign in to your Tipster Arena account</p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">

@@ -25,12 +25,12 @@ export default function FeedHeader({ isLoaded, query, onQueryChange, selected }:
         ].join(' ')}
       >
         <h1 className="text-xl md:text-2xl lg:text-3xl font-semibold tracking-tight text-slate-100">
-          {selected === 'top-articles' ? 'Top Articles' : 'Sports Discussion'}
+          {selected === 'top-articles' ? 'Trending Tips' : 'Tip Feed'}
         </h1>
         <span className="text-xs text-slate-400 hidden sm:inline">
           {selected === 'top-articles' 
-            ? 'Most viewed articles on the platform' 
-            : 'Share your sports insights and analysis'
+            ? 'Most viewed tips on the platform' 
+            : 'Share your sports tips and analysis'
           }
         </span>
       </div>

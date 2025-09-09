@@ -18,16 +18,23 @@ interface FeedProps {
 }
 
 export default function Feed({ posts, isLoaded, query, onQueryChange, selectedSport, selected, onLikeChange, onNavigateToProfile }: FeedProps) {
+  console.log('📱 Feed component rendering:', {
+    postsCount: posts.length,
+    isLoaded,
+    selectedSport,
+    selected
+  });
+
   return (
     <main className="flex-1 flex flex-col overflow-hidden">
       <FeedHeader isLoaded={isLoaded} query={query} onQueryChange={onQueryChange} selected={selected} />
       <div className="flex-1 overflow-y-auto px-4 md:px-6 py-4 space-y-4 md:space-y-5">
         {posts.map((post, idx) => (
-          <div 
-            key={post.id} 
+          <div
+            key={post.id}
             className={[
-              "transition duration-700", 
-              isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3", 
+              "transition duration-700",
+              isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3",
               `delay-[${Math.min(idx * 60, 400)}ms]`
             ].join(' ')}
           >

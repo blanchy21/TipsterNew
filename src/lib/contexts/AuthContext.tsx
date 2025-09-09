@@ -39,6 +39,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log("AuthContext: useEffect triggered");
+    console.log("AuthContext: auth object:", auth);
+    
     // Check if Firebase auth is available
     if (!auth) {
       console.warn("Firebase auth not available. Running in demo mode.");
@@ -46,12 +49,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
+    console.log("AuthContext: Setting up auth state listener");
     const unsubscribe = auth.onAuthStateChanged((user: User | null) => {
+      console.log("AuthContext: Auth state changed, user:", user);
       setUser(user);
       setLoading(false);
     });
 
-    return () => unsubscribe();
+    return () => {
+      console.log("AuthContext: Cleaning up auth listener");
+      unsubscribe();
+    };
   }, []);
 
   const signInWithGoogle = async () => {

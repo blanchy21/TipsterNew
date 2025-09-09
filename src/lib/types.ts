@@ -35,18 +35,27 @@ export interface User {
   };
 }
 
+export type TipStatus = 'pending' | 'win' | 'loss' | 'void' | 'place';
+
 export interface Post {
   id: string;
   user: User;
   sport: string;
   title: string;
   content: string;
+  odds?: string; // Fractional or decimal odds
   tags: string[];
   createdAt: string;
   likes: number;
   comments: number;
   views: number;
   likedBy: string[]; // Array of user IDs who liked this post
+  // Tip verification fields
+  tipStatus?: TipStatus;
+  verifiedAt?: string; // When the tip was verified by admin
+  verifiedBy?: string; // Admin user ID who verified the tip
+  gameDate?: string; // When the game/event takes place
+  isGameFinished?: boolean; // Whether the game has completed
 }
 
 export interface Fixture {

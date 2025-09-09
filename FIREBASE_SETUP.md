@@ -1,4 +1,4 @@
-# Firebase Setup for Sports Arena
+# Firebase Setup for Tipster Arena
 
 ## Quick Fix for Current Error
 
@@ -28,7 +28,7 @@ The app will now work in demo mode without Firebase. The landing page and main a
 1. Go to **Project Settings** (gear icon) > **General**
 2. Scroll down to **Your apps** section
 3. Click the **Web** icon (`</>`) to add a web app
-4. Register your app with a nickname (e.g., "Sports Arena")
+4. Register your app with a nickname (e.g., "Tipster Arena")
 5. Copy the configuration object
 
 ### Step 4: Create Environment File

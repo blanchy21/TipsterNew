@@ -4,9 +4,15 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 // Check if Firebase environment variables are available
-const hasFirebaseConfig = process.env.NEXT_PUBLIC_FIREBASE_API_KEY && 
-                         process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN &&
-                         process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
+const hasFirebaseConfig = process.env.NEXT_PUBLIC_FIREBASE_API_KEY &&
+  process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN &&
+  process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
+
+console.log("Firebase config check:");
+console.log("API Key present:", !!process.env.NEXT_PUBLIC_FIREBASE_API_KEY);
+console.log("Auth Domain present:", !!process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN);
+console.log("Project ID present:", !!process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID);
+console.log("Has Firebase config:", hasFirebaseConfig);
 
 const firebaseConfig = hasFirebaseConfig ? {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -37,19 +43,26 @@ try {
     auth = getAuth(app);
     db = getFirestore(app);
     storage = getStorage(app);
-    
+
+    console.log('✅ Firebase initialized successfully');
+    console.log('📊 Firebase config:', {
+      projectId: firebaseConfig.projectId,
+      authDomain: firebaseConfig.authDomain,
+      hasApiKey: !!firebaseConfig.apiKey
+    });
+
     // Reduce Firebase console warnings in development
     if (process.env.NODE_ENV === 'development') {
       // Suppress Firebase heartbeats warnings
       const originalConsoleWarn = console.warn;
       console.warn = (...args) => {
-        if (args[0] && typeof args[0] === 'string' && 
-            (args[0].includes('heartbeats') || args[0].includes('undefined'))) {
+        if (args[0] && typeof args[0] === 'string' &&
+          (args[0].includes('heartbeats') || args[0].includes('undefined'))) {
           return; // Suppress heartbeats and undefined warnings
         }
         originalConsoleWarn.apply(console, args);
       };
-      
+
       // Also suppress console.log for heartbeats
       const originalConsoleLog = console.log;
       console.log = (...args) => {

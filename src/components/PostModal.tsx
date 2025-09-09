@@ -19,6 +19,8 @@ const sports = [
   'Hockey',
   'Cricket',
   'Golf',
+  'Horse Racing',
+  'Greyhound Racing',
   'Boxing',
   'MMA',
   'Esports',
@@ -41,7 +43,9 @@ export default function PostModal({ open, onClose, onSubmit, selectedSport }: Po
   const [sport, setSport] = useState('Football');
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [odds, setOdds] = useState('');
   const [tags, setTags] = useState('');
+  const [gameDate, setGameDate] = useState('');
   const [showSportDropdown, setShowSportDropdown] = useState(false);
   const [isBold, setIsBold] = useState(false);
   const [isItalic, setIsItalic] = useState(false);
@@ -54,7 +58,9 @@ export default function PostModal({ open, onClose, onSubmit, selectedSport }: Po
       setSport(selectedSport && selectedSport !== 'All Sports' ? selectedSport : 'Football');
       setTitle('');
       setContent('');
+      setOdds('');
       setTags('');
+      setGameDate('');
       setIsBold(false);
       setIsItalic(false);
       setIsUnderline(false);
@@ -94,7 +100,11 @@ export default function PostModal({ open, onClose, onSubmit, selectedSport }: Po
       sport,
       title: title.trim(),
       content: content.trim(),
-      tags: tagArray
+      tags: tagArray,
+      odds: odds.trim(),
+      gameDate: gameDate.trim(),
+      tipStatus: 'pending' as const,
+      isGameFinished: false
     });
 
     onClose();
@@ -115,8 +125,8 @@ export default function PostModal({ open, onClose, onSubmit, selectedSport }: Po
               <PlusCircle className="w-5 h-5 text-sky-400" />
             </div>
             <div>
-              <h2 className="text-xl font-semibold text-slate-100">Create Discussion</h2>
-              <p className="text-sm text-slate-400">Share your thoughts with the community</p>
+              <h2 className="text-xl font-semibold text-slate-100">Share Tip</h2>
+              <p className="text-sm text-slate-400">Share your sports tip with the community</p>
             </div>
           </div>
           <button
@@ -170,7 +180,7 @@ export default function PostModal({ open, onClose, onSubmit, selectedSport }: Po
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder="What's your discussion about?"
+                placeholder="What's your tip about?"
                 className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:border-sky-500/50 focus:ring-2 focus:ring-sky-500/20 outline-none text-slate-200 placeholder:text-slate-500"
                 required
               />
@@ -178,7 +188,7 @@ export default function PostModal({ open, onClose, onSubmit, selectedSport }: Po
 
             <div>
               <label className="block text-sm font-medium text-slate-200 mb-2">
-                Content
+                Sports Tip Details
               </label>
               
               {/* Formatting Toolbar */}
@@ -224,9 +234,35 @@ export default function PostModal({ open, onClose, onSubmit, selectedSport }: Po
                 onMouseUp={updateFormattingState}
                 className="w-full min-h-[300px] px-4 py-3 bg-white/5 border border-white/10 rounded-b-lg focus:border-sky-500/50 focus:ring-2 focus:ring-sky-500/20 outline-none text-slate-200 resize-none overflow-y-auto empty:before:content-[attr(data-placeholder)] empty:before:text-slate-500 empty:before:pointer-events-none"
                 style={{ minHeight: '300px' }}
-                data-placeholder="Share your thoughts, insights, or questions..."
+                data-placeholder="Share your sports tip details, analysis, or reasoning..."
                 suppressContentEditableWarning={true}
               />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-slate-200 mb-2">
+                Odds (Fractional or Decimal)
+              </label>
+              <input
+                type="text"
+                value={odds}
+                onChange={(e) => setOdds(e.target.value)}
+                placeholder="e.g., 2/1 or 3.0"
+                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:border-sky-500/50 focus:ring-2 focus:ring-sky-500/20 outline-none text-slate-200 placeholder:text-slate-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-slate-200 mb-2">
+                Game Date & Time
+              </label>
+              <input
+                type="datetime-local"
+                value={gameDate}
+                onChange={(e) => setGameDate(e.target.value)}
+                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:border-sky-500/50 focus:ring-2 focus:ring-sky-500/20 outline-none text-slate-200"
+              />
+              <p className="text-xs text-slate-500 mt-1">When does the game/event take place?</p>
             </div>
 
             <div>
@@ -257,7 +293,7 @@ export default function PostModal({ open, onClose, onSubmit, selectedSport }: Po
               className="inline-flex items-center gap-2 px-6 py-2.5 bg-sky-500 hover:bg-sky-600 disabled:bg-slate-600 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors"
             >
               <Send className="w-4 h-4" />
-              Post Discussion
+              Share Tip
             </button>
           </div>
         </form>

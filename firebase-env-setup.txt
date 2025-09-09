@@ -1,0 +1,13 @@
+# Copy the following content into your .env.local file:
+
+# Firebase Configuration for TipsterNew
+# Project: TipsterNew
+# Project ID: tipsternew-700ed
+# Project Number: 405008923788
+
+NEXT_PUBLIC_FIREBASE_API_KEY=AIzaSyB_DoQHLdjwy2wDLt8D-7mxPqf1mNuWSEE
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=tipsternew-700ed.firebaseapp.com
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=tipsternew-700ed
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=tipsternew-700ed.appspot.com
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=405008923788
+NEXT_PUBLIC_FIREBASE_APP_ID=1:405008923788:web:fedfeba54803266c198fa9

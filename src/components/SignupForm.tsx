@@ -63,7 +63,7 @@ export default function SignupForm({ onSwitchToLogin, onClose }: SignupFormProps
   return (
     <div className="w-full max-w-md mx-auto">
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-white mb-2">Join Sports Arena</h2>
+        <h2 className="text-3xl font-bold text-white mb-2">Join Tipster Arena</h2>
         <p className="text-white/70">Create your account to start discussing sports</p>
       </div>
 

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tip Flow Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #1e293b; color: white; }
+        .test-section { margin: 20px 0; padding: 20px; background: #334155; border-radius: 8px; }
+        .success { color: #10b981; }
+        .error { color: #ef4444; }
+        .info { color: #3b82f6; }
+        button { padding: 10px 20px; margin: 5px; background: #3b82f6; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #2563eb; }
+        .log { background: #1e293b; padding: 10px; border-radius: 4px; margin: 10px 0; font-family: monospace; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <h1>Tip Flow Test</h1>
+    
+    <div class="test-section">
+        <h2>Test Instructions</h2>
+        <ol>
+            <li>Open the main app at <a href="http://localhost:3000" target="_blank">http://localhost:3000</a></li>
+            <li>Open browser developer tools (F12) and go to the Console tab</li>
+            <li>Sign in to the app if not already signed in</li>
+            <li>Click the "+" button to create a new tip</li>
+            <li>Fill out the tip form with test data</li>
+            <li>Submit the tip</li>
+            <li>Check if the tip appears in the center feed immediately</li>
+            <li>Look for console logs with emojis (🔄, 📋, ✅, etc.)</li>
+        </ol>
+    </div>
+
+    <div class="test-section">
+        <h2>Expected Console Logs</h2>
+        <div class="log">
+🔄 Loading posts...
+📋 Loaded posts: [number] [array of posts]
+📱 Feed component rendering: { postsCount: [number], isLoaded: true, selectedSport: "All Sports", selected: "home" }
+📄 PostCard rendering: { id: "[post-id]", title: "[post-title]", sport: "[sport]", tipStatus: "pending" }
+
+When posting a tip:
+📝 Creating new post: { sport: "Football", title: "...", content: "...", ... }
+✅ Post created successfully: { id: "[new-id]", ... }
+📋 Adding post to state: { id: "[new-id]", ... }
+📋 Updated posts array: [new-count] posts
+🔍 Filtering posts: { totalPosts: [count], selected: "home", selectedSport: "All Sports", query: "" }
+✅ Final filtered posts: [count] posts
+📱 Feed component rendering: { postsCount: [count], isLoaded: true, selectedSport: "All Sports", selected: "home" }
+📄 PostCard rendering: { id: "[new-id]", title: "[new-title]", sport: "Football", tipStatus: "pending" }
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Debug Page</h2>
+        <p>You can also use the debug page to test the functionality:</p>
+        <a href="http://localhost:3000/debug" target="_blank">
+            <button>Open Debug Page</button>
+        </a>
+    </div>
+
+    <div class="test-section">
+        <h2>Common Issues to Check</h2>
+        <ul>
+            <li><strong>No posts loading:</strong> Check if Firebase is properly configured and user is authenticated</li>
+            <li><strong>Tip not appearing after posting:</strong> Check if the post is being added to the state correctly</li>
+            <li><strong>Console errors:</strong> Look for any red error messages in the console</li>
+            <li><strong>Network issues:</strong> Check the Network tab for failed requests to Firebase</li>
+        </ul>
+    </div>
+
+    <script>
+        // Add some basic logging to help with debugging
+        console.log('🧪 Tip Flow Test Page Loaded');
+        console.log('📋 Check the main app at http://localhost:3000');
+        console.log('🔍 Look for console logs with emojis to track the data flow');
+    </script>
+</body>
+</html>

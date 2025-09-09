@@ -107,7 +107,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
                     <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
                   </svg>
                 </span>
-                <span className="text-[17px] font-medium tracking-tight">Sports Arena</span>
+                <span className="text-[17px] font-medium tracking-tight">Tipster Arena</span>
               </div>
             
             <div className="hidden md:flex items-center gap-8">
@@ -242,7 +242,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
               Where Sports Fans <span className="bg-gradient-to-r from-violet-400 via-fuchsia-400 to-indigo-400 bg-clip-text text-transparent">Connect</span>
             </h2>
             <p className="text-lg text-white/70 max-w-2xl mx-auto leading-relaxed">
-              From living rooms to stadiums, see how sports fans around the world use Sports Arena to discuss, debate, and celebrate the games they love.
+              From living rooms to stadiums, see how sports fans around the world use Tipster Arena to discuss, debate, and celebrate the games they love.
             </p>
           </div>
 
@@ -251,7 +251,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
             <div className="relative rounded-2xl overflow-hidden shadow-[0_30px_120px_-20px_rgba(139,92,246,0.45)]">
               <Image 
                 src="/hero.png" 
-                alt="Sports Arena - Your Safe Space for Sports Discussion"
+                alt="Tipster Arena - Your Safe Space for Sports Discussion"
                 width={1200}
                 height={600}
                 className="w-full h-auto object-cover"
@@ -269,7 +269,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-white mb-6">
-              Why We Built <span className="bg-gradient-to-r from-violet-400 via-fuchsia-400 to-indigo-400 bg-clip-text text-transparent">Sports Arena</span>
+              Why We Built <span className="bg-gradient-to-r from-violet-400 via-fuchsia-400 to-indigo-400 bg-clip-text text-transparent">Tipster Arena</span>
             </h2>
             <div className="max-w-3xl mx-auto">
               <p className="text-lg text-white/70 leading-relaxed mb-8">
@@ -288,7 +288,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
                     <span className="text-white font-bold text-lg">SA</span>
                   </div>
                   <div className="text-left">
-                    <div className="text-white font-semibold">Sports Arena Founders</div>
+                    <div className="text-white font-semibold">Tipster Arena Founders</div>
                     <div className="text-white/60 text-sm">Built by sports fans, for sports fans</div>
                   </div>
                 </div>
@@ -470,7 +470,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
                 <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-blue-600 rounded-lg flex items-center justify-center">
                   <span className="text-white font-bold text-sm">SA</span>
                 </div>
-                <span className="text-xl font-bold">Sports Arena</span>
+                <span className="text-xl font-bold">Tipster Arena</span>
               </div>
               <p className="text-white/70 max-w-md mb-6">
                 The safe space for sports fans to discuss, debate, and celebrate without politics or drama. Built for fans who just want to talk sports.
@@ -516,7 +516,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
           </div>
           
           <div className="border-t border-white/10 mt-8 pt-8 flex flex-col sm:flex-row justify-between items-center">
-            <p className="text-white/60 text-sm">© 2024 Sports Arena. All rights reserved.</p>
+            <p className="text-white/60 text-sm">© 2024 Tipster Arena. All rights reserved.</p>
             <div className="flex gap-6 mt-4 sm:mt-0">
               <a href="#" className="text-white/60 hover:text-white text-sm transition-colors">Privacy</a>
               <a href="#" className="text-white/60 hover:text-white text-sm transition-colors">Terms</a>

@@ -36,7 +36,7 @@ interface SidebarProps {
 const items: SidebarItemType[] = [
   { icon: Home, label: 'Home', key: 'home' },
   { icon: Bell, label: 'Notifications', key: 'notifications' },
-  { icon: Star, label: 'Top Articles', key: 'top-articles' },
+  { icon: Star, label: 'Trending Tips', key: 'top-articles' },
   { icon: Users, label: 'People', key: 'following' },
   { icon: MessageCircle, label: 'Chat', key: 'chat' },
   { icon: Mail, label: 'Messages', key: 'messages' },
@@ -124,10 +124,10 @@ export default function Sidebar({ selected, onSelect, onOpenPost, isLoaded, sele
         <button
           onClick={onOpenPost}
           className="w-full inline-flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg bg-sky-500/20 text-sky-300 hover:bg-sky-500/30 hover:text-sky-200 transition ring-1 ring-inset ring-sky-500/30 hover:ring-sky-500/40"
-          title="Share Insight"
+          title="Share a Tip"
         >
           <PlusCircle className="w-5 h-5" />
-          <span className="font-medium">Share Insight</span>
+          <span className="font-medium">Share a Tip</span>
         </button>
         
         {onShowLandingPage && (
@@ -137,7 +137,7 @@ export default function Sidebar({ selected, onSelect, onOpenPost, isLoaded, sele
             title="View Landing Page"
           >
             <ExternalLink className="w-5 h-5" />
-            <span className="font-medium">About Sports Arena</span>
+            <span className="font-medium">About Tipster Arena</span>
           </button>
         )}
 

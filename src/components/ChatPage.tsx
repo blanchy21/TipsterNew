@@ -14,7 +14,7 @@ interface Message {
 const sampleMessages: Message[] = [
   {
     id: '1',
-    content: "Welcome to Sports Arena Chat! I'm your AI sports analyst assistant. How can I help you today?",
+    content: "Welcome to Tipster Arena Chat! I'm your AI sports analyst assistant. How can I help you today?",
     sender: 'ai',
     timestamp: '2024-01-15T10:00:00Z',
     type: 'text'

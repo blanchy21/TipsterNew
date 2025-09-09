@@ -245,7 +245,7 @@ export const sampleNotifications = [
   {
     id: 'n6',
     type: 'system' as const,
-    title: 'Welcome to Sports Arena!',
+    title: 'Welcome to Tipster Arena!',
     message: 'Thanks for joining our community of sports analysts. Start sharing your insights!',
     recipientId: 'current-user',
     read: true,

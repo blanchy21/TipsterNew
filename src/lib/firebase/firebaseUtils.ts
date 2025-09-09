@@ -96,7 +96,7 @@ export const getUserNotifications = async (userId: string) => {
   // Get notifications where the user is the recipient
   const notificationsRef = collection(db, "notifications");
   const q = query(notificationsRef, where("recipientId", "==", userId), orderBy("createdAt", "desc"));
-  
+
   const querySnapshot = await getDocs(q);
   return querySnapshot.docs.map(doc => ({
     id: doc.id,
@@ -123,14 +123,14 @@ export const markAllNotificationsAsRead = async (userId: string) => {
 
   const notificationsRef = collection(db, "notifications");
   const q = query(notificationsRef, where("recipientId", "==", userId), where("read", "==", false));
-  
+
   const querySnapshot = await getDocs(q);
   const batch = writeBatch(db);
-  
+
   querySnapshot.docs.forEach(doc => {
     batch.update(doc.ref, { read: true });
   });
-  
+
   return batch.commit();
 };
 
@@ -165,17 +165,17 @@ export const likePost = async (postId: string, userId: string) => {
     console.warn("Firebase Firestore not available");
     throw new Error("Firebase Firestore not available");
   }
-  
+
   try {
     // Get post details to find the post owner
     const postDoc = await getDoc(doc(db, "posts", postId));
     if (!postDoc.exists()) {
       throw new Error("Post not found");
     }
-    
+
     const postData = postDoc.data();
     const postOwnerId = postData.userId;
-    
+
     // Don't create notification if user is liking their own post
     if (postOwnerId !== userId) {
       // Get user profile for notification
@@ -192,7 +192,7 @@ export const likePost = async (postId: string, userId: string) => {
         });
       }
     }
-    
+
     const postRef = doc(db, "posts", postId);
     return updateDoc(postRef, {
       likedBy: arrayUnion(userId),
@@ -209,7 +209,7 @@ export const unlikePost = async (postId: string, userId: string) => {
     console.warn("Firebase Firestore not available");
     throw new Error("Firebase Firestore not available");
   }
-  
+
   const postRef = doc(db, "posts", postId);
   return updateDoc(postRef, {
     likedBy: arrayRemove(userId),
@@ -268,33 +268,33 @@ export const followUser = async (followerId: string, followingId: string) => {
     console.warn("Firebase Firestore not available");
     throw new Error("Firebase Firestore not available");
   }
-  
+
   try {
     // Ensure both user profiles exist before attempting follow operation
     await ensureUserProfileExists(followerId);
     await ensureUserProfileExists(followingId);
-    
+
     // Get follower profile for notification
     const followerProfile = await getUserProfile(followerId);
-    
+
     const batch = writeBatch(db);
-    
+
     // Add to follower's following list
     const followerRef = doc(db, "users", followerId);
     batch.update(followerRef, {
       following: arrayUnion(followingId),
       followingCount: 1 // This will be handled by a cloud function in production
     });
-    
+
     // Add to following user's followers list
     const followingRef = doc(db, "users", followingId);
     batch.update(followingRef, {
       followers: arrayUnion(followerId),
       followersCount: 1 // This will be handled by a cloud function in production
     });
-    
+
     await batch.commit();
-    
+
     // Create notification for the user being followed
     if (followerProfile) {
       await createNotification({
@@ -306,7 +306,7 @@ export const followUser = async (followerId: string, followingId: string) => {
         actionUrl: `/profile/${followerId}`
       });
     }
-    
+
     return Promise.resolve();
   } catch (error) {
     console.error("Error in followUser:", error);
@@ -319,27 +319,27 @@ export const unfollowUser = async (followerId: string, followingId: string) => {
     console.warn("Firebase Firestore not available");
     throw new Error("Firebase Firestore not available");
   }
-  
+
   // Ensure both user profiles exist before attempting unfollow operation
   await ensureUserProfileExists(followerId);
   await ensureUserProfileExists(followingId);
-  
+
   const batch = writeBatch(db);
-  
+
   // Remove from follower's following list
   const followerRef = doc(db, "users", followerId);
   batch.update(followerRef, {
     following: arrayRemove(followingId),
     followingCount: -1 // This will be handled by a cloud function in production
   });
-  
+
   // Remove from following user's followers list
   const followingRef = doc(db, "users", followingId);
   batch.update(followingRef, {
     followers: arrayRemove(followerId),
     followersCount: -1 // This will be handled by a cloud function in production
   });
-  
+
   return batch.commit();
 };
 
@@ -348,14 +348,14 @@ export const checkIfFollowing = async (followerId: string, followingId: string):
     console.warn("Firebase Firestore not available");
     return false;
   }
-  
+
   const userRef = doc(db, "users", followerId);
   const userDoc = await getDoc(userRef);
-  
+
   if (!userDoc.exists()) {
     return false;
   }
-  
+
   const userData = userDoc.data();
   return userData.following?.includes(followingId) || false;
 };
@@ -365,28 +365,28 @@ export const getUserFollowers = async (userId: string): Promise<User[]> => {
     console.warn("Firebase Firestore not available");
     return [];
   }
-  
+
   const userRef = doc(db, "users", userId);
   const userDoc = await getDoc(userRef);
-  
+
   if (!userDoc.exists()) {
     return [];
   }
-  
+
   const userData = userDoc.data();
   const followerIds = userData.followers || [];
-  
+
   if (followerIds.length === 0) {
     return [];
   }
-  
+
   const followers = await Promise.all(
     followerIds.map(async (followerId: string) => {
       const followerRef = doc(db, "users", followerId);
       const followerDoc = await getDoc(followerRef);
       if (followerDoc.exists()) {
         const followerData = followerDoc.data();
-        return { 
+        return {
           id: followerDoc.id,
           name: followerData.displayName || followerData.name || 'Anonymous User',
           handle: followerData.handle || `@user${followerDoc.id.slice(0, 8)}`,
@@ -426,7 +426,7 @@ export const getUserFollowers = async (userId: string): Promise<User[]> => {
       return null;
     })
   );
-  
+
   return followers.filter(Boolean) as User[];
 };
 
@@ -435,28 +435,28 @@ export const getUserFollowing = async (userId: string): Promise<User[]> => {
     console.warn("Firebase Firestore not available");
     return [];
   }
-  
+
   const userRef = doc(db, "users", userId);
   const userDoc = await getDoc(userRef);
-  
+
   if (!userDoc.exists()) {
     return [];
   }
-  
+
   const userData = userDoc.data();
   const followingIds = userData.following || [];
-  
+
   if (followingIds.length === 0) {
     return [];
   }
-  
+
   const following = await Promise.all(
     followingIds.map(async (followingId: string) => {
       const followingRef = doc(db, "users", followingId);
       const followingDoc = await getDoc(followingRef);
       if (followingDoc.exists()) {
         const followingData = followingDoc.data();
-        return { 
+        return {
           id: followingDoc.id,
           name: followingData.displayName || followingData.name || 'Anonymous User',
           handle: followingData.handle || `@user${followingDoc.id.slice(0, 8)}`,
@@ -496,7 +496,7 @@ export const getUserFollowing = async (userId: string): Promise<User[]> => {
       return null;
     })
   );
-  
+
   return following.filter(Boolean) as User[];
 };
 
@@ -526,7 +526,7 @@ export const createUserProfile = async (user: any, additionalData: any = {}) => 
   if (!userSnap.exists()) {
     const { displayName, email, photoURL } = user;
     const createdAt = new Date();
-    
+
     try {
       // Use setDoc to create with specific document ID (user.uid)
       await setDoc(userRef, {
@@ -555,13 +555,15 @@ export const createUserProfile = async (user: any, additionalData: any = {}) => 
 
 
 // Posts Management
-export const createPost = async (postData: Omit<Post, 'id' | 'createdAt' | 'likes' | 'comments' | 'views' | 'likedBy'>) => {
+export const createPost = async (postData: Omit<Post, 'id' | 'user' | 'createdAt' | 'likes' | 'comments' | 'views' | 'likedBy'>) => {
   if (!db) {
-    console.warn("Firebase Firestore not available");
+    console.warn("❌ Firebase Firestore not available");
     throw new Error("Firebase Firestore not available");
   }
 
   try {
+    console.log('📝 Creating new post with data:', postData);
+
     const newPost = {
       ...postData,
       createdAt: new Date(),
@@ -571,34 +573,56 @@ export const createPost = async (postData: Omit<Post, 'id' | 'createdAt' | 'like
       likedBy: []
     };
 
+    console.log('📝 Post data prepared for Firestore:', newPost);
     const docRef = await addDocument('posts', newPost);
-    return { id: docRef.id, ...newPost };
+    console.log('✅ Post created successfully with ID:', docRef.id);
+
+    const createdPost = { id: docRef.id, ...newPost };
+    console.log('📋 Created post object:', createdPost);
+
+    return createdPost;
   } catch (error) {
-    console.error('Error creating post:', error);
+    console.error('❌ Error creating post:', error);
+    console.error('❌ Error details:', {
+      message: error.message,
+      code: error.code,
+      stack: error.stack
+    });
     throw error;
   }
 };
 
 export const getPosts = async () => {
   if (!db) {
-    console.warn("Firebase Firestore not available");
+    console.warn("❌ Firebase Firestore not available");
     return [];
   }
 
   try {
+    console.log('🔄 Fetching posts from Firestore...');
     const posts = await getDocuments('posts');
+    console.log('📋 Raw posts from Firestore:', posts.length, 'posts');
+
     const processedPosts = posts.map((post: any) => ({
       ...post,
       createdAt: post.createdAt?.toDate ? post.createdAt.toDate().toISOString() : post.createdAt
     }));
-    
-    return processedPosts.sort((a, b) => {
+
+    const sortedPosts = processedPosts.sort((a, b) => {
       const aTime = new Date(a.createdAt).getTime();
       const bTime = new Date(b.createdAt).getTime();
       return bTime - aTime;
     });
+
+    console.log('✅ Successfully processed and sorted posts:', sortedPosts.length, 'posts');
+    return sortedPosts;
   } catch (error) {
-    console.error('Error getting posts:', error);
+    console.error('❌ Error getting posts:', error);
+    console.error('❌ Error details:', {
+      message: error.message,
+      code: error.code,
+      stack: error.stack
+    });
     return [];
   }
 };
@@ -612,11 +636,11 @@ export const togglePostLike = async (postId: string, userId: string, isLiked: bo
   try {
     const postRef = doc(db, 'posts', postId);
     const postSnap = await getDoc(postRef);
-    
+
     if (postSnap.exists()) {
       const postData = postSnap.data();
       const likedBy = postData.likedBy || [];
-      
+
       if (isLiked) {
         // Add like
         await updateDocument('posts', postId, {
@@ -646,7 +670,7 @@ export const incrementPostViews = async (postId: string) => {
   try {
     const postRef = doc(db, 'posts', postId);
     const postSnap = await getDoc(postRef);
-    
+
     if (postSnap.exists()) {
       const postData = postSnap.data();
       await updateDocument('posts', postId, {
@@ -663,10 +687,10 @@ export const getUserProfile = async (userId: string): Promise<User | null> => {
   try {
     const userRef = doc(db, 'users', userId);
     const userSnap = await getDoc(userRef);
-    
+
     if (userSnap.exists()) {
       const userData = userSnap.data();
-      return { 
+      return {
         id: userSnap.id,
         name: userData.displayName || userData.name || 'Anonymous User',
         handle: userData.handle || `@user${userSnap.id.slice(0, 8)}`,
@@ -728,10 +752,10 @@ export const uploadProfileImage = async (userId: string, file: File, type: 'avat
     const fileExtension = file.name.split('.').pop();
     const fileName = `${type}_${userId}_${Date.now()}.${fileExtension}`;
     const storageRef = ref(storage, `profiles/${userId}/${fileName}`);
-    
+
     const snapshot = await uploadBytes(storageRef, file);
     const downloadURL = await getDownloadURL(snapshot.ref);
-    
+
     return downloadURL;
   } catch (error) {
     console.error('Error uploading profile image:', error);
@@ -842,23 +866,23 @@ export const getFollowSuggestions = async (userId: string, limit: number = 10): 
   try {
     // Get all users from Firestore
     const allUsers = await getDocuments('users');
-    
+
     // Get current user's following list
     const currentUser = await getUserProfile(userId);
     const followingIds = currentUser?.following || [];
-    
+
     // Filter out current user and already followed users
     const suggestions = allUsers
       .filter((user: any) => {
         // Skip if it's the current user
         if (user.id === userId) return false;
-        
+
         // Skip if already following
         if (followingIds.includes(user.id)) return false;
-        
+
         // Skip if user is marked as deleted
         if (user.deleted) return false;
-        
+
         return true;
       })
       .slice(0, limit)
@@ -891,16 +915,16 @@ export const searchUsers = async (query: string, limit: number = 20): Promise<Us
   try {
     const allUsers = await getDocuments('users');
     const searchQuery = query.toLowerCase();
-    
+
     const results = allUsers
       .filter((user: any) => {
         const name = (user.displayName || user.name || '').toLowerCase();
         const handle = (user.handle || '').toLowerCase();
         const bio = (user.bio || '').toLowerCase();
-        
-        return name.includes(searchQuery) || 
-               handle.includes(searchQuery) || 
-               bio.includes(searchQuery);
+
+        return name.includes(searchQuery) ||
+          handle.includes(searchQuery) ||
+          bio.includes(searchQuery);
       })
       .slice(0, limit)
       .map((user: any) => ({
@@ -967,7 +991,7 @@ export const createComment = async (postId: string, userId: string, commentData:
     if (postDoc.exists()) {
       const postData = postDoc.data();
       const postOwnerId = postData.userId;
-      
+
       // Don't create notification if user is commenting on their own post
       if (postOwnerId !== userId) {
         await createNotification({
@@ -1040,10 +1064,10 @@ export const deleteComment = async (commentId: string, postId: string): Promise<
 
   try {
     await deleteDocument('comments', commentId);
-    
+
     // Decrement post comment count
     await decrementPostCommentCount(postId);
-    
+
     return true;
   } catch (error) {
     console.error('Error deleting comment:', error);
@@ -1060,11 +1084,11 @@ export const toggleCommentLike = async (commentId: string, userId: string, isLik
   try {
     const commentRef = doc(db, 'comments', commentId);
     const commentSnap = await getDoc(commentRef);
-    
+
     if (commentSnap.exists()) {
       const commentData = commentSnap.data();
       const likedBy = commentData.likedBy || [];
-      
+
       if (isLiked) {
         // Add like
         await updateDocument('comments', commentId, {
@@ -1096,7 +1120,7 @@ export const incrementPostCommentCount = async (postId: string): Promise<void> =
   try {
     const postRef = doc(db, 'posts', postId);
     const postSnap = await getDoc(postRef);
-    
+
     if (postSnap.exists()) {
       const postData = postSnap.data();
       await updateDocument('posts', postId, {
@@ -1117,7 +1141,7 @@ export const decrementPostCommentCount = async (postId: string): Promise<void> =
   try {
     const postRef = doc(db, 'posts', postId);
     const postSnap = await getDoc(postRef);
-    
+
     if (postSnap.exists()) {
       const postData = postSnap.data();
       await updateDocument('posts', postId, {
@@ -1150,19 +1174,19 @@ export const getUserStats = async (userId: string): Promise<{
     // Get all posts by the user
     const posts = await getDocuments('posts');
     const userPosts = posts.filter((post: any) => post.user.id === userId);
-    
+
     // Get all comments by the user
     const comments = await getDocuments('comments');
     const userComments = comments.filter((comment: any) => comment.user.id === userId);
-    
+
     // Calculate totals
     const totalPosts = userPosts.length;
     const totalLikes = userPosts.reduce((sum: number, post: any) => sum + (post.likes || 0), 0);
     const totalComments = userComments.length;
-    
+
     // Calculate engagement rate (simplified: likes per post)
     const engagementRate = totalPosts > 0 ? Math.round((totalLikes / totalPosts) * 100) / 100 : 0;
-    
+
     return {
       totalPosts,
       totalLikes,
@@ -1177,5 +1201,20 @@ export const getUserStats = async (userId: string): Promise<{
       totalComments: 0,
       engagementRate: 0
     };
+  }
+};
+
+export const updatePost = async (postId: string, data: Partial<Post>): Promise<boolean> => {
+  if (!db) {
+    console.warn("Firebase Firestore not available");
+    throw new Error("Firebase Firestore not available");
+  }
+
+  try {
+    await updateDocument('posts', postId, data);
+    return true;
+  } catch (error) {
+    console.error('Error updating post:', error);
+    return false;
   }
 };
