@@ -220,7 +220,7 @@ function AppContent() {
 
   const handleSportSelect = (sport: string) => {
     setSelectedSport(sport);
-    setSelected('top');
+    setSelected('home');
   };
 
   const handleGetStarted = () => {
