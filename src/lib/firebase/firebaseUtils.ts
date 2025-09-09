@@ -744,13 +744,13 @@ export const togglePostLike = async (postId: string, userId: string, isLiked: bo
 
       if (isLiked) {
         // Add like
-        await updateDocument('posts', postId, {
+        await updateDoc(postRef, {
           likes: postData.likes + 1,
           likedBy: arrayUnion(userId)
         });
       } else {
         // Remove like
-        await updateDocument('posts', postId, {
+        await updateDoc(postRef, {
           likes: Math.max(0, postData.likes - 1),
           likedBy: arrayRemove(userId)
         });

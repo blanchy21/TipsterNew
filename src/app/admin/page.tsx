@@ -1,8 +1,8 @@
 'use client';
 
 import React from 'react';
-import AdminPage from '@/components/AdminPage';
+import AdminDashboardSimple from '@/components/AdminDashboardSimple';
 
 export default function Admin() {
-  return <AdminPage />;
+  return <AdminDashboardSimple />;
 }

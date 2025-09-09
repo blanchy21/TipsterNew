@@ -10,6 +10,7 @@ import FollowButton from './FollowButton';
 import CommentsList from './CommentsList';
 import AvatarWithFallback from './AvatarWithFallback';
 import UserProfileLink from './UserProfileLink';
+import TipVerificationStatus from './TipVerificationStatus';
 
 interface PostCardProps {
   post: Post;
@@ -141,7 +142,12 @@ export default function PostCard({ post, onLikeChange, onCommentCountChange, onN
                 </div>
               )}
 
-              {getTipStatusDisplay(post.tipStatus)}
+              <TipVerificationStatus
+                status={post.tipStatus}
+                verifiedAt={post.verifiedAt}
+                verifiedBy={post.verifiedBy}
+                showDetails={false}
+              />
             </div>
 
             {post.tags.length > 0 && (

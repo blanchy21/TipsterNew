@@ -6,6 +6,8 @@ import { Comment } from '@/lib/types';
 import { getCommentsByPostId, updateComment } from '@/lib/firebase/firebaseUtils';
 import CommentItem from './CommentItem';
 import CommentForm from './CommentForm';
+import { collection, query, where, orderBy as firestoreOrderBy, onSnapshot } from 'firebase/firestore';
+import { db } from '@/lib/firebase/firebase';
 
 interface CommentsListProps {
   postId: string;
@@ -18,25 +20,63 @@ export default function CommentsList({ postId, onCommentCountChange }: CommentsL
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
   const [editingComment, setEditingComment] = useState<string | null>(null);
 
-  const loadComments = async () => {
-    try {
-      setLoading(true);
-      const fetchedComments = await getCommentsByPostId(postId);
-      setComments(fetchedComments);
-      onCommentCountChange?.(fetchedComments.length);
-    } catch (error) {
-      console.error('Error loading comments:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  // Real-time comments listener
   useEffect(() => {
-    loadComments();
+    if (!postId || !db) {
+      setComments([]);
+      onCommentCountChange?.(0);
+      return;
+    }
+
+    console.log('🔄 Setting up real-time comments listener for post:', postId);
+    setLoading(true);
+
+    const commentsRef = collection(db, 'comments');
+    const q = query(
+      commentsRef,
+      where('postId', '==', postId),
+      firestoreOrderBy('createdAt', 'asc')
+    );
+
+    const unsubscribe = onSnapshot(q,
+      (snapshot) => {
+        console.log('📡 Real-time comments update received for post:', postId);
+        const commentsData = snapshot.docs.map(doc => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            ...data,
+            createdAt: data.createdAt?.toDate ? data.createdAt.toDate().toISOString() : data.createdAt,
+            editedAt: data.editedAt?.toDate ? data.editedAt.toDate().toISOString() : data.editedAt
+          } as Comment;
+        });
+
+        setComments(commentsData);
+        onCommentCountChange?.(commentsData.length);
+        setLoading(false);
+      },
+      (error) => {
+        console.error('❌ Real-time comments listener error:', error);
+        setLoading(false);
+        // Fallback to one-time fetch on error
+        getCommentsByPostId(postId).then(fallbackComments => {
+          console.log('🔄 Fallback: Loading comments via one-time fetch');
+          setComments(fallbackComments);
+          onCommentCountChange?.(fallbackComments.length);
+        }).catch(fallbackError => {
+          console.error('❌ Fallback comments loading also failed:', fallbackError);
+        });
+      }
+    );
+
+    return () => {
+      console.log('🧹 Cleaning up real-time comments listener for post:', postId);
+      unsubscribe();
+    };
   }, [postId]);
 
   const handleCommentAdded = () => {
-    loadComments();
+    // Comments will be updated automatically via real-time listener
     setReplyingTo(null);
   };
 
@@ -48,9 +88,9 @@ export default function CommentsList({ postId, onCommentCountChange }: CommentsL
   const handleCommentEdited = async (commentId: string, newContent: string) => {
     try {
       await updateComment(commentId, newContent);
-      setComments(prev => 
-        prev.map(comment => 
-          comment.id === commentId 
+      setComments(prev =>
+        prev.map(comment =>
+          comment.id === commentId
             ? { ...comment, content: newContent, isEdited: true, editedAt: new Date().toISOString() }
             : comment
         )

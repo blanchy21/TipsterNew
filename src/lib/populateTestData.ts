@@ -1,9 +1,9 @@
-import { 
-  addDocument, 
-  updateDocument, 
+import {
+  addDocument,
+  updateDocument,
   getDocuments,
   followUser,
-  unfollowUser 
+  unfollowUser
 } from './firebase/firebaseUtils';
 import { normalizeImageUrl } from './imageUtils';
 
@@ -148,7 +148,11 @@ const testPosts = [
     likes: 0,
     comments: 0,
     views: 0,
-    likedBy: []
+    likedBy: [],
+    tipStatus: 'pending',
+    odds: '2.5',
+    gameDate: new Date(Date.now() + 24 * 60 * 60 * 1000), // Tomorrow
+    isGameFinished: false
   },
   {
     user: {
@@ -165,7 +169,11 @@ const testPosts = [
     likes: 0,
     comments: 0,
     views: 0,
-    likedBy: []
+    likedBy: [],
+    tipStatus: 'pending',
+    odds: '1.8',
+    gameDate: new Date(Date.now() + 12 * 60 * 60 * 1000), // 12 hours from now
+    isGameFinished: false
   },
   {
     user: {
@@ -182,7 +190,74 @@ const testPosts = [
     likes: 0,
     comments: 0,
     views: 0,
-    likedBy: []
+    likedBy: [],
+    tipStatus: 'pending',
+    odds: '3.2',
+    gameDate: new Date(Date.now() + 48 * 60 * 60 * 1000), // 2 days from now
+    isGameFinished: false
+  },
+  {
+    user: {
+      id: 'test-user-4',
+      name: 'Emma Wilson',
+      handle: '@emmawilson',
+      avatar: normalizeImageUrl('https://images.unsplash.com/photo-1494790108755-2616b612b786?w=96&h=96&fit=crop&crop=face')
+    },
+    sport: 'Football',
+    title: 'Manchester City vs Liverpool: Premier League Clash',
+    content: 'The title race heats up as City host Liverpool. Both teams need the win to stay in contention. Key players: Haaland vs Van Dijk, De Bruyne vs Salah.',
+    tags: ['manchester-city', 'liverpool', 'premier-league', 'title-race'],
+    createdAt: new Date(Date.now() - 1 * 60 * 60 * 1000), // 1 hour ago
+    likes: 0,
+    comments: 0,
+    views: 0,
+    likedBy: [],
+    tipStatus: 'pending',
+    odds: '2.1',
+    gameDate: new Date(Date.now() + 6 * 60 * 60 * 1000), // 6 hours from now
+    isGameFinished: false
+  },
+  {
+    user: {
+      id: 'test-user-5',
+      name: 'David Chen',
+      handle: '@davidchen',
+      avatar: normalizeImageUrl('https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=96&h=96&fit=crop&crop=face')
+    },
+    sport: 'Basketball',
+    title: 'Celtics vs Heat: Eastern Conference Finals',
+    content: 'The battle for the East continues. Celtics\' defense vs Heat\'s offense. This series could go the distance.',
+    tags: ['celtics', 'heat', 'nba', 'eastern-conference'],
+    createdAt: new Date(Date.now() - 3 * 60 * 60 * 1000), // 3 hours ago
+    likes: 0,
+    comments: 0,
+    views: 0,
+    likedBy: [],
+    tipStatus: 'pending',
+    odds: '1.9',
+    gameDate: new Date(Date.now() + 18 * 60 * 60 * 1000), // 18 hours from now
+    isGameFinished: false
+  },
+  {
+    user: {
+      id: 'test-user-6',
+      name: 'Lisa Brown',
+      handle: '@lisabrown',
+      avatar: normalizeImageUrl('https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=96&h=96&fit=crop&crop=face')
+    },
+    sport: 'Tennis',
+    title: 'Swiatek vs Sabalenka: WTA Finals',
+    content: 'The world number 1 vs the world number 2. This match will determine the year-end champion.',
+    tags: ['swiatek', 'sabalenka', 'wta', 'finals'],
+    createdAt: new Date(Date.now() - 5 * 60 * 60 * 1000), // 5 hours ago
+    likes: 0,
+    comments: 0,
+    views: 0,
+    likedBy: [],
+    tipStatus: 'pending',
+    odds: '2.3',
+    gameDate: new Date(Date.now() + 36 * 60 * 60 * 1000), // 36 hours from now
+    isGameFinished: false
   }
 ];
 
@@ -218,16 +293,16 @@ export const populateTestData = async () => {
       await followUser(userIds[0], userIds[1]);
       await followUser(userIds[0], userIds[2]);
       await followUser(userIds[0], userIds[3]);
-      
+
       // User 1 follows users 0, 2
       await followUser(userIds[1], userIds[0]);
       await followUser(userIds[1], userIds[2]);
-      
+
       // User 2 follows users 0, 1, 4
       await followUser(userIds[2], userIds[0]);
       await followUser(userIds[2], userIds[1]);
       await followUser(userIds[2], userIds[4]);
-      
+
       console.log('Created following relationships');
     }
 
@@ -242,21 +317,21 @@ export const populateTestData = async () => {
 export const clearTestData = async () => {
   try {
     console.log('Clearing test data...');
-    
+
     // Get all users and posts
     const users = await getDocuments('users');
     const posts = await getDocuments('posts');
-    
+
     // Delete all users
     for (const user of users) {
       await updateDocument('users', user.id, { deleted: true });
     }
-    
+
     // Delete all posts
     for (const post of posts) {
       await updateDocument('posts', post.id, { deleted: true });
     }
-    
+
     console.log('Test data cleared successfully!');
     return { success: true };
   } catch (error) {

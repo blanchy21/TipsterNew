@@ -41,6 +41,7 @@ import { useProfile } from '@/lib/contexts/ProfileContext';
 import { useFollowing } from '@/lib/contexts/FollowingContext';
 import { normalizeImageUrl } from '@/lib/imageUtils';
 import { getUserStats } from '@/lib/firebase/firebaseUtils';
+import TipVerificationAnalytics from './TipVerificationAnalytics';
 
 interface ProfileStats {
   totalTips: number;
@@ -679,6 +680,11 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate, userId }) => {
               </button>
             </article>
           </aside>
+        </section>
+
+        {/* Tip Verification Analytics */}
+        <section className="mt-8">
+          <TipVerificationAnalytics userId={profileUser.id} />
         </section>
       </div>
 

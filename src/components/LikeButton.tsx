@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { ThumbsUp } from 'lucide-react';
 import { Post } from '@/lib/types';
 import { useAuth } from '@/lib/hooks/useAuth';
-import { likePost, unlikePost } from '@/lib/firebase/firebaseUtils';
+import { togglePostLike } from '@/lib/firebase/firebaseUtils';
 
 interface LikeButtonProps {
   post: Post;
@@ -14,36 +14,46 @@ interface LikeButtonProps {
 export default function LikeButton({ post, onLikeChange }: LikeButtonProps) {
   const { user } = useAuth();
   const [isLiking, setIsLiking] = useState(false);
-  
-  const isLiked = user ? post.likedBy?.includes(user.uid) : false;
+
+  const userId = user?.uid || 'demo-user';
+  const isLiked = post.likedBy?.includes(userId) || false;
   const likeCount = post.likes || 0;
 
   const handleLike = async () => {
-    if (!user || isLiking) return;
+    if (isLiking) return;
 
     setIsLiking(true);
-    
+
     try {
+      // For demo mode, use a temporary user ID if no user is logged in
+      const userId = user?.uid || 'demo-user';
+
+      // Update UI optimistically first
       if (isLiked) {
-        // Unlike the post
-        await unlikePost(post.id, user.uid);
-        const newLikedBy = post.likedBy?.filter(id => id !== user.uid) || [];
+        const newLikedBy = post.likedBy?.filter(id => id !== userId) || [];
         onLikeChange(post.id, Math.max(0, likeCount - 1), newLikedBy);
       } else {
-        // Like the post
-        await likePost(post.id, user.uid);
-        const newLikedBy = [...(post.likedBy || []), user.uid];
+        const newLikedBy = [...(post.likedBy || []), userId];
         onLikeChange(post.id, likeCount + 1, newLikedBy);
+      }
+
+      // Then update the backend (only if user is authenticated)
+      if (user) {
+        await togglePostLike(post.id, user.uid, !isLiked);
+      } else {
+        console.log('Demo mode: Like button clicked (not saved to backend)');
       }
     } catch (error) {
       console.error('Error toggling like:', error);
-      // In demo mode, still update the UI optimistically
+      // Revert the optimistic update on error
       if (isLiked) {
-        const newLikedBy = post.likedBy?.filter(id => id !== user.uid) || [];
-        onLikeChange(post.id, Math.max(0, likeCount - 1), newLikedBy);
+        const userId = user?.uid || 'demo-user';
+        const newLikedBy = [...(post.likedBy || []), userId];
+        onLikeChange(post.id, likeCount, newLikedBy);
       } else {
-        const newLikedBy = [...(post.likedBy || []), user.uid];
-        onLikeChange(post.id, likeCount + 1, newLikedBy);
+        const userId = user?.uid || 'demo-user';
+        const newLikedBy = post.likedBy?.filter(id => id !== userId) || [];
+        onLikeChange(post.id, Math.max(0, likeCount - 1), newLikedBy);
       }
     } finally {
       setIsLiking(false);
@@ -51,17 +61,17 @@ export default function LikeButton({ post, onLikeChange }: LikeButtonProps) {
   };
 
   return (
-    <button 
+    <button
       onClick={handleLike}
-      disabled={!user || isLiking}
+      disabled={isLiking}
       className={`
         inline-flex items-center gap-2 transition rounded-md px-2 py-1.5 ring-1 ring-transparent hover:ring-white/10
-        ${isLiked 
-          ? 'text-red-400 hover:text-red-300 bg-red-500/10' 
+        ${isLiked
+          ? 'text-red-400 hover:text-red-300 bg-red-500/10'
           : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
         }
-        ${!user ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
-        ${isLiking ? 'opacity-50 cursor-wait' : ''}
+        ${!user ? 'opacity-75' : 'cursor-pointer'}
+        ${isLiking ? 'opacity-50 cursor-wait' : 'cursor-pointer'}
       `}
     >
       <ThumbsUp className={`w-4 h-4 ${isLiked ? 'fill-current' : ''}`} />

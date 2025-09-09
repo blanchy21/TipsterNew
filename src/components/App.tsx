@@ -4,7 +4,9 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { Post, FollowingUser } from '@/lib/types';
 import { sampleFollowing, sampleTrending } from '@/lib/utils';
-import { getPosts, createPost, togglePostLike, incrementPostViews } from '@/lib/firebase/firebaseUtils';
+import { createPost, togglePostLike, incrementPostViews } from '@/lib/firebase/firebaseUtils';
+import { collection, query as firestoreQuery, orderBy as firestoreOrderBy, onSnapshot, where } from 'firebase/firestore';
+import { db } from '@/lib/firebase/firebase';
 import Sidebar from './Sidebar';
 import MobileHeader from './MobileHeader';
 import Feed from './Feed';
@@ -24,6 +26,8 @@ import { ProfileProvider } from '@/lib/contexts/ProfileContext';
 import { FollowingProvider } from '@/lib/contexts/FollowingContext';
 import { useAuth } from '@/lib/hooks/useAuth';
 import NotificationToastManager from './NotificationToastManager';
+import RealtimeIndicator from './RealtimeIndicator';
+import RealtimeTest from './RealtimeTest';
 
 function AppContent() {
   const { user, loading } = useAuth();
@@ -76,32 +80,46 @@ function AppContent() {
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
-  // Load posts from Firestore
+  // Real-time posts listener
   useEffect(() => {
-    const loadPosts = async () => {
-      try {
-        console.log('🔄 Loading posts for user:', user?.uid);
-        const firestorePosts = await getPosts();
-        console.log('📋 Loaded posts from Firebase:', firestorePosts.length, 'posts');
-        console.log('📋 Posts data:', firestorePosts);
-        setPosts(firestorePosts as Post[]);
-        console.log('✅ Posts loaded and set in state');
-      } catch (error) {
-        console.error('❌ Error loading posts:', error);
-        console.error('❌ Error details:', {
-          message: error.message,
-          code: error.code,
-          stack: error.stack
-        });
-      }
-    };
-
-    if (user) {
-      console.log('👤 User authenticated, loading posts...');
-      loadPosts();
-    } else {
-      console.log('❌ No user authenticated, not loading posts');
+    if (!user || !db) {
+      console.log('❌ No user authenticated or Firebase not available, not setting up posts listener');
+      setPosts([]);
+      return;
     }
+
+    console.log('🔄 Setting up real-time posts listener for user:', user.uid);
+
+    const postsRef = collection(db, 'posts');
+    const q = firestoreQuery(postsRef, firestoreOrderBy('createdAt', 'desc'));
+
+    const unsubscribe = onSnapshot(q,
+      (snapshot) => {
+        console.log('📡 Real-time posts update received');
+        const postsData = snapshot.docs.map(doc => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            ...data,
+            createdAt: data.createdAt?.toDate ? data.createdAt.toDate().toISOString() : data.createdAt
+          } as Post;
+        });
+
+        console.log('📋 Real-time posts updated:', postsData.length, 'posts');
+        setPosts(postsData);
+      },
+      (error) => {
+        console.error('❌ Real-time posts listener error:', error);
+        // Fallback: Set empty posts array on error
+        console.log('🔄 Fallback: Setting empty posts array due to error');
+        setPosts([]);
+      }
+    );
+
+    return () => {
+      console.log('🧹 Cleaning up real-time posts listener');
+      unsubscribe();
+    };
   }, [user]);
 
 
@@ -198,23 +216,15 @@ function AppContent() {
     }
   };
 
-  const handleLikeChange = async (postId: string, newLikes: number, newLikedBy: string[]) => {
-    if (!user) return;
-
-    try {
-      const isLiked = newLikedBy.includes(user.uid);
-      await togglePostLike(postId, user.uid, isLiked);
-
-      setPosts((prev: Post[]) =>
-        prev.map((post: Post) =>
-          post.id === postId
-            ? { ...post, likes: newLikes, likedBy: newLikedBy }
-            : post
-        )
-      );
-    } catch (error) {
-      console.error('Error liking post:', error);
-    }
+  const handleLikeChange = (postId: string, newLikes: number, newLikedBy: string[]) => {
+    // Update the posts state with the new like data
+    setPosts((prev: Post[]) =>
+      prev.map((post: Post) =>
+        post.id === postId
+          ? { ...post, likes: newLikes, likedBy: newLikedBy }
+          : post
+      )
+    );
   };
 
   // Following functionality is now handled by FollowingContext
@@ -415,6 +425,8 @@ function AppContent() {
         />
 
         <NotificationToastManager />
+        <RealtimeIndicator isConnected={!!user} />
+        <RealtimeTest />
       </div>
     </NotificationsProvider>
   );

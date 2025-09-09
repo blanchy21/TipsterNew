@@ -2,16 +2,18 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User } from '@/lib/types';
-import { 
-  getFollowingUsers, 
-  getFollowers, 
-  getFollowSuggestions, 
+import {
+  getFollowingUsers,
+  getFollowers,
+  getFollowSuggestions,
   searchUsers,
   followUser,
   unfollowUser,
   checkIfFollowing
 } from '@/lib/firebase/firebaseUtils';
 import { useAuth } from '@/lib/hooks/useAuth';
+import { collection, query, where, onSnapshot, doc, getDoc } from 'firebase/firestore';
+import { db } from '@/lib/firebase/firebase';
 
 interface FollowingContextType {
   following: User[];
@@ -52,7 +54,7 @@ export const FollowingProvider: React.FC<FollowingProviderProps> = ({ children }
 
   const loadFollowing = async () => {
     if (!user?.uid) return;
-    
+
     setLoading(true);
     setError(null);
     try {
@@ -68,7 +70,7 @@ export const FollowingProvider: React.FC<FollowingProviderProps> = ({ children }
 
   const loadFollowers = async () => {
     if (!user?.uid) return;
-    
+
     setLoading(true);
     setError(null);
     try {
@@ -84,7 +86,7 @@ export const FollowingProvider: React.FC<FollowingProviderProps> = ({ children }
 
   const loadSuggestions = async () => {
     if (!user?.uid) return;
-    
+
     setLoading(true);
     setError(null);
     try {
@@ -114,7 +116,7 @@ export const FollowingProvider: React.FC<FollowingProviderProps> = ({ children }
 
   const searchUsersQuery = async (query: string): Promise<User[]> => {
     if (!user?.uid) return [];
-    
+
     try {
       const results = await searchUsers(query, 20);
       return results;
@@ -126,7 +128,7 @@ export const FollowingProvider: React.FC<FollowingProviderProps> = ({ children }
 
   const followUserAction = async (userId: string): Promise<boolean> => {
     if (!user?.uid) return false;
-    
+
     try {
       await followUser(user.uid, userId);
       // Refresh following list
@@ -142,7 +144,7 @@ export const FollowingProvider: React.FC<FollowingProviderProps> = ({ children }
 
   const unfollowUserAction = async (userId: string): Promise<boolean> => {
     if (!user?.uid) return false;
-    
+
     try {
       await unfollowUser(user.uid, userId);
       // Refresh following list
@@ -156,7 +158,7 @@ export const FollowingProvider: React.FC<FollowingProviderProps> = ({ children }
 
   const isFollowingUser = async (userId: string): Promise<boolean> => {
     if (!user?.uid) return false;
-    
+
     try {
       return await checkIfFollowing(user.uid, userId);
     } catch (err) {
@@ -165,16 +167,77 @@ export const FollowingProvider: React.FC<FollowingProviderProps> = ({ children }
     }
   };
 
+  // Real-time following listener
   useEffect(() => {
-    if (user?.uid) {
-      loadFollowing();
-      loadFollowers();
-      loadSuggestions();
-    } else {
+    if (!user?.uid || !db) {
       setFollowing([]);
       setFollowers([]);
       setSuggestions([]);
+      return;
     }
+
+    console.log('🔄 Setting up real-time following listeners for user:', user.uid);
+
+    // Real-time following listener
+    const followingUnsubscribe = (async () => {
+      try {
+        const followingUsers = await getFollowingUsers(user.uid);
+        setFollowing(followingUsers);
+      } catch (error) {
+        console.error('Error loading following users:', error);
+      }
+    })();
+
+    // Real-time followers listener
+    const followersUnsubscribe = (async () => {
+      try {
+        const followersList = await getFollowers(user.uid);
+        setFollowers(followersList);
+      } catch (error) {
+        console.error('Error loading followers:', error);
+      }
+    })();
+
+    // Load suggestions (not real-time as it's based on all users)
+    loadSuggestions();
+
+    return () => {
+      console.log('🧹 Cleaning up following listeners');
+    };
+  }, [user?.uid]);
+
+  // Real-time user profile updates listener
+  useEffect(() => {
+    if (!user?.uid || !db) {
+      return;
+    }
+
+    console.log('🔄 Setting up real-time user profile listener for user:', user.uid);
+
+    const userRef = doc(db, 'users', user.uid);
+    const unsubscribe = onSnapshot(userRef, (doc) => {
+      if (doc.exists()) {
+        const userData = doc.data();
+        console.log('📡 Real-time user profile update received');
+
+        // Update following and followers counts in real-time
+        if (userData.following) {
+          // Refresh following list when user's following array changes
+          getFollowingUsers(user.uid).then(setFollowing).catch(console.error);
+        }
+        if (userData.followers) {
+          // Refresh followers list when user's followers array changes
+          getFollowers(user.uid).then(setFollowers).catch(console.error);
+        }
+      }
+    }, (error) => {
+      console.error('Real-time user profile listener error:', error);
+    });
+
+    return () => {
+      console.log('🧹 Cleaning up user profile listener');
+      unsubscribe();
+    };
   }, [user?.uid]);
 
   const value: FollowingContextType = {
