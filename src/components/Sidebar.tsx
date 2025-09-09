@@ -1,14 +1,14 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { 
-  Home, 
-  Bell, 
-  Trophy, 
-  MessageCircle, 
-  Mail, 
-  User, 
-  Star, 
+import {
+  Home,
+  Bell,
+  Trophy,
+  MessageCircle,
+  Mail,
+  User,
+  Star,
   PlusCircle,
   ExternalLink,
   LogOut,
@@ -37,11 +37,11 @@ const items: SidebarItemType[] = [
   { icon: Home, label: 'Home', key: 'home' },
   { icon: Bell, label: 'Notifications', key: 'notifications' },
   { icon: Star, label: 'Trending Tips', key: 'top-articles' },
+  { icon: Trophy, label: 'Top Tipsters', key: 'top-tipsters' },
   { icon: Users, label: 'People', key: 'following' },
   { icon: MessageCircle, label: 'Chat', key: 'chat' },
   { icon: Mail, label: 'Messages', key: 'messages' },
   { icon: User, label: 'Profile', key: 'profile' },
-  { icon: Trophy, label: 'Sport', key: 'top' },
   { icon: Settings, label: 'Admin', key: 'admin' },
 ];
 
@@ -68,14 +68,14 @@ export default function Sidebar({ selected, onSelect, onOpenPost, isLoaded, sele
   }, [showSportsSubmenu]);
   return (
     <aside className={[
-        "hidden md:flex md:flex-col shrink-0",
-        "border-r border-white/5",
-        "backdrop-blur",
-        "px-3 py-4",
-        "h-screen overflow-y-auto",
-        "transition-all duration-700",
-        isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
-      ].join(' ')}
+      "hidden md:flex md:flex-col shrink-0",
+      "border-r border-white/5",
+      "backdrop-blur",
+      "px-3 py-4",
+      "h-screen overflow-y-auto",
+      "transition-all duration-700",
+      isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
+    ].join(' ')}
       style={{ width: '260px' }}
     >
       <div className="px-1 mb-4">
@@ -84,11 +84,11 @@ export default function Sidebar({ selected, onSelect, onOpenPost, isLoaded, sele
 
       <nav className="flex-1 flex flex-col gap-1">
         {items.map((item, idx) => (
-          <div 
-            key={item.key} 
+          <div
+            key={item.key}
             className={[
-              "transition duration-700", 
-              isLoaded ? "opacity-100 translate-x-0" : "opacity-0 translate-x-2", 
+              "transition duration-700",
+              isLoaded ? "opacity-100 translate-x-0" : "opacity-0 translate-x-2",
               `delay-[${idx * 40}ms]`,
               item.key === 'top' ? 'relative' : ''
             ].join(' ')}
@@ -129,7 +129,7 @@ export default function Sidebar({ selected, onSelect, onOpenPost, isLoaded, sele
           <PlusCircle className="w-5 h-5" />
           <span className="font-medium">Share a Tip</span>
         </button>
-        
+
         {onShowLandingPage && (
           <button
             onClick={onShowLandingPage}

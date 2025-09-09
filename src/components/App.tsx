@@ -15,6 +15,7 @@ import MessagesPage from './MessagesPage';
 import ChatPage from './ChatPage';
 import NotificationsPage from './NotificationsPage';
 import FollowingPage from './FollowingPage';
+import TopTipsters from './TopTipsters';
 import LandingPage from './LandingPage';
 import AuthModal from './AuthModal';
 import { NotificationsProvider } from '@/lib/contexts/NotificationsContext';
@@ -373,6 +374,10 @@ function AppContent() {
           ) : selected === 'following' ? (
             <div className="flex-1">
               <FollowingPage onNavigateToProfile={handleNavigateToProfile} />
+            </div>
+          ) : selected === 'top-tipsters' ? (
+            <div className="flex-1 overflow-y-auto">
+              <TopTipsters onNavigateToProfile={handleNavigateToProfile} />
             </div>
           ) : (
             <>
