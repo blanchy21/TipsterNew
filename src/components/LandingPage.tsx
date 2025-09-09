@@ -23,39 +23,39 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
 
   const features = [
     {
-      icon: '⚽',
-      title: 'Live Sports Updates',
-      description: 'Real-time scores, fixtures, and breaking news from all major sports leagues worldwide.',
+      icon: '🎯',
+      title: 'Share Your Tips',
+      description: 'Post your sports predictions and tips for any sport. Share your insights with the community and build your reputation.',
       color: 'from-emerald-500 to-teal-600'
     },
     {
-      icon: '💬',
-      title: 'Sports Discussion',
-      description: 'Engage in meaningful conversations about your favorite teams, players, and games without politics or drama.',
+      icon: '📊',
+      title: 'Transparent Tracking',
+      description: 'Automatic win/loss tracking with transparent statistics. See real performance data including win rates and average odds.',
       color: 'from-violet-500 to-purple-600'
     },
     {
-      icon: '📊',
-      title: 'Sports Analytics',
-      description: 'Dive deep into player stats, team performance, and game analysis with comprehensive data and insights.',
+      icon: '🔍',
+      title: 'Find Top Tipsters',
+      description: 'Search user profiles to find the best performing tipsters. No more scrolling through message boards - find winners easily.',
       color: 'from-orange-500 to-red-600'
     },
     {
       icon: '👥',
-      title: 'Fan Community',
-      description: 'Connect with fellow sports enthusiasts who share your passion. No politics, no drama - just pure sports discussion.',
+      title: 'Community Driven',
+      description: 'Celebrate everyday punters who consistently find winners. No bookmaker bias or conflicts of interest - just pure community tips.',
       color: 'from-blue-500 to-indigo-600'
     },
     {
       icon: '🛡️',
-      title: 'Safe Space',
-      description: 'A politics-free zone where you can escape from the noise and focus on what matters - the games you love.',
+      title: 'Sports Only',
+      description: 'A politics-free zone focused purely on sports. No distractions from politics, religion, or drama - just sports discussion.',
       color: 'from-pink-500 to-rose-600'
     },
     {
-      icon: '📱',
-      title: 'Mobile First',
-      description: 'Optimized for mobile devices with push notifications for live updates and game alerts.',
+      icon: '💰',
+      title: '100% Free',
+      description: 'Completely free forever with no hidden fees or premium tiers. Unlimited tips, real-time notifications, and full statistics.',
       color: 'from-gray-500 to-slate-600'
     }
   ];
@@ -70,10 +70,10 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
   ];
 
   const stats = [
-    { number: '2.5M+', label: 'Active Users', color: 'text-emerald-400' },
+    { number: '10K+', label: 'Active Tipsters', color: 'text-emerald-400' },
     { number: '50+', label: 'Sports Covered', color: 'text-violet-400' },
-    { number: '99.9%', label: 'Uptime', color: 'text-orange-400' },
-    { number: '4.8★', label: 'User Rating', color: 'text-yellow-400' }
+    { number: '100%', label: 'Free Forever', color: 'text-orange-400' },
+    { number: '4.9★', label: 'User Rating', color: 'text-yellow-400' }
   ];
 
   return (
@@ -109,17 +109,17 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
                 </span>
                 <span className="text-[17px] font-medium tracking-tight">Tipster Arena</span>
               </div>
-            
-            <div className="hidden md:flex items-center gap-8">
-              <a href="#features" className="text-white/70 hover:text-white transition-colors">Features</a>
-              <a href="#sports" className="text-white/70 hover:text-white transition-colors">Sports</a>
-              <a href="#community" className="text-white/70 hover:text-white transition-colors">Community</a>
-              <a href="#pricing" className="text-white/70 hover:text-white transition-colors">Pricing</a>
-            </div>
+
+              <div className="hidden md:flex items-center gap-8">
+                <a href="#features" className="text-white/70 hover:text-white transition-colors">Features</a>
+                <a href="#sports" className="text-white/70 hover:text-white transition-colors">Sports</a>
+                <a href="#community" className="text-white/70 hover:text-white transition-colors">Community</a>
+                <a href="#pricing" className="text-white/70 hover:text-white transition-colors">Pricing</a>
+              </div>
 
               <div className="flex items-center gap-2">
                 {onShowAuthModal && (
-                  <button 
+                  <button
                     onClick={() => onShowAuthModal('login')}
                     className="inline-flex items-center rounded-full px-4 py-2 text-sm text-white/80 hover:text-white transition-colors"
                   >
@@ -162,7 +162,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
               </span>
-              <span>Now with live sports updates</span>
+              <span>Now with transparent tip tracking</span>
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
                 <path d="M5 12h14"></path>
                 <path d="m12 5 7 7-7 7"></path>
@@ -170,11 +170,11 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
             </div>
 
             <h1 className={`max-w-5xl text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold tracking-tight transition-all duration-1000 delay-200 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-              Your safe space for 
-              <span className="bg-gradient-to-r from-violet-400 via-fuchsia-400 to-indigo-400 bg-clip-text text-transparent">sports discussion</span>
+              The world's premier platform for
+              <span className="bg-gradient-to-r from-violet-400 via-fuchsia-400 to-indigo-400 bg-clip-text text-transparent"> sports tip sharing</span>
             </h1>
             <p className={`mt-6 max-w-2xl text-lg sm:text-xl text-white/70 leading-relaxed transition-all duration-1000 delay-400 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-              Connect with fellow sports fans, share insights, and discuss the sports you love. A politics-free zone where sports take center stage.
+              Share tips, track performance, and connect with fellow sports fans. Built by sports fans for sports fans - completely free, with transparent statistics and no bookmaker bias.
             </p>
 
             {/* Stats */}
@@ -186,23 +186,23 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
                   <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
                   <circle cx="9" cy="7" r="4"></circle>
                 </svg>
-                <span>50K+ sports fans worldwide</span>
+                <span>10K+ active tipsters</span>
               </div>
               <div className="hidden sm:block w-1 h-1 rounded-full bg-white/30"></div>
               <div className="flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 text-fuchsia-400">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path>
-                  <path d="M2 12h20"></path>
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
                 </svg>
-                <span>120+ countries</span>
+                <span>100% free forever</span>
               </div>
               <div className="hidden sm:block w-1 h-1 rounded-full bg-white/30"></div>
               <div className="flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 text-yellow-400">
-                  <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path>
+                  <path d="M9 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-4"></path>
+                  <path d="M9 11V9a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"></path>
+                  <path d="M9 7h6"></path>
                 </svg>
-                <span>4.9/5 rating</span>
+                <span>Transparent tracking</span>
               </div>
             </div>
 
@@ -220,7 +220,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
                   <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path>
                   <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path>
                 </svg>
-                Start free 14-day trial
+                Start sharing tips now
               </a>
               <a href="#" className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm text-white/80 hover:bg-white/10 transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
@@ -239,19 +239,19 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-white mb-4">
-              Where Sports Fans <span className="bg-gradient-to-r from-violet-400 via-fuchsia-400 to-indigo-400 bg-clip-text text-transparent">Connect</span>
+              Where Sports Fans <span className="bg-gradient-to-r from-violet-400 via-fuchsia-400 to-indigo-400 bg-clip-text text-transparent">Share Tips</span>
             </h2>
             <p className="text-lg text-white/70 max-w-2xl mx-auto leading-relaxed">
-              From living rooms to stadiums, see how sports fans around the world use Tipster Arena to discuss, debate, and celebrate the games they love.
+              From living rooms to stadiums, see how sports fans around the world use Tipster Arena to share tips, track performance, and build their reputation.
             </p>
           </div>
 
           {/* Hero Image */}
           <div className="relative max-w-6xl mx-auto">
             <div className="relative rounded-2xl overflow-hidden shadow-[0_30px_120px_-20px_rgba(139,92,246,0.45)]">
-              <Image 
-                src="/hero.png" 
-                alt="Tipster Arena - Your Safe Space for Sports Discussion"
+              <Image
+                src="/hero.png"
+                alt="Tipster Arena - The World's Premier Platform for Sports Tip Sharing"
                 width={1200}
                 height={600}
                 className="w-full h-auto object-cover"
@@ -273,19 +273,18 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
             </h2>
             <div className="max-w-3xl mx-auto">
               <p className="text-lg text-white/70 leading-relaxed mb-8">
-                &ldquo;We were tired of the constant political noise. X became too political and right-wing, 
-                Bluesky was very left-wing. We said, &apos;Why the hell do we have to deal with this?&apos; 
-                Let&apos;s create a sports-only social media and cut out all the rest.&rdquo;
+                &ldquo;We were tired of traditional tipster services with hidden fees, bookmaker bias, and marketing hype.
+                We wanted a platform where everyday punters could share their tips and track their performance transparently.
+                No politics, no drama - just pure sports tip sharing.&rdquo;
               </p>
               <div className="bg-gradient-to-r from-violet-500/10 to-fuchsia-500/10 rounded-2xl p-8 border border-violet-500/20">
                 <p className="text-white/80 text-lg italic">
-                  &ldquo;Sports should be our escape from the chaos of politics, religion, and social issues. 
-                  We wanted to create a place where fans could just talk about the games they love 
-                  without being bombarded with divisive content.&rdquo;
+                  &ldquo;Sports tip sharing should be about community, transparency, and celebrating those who consistently find winners.
+                  We built Tipster Arena to give every sports fan a voice and a way to prove their expertise through real results.&rdquo;
                 </p>
                 <div className="mt-6 flex items-center justify-center gap-4">
                   <div className="w-12 h-12 bg-gradient-to-br from-violet-500 to-fuchsia-500 rounded-full flex items-center justify-center">
-                    <span className="text-white font-bold text-lg">SA</span>
+                    <span className="text-white font-bold text-lg">TA</span>
                   </div>
                   <div className="text-left">
                     <div className="text-white font-semibold">Tipster Arena Founders</div>
@@ -303,11 +302,11 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-white mb-6">
-              Every Sport <span className="bg-gradient-to-r from-violet-400 via-fuchsia-400 to-indigo-400 bg-clip-text text-transparent">Deserves Discussion</span>
+              Share Tips for <span className="bg-gradient-to-r from-violet-400 via-fuchsia-400 to-indigo-400 bg-clip-text text-transparent">Every Sport</span>
             </h2>
             <p className="text-lg text-white/70 max-w-3xl mx-auto">
-              From mainstream favorites to niche competitions, we cover the sports that matter to you. 
-              Find your community and discuss the games you love.
+              From mainstream favorites to niche competitions, share your tips for any sport that matters to you.
+              Find your community and help others discover winning strategies.
             </p>
           </div>
 
@@ -374,10 +373,10 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-4">
-              Everything You Need for <span className="bg-gradient-to-r from-violet-400 via-fuchsia-400 to-indigo-400 bg-clip-text text-transparent">Sports Discussion</span>
+              Everything You Need for <span className="bg-gradient-to-r from-violet-400 via-fuchsia-400 to-indigo-400 bg-clip-text text-transparent">Tip Sharing</span>
             </h2>
             <p className="text-xl text-white/70 max-w-2xl mx-auto">
-              Powerful features designed specifically for sports fans who want to discuss, debate, and celebrate without the noise of politics or drama.
+              Powerful features designed specifically for sports tip sharing, performance tracking, and community building. Built by sports fans for sports fans.
             </p>
           </div>
 
@@ -385,9 +384,8 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
             {features.map((feature, index) => (
               <div
                 key={index}
-                className={`group relative rounded-2xl border border-white/10 bg-white/[0.04] p-6 transition-all duration-300 hover:transform hover:scale-105 cursor-pointer ${
-                  activeFeature === index ? 'ring-2 ring-violet-500/50' : ''
-                }`}
+                className={`group relative rounded-2xl border border-white/10 bg-white/[0.04] p-6 transition-all duration-300 hover:transform hover:scale-105 cursor-pointer ${activeFeature === index ? 'ring-2 ring-violet-500/50' : ''
+                  }`}
                 onMouseEnter={() => setActiveFeature(index)}
                 onClick={() => setActiveFeature(index)}
               >
@@ -396,7 +394,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
                 </div>
                 <h3 className="text-xl font-semibold mb-4">{feature.title}</h3>
                 <p className="text-white/70 leading-relaxed">{feature.description}</p>
-                
+
                 {/* Hover effect */}
                 <div className="absolute inset-0 bg-gradient-to-br from-violet-500/5 to-fuchsia-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
@@ -410,10 +408,10 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-4">
-              Covering <span className="bg-gradient-to-r from-violet-400 via-fuchsia-400 to-indigo-400 bg-clip-text text-transparent">50+ Sports</span>
+              Tips for <span className="bg-gradient-to-r from-violet-400 via-fuchsia-400 to-indigo-400 bg-clip-text text-transparent">50+ Sports</span>
             </h2>
             <p className="text-xl text-white/70 max-w-2xl mx-auto">
-              From football to tennis, basketball to cricket - we&apos;ve got every sport covered with live updates and expert analysis.
+              From football to tennis, basketball to cricket - share your tips for any sport and help others discover winning strategies.
             </p>
           </div>
 
@@ -437,26 +435,26 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
       <section className="py-20">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <h2 className="text-4xl font-bold mb-6">
-            Ready to Join a <span className="bg-gradient-to-r from-violet-400 via-fuchsia-400 to-indigo-400 bg-clip-text text-transparent">Politics-Free</span> Sports Community?
+            Ready to Start <span className="bg-gradient-to-r from-violet-400 via-fuchsia-400 to-indigo-400 bg-clip-text text-transparent">Sharing Tips</span>?
           </h2>
           <p className="text-xl text-white/70 mb-12 max-w-2xl mx-auto">
-            Join thousands of sports fans who have found their safe space to discuss, debate, and celebrate the games they love without the noise of politics, religion, or drama.
+            Join thousands of sports fans who are sharing tips, tracking performance, and building their reputation in a community focused purely on sports success.
           </p>
-          
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <button
               onClick={onGetStarted}
               className="bg-gradient-to-r from-violet-600 to-fuchsia-600 px-8 py-4 rounded-full font-semibold text-lg hover:from-violet-500 hover:to-fuchsia-500 transition-all duration-200 transform hover:scale-105 shadow-2xl shadow-violet-500/25"
             >
-              Start Your Free Trial
+              Start Sharing Tips Now
             </button>
             <button className="border border-white/20 bg-white/5 px-8 py-4 rounded-full font-semibold text-lg hover:bg-white/10 transition-all duration-200 backdrop-blur-sm">
-              View Pricing Plans
+              Browse Top Tipsters
             </button>
           </div>
 
           <p className="text-sm text-white/50 mt-6">
-            No credit card required • 14-day free trial • Cancel anytime
+            Completely free forever • No hidden fees • No credit card required
           </p>
         </div>
       </section>
@@ -473,27 +471,27 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
                 <span className="text-xl font-bold">Tipster Arena</span>
               </div>
               <p className="text-white/70 max-w-md mb-6">
-                The safe space for sports fans to discuss, debate, and celebrate without politics or drama. Built for fans who just want to talk sports.
+                The world's premier platform for sports tip sharing. Share tips, track performance, and connect with fellow sports fans - completely free and transparent.
               </p>
               <div className="flex gap-4">
                 <a href="#" className="text-white/60 hover:text-white transition-colors">
                   <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                    <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
                   </svg>
                 </a>
                 <a href="#" className="text-white/60 hover:text-white transition-colors">
                   <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"/>
+                    <path d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z" />
                   </svg>
                 </a>
                 <a href="#" className="text-white/60 hover:text-white transition-colors">
                   <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
                   </svg>
                 </a>
               </div>
             </div>
-            
+
             <div>
               <h4 className="font-semibold mb-4">Product</h4>
               <ul className="space-y-2 text-white/70">
@@ -503,7 +501,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
                 <li><a href="#" className="hover:text-white transition-colors">Integrations</a></li>
               </ul>
             </div>
-            
+
             <div>
               <h4 className="font-semibold mb-4">Support</h4>
               <ul className="space-y-2 text-white/70">
@@ -514,7 +512,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
               </ul>
             </div>
           </div>
-          
+
           <div className="border-t border-white/10 mt-8 pt-8 flex flex-col sm:flex-row justify-between items-center">
             <p className="text-white/60 text-sm">© 2024 Tipster Arena. All rights reserved.</p>
             <div className="flex gap-6 mt-4 sm:mt-0">
