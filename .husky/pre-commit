@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Run ESLint on staged files
+npx eslint --ext .js,.jsx,.ts,.tsx --fix --max-warnings 0 $(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|jsx|ts|tsx)$')
+
+# Run TypeScript check
+npx tsc --noEmit
