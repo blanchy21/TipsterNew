@@ -57,8 +57,8 @@ try {
       const originalConsoleWarn = console.warn;
       console.warn = (...args) => {
         if (args[0] && typeof args[0] === 'string' &&
-          (args[0].includes('heartbeats') || args[0].includes('undefined'))) {
-          return; // Suppress heartbeats and undefined warnings
+          (args[0].includes('heartbeats') || args[0].includes('undefined') || args[0].includes('WebChannelConnection'))) {
+          return; // Suppress heartbeats, undefined, and WebChannelConnection warnings
         }
         originalConsoleWarn.apply(console, args);
       };
@@ -66,8 +66,9 @@ try {
       // Also suppress console.log for heartbeats
       const originalConsoleLog = console.log;
       console.log = (...args) => {
-        if (args[0] && typeof args[0] === 'string' && args[0].includes('heartbeats')) {
-          return; // Suppress heartbeats logs
+        if (args[0] && typeof args[0] === 'string' &&
+          (args[0].includes('heartbeats') || args[0].includes('WebChannelConnection'))) {
+          return; // Suppress heartbeats and WebChannelConnection logs
         }
         originalConsoleLog.apply(console, args);
       };

@@ -38,10 +38,9 @@ export default function SignupForm({ onSwitchToLogin, onClose }: SignupFormProps
 
     try {
       await signUpWithEmail(email, password, displayName);
-      onClose();
+      // Don't close modal here - let the auth state change handle it
     } catch (error: any) {
       setError(getAuthErrorMessage(error.code) || error.message || 'Failed to create account');
-    } finally {
       setLoading(false);
     }
   };
@@ -52,10 +51,9 @@ export default function SignupForm({ onSwitchToLogin, onClose }: SignupFormProps
 
     try {
       await signInWithGoogle();
-      onClose();
+      // Don't close modal here - let the auth state change handle it
     } catch (error: any) {
       setError(getAuthErrorMessage(error.code) || error.message || 'Failed to sign in with Google');
-    } finally {
       setLoading(false);
     }
   };

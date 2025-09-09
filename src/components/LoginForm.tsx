@@ -26,10 +26,9 @@ export default function LoginForm({ onSwitchToSignup, onClose }: LoginFormProps)
 
     try {
       await signInWithEmail(email, password);
-      onClose();
+      // Don't close modal here - let the auth state change handle it
     } catch (error: any) {
       setError(getAuthErrorMessage(error.code) || error.message || 'Failed to sign in');
-    } finally {
       setLoading(false);
     }
   };
@@ -40,10 +39,9 @@ export default function LoginForm({ onSwitchToSignup, onClose }: LoginFormProps)
 
     try {
       await signInWithGoogle();
-      onClose();
+      // Don't close modal here - let the auth state change handle it
     } catch (error: any) {
       setError(getAuthErrorMessage(error.code) || error.message || 'Failed to sign in with Google');
-    } finally {
       setLoading(false);
     }
   };

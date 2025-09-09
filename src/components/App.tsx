@@ -54,6 +54,13 @@ function AppContent() {
     return () => clearTimeout(timer);
   }, [user, loading]);
 
+  // Close auth modal when user is successfully authenticated
+  useEffect(() => {
+    if (user && showAuthModal) {
+      setShowAuthModal(false);
+    }
+  }, [user, showAuthModal]);
+
   // Handle URL hash navigation for admin panel
   useEffect(() => {
     const handleHashChange = () => {
@@ -72,17 +79,27 @@ function AppContent() {
   useEffect(() => {
     const loadPosts = async () => {
       try {
-        console.log('🔄 Loading posts...');
+        console.log('🔄 Loading posts for user:', user?.uid);
         const firestorePosts = await getPosts();
-        console.log('📋 Loaded posts:', firestorePosts.length, firestorePosts);
+        console.log('📋 Loaded posts from Firebase:', firestorePosts.length, 'posts');
+        console.log('📋 Posts data:', firestorePosts);
         setPosts(firestorePosts as Post[]);
+        console.log('✅ Posts loaded and set in state');
       } catch (error) {
         console.error('❌ Error loading posts:', error);
+        console.error('❌ Error details:', {
+          message: error.message,
+          code: error.code,
+          stack: error.stack
+        });
       }
     };
 
     if (user) {
+      console.log('👤 User authenticated, loading posts...');
       loadPosts();
+    } else {
+      console.log('❌ No user authenticated, not loading posts');
     }
   }, [user]);
 
@@ -132,10 +149,19 @@ function AppContent() {
   }, [posts, selected, selectedSport, query]);
 
   const handleSubmitPost = async (postData: Omit<Post, 'id' | 'user' | 'createdAt' | 'likes' | 'comments' | 'views' | 'likedBy'>) => {
-    if (!user) return;
+    if (!user) {
+      console.error('❌ No user found when trying to create post');
+      return;
+    }
 
     try {
       console.log('📝 Creating new post:', postData);
+      console.log('👤 User info:', {
+        uid: user.uid,
+        displayName: user.displayName,
+        email: user.email
+      });
+
       const newPostData = {
         ...postData,
         user: {
@@ -146,17 +172,28 @@ function AppContent() {
         }
       };
 
+      console.log('📝 Post data with user info:', newPostData);
       const newPost = await createPost(newPostData);
-      console.log('✅ Post created successfully:', newPost);
+      console.log('✅ Post created successfully in Firebase:', newPost);
+
       const formattedPost = { ...newPost, createdAt: newPost.createdAt.toISOString() } as Post;
-      console.log('📋 Adding post to state:', formattedPost);
+      console.log('📋 Adding post to local state:', formattedPost);
+
       setPosts((prev: Post[]) => {
         const updated = [formattedPost, ...prev];
-        console.log('📋 Updated posts array:', updated.length, 'posts');
+        console.log('📋 Updated local posts array:', updated.length, 'posts');
+        console.log('📋 All posts in state:', updated);
         return updated;
       });
+
+      console.log('✅ Post creation process completed successfully');
     } catch (error) {
       console.error('❌ Error creating post:', error);
+      console.error('❌ Error details:', {
+        message: error.message,
+        code: error.code,
+        stack: error.stack
+      });
     }
   };
 

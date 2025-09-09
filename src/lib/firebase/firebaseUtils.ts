@@ -554,6 +554,87 @@ export const createUserProfile = async (user: any, additionalData: any = {}) => 
 };
 
 
+// Firebase Diagnostics
+export const testFirebaseConnection = async () => {
+  if (!db) {
+    console.warn("❌ Firebase Firestore not available");
+    return { success: false, error: "Firebase not initialized" };
+  }
+
+  try {
+    console.log('🔍 Testing Firebase connection...');
+
+    // Try to read from a test collection
+    const testRef = collection(db, 'test');
+    const testDoc = await addDoc(testRef, {
+      test: true,
+      timestamp: new Date()
+    });
+
+    console.log('✅ Firebase connection test successful:', testDoc.id);
+
+    // Clean up test document
+    await deleteDoc(testDoc);
+    console.log('🧹 Test document cleaned up');
+
+    return { success: true, docId: testDoc.id };
+  } catch (error: any) {
+    console.error('❌ Firebase connection test failed:', error);
+    return {
+      success: false,
+      error: error.message,
+      code: error.code
+    };
+  }
+};
+
+// Check what's actually in the Firebase database
+export const inspectFirebaseData = async () => {
+  if (!db) {
+    console.warn("❌ Firebase Firestore not available");
+    return { success: false, error: "Firebase not initialized" };
+  }
+
+  try {
+    console.log('🔍 Inspecting Firebase data...');
+
+    // Check posts collection
+    const postsSnapshot = await getDocs(collection(db, 'posts'));
+    const posts = postsSnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+
+    console.log('📋 Posts in Firebase:', posts.length, 'posts');
+    console.log('📋 Posts data:', posts);
+
+    // Check users collection
+    const usersSnapshot = await getDocs(collection(db, 'users'));
+    const users = usersSnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+
+    console.log('👤 Users in Firebase:', users.length, 'users');
+    console.log('👤 Users data:', users);
+
+    return {
+      success: true,
+      posts: posts,
+      users: users,
+      postsCount: posts.length,
+      usersCount: users.length
+    };
+  } catch (error: any) {
+    console.error('❌ Firebase data inspection failed:', error);
+    return {
+      success: false,
+      error: error.message,
+      code: error.code
+    };
+  }
+};
+
 // Posts Management
 export const createPost = async (postData: Omit<Post, 'id' | 'user' | 'createdAt' | 'likes' | 'comments' | 'views' | 'likedBy'>) => {
   if (!db) {
@@ -581,13 +662,21 @@ export const createPost = async (postData: Omit<Post, 'id' | 'user' | 'createdAt
     console.log('📋 Created post object:', createdPost);
 
     return createdPost;
-  } catch (error) {
+  } catch (error: any) {
     console.error('❌ Error creating post:', error);
     console.error('❌ Error details:', {
       message: error.message,
       code: error.code,
       stack: error.stack
     });
+
+    // If it's a permission error, provide a more helpful message
+    if (error.code === 'permission-denied') {
+      throw new Error('Permission denied. Please make sure you are signed in and have permission to create posts.');
+    } else if (error.code === 'unauthenticated') {
+      throw new Error('You must be signed in to create posts.');
+    }
+
     throw error;
   }
 };
@@ -616,13 +705,20 @@ export const getPosts = async () => {
 
     console.log('✅ Successfully processed and sorted posts:', sortedPosts.length, 'posts');
     return sortedPosts;
-  } catch (error) {
+  } catch (error: any) {
     console.error('❌ Error getting posts:', error);
     console.error('❌ Error details:', {
       message: error.message,
       code: error.code,
       stack: error.stack
     });
+
+    // If it's a permission error, return empty array but don't crash
+    if (error.code === 'permission-denied' || error.code === 'unauthenticated') {
+      console.warn('⚠️ Permission denied or unauthenticated - returning empty posts array');
+      return [];
+    }
+
     return [];
   }
 };

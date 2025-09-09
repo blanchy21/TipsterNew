@@ -49,13 +49,13 @@ export default function Feed({ posts, isLoaded, query, onQueryChange, selectedSp
               </div>
               {selectedSport && selectedSport !== 'All Sports' ? (
                 <>
-                  <p className="text-slate-300 font-medium">No {selectedSport} discussion found</p>
-                  <p className="text-slate-500 text-sm">Try selecting a different sport or be the first to share a {selectedSport} discussion.</p>
+                  <p className="text-slate-300 font-medium">No {selectedSport} tips found</p>
+                  <p className="text-slate-500 text-sm">Try selecting a different sport or be the first to share a {selectedSport} tip.</p>
                 </>
               ) : (
                 <>
-                  <p className="text-slate-300 font-medium">No discussion yet</p>
-                  <p className="text-slate-500 text-sm">Be the first to share a discussion.</p>
+                  <p className="text-slate-300 font-medium">No tips yet</p>
+                  <p className="text-slate-500 text-sm">Be the first to share a tip.</p>
                 </>
               )}
             </div>

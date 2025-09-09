@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Post } from '@/lib/types';
-import { getPosts, createPost } from '@/lib/firebase/firebaseUtils';
+import { getPosts, createPost, testFirebaseConnection, inspectFirebaseData } from '@/lib/firebase/firebaseUtils';
 import { useAuth } from '@/lib/hooks/useAuth';
 
 export default function DebugPage() {
@@ -10,6 +10,8 @@ export default function DebugPage() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(false);
   const [testResult, setTestResult] = useState<string>('');
+  const [firebaseTestResult, setFirebaseTestResult] = useState<string>('');
+  const [inspectionResult, setInspectionResult] = useState<string>('');
 
   const loadPosts = async () => {
     setLoading(true);
@@ -20,6 +22,40 @@ export default function DebugPage() {
     } catch (error) {
       console.error('Error loading posts:', error);
       setTestResult(`❌ Error loading posts: ${error}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const testFirebase = async () => {
+    setLoading(true);
+    try {
+      const result = await testFirebaseConnection();
+      if (result.success) {
+        setFirebaseTestResult(`✅ Firebase connection test successful! Document ID: ${result.docId}`);
+      } else {
+        setFirebaseTestResult(`❌ Firebase connection test failed: ${result.error} (Code: ${result.code})`);
+      }
+    } catch (error) {
+      console.error('Error testing Firebase:', error);
+      setFirebaseTestResult(`❌ Error testing Firebase: ${error}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const inspectFirebase = async () => {
+    setLoading(true);
+    try {
+      const result = await inspectFirebaseData();
+      if (result.success) {
+        setInspectionResult(`✅ Firebase data inspection successful! Found ${result.postsCount} posts and ${result.usersCount} users. Check console for detailed data.`);
+      } else {
+        setInspectionResult(`❌ Firebase data inspection failed: ${result.error} (Code: ${result.code})`);
+      }
+    } catch (error) {
+      console.error('Error inspecting Firebase:', error);
+      setInspectionResult(`❌ Error inspecting Firebase: ${error}`);
     } finally {
       setLoading(false);
     }
@@ -69,26 +105,56 @@ export default function DebugPage() {
           <div className="bg-slate-800 p-6 rounded-lg">
             <h2 className="text-xl font-semibold mb-4">Test Controls</h2>
             <div className="space-y-4">
-              <button
-                onClick={loadPosts}
-                disabled={loading}
-                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 rounded-lg"
-              >
-                {loading ? 'Loading...' : 'Load Posts'}
-              </button>
+              <div className="flex gap-4">
+                <button
+                  onClick={loadPosts}
+                  disabled={loading}
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 rounded-lg"
+                >
+                  {loading ? 'Loading...' : 'Load Posts'}
+                </button>
 
-              <button
-                onClick={createTestTip}
-                disabled={!user}
-                className="px-4 py-2 bg-green-600 hover:bg-green-700 disabled:bg-gray-600 rounded-lg ml-4"
-              >
-                Create Test Tip
-              </button>
+                <button
+                  onClick={testFirebase}
+                  disabled={loading}
+                  className="px-4 py-2 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-600 rounded-lg"
+                >
+                  Test Firebase
+                </button>
+
+                <button
+                  onClick={inspectFirebase}
+                  disabled={loading}
+                  className="px-4 py-2 bg-orange-600 hover:bg-orange-700 disabled:bg-gray-600 rounded-lg"
+                >
+                  Inspect Data
+                </button>
+
+                <button
+                  onClick={createTestTip}
+                  disabled={!user || loading}
+                  className="px-4 py-2 bg-green-600 hover:bg-green-700 disabled:bg-gray-600 rounded-lg"
+                >
+                  Create Test Tip
+                </button>
+              </div>
             </div>
 
             {testResult && (
               <div className="mt-4 p-4 bg-slate-700 rounded-lg">
                 <p className="font-mono text-sm">{testResult}</p>
+              </div>
+            )}
+
+            {firebaseTestResult && (
+              <div className="mt-4 p-4 bg-slate-700 rounded-lg">
+                <p className="font-mono text-sm">{firebaseTestResult}</p>
+              </div>
+            )}
+
+            {inspectionResult && (
+              <div className="mt-4 p-4 bg-slate-700 rounded-lg">
+                <p className="font-mono text-sm">{inspectionResult}</p>
               </div>
             )}
           </div>

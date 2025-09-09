@@ -1,9 +1,9 @@
 "use client";
 
 import React, { createContext, useEffect, useState } from "react";
-import { 
-  signInWithPopup, 
-  GoogleAuthProvider, 
+import {
+  signInWithPopup,
+  GoogleAuthProvider,
   signOut as firebaseSignOut,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -27,11 +27,11 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: true,
-  signInWithGoogle: async () => {},
-  signInWithEmail: async () => {},
-  signUpWithEmail: async () => {},
-  resetPassword: async () => {},
-  signOut: async () => {},
+  signInWithGoogle: async () => { },
+  signInWithEmail: async () => { },
+  signUpWithEmail: async () => { },
+  resetPassword: async () => { },
+  signOut: async () => { },
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -41,7 +41,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     console.log("AuthContext: useEffect triggered");
     console.log("AuthContext: auth object:", auth);
-    
+
     // Check if Firebase auth is available
     if (!auth) {
       console.warn("Firebase auth not available. Running in demo mode.");
@@ -54,6 +54,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       console.log("AuthContext: Auth state changed, user:", user);
       setUser(user);
       setLoading(false);
+
+      // If user is signed in, close any open auth modals
+      if (user) {
+        console.log("AuthContext: User signed in successfully");
+      }
     });
 
     return () => {
@@ -71,7 +76,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(auth, provider);
-      
+
       // Create user profile in Firestore if it doesn't exist
       await createUserProfile(result.user, {
         bio: '',
@@ -108,7 +113,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       await updateProfile(userCredential.user, { displayName });
-      
+
       // Create user profile in Firestore
       await createUserProfile(userCredential.user, {
         displayName,
@@ -153,14 +158,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ 
-      user, 
-      loading, 
-      signInWithGoogle, 
+    <AuthContext.Provider value={{
+      user,
+      loading,
+      signInWithGoogle,
       signInWithEmail,
       signUpWithEmail,
       resetPassword,
-      signOut: signOutUser 
+      signOut: signOutUser
     }}>
       {children}
     </AuthContext.Provider>
