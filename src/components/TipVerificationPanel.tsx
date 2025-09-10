@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import { Post, TipStatus, User as UserType } from '@/lib/types';
 import { getPosts, updatePost, getUserProfile } from '@/lib/firebase/firebaseUtils';
+import { createTipVerification } from '@/lib/firebase/tipVerification';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { collection, query, orderBy, onSnapshot, where } from 'firebase/firestore';
 import { db } from '@/lib/firebase/firebase';
@@ -193,12 +194,51 @@ export default function TipVerificationPanel({ onTipVerified }: TipVerificationP
         setMessage(null);
 
         try {
-            await updatePost(postId, {
+            console.log(`🔍 Verifying tip ${postId} as ${status}`);
+
+            // Update the post status
+            const updateResult = await updatePost(postId, {
                 tipStatus: status,
                 verifiedAt: new Date().toISOString(),
                 verifiedBy: 'admin',
                 isGameFinished: true
             });
+
+            console.log(`📝 Post update result:`, updateResult);
+
+            // Create verification record for leaderboard tracking
+            const post = posts.find(p => p.id === postId);
+            console.log(`🔍 Looking for post ${postId}:`, post ? 'Found' : 'Not found');
+            console.log(`🔍 Current user:`, user ? 'Authenticated' : 'Not authenticated');
+
+            if (post && user) {
+                console.log(`👤 Creating verification record for user ${post.user.id}`);
+                console.log(`📋 Post details:`, {
+                    id: post.id,
+                    userId: post.user?.id,
+                    title: post.title,
+                    odds: post.odds
+                });
+
+                const verificationResult = await createTipVerification({
+                    postId: postId,
+                    tipsterId: post.user.id,
+                    adminId: user.uid,
+                    status: status,
+                    notes: `Verified by admin as ${status}`,
+                    originalOdds: post.odds,
+                    finalOdds: post.odds
+                });
+
+                console.log('✅ Verification record created successfully:', verificationResult);
+            } else {
+                console.log('❌ Could not create verification record - missing post or user');
+                console.log('❌ Post found:', !!post);
+                console.log('❌ User authenticated:', !!user);
+                if (post) {
+                    console.log('❌ Post user object:', post.user);
+                }
+            }
 
             setMessage({ type: 'success', text: `Tip successfully marked as ${status}!` });
             onTipVerified?.(postId, status);

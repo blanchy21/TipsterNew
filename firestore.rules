@@ -1,6 +1,12 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    // Helper function to check if user is admin
+    function isAdmin(auth) {
+      // Check if user email is in admin list or has admin custom claim
+      return auth.token.email in ['paulblanche@gmail.com', 'admin@tipsterarena.com'] ||
+             auth.token.admin == true;
+    }
     // Users collection - users can read all profiles (for leaderboard) and write their own profile
     match /users/{userId} {
       allow read: if request.auth != null;
@@ -8,12 +14,15 @@ service cloud.firestore {
     }
     
     // Posts collection - authenticated users can read all posts, create posts, and update their own posts
+    // Admins can update any post for verification purposes
     match /posts/{postId} {
       allow read: if request.auth != null;
       allow create: if request.auth != null && 
         request.auth.uid == request.resource.data.userId;
-      allow update: if request.auth != null && 
-        request.auth.uid == resource.data.userId;
+      allow update: if request.auth != null && (
+        request.auth.uid == resource.data.userId || // User can update their own posts
+        isAdmin(request.auth) // Admins can update any post for verification
+      );
       allow delete: if request.auth != null && 
         request.auth.uid == resource.data.userId;
     }

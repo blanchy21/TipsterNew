@@ -12,6 +12,8 @@ import {
 } from 'lucide-react';
 import { normalizeImageUrl } from '@/lib/imageUtils';
 import { LeaderboardEntry, getAllUsersWithStats, sortLeaderboard, getLeaderboardStats } from '@/lib/leaderboardUtils';
+import { collection, query, onSnapshot } from 'firebase/firestore';
+import { db } from '@/lib/firebase/firebase';
 
 interface TopTipstersProps {
     onNavigateToProfile?: (userId: string) => void;
@@ -48,6 +50,40 @@ const TopTipsters: React.FC<TopTipstersProps> = ({ onNavigateToProfile }) => {
         };
 
         loadTipsters();
+    }, []);
+
+    // Real-time listener for verification updates
+    useEffect(() => {
+        console.log('🔄 Setting up real-time verification listener for leaderboard');
+
+        const unsubscribe = onSnapshot(
+            query(collection(db, 'tipVerifications')),
+            (snapshot) => {
+                console.log('📡 Leaderboard: Verification update received, reloading leaderboard');
+                // Reload leaderboard when verifications change
+                const loadTipsters = async () => {
+                    try {
+                        const [tipstersData, statsData] = await Promise.all([
+                            getAllUsersWithStats(),
+                            getLeaderboardStats()
+                        ]);
+                        setTipsters(tipstersData);
+                        setStats(statsData);
+                    } catch (error) {
+                        console.error('Error reloading tipsters:', error);
+                    }
+                };
+                loadTipsters();
+            },
+            (error) => {
+                console.error('Error listening to verifications for leaderboard:', error);
+            }
+        );
+
+        return () => {
+            console.log('🧹 Cleaning up verification listener for leaderboard');
+            unsubscribe();
+        };
     }, []);
 
     const getPositionIcon = (position: number) => {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Send, Bot, User, Phone, Video, MoreVertical, Smile, Paperclip } from 'lucide-react';
 
 interface Message {
@@ -66,27 +66,27 @@ export default function ChatPage() {
 
   const generateAIResponse = (userMessage: string): string => {
     const message = userMessage.toLowerCase();
-    
+
     // Arsenal/Man United responses
     if (message.includes('arsenal') && message.includes('man united')) {
       return "🔥 **Arsenal vs Man United Analysis**\n\n**Arsenal's Strengths:**\n• Home form: 8W-1D-0L at Emirates this season\n• Saka's form: 3 goals in last 4 games\n• Set pieces: 12 goals from dead balls\n\n**Man United's Threats:**\n• Rashford's pace on counter-attacks\n• Casemiro's experience in big games\n• Away form improvement: 3 wins in last 4\n\n**Prediction:** Arsenal 2-1 (Saka, Jesus | Rashford)\n**Key Battle:** Rice vs Fernandes in midfield";
     }
-    
+
     // Basketball responses
     if (message.includes('lakers') || message.includes('warriors') || message.includes('nba')) {
       return "🏀 **NBA Analysis**\n\n**Lakers vs Warriors Breakdown:**\n• LeBron's leadership vs Curry's shooting\n• AD's defense vs Draymond's playmaking\n• Lakers' size advantage in the paint\n• Warriors' small-ball lineup effectiveness\n\n**Key Stats:**\n• Lakers: 45.2% FG, 34.1% 3PT\n• Warriors: 47.8% FG, 37.2% 3PT\n• Rebounding: Lakers +3.2 per game\n\n**Prediction:** Lakers 115-110 (LeBron 28pts, Curry 32pts)";
     }
-    
+
     // Tennis responses
     if (message.includes('djokovic') || message.includes('medvedev') || message.includes('tennis')) {
       return "🎾 **Tennis Analysis**\n\n**Djokovic vs Medvedev:**\n• Djokovic's mental toughness in crucial moments\n• Medvedev's improved serve (67% first serve)\n• Head-to-head: Djokovic leads 10-5\n• Court surface: Hard court favors both players\n\n**Key Factors:**\n• Djokovic's return game (breaks 25% of serves)\n• Medvedev's court coverage and defense\n• Experience in Grand Slam finals\n\n**Prediction:** Djokovic in 4 sets (6-4, 4-6, 6-3, 6-2)";
     }
-    
+
     // General sports questions
     if (message.includes('prediction') || message.includes('analysis')) {
       return "📊 **Sports Analysis Ready**\n\nI can provide detailed analysis on:\n• **Football:** Premier League, Champions League, La Liga\n• **Basketball:** NBA, EuroLeague, College Basketball\n• **Tennis:** Grand Slams, ATP, WTA tours\n• **Other Sports:** Formula 1, Golf, Boxing\n\nWhat specific match or sport would you like me to analyze?";
     }
-    
+
     // Default response
     return "Thanks for your question! I'm here to provide expert sports analysis and insights. I can help with:\n\n• Match predictions and analysis\n• Player performance insights\n• Team tactics and strategies\n• Injury updates and impact\n• Transfer news and rumors\n\nWhat sport or match would you like to discuss?";
   };
@@ -128,9 +128,9 @@ export default function ChatPage() {
   };
 
   const formatTime = (timestamp: string) => {
-    return new Date(timestamp).toLocaleTimeString([], { 
-      hour: '2-digit', 
-      minute: '2-digit' 
+    return new Date(timestamp).toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit'
     });
   };
 
@@ -202,13 +202,12 @@ export default function ChatPage() {
                 <Bot className="w-4 h-4 text-white" />
               </div>
             )}
-            
+
             <div
-              className={`max-w-[70%] rounded-2xl px-4 py-3 ${
-                message.sender === 'user'
-                  ? 'bg-gradient-to-r from-sky-500 to-blue-600 text-white'
-                  : 'bg-white/10 backdrop-blur-sm text-slate-100 border border-white/20'
-              }`}
+              className={`max-w-[70%] rounded-2xl px-4 py-3 ${message.sender === 'user'
+                ? 'bg-gradient-to-r from-sky-500 to-blue-600 text-white'
+                : 'bg-white/10 backdrop-blur-sm text-slate-100 border border-white/20'
+                }`}
             >
               <div className="text-sm leading-relaxed whitespace-pre-wrap">
                 {message.content.split('\n').map((line, index) => {
@@ -229,9 +228,8 @@ export default function ChatPage() {
                   return <div key={index} className="mb-2">{line}</div>;
                 })}
               </div>
-              <p className={`text-xs mt-2 ${
-                message.sender === 'user' ? 'text-sky-100' : 'text-slate-400'
-              }`}>
+              <p className={`text-xs mt-2 ${message.sender === 'user' ? 'text-sky-100' : 'text-slate-400'
+                }`}>
                 {formatTime(message.timestamp)}
               </p>
             </div>
@@ -258,7 +256,7 @@ export default function ChatPage() {
             </div>
           </div>
         )}
-        
+
         <div ref={messagesEndRef} />
       </div>
 
@@ -268,7 +266,7 @@ export default function ChatPage() {
           <button className="p-2 rounded-lg hover:bg-white/10 transition-colors flex-shrink-0">
             <Paperclip className="w-5 h-5 text-slate-400" />
           </button>
-          
+
           <div className="flex-1 relative">
             <input
               ref={inputRef}
@@ -283,7 +281,7 @@ export default function ChatPage() {
               <Smile className="w-5 h-5 text-slate-400" />
             </button>
           </div>
-          
+
           <button
             onClick={handleSendMessage}
             disabled={!inputMessage.trim()}
@@ -292,7 +290,7 @@ export default function ChatPage() {
             <Send className="w-5 h-5" />
           </button>
         </div>
-        
+
         <div className="mt-2 text-xs text-slate-400 text-center">
           Press Enter to send, Shift+Enter for new line
         </div>

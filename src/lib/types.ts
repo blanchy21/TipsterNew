@@ -1,8 +1,10 @@
 export interface User {
   id: string;
   name: string;
+  displayName?: string; // Firebase displayName
   handle: string;
   avatar: string;
+  photoURL?: string; // Firebase photoURL
   followers?: string[]; // Array of user IDs who follow this user
   following?: string[]; // Array of user IDs this user follows
   followersCount?: number;

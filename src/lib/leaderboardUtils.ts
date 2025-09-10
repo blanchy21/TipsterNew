@@ -54,12 +54,11 @@ export const getAllUsersWithStats = async (): Promise<LeaderboardEntry[]> => {
                 if (verificationStats.totalTips > 0) {
                     const entry: LeaderboardEntry = {
                         id: user.id,
-                        name: user.name || 'Unknown User',
+                        name: user.displayName || user.name || 'Unknown User',
                         handle: user.handle || `@user${user.id.slice(0, 8)}`,
-                        avatar: user.avatar || '/default-avatar.png',
+                        avatar: user.photoURL || user.avatar || '/default-avatar.png',
                         totalTips: verificationStats.totalTips,
-                        totalWins: verificationStats.verifiedTips > 0 ?
-                            Math.round((verificationStats.winRate / 100) * verificationStats.verifiedTips) : 0,
+                        totalWins: verificationStats.totalWins,
                         winRate: verificationStats.winRate,
                         averageOdds: verificationStats.avgOdds,
                         verifiedTips: verificationStats.verifiedTips,
@@ -70,9 +69,9 @@ export const getAllUsersWithStats = async (): Promise<LeaderboardEntry[]> => {
                     };
 
                     leaderboardEntries.push(entry);
-                    console.log(`✅ Added ${user.name || user.id} to leaderboard with ${verificationStats.totalTips} tips`);
+                    console.log(`✅ Added ${user.displayName || user.name || user.id} to leaderboard with ${verificationStats.totalTips} tips`);
                 } else {
-                    console.log(`❌ User ${user.name || user.id} has no tips (${verificationStats.totalTips})`);
+                    console.log(`❌ User ${user.displayName || user.name || user.id} has no tips (${verificationStats.totalTips})`);
                 }
             } catch (error) {
                 console.error(`Error getting stats for user ${user.id}:`, error);

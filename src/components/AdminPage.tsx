@@ -6,6 +6,7 @@ import { Database, Trash2, Users, FileText, Loader2, CheckCircle, XCircle, Clock
 import { populateTestData, clearTestData } from '@/lib/populateTestData';
 import { Post, TipStatus } from '@/lib/types';
 import { getPosts, updatePost } from '@/lib/firebase/firebaseUtils';
+import { createTipVerification } from '@/lib/firebase/tipVerification';
 import { useAuth } from '@/lib/hooks/useAuth';
 
 const AdminPage: React.FC = () => {
@@ -36,24 +37,58 @@ const AdminPage: React.FC = () => {
   const handleVerifyTip = async (postId: string, status: TipStatus) => {
     if (!user) return;
 
+    console.log(`🔍 AdminPage: Verifying tip ${postId} as ${status}`);
     setIsLoading(true);
     try {
-      await updatePost(postId, {
+      // Update the post status
+      const updateResult = await updatePost(postId, {
         tipStatus: status,
         verifiedAt: new Date().toISOString(),
         verifiedBy: user.uid,
         isGameFinished: true
       });
 
-      setPosts(prev => prev.map(post => 
-        post.id === postId 
-          ? { 
-              ...post, 
-              tipStatus: status, 
-              verifiedAt: new Date().toISOString(), 
-              verifiedBy: user.uid,
-              isGameFinished: true 
-            }
+      console.log(`📝 AdminPage: Post update result:`, updateResult);
+
+      // Create verification record for leaderboard tracking
+      const post = posts.find(p => p.id === postId);
+      console.log(`🔍 AdminPage: Looking for post ${postId}:`, post ? 'Found' : 'Not found');
+      console.log(`🔍 AdminPage: Current user:`, user ? 'Authenticated' : 'Not authenticated');
+
+      if (post) {
+        console.log(`👤 AdminPage: Creating verification record for user ${post.user.id}`);
+        console.log(`📋 AdminPage: Post details:`, {
+          id: post.id,
+          userId: post.user?.id,
+          title: post.title,
+          odds: post.odds
+        });
+
+        const verificationResult = await createTipVerification({
+          postId: postId,
+          tipsterId: post.user.id,
+          adminId: user.uid,
+          status: status,
+          notes: `Verified by admin as ${status}`,
+          originalOdds: post.odds,
+          finalOdds: post.odds
+        });
+
+        console.log('✅ AdminPage: Verification record created successfully:', verificationResult);
+      } else {
+        console.log('❌ AdminPage: Could not create verification record - post not found');
+        console.log('❌ AdminPage: Available posts:', posts.map(p => ({ id: p.id, title: p.title })));
+      }
+
+      setPosts(prev => prev.map(post =>
+        post.id === postId
+          ? {
+            ...post,
+            tipStatus: status,
+            verifiedAt: new Date().toISOString(),
+            verifiedBy: user.uid,
+            isGameFinished: true
+          }
           : post
       ));
 
@@ -99,7 +134,7 @@ const AdminPage: React.FC = () => {
   const handlePopulateData = async () => {
     setIsLoading(true);
     setMessage(null);
-    
+
     try {
       const result = await populateTestData();
       if (result.success) {
@@ -117,7 +152,7 @@ const AdminPage: React.FC = () => {
   const handleClearData = async () => {
     setIsLoading(true);
     setMessage(null);
-    
+
     try {
       const result = await clearTestData();
       if (result.success) {
@@ -154,22 +189,20 @@ const AdminPage: React.FC = () => {
         <div className="flex gap-2 mb-8">
           <button
             onClick={() => setSelectedTab('data')}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-              selectedTab === 'data'
-                ? 'bg-blue-500 text-white'
-                : 'bg-white/5 text-slate-300 hover:bg-white/10'
-            }`}
+            className={`px-4 py-2 rounded-lg font-medium transition-colors ${selectedTab === 'data'
+              ? 'bg-blue-500 text-white'
+              : 'bg-white/5 text-slate-300 hover:bg-white/10'
+              }`}
           >
             <Database className="w-4 h-4 inline mr-2" />
             Data Management
           </button>
           <button
             onClick={() => setSelectedTab('tips')}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-              selectedTab === 'tips'
-                ? 'bg-blue-500 text-white'
-                : 'bg-white/5 text-slate-300 hover:bg-white/10'
-            }`}
+            className={`px-4 py-2 rounded-lg font-medium transition-colors ${selectedTab === 'tips'
+              ? 'bg-blue-500 text-white'
+              : 'bg-white/5 text-slate-300 hover:bg-white/10'
+              }`}
           >
             <CheckCircle className="w-4 h-4 inline mr-2" />
             Tip Verification
@@ -178,11 +211,10 @@ const AdminPage: React.FC = () => {
 
         {/* Message */}
         {message && (
-          <div className={`mb-6 p-4 rounded-xl ${
-            message.type === 'success' 
-              ? 'bg-green-500/20 text-green-400 border border-green-500/30' 
-              : 'bg-red-500/20 text-red-400 border border-red-500/30'
-          }`}>
+          <div className={`mb-6 p-4 rounded-xl ${message.type === 'success'
+            ? 'bg-green-500/20 text-green-400 border border-green-500/30'
+            : 'bg-red-500/20 text-red-400 border border-red-500/30'
+            }`}>
             {message.text}
           </div>
         )}
@@ -191,72 +223,72 @@ const AdminPage: React.FC = () => {
           <>
             {/* Actions */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Populate Data */}
-          <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="p-2 bg-blue-500/20 rounded-xl">
-                <Database className="w-6 h-6 text-blue-400" />
+              {/* Populate Data */}
+              <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-2 bg-blue-500/20 rounded-xl">
+                    <Database className="w-6 h-6 text-blue-400" />
+                  </div>
+                  <h2 className="text-xl font-semibold text-white">Populate Test Data</h2>
+                </div>
+                <p className="text-neutral-400 mb-6">
+                  Add sample users, posts, and following relationships to test the application functionality.
+                </p>
+                <button
+                  onClick={handlePopulateData}
+                  disabled={isLoading}
+                  className="w-full bg-blue-500 text-white py-3 px-6 rounded-xl hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+                >
+                  {isLoading ? (
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                  ) : (
+                    <Users className="w-5 h-5" />
+                  )}
+                  {isLoading ? 'Populating...' : 'Populate Data'}
+                </button>
               </div>
-              <h2 className="text-xl font-semibold text-white">Populate Test Data</h2>
-            </div>
-            <p className="text-neutral-400 mb-6">
-              Add sample users, posts, and following relationships to test the application functionality.
-            </p>
-            <button
-              onClick={handlePopulateData}
-              disabled={isLoading}
-              className="w-full bg-blue-500 text-white py-3 px-6 rounded-xl hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
-            >
-              {isLoading ? (
-                <Loader2 className="w-5 h-5 animate-spin" />
-              ) : (
-                <Users className="w-5 h-5" />
-              )}
-              {isLoading ? 'Populating...' : 'Populate Data'}
-            </button>
-          </div>
 
-          {/* Clear Data */}
-          <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="p-2 bg-red-500/20 rounded-xl">
-                <Trash2 className="w-6 h-6 text-red-400" />
+              {/* Clear Data */}
+              <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-2 bg-red-500/20 rounded-xl">
+                    <Trash2 className="w-6 h-6 text-red-400" />
+                  </div>
+                  <h2 className="text-xl font-semibold text-white">Clear Test Data</h2>
+                </div>
+                <p className="text-neutral-400 mb-6">
+                  Remove all test users and posts from the database. This action cannot be undone.
+                </p>
+                <button
+                  onClick={handleClearData}
+                  disabled={isLoading}
+                  className="w-full bg-red-500 text-white py-3 px-6 rounded-xl hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+                >
+                  {isLoading ? (
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                  ) : (
+                    <Trash2 className="w-5 h-5" />
+                  )}
+                  {isLoading ? 'Clearing...' : 'Clear Data'}
+                </button>
               </div>
-              <h2 className="text-xl font-semibold text-white">Clear Test Data</h2>
             </div>
-            <p className="text-neutral-400 mb-6">
-              Remove all test users and posts from the database. This action cannot be undone.
-            </p>
-            <button
-              onClick={handleClearData}
-              disabled={isLoading}
-              className="w-full bg-red-500 text-white py-3 px-6 rounded-xl hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
-            >
-              {isLoading ? (
-                <Loader2 className="w-5 h-5 animate-spin" />
-              ) : (
-                <Trash2 className="w-5 h-5" />
-              )}
-              {isLoading ? 'Clearing...' : 'Clear Data'}
-            </button>
-          </div>
-        </div>
 
-        {/* Test Data Info */}
-        <div className="mt-8 bg-white/5 rounded-2xl p-6 border border-white/10">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="p-2 bg-green-500/20 rounded-xl">
-              <FileText className="w-6 h-6 text-green-400" />
+            {/* Test Data Info */}
+            <div className="mt-8 bg-white/5 rounded-2xl p-6 border border-white/10">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 bg-green-500/20 rounded-xl">
+                  <FileText className="w-6 h-6 text-green-400" />
+                </div>
+                <h2 className="text-xl font-semibold text-white">Test Data Information</h2>
+              </div>
+              <div className="space-y-3 text-neutral-300">
+                <p><strong>Users:</strong> 6 test users with different specializations and verification status</p>
+                <p><strong>Posts:</strong> 3 sample posts from different sports</p>
+                <p><strong>Following:</strong> Pre-configured following relationships between users</p>
+                <p><strong>Features:</strong> All users have complete profiles with bios, social media, and specializations</p>
+              </div>
             </div>
-            <h2 className="text-xl font-semibold text-white">Test Data Information</h2>
-          </div>
-          <div className="space-y-3 text-neutral-300">
-            <p><strong>Users:</strong> 6 test users with different specializations and verification status</p>
-            <p><strong>Posts:</strong> 3 sample posts from different sports</p>
-            <p><strong>Following:</strong> Pre-configured following relationships between users</p>
-            <p><strong>Features:</strong> All users have complete profiles with bios, social media, and specializations</p>
-          </div>
-        </div>
           </>
         )}
 
@@ -268,11 +300,10 @@ const AdminPage: React.FC = () => {
               <div className="flex flex-wrap gap-2">
                 <button
                   onClick={() => setFilterStatus('all')}
-                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                    filterStatus === 'all'
-                      ? 'bg-blue-500 text-white'
-                      : 'bg-white/5 text-slate-300 hover:bg-white/10'
-                  }`}
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${filterStatus === 'all'
+                    ? 'bg-blue-500 text-white'
+                    : 'bg-white/5 text-slate-300 hover:bg-white/10'
+                    }`}
                 >
                   All Tips ({posts.length})
                 </button>
@@ -280,11 +311,10 @@ const AdminPage: React.FC = () => {
                   <button
                     key={status}
                     onClick={() => setFilterStatus(status)}
-                    className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${
-                      filterStatus === status
-                        ? 'bg-blue-500 text-white'
-                        : 'bg-white/5 text-slate-300 hover:bg-white/10'
-                    }`}
+                    className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${filterStatus === status
+                      ? 'bg-blue-500 text-white'
+                      : 'bg-white/5 text-slate-300 hover:bg-white/10'
+                      }`}
                   >
                     {getStatusIcon(status)}
                     {status.charAt(0).toUpperCase() + status.slice(1)} ({posts.filter(p => p.tipStatus === status).length})

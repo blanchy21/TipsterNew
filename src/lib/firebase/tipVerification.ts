@@ -19,6 +19,7 @@ export interface VerificationStats {
     verifiedTips: number;
     pendingTips: number;
     winRate: number;
+    totalWins: number;
     avgOdds: number;
     topSports: { sport: string; count: number; winRate: number }[];
 }
@@ -62,6 +63,7 @@ export const getUserVerificationStats = async (userId: string): Promise<Verifica
             verifiedTips: 0,
             pendingTips: 0,
             winRate: 0,
+            totalWins: 0,
             avgOdds: 0,
             topSports: []
         };
@@ -84,15 +86,17 @@ export const getUserVerificationStats = async (userId: string): Promise<Verifica
         const verificationsSnapshot = await getDocs(verificationsQuery);
         const verifications = verificationsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as any[];
 
-        const totalTips = posts.length;
+        // Only count posts that have a tipStatus (actual tips, not test posts)
+        const actualTips = posts.filter(p => p.tipStatus !== undefined);
+        const totalTips = actualTips.length;
         const verifiedTips = verifications.length;
-        const pendingTips = posts.filter(p => p.tipStatus === 'pending').length;
+        const pendingTips = actualTips.filter(p => p.tipStatus === 'pending').length;
         const wins = verifications.filter(v => v.status === 'win').length;
         const winRate = verifiedTips > 0 ? Math.round((wins / verifiedTips) * 100) : 0;
 
 
         // Calculate average odds
-        const oddsValues = posts
+        const oddsValues = actualTips
             .filter(p => p.odds)
             .map(p => {
                 const odds = p.odds || '0';
@@ -109,7 +113,7 @@ export const getUserVerificationStats = async (userId: string): Promise<Verifica
 
         // Calculate top sports
         const sportStats: { [key: string]: { count: number; wins: number } } = {};
-        posts.forEach(post => {
+        actualTips.forEach(post => {
             if (!sportStats[post.sport]) {
                 sportStats[post.sport] = { count: 0, wins: 0 };
             }
@@ -137,6 +141,7 @@ export const getUserVerificationStats = async (userId: string): Promise<Verifica
             verifiedTips,
             pendingTips,
             winRate,
+            totalWins: wins,
             avgOdds,
             topSports
         };
@@ -147,6 +152,7 @@ export const getUserVerificationStats = async (userId: string): Promise<Verifica
             verifiedTips: 0,
             pendingTips: 0,
             winRate: 0,
+            totalWins: 0,
             avgOdds: 0,
             topSports: []
         };

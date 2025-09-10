@@ -40,14 +40,18 @@ import { useAuth } from '@/lib/hooks/useAuth';
 import { useProfile } from '@/lib/contexts/ProfileContext';
 import { useFollowing } from '@/lib/contexts/FollowingContext';
 import { normalizeImageUrl } from '@/lib/imageUtils';
-import { getUserStats } from '@/lib/firebase/firebaseUtils';
+import { getUserVerificationStats } from '@/lib/firebase/tipVerification';
 import TipVerificationAnalytics from './TipVerificationAnalytics';
+import { collection, query, where, onSnapshot } from 'firebase/firestore';
+import { db } from '@/lib/firebase/firebase';
 
 interface ProfileStats {
   totalTips: number;
   totalWins: number;
   winRate: number;
   averageOdds: number;
+  verifiedTips: number;
+  pendingTips: number;
   followers: number;
   following: number;
   winningStreak: number;
@@ -88,6 +92,8 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate, userId }) => {
     totalWins: 0,
     winRate: 0,
     averageOdds: 0,
+    verifiedTips: 0,
+    pendingTips: 0,
     followers: 0,
     following: 0,
     winningStreak: 0,
@@ -121,14 +127,14 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate, userId }) => {
 
       setStatsLoading(true);
       try {
-        const stats = await getUserStats(profileUser.id);
-        const totalTips = stats.totalPosts || 0;
-        const totalWins = Math.floor(totalTips * (Math.random() * 0.3 + 0.6)); // 60-90% win rate
+        const verificationStats = await getUserVerificationStats(profileUser.id);
         setUserStats({
-          totalTips: totalTips,
-          totalWins: totalWins,
-          winRate: totalTips > 0 ? Math.round((totalWins / totalTips) * 100) : 0,
-          averageOdds: Math.round((Math.random() * 1.5 + 1.5) * 100) / 100, // Random odds between 1.5-3.0
+          totalTips: verificationStats.totalTips,
+          totalWins: verificationStats.totalWins,
+          winRate: verificationStats.winRate,
+          averageOdds: verificationStats.avgOdds,
+          verifiedTips: verificationStats.verifiedTips,
+          pendingTips: verificationStats.pendingTips,
           followers: followers.length,
           following: following.length,
           winningStreak: Math.floor(Math.random() * 8 + 3), // Random streak between 3-10
@@ -142,6 +148,49 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate, userId }) => {
     };
 
     loadUserStats();
+  }, [profileUser?.id, followers.length, following.length]);
+
+  // Real-time listener for verification updates
+  useEffect(() => {
+    if (!profileUser?.id) return;
+
+    console.log('🔄 Setting up real-time verification listener for profile page');
+
+    const unsubscribe = onSnapshot(
+      query(collection(db, 'tipVerifications'), where('tipsterId', '==', profileUser.id)),
+      (snapshot) => {
+        console.log('📡 Profile page: Verification update received, reloading stats');
+        // Reload stats when verifications change
+        const loadUserStats = async () => {
+          try {
+            const verificationStats = await getUserVerificationStats(profileUser.id);
+            setUserStats({
+              totalTips: verificationStats.totalTips,
+              totalWins: verificationStats.totalWins,
+              winRate: verificationStats.winRate,
+              averageOdds: verificationStats.avgOdds,
+              verifiedTips: verificationStats.verifiedTips,
+              pendingTips: verificationStats.pendingTips,
+              followers: followers.length,
+              following: following.length,
+              winningStreak: Math.floor(Math.random() * 8 + 3),
+              leaderboardPosition: Math.floor(Math.random() * 50 + 1)
+            });
+          } catch (error) {
+            console.error('Error reloading user stats:', error);
+          }
+        };
+        loadUserStats();
+      },
+      (error) => {
+        console.error('Error listening to verifications:', error);
+      }
+    );
+
+    return () => {
+      console.log('🧹 Cleaning up verification listener for profile page');
+      unsubscribe();
+    };
   }, [profileUser?.id, followers.length, following.length]);
 
   if (!profileUser) {

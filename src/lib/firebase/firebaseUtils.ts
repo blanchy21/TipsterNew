@@ -532,8 +532,10 @@ export const createUserProfile = async (user: any, additionalData: any = {}) => 
       await setDoc(userRef, {
         id: user.uid,
         displayName,
+        name: displayName, // Also store as name for compatibility
         email,
         photoURL,
+        handle: `@${displayName?.toLowerCase().replace(/\s+/g, '') || 'user'}`,
         createdAt,
         followers: [],
         following: [],
