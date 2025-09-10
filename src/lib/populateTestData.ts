@@ -276,11 +276,13 @@ export const populateTestData = async () => {
 
     // Add test posts
     for (let i = 0; i < testPosts.length; i++) {
+      const userIndex = i % userIds.length; // Cycle through available users
       const postData = {
         ...testPosts[i],
+        userId: userIds[userIndex], // Add userId field
         user: {
           ...testPosts[i].user,
-          id: userIds[i] // Use the actual user ID from Firebase
+          id: userIds[userIndex] // Use the actual user ID from Firebase
         }
       };
       const docRef = await addDocument('posts', postData);
