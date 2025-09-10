@@ -30,7 +30,6 @@ export default function TipVerificationAnalytics({
         verifiedTips: 0,
         pendingTips: 0,
         winRate: 0,
-        totalProfit: 0,
         avgOdds: 0,
         topSports: []
     });
@@ -167,10 +166,9 @@ export default function TipVerificationAnalytics({
                             <span className="text-yellow-400 font-medium">{stats.pendingTips}</span>
                         </div>
                         <div className="flex items-center justify-between">
-                            <span className="text-slate-300">Total Profit</span>
-                            <span className={`font-medium ${stats.totalProfit >= 0 ? 'text-green-400' : 'text-red-400'
-                                }`}>
-                                {stats.totalProfit >= 0 ? '+' : ''}${stats.totalProfit.toFixed(2)}
+                            <span className="text-slate-300">Total Wins</span>
+                            <span className="text-green-400 font-medium">
+                                {stats.verifiedTips > 0 ? Math.round((stats.winRate / 100) * stats.verifiedTips) : 0}
                             </span>
                         </div>
                         <div className="flex items-center justify-between">

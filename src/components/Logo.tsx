@@ -8,7 +8,7 @@ export default function Logo({ collapsed = false }: LogoProps) {
   return (
     <div className="flex items-center gap-3">
       <div className="h-9 w-9 rounded-lg bg-white/5 ring-1 ring-white/10 flex items-center justify-center">
-        <span className="text-sky-300 font-semibold tracking-tight">SA</span>
+        <span className="text-sky-300 font-semibold tracking-tight">TA</span>
       </div>
       {!collapsed && (
         <div className="flex flex-col">

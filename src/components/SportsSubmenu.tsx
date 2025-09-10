@@ -12,41 +12,43 @@ interface SportsSubmenuProps {
 
 const sports = [
   'All Sports',
-  'Football',
-  'Basketball',
-  'Tennis',
-  'Baseball',
-  'Hockey',
-  'Cricket',
-  'Golf',
-  'Boxing',
-  'MMA',
-  'Esports',
-  'Rugby',
-  'Volleyball',
-  'Badminton',
-  'Table Tennis',
-  'Snooker',
-  'Darts',
-  'Cycling',
-  'Formula 1',
-  'MotoGP',
   'American Football',
-  'NBA',
+  'Badminton',
+  'Baseball',
+  'Basketball',
+  'Boxing',
+  'Cricket',
+  'Cycling',
+  'Darts',
+  'Esports',
+  'Football',
+  'Formula 1',
+  'Golf',
+  'Greyhound Racing',
+  'Hockey',
+  'Horse Racing',
   'MLB',
-  'NHL'
+  'MMA',
+  'MotoGP',
+  'NBA',
+  'NHL',
+  'Rugby',
+  'Snooker',
+  'Table Tennis',
+  'Tennis',
+  'Volleyball'
 ];
 
 export default function SportsSubmenu({ isOpen, selectedSport, onSportSelect, onClose }: SportsSubmenuProps) {
   if (!isOpen) return null;
 
   return (
-    <div 
-      className="absolute left-0 top-full mt-1 w-64 border border-white/40 rounded-lg shadow-2xl" 
-      style={{ 
-        backgroundColor: '#000000', 
+    <div
+      className="absolute left-0 top-full mt-1 w-64 border border-white/40 rounded-lg shadow-2xl"
+      style={{
+        backgroundColor: '#000000',
         background: '#000000',
-        opacity: 1, 
+        opacity: 1,
         backdropFilter: 'none',
         position: 'absolute',
         isolation: 'isolate',
@@ -56,10 +58,10 @@ export default function SportsSubmenu({ isOpen, selectedSport, onSportSelect, on
         boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.8)'
       }}
     >
-      <div 
-        className="p-3 rounded-lg" 
-        style={{ 
-          backgroundColor: '#000000', 
+      <div
+        className="p-3 rounded-lg"
+        style={{
+          backgroundColor: '#000000',
           background: '#000000',
           position: 'relative',
           zIndex: 1
@@ -74,10 +76,10 @@ export default function SportsSubmenu({ isOpen, selectedSport, onSportSelect, on
             <ChevronDown className="w-4 h-4 text-slate-400" />
           </button>
         </div>
-        <div 
-          className="max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent" 
-          style={{ 
-            backgroundColor: '#000000', 
+        <div
+          className="max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent"
+          style={{
+            backgroundColor: '#000000',
             background: '#000000',
             position: 'relative',
             zIndex: 1
@@ -97,7 +99,7 @@ export default function SportsSubmenu({ isOpen, selectedSport, onSportSelect, on
                   ? "bg-sky-500/50 text-sky-100 ring-1 ring-sky-500/60 font-medium"
                   : "text-slate-300 hover:text-slate-100"
               ].join(' ')}
-              style={{ 
+              style={{
                 backgroundColor: selectedSport === sport ? 'rgba(14, 165, 233, 0.8)' : '#000000',
                 background: selectedSport === sport ? 'rgba(14, 165, 233, 0.8)' : '#000000'
               }}

@@ -12,7 +12,6 @@ export interface TipVerification {
     notes?: string;
     originalOdds?: string;
     finalOdds?: string;
-    profitLoss?: number;
 }
 
 export interface VerificationStats {
@@ -20,7 +19,6 @@ export interface VerificationStats {
     verifiedTips: number;
     pendingTips: number;
     winRate: number;
-    totalProfit: number;
     avgOdds: number;
     topSports: { sport: string; count: number; winRate: number }[];
 }
@@ -64,7 +62,6 @@ export const getUserVerificationStats = async (userId: string): Promise<Verifica
             verifiedTips: 0,
             pendingTips: 0,
             winRate: 0,
-            totalProfit: 0,
             avgOdds: 0,
             topSports: []
         };
@@ -93,13 +90,6 @@ export const getUserVerificationStats = async (userId: string): Promise<Verifica
         const wins = verifications.filter(v => v.status === 'win').length;
         const winRate = verifiedTips > 0 ? Math.round((wins / verifiedTips) * 100) : 0;
 
-        // Calculate total profit (simplified calculation)
-        const totalProfit = verifications.reduce((sum, v) => {
-            if (v.status === 'win' && v.profitLoss) {
-                return sum + v.profitLoss;
-            }
-            return sum;
-        }, 0);
 
         // Calculate average odds
         const oddsValues = posts
@@ -147,7 +137,6 @@ export const getUserVerificationStats = async (userId: string): Promise<Verifica
             verifiedTips,
             pendingTips,
             winRate,
-            totalProfit,
             avgOdds,
             topSports
         };
@@ -158,7 +147,6 @@ export const getUserVerificationStats = async (userId: string): Promise<Verifica
             verifiedTips: 0,
             pendingTips: 0,
             winRate: 0,
-            totalProfit: 0,
             avgOdds: 0,
             topSports: []
         };

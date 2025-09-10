@@ -13,26 +13,26 @@ interface RightSidebarProps {
   onNavigateToProfile?: (userId: string) => void;
 }
 
-export default function RightSidebar({ 
-  posts, 
+export default function RightSidebar({
+  posts,
   isLoaded,
   onNavigateToProfile
 }: RightSidebarProps) {
   const { following, suggestions } = useFollowing();
   return (
     <aside className={[
-        "hidden lg:flex lg:flex-col shrink-0",
-        "px-4 py-4",
-        "border-l border-white/5",
-        "gap-6",
-        "h-screen overflow-y-auto",
-        "transition duration-700",
-        isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
-      ].join(' ')}
+      "hidden lg:flex lg:flex-col shrink-0",
+      "px-4 py-4",
+      "border-l border-white/5",
+      "gap-6",
+      "h-screen overflow-y-auto",
+      "transition duration-700",
+      isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
+    ].join(' ')}
       style={{ width: '340px' }}
     >
       <FixturesCard />
-      <FollowingCard list={following} onToggle={() => {}} onNavigateToProfile={onNavigateToProfile} />
+      <FollowingCard list={following} onToggle={() => { }} onNavigateToProfile={onNavigateToProfile} />
       <TopArticlesCard articles={posts} />
     </aside>
   );

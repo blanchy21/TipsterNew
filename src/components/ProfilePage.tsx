@@ -430,41 +430,6 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate, userId }) => {
               </div>
             </article>
 
-            {/* RECENT TIPS */}
-            <article className="rounded-3xl shadow-xl p-8 bg-white/5 backdrop-blur-3xl border border-white/10 hover:border-white/20 hover:scale-[1.02] transition-all duration-500">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-400 mb-6 flex items-center gap-2 opacity-0 translate-x-[-20px] blur-sm" style={{ animation: 'fadeInSlideRight 0.8s ease-out 2.4s forwards' }}>
-                <div className="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></div>
-                Recent Tips
-              </h3>
-              <div className="space-y-4">
-                {recentTips.map((tip, index) => (
-                  <div key={tip.id} className="flex items-center justify-between p-4 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 hover:bg-white/10 hover:scale-105 transition-all duration-300 opacity-0 translate-y-4 blur-sm" style={{ animation: `fadeInSlideUp 0.6s ease-out ${2.5 + index * 0.1}s forwards` }}>
-                    <div className="flex items-center gap-4">
-                      <div className="p-2 rounded-xl bg-indigo-500/20 text-indigo-400 backdrop-blur-sm">
-                        <Trophy className="w-4 h-4" />
-                      </div>
-                      <div>
-                        <span className="font-medium block">{tip.title}</span>
-                        <span className="text-xs text-neutral-400">{tip.content} • {tip.odds} odds</span>
-                      </div>
-                    </div>
-                    <div className="flex flex-col items-end gap-1">
-                      <span className={`text-xs px-2 py-1 rounded-full backdrop-blur-sm border ${getResultColor(tip.result)}`}>
-                        {getResultText(tip.result)}
-                      </span>
-                      <span className="text-xs font-semibold text-neutral-400">
-                        {tip.odds} odds
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <button className="w-full mt-6 border rounded-2xl py-3 font-medium flex items-center justify-center gap-2 border-white/20 hover:bg-white/10 hover:border-white/30 hover:scale-105 transition-all duration-300 group opacity-0 translate-y-4 blur-sm backdrop-blur-md" style={{ animation: 'fadeInSlideUp 0.6s ease-out 2.8s forwards' }}>
-                <Calendar className="w-4 h-4" />
-                View All Tips
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform duration-300" />
-              </button>
-            </article>
           </aside>
 
           {/* CENTER */}
@@ -679,6 +644,42 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate, userId }) => {
                 Contact Me
               </button>
             </article>
+
+            {/* RECENT TIPS */}
+            <article className="rounded-3xl shadow-xl p-8 bg-white/5 backdrop-blur-3xl border border-white/10 hover:border-white/20 hover:scale-[1.02] transition-all duration-500">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-400 mb-6 flex items-center gap-2 opacity-0 translate-x-4 blur-sm" style={{ animation: 'fadeInSlideLeft 0.8s ease-out 4s forwards' }}>
+                <div className="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></div>
+                Recent Tips
+              </h3>
+              <div className="space-y-4">
+                {recentTips.map((tip, index) => (
+                  <div key={tip.id} className="flex items-center justify-between p-4 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 hover:bg-white/10 hover:scale-105 transition-all duration-300 opacity-0 translate-x-8 blur-sm" style={{ animation: `fadeInSlideLeft 0.6s ease-out ${4.1 + index * 0.1}s forwards` }}>
+                    <div className="flex items-center gap-4">
+                      <div className="p-2 rounded-xl bg-indigo-500/20 text-indigo-400 backdrop-blur-sm">
+                        <Trophy className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <span className="font-medium block">{tip.title}</span>
+                        <span className="text-xs text-neutral-400">{tip.content} • {tip.odds} odds</span>
+                      </div>
+                    </div>
+                    <div className="flex flex-col items-end gap-1">
+                      <span className={`text-xs px-2 py-1 rounded-full backdrop-blur-sm border ${getResultColor(tip.result)}`}>
+                        {getResultText(tip.result)}
+                      </span>
+                      <span className="text-xs font-semibold text-neutral-400">
+                        {tip.odds} odds
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <button className="w-full mt-6 border rounded-2xl py-3 font-medium flex items-center justify-center gap-2 border-white/20 hover:bg-white/10 hover:border-white/30 hover:scale-105 transition-all duration-300 group opacity-0 translate-x-8 blur-sm backdrop-blur-md" style={{ animation: 'fadeInSlideLeft 0.6s ease-out 4.5s forwards' }}>
+                <Calendar className="w-4 h-4" />
+                View All Tips
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform duration-300" />
+              </button>
+            </article>
           </aside>
         </section>
 
@@ -686,6 +687,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate, userId }) => {
         <section className="mt-8">
           <TipVerificationAnalytics userId={profileUser.id} />
         </section>
+
       </div>
 
 

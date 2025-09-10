@@ -27,7 +27,6 @@ import { FollowingProvider } from '@/lib/contexts/FollowingContext';
 import { useAuth } from '@/lib/hooks/useAuth';
 import NotificationToastManager from './NotificationToastManager';
 import RealtimeIndicator from './RealtimeIndicator';
-import RealtimeTest from './RealtimeTest';
 
 function AppContent() {
   const { user, loading } = useAuth();
@@ -254,8 +253,12 @@ function AppContent() {
   };
 
   const handleNavigateToProfile = (userId: string) => {
-    setViewingUserId(userId);
-    setSelected('profile');
+    if (userId === 'leaderboard') {
+      setSelected('top-tipsters');
+    } else {
+      setViewingUserId(userId);
+      setSelected('profile');
+    }
   };
 
   const handleProfileNavigation = (page: string) => {
@@ -389,6 +392,20 @@ function AppContent() {
             <div className="flex-1 overflow-y-auto">
               <TopTipsters onNavigateToProfile={handleNavigateToProfile} />
             </div>
+          ) : selected === 'sports' ? (
+            <div className="flex-1 flex flex-col overflow-hidden">
+              <Feed
+                posts={filteredPosts}
+                isLoaded={isLoaded}
+                query={query}
+                onQueryChange={setQuery}
+                selectedSport={selectedSport}
+                selected={selected}
+                onLikeChange={handleLikeChange}
+                onNavigateToProfile={handleNavigateToProfile}
+              />
+              <RightSidebar posts={posts} isLoaded={isLoaded} onNavigateToProfile={handleNavigateToProfile} />
+            </div>
           ) : (
             <>
               <Feed
@@ -426,7 +443,6 @@ function AppContent() {
 
         <NotificationToastManager />
         <RealtimeIndicator isConnected={!!user} />
-        <RealtimeTest />
       </div>
     </NotificationsProvider>
   );

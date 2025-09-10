@@ -13,7 +13,8 @@ import {
   ExternalLink,
   LogOut,
   Users,
-  Settings
+  Settings,
+  Target
 } from 'lucide-react';
 import Logo from './Logo';
 import SidebarItem from './SidebarItem';
@@ -42,6 +43,7 @@ const items: SidebarItemType[] = [
   { icon: MessageCircle, label: 'Chat', key: 'chat' },
   { icon: Mail, label: 'Messages', key: 'messages' },
   { icon: User, label: 'Profile', key: 'profile' },
+  { icon: Target, label: 'Sports', key: 'sports' },
   { icon: Settings, label: 'Admin', key: 'admin' },
 ];
 
@@ -90,23 +92,23 @@ export default function Sidebar({ selected, onSelect, onOpenPost, isLoaded, sele
               "transition duration-700",
               isLoaded ? "opacity-100 translate-x-0" : "opacity-0 translate-x-2",
               `delay-[${idx * 40}ms]`,
-              item.key === 'top' ? 'relative' : ''
+              item.key === 'sports' ? 'relative' : ''
             ].join(' ')}
           >
             <SidebarItem
               icon={item.icon}
-              label={item.key === 'top' && selectedSport !== 'All Sports' ? `${item.label} (${selectedSport})` : item.label}
+              label={item.key === 'sports' && selectedSport !== 'All Sports' ? `${item.label} (${selectedSport})` : item.label}
               active={selected === item.key}
               badge={item.key === 'notifications' ? unreadCount : undefined}
               onClick={() => {
-                if (item.key === 'top') {
+                if (item.key === 'sports') {
                   setShowSportsSubmenu(!showSportsSubmenu);
                 } else {
                   onSelect(item.key);
                 }
               }}
             />
-            {item.key === 'top' && (
+            {item.key === 'sports' && (
               <div ref={submenuRef} className="relative" style={{ position: 'relative', zIndex: 9999 }}>
                 <SportsSubmenu
                   isOpen={showSportsSubmenu}
