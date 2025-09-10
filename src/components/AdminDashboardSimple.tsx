@@ -34,8 +34,9 @@ import TipVerificationPanel from './TipVerificationPanel';
 import { db } from '@/lib/firebase/firebase';
 
 const AdminDashboardSimple: React.FC = () => {
-    const { user } = useAuth();
+    const { user, loading: authLoading } = useAuth();
     const [isLoading, setIsLoading] = useState(false);
+    const [statsLoading, setStatsLoading] = useState(true);
     const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
     const [selectedTab, setSelectedTab] = useState<'overview' | 'tips' | 'users' | 'data'>('overview');
     const [stats, setStats] = useState({
@@ -54,9 +55,13 @@ const AdminDashboardSimple: React.FC = () => {
     // Load admin statistics
     useEffect(() => {
         const loadStats = async () => {
-            if (!user || !db) return;
+            if (!user || !db) {
+                setStatsLoading(false);
+                return;
+            }
 
             try {
+                setStatsLoading(true);
                 console.log('🔄 Loading admin stats...');
 
                 // Load all data in parallel
@@ -137,6 +142,8 @@ const AdminDashboardSimple: React.FC = () => {
                 console.log('✅ Admin stats loaded successfully');
             } catch (error) {
                 console.error('❌ Error loading admin stats:', error);
+            } finally {
+                setStatsLoading(false);
             }
         };
 
@@ -185,6 +192,44 @@ const AdminDashboardSimple: React.FC = () => {
         { id: 'users', label: 'Users', icon: Users },
         { id: 'data', label: 'Data Management', icon: Database }
     ];
+
+    // Debug logging
+    console.log("AdminDashboardSimple: authLoading:", authLoading, "user:", user);
+    console.log("AdminDashboardSimple: user type:", typeof user);
+    console.log("AdminDashboardSimple: user null check:", user === null);
+
+    // Show loading state while authenticating
+    if (authLoading) {
+        console.log("AdminDashboardSimple: Showing loading state");
+        return (
+            <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-slate-900 to-[#2c1376]/70 min-h-screen flex items-center justify-center">
+                <div className="text-center">
+                    <Loader2 className="w-12 h-12 animate-spin text-blue-400 mx-auto mb-4" />
+                    <h2 className="text-2xl font-bold text-white mb-2">Loading Admin Panel</h2>
+                    <p className="text-slate-400">Authenticating user...</p>
+                </div>
+            </div>
+        );
+    }
+
+    // Show authentication required message
+    if (!user) {
+        return (
+            <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-slate-900 to-[#2c1376]/70 min-h-screen flex items-center justify-center">
+                <div className="text-center max-w-md mx-auto">
+                    <Shield className="w-16 h-16 text-red-400 mx-auto mb-6" />
+                    <h2 className="text-3xl font-bold text-white mb-4">Authentication Required</h2>
+                    <p className="text-slate-400 mb-6">You need to be logged in to access the admin panel.</p>
+                    <button
+                        onClick={() => window.location.href = '/'}
+                        className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors"
+                    >
+                        Go to Login
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-slate-900 to-[#2c1376]/70 min-h-screen">
@@ -244,104 +289,115 @@ const AdminDashboardSimple: React.FC = () => {
                 {/* Overview Tab */}
                 {selectedTab === 'overview' && (
                     <div className="space-y-6">
-                        {/* Key Metrics */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                            <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-                                <div className="flex items-center justify-between">
-                                    <div>
-                                        <p className="text-slate-400 text-sm">Total Users</p>
-                                        <p className="text-3xl font-bold text-white">{stats.totalUsers}</p>
-                                    </div>
-                                    <Users className="w-8 h-8 text-blue-400" />
+                        {statsLoading ? (
+                            <div className="flex items-center justify-center py-12">
+                                <div className="text-center">
+                                    <Loader2 className="w-8 h-8 animate-spin text-blue-400 mx-auto mb-4" />
+                                    <p className="text-slate-400">Loading admin statistics...</p>
                                 </div>
                             </div>
-
-                            <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-                                <div className="flex items-center justify-between">
-                                    <div>
-                                        <p className="text-slate-400 text-sm">Total Tips</p>
-                                        <p className="text-3xl font-bold text-white">{stats.totalPosts}</p>
-                                    </div>
-                                    <FileText className="w-8 h-8 text-green-400" />
-                                </div>
-                            </div>
-
-                            <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-                                <div className="flex items-center justify-between">
-                                    <div>
-                                        <p className="text-slate-400 text-sm">Pending Verification</p>
-                                        <p className="text-3xl font-bold text-yellow-400">{stats.pendingTips}</p>
-                                    </div>
-                                    <Clock className="w-8 h-8 text-yellow-400" />
-                                </div>
-                            </div>
-
-                            <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-                                <div className="flex items-center justify-between">
-                                    <div>
-                                        <p className="text-slate-400 text-sm">Win Rate</p>
-                                        <p className="text-3xl font-bold text-green-400">{stats.winRate}%</p>
-                                    </div>
-                                    <TrendingUp className="w-8 h-8 text-green-400" />
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Additional Stats */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-                                <div className="flex items-center justify-between mb-4">
-                                    <h3 className="text-lg font-semibold text-white">Top Sports</h3>
-                                    <Activity className="w-5 h-5 text-slate-400" />
-                                </div>
-                                <div className="space-y-2">
-                                    {stats.topSports.map((sport, index) => (
-                                        <div key={sport.sport} className="flex items-center justify-between">
-                                            <span className="text-slate-300">{sport.sport}</span>
-                                            <span className="text-blue-400 font-medium">{sport.count} tips</span>
+                        ) : (
+                            <>
+                                {/* Key Metrics */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                    <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                                        <div className="flex items-center justify-between">
+                                            <div>
+                                                <p className="text-slate-400 text-sm">Total Users</p>
+                                                <p className="text-3xl font-bold text-white">{stats.totalUsers}</p>
+                                            </div>
+                                            <Users className="w-8 h-8 text-blue-400" />
                                         </div>
-                                    ))}
-                                </div>
-                            </div>
+                                    </div>
 
-                            <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-                                <div className="flex items-center justify-between mb-4">
-                                    <h3 className="text-lg font-semibold text-white">Platform Stats</h3>
-                                    <BarChart3 className="w-5 h-5 text-slate-400" />
-                                </div>
-                                <div className="space-y-3">
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-slate-300">Comments</span>
-                                        <span className="text-purple-400 font-medium">{stats.totalComments}</span>
-                                    </div>
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-slate-300">Notifications</span>
-                                        <span className="text-purple-400 font-medium">{stats.totalNotifications}</span>
-                                    </div>
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-slate-300">Avg Odds</span>
-                                        <span className="text-purple-400 font-medium">{stats.avgOdds}</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-                                <div className="flex items-center justify-between mb-4">
-                                    <h3 className="text-lg font-semibold text-white">Recent Activity</h3>
-                                    <Clock className="w-5 h-5 text-slate-400" />
-                                </div>
-                                <div className="space-y-2">
-                                    {stats.recentActivity.map((activity, index) => (
-                                        <div key={index} className="text-sm">
-                                            <p className="text-slate-300">{activity.description}</p>
-                                            <p className="text-slate-500 text-xs">
-                                                {new Date(activity.timestamp).toLocaleDateString()}
-                                            </p>
+                                    <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                                        <div className="flex items-center justify-between">
+                                            <div>
+                                                <p className="text-slate-400 text-sm">Total Tips</p>
+                                                <p className="text-3xl font-bold text-white">{stats.totalPosts}</p>
+                                            </div>
+                                            <FileText className="w-8 h-8 text-green-400" />
                                         </div>
-                                    ))}
+                                    </div>
+
+                                    <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                                        <div className="flex items-center justify-between">
+                                            <div>
+                                                <p className="text-slate-400 text-sm">Pending Verification</p>
+                                                <p className="text-3xl font-bold text-yellow-400">{stats.pendingTips}</p>
+                                            </div>
+                                            <Clock className="w-8 h-8 text-yellow-400" />
+                                        </div>
+                                    </div>
+
+                                    <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                                        <div className="flex items-center justify-between">
+                                            <div>
+                                                <p className="text-slate-400 text-sm">Win Rate</p>
+                                                <p className="text-3xl font-bold text-green-400">{stats.winRate}%</p>
+                                            </div>
+                                            <TrendingUp className="w-8 h-8 text-green-400" />
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
+
+                                {/* Additional Stats */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                                        <div className="flex items-center justify-between mb-4">
+                                            <h3 className="text-lg font-semibold text-white">Top Sports</h3>
+                                            <Activity className="w-5 h-5 text-slate-400" />
+                                        </div>
+                                        <div className="space-y-2">
+                                            {stats.topSports.map((sport, index) => (
+                                                <div key={sport.sport} className="flex items-center justify-between">
+                                                    <span className="text-slate-300">{sport.sport}</span>
+                                                    <span className="text-blue-400 font-medium">{sport.count} tips</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                                        <div className="flex items-center justify-between mb-4">
+                                            <h3 className="text-lg font-semibold text-white">Platform Stats</h3>
+                                            <BarChart3 className="w-5 h-5 text-slate-400" />
+                                        </div>
+                                        <div className="space-y-3">
+                                            <div className="flex items-center justify-between">
+                                                <span className="text-slate-300">Comments</span>
+                                                <span className="text-purple-400 font-medium">{stats.totalComments}</span>
+                                            </div>
+                                            <div className="flex items-center justify-between">
+                                                <span className="text-slate-300">Notifications</span>
+                                                <span className="text-purple-400 font-medium">{stats.totalNotifications}</span>
+                                            </div>
+                                            <div className="flex items-center justify-between">
+                                                <span className="text-slate-300">Avg Odds</span>
+                                                <span className="text-purple-400 font-medium">{stats.avgOdds}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                                        <div className="flex items-center justify-between mb-4">
+                                            <h3 className="text-lg font-semibold text-white">Recent Activity</h3>
+                                            <Clock className="w-5 h-5 text-slate-400" />
+                                        </div>
+                                        <div className="space-y-2">
+                                            {stats.recentActivity.map((activity, index) => (
+                                                <div key={index} className="text-sm">
+                                                    <p className="text-slate-300">{activity.description}</p>
+                                                    <p className="text-slate-500 text-xs">
+                                                        {new Date(activity.timestamp).toLocaleDateString()}
+                                                    </p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            </>
+                        )}
                     </div>
                 )}
 

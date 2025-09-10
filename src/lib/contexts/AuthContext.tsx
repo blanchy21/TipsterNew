@@ -41,6 +41,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     console.log("AuthContext: useEffect triggered");
     console.log("AuthContext: auth object:", auth);
+    console.log("AuthContext: auth type:", typeof auth);
+    console.log("AuthContext: auth onAuthStateChanged:", typeof auth?.onAuthStateChanged);
 
     // Check if Firebase auth is available
     if (!auth) {
@@ -49,22 +51,53 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    console.log("AuthContext: Setting up auth state listener");
-    const unsubscribe = auth.onAuthStateChanged((user: User | null) => {
-      console.log("AuthContext: Auth state changed, user:", user);
-      setUser(user);
+    // Check if auth object has the required methods
+    if (typeof auth.onAuthStateChanged !== 'function') {
+      console.error("AuthContext: auth.onAuthStateChanged is not a function");
       setLoading(false);
+      return;
+    }
 
-      // If user is signed in, close any open auth modals
-      if (user) {
-        console.log("AuthContext: User signed in successfully");
+    console.log("AuthContext: Setting up auth state listener");
+    try {
+      const unsubscribe = auth.onAuthStateChanged((user: User | null) => {
+        console.log("AuthContext: Auth state changed, user:", user);
+        console.log("AuthContext: Setting loading to false");
+        setUser(user);
+        setLoading(false);
+
+        // If user is signed in, close any open auth modals
+        if (user) {
+          console.log("AuthContext: User signed in successfully");
+        } else {
+          console.log("AuthContext: No user signed in");
+        }
+      });
+
+      // Check current user immediately in case the listener doesn't fire
+      const currentUser = auth.currentUser;
+      console.log("AuthContext: Current user check:", currentUser);
+      if (currentUser !== null) {
+        console.log("AuthContext: User already signed in, setting user and stopping loading");
+        setUser(currentUser);
+        setLoading(false);
       }
-    });
 
-    return () => {
-      console.log("AuthContext: Cleaning up auth listener");
-      unsubscribe();
-    };
+      // Add a timeout to prevent infinite loading
+      const timeout = setTimeout(() => {
+        console.log("AuthContext: Timeout reached, setting loading to false");
+        setLoading(false);
+      }, 3000);
+
+      return () => {
+        console.log("AuthContext: Cleaning up auth listener");
+        clearTimeout(timeout);
+        unsubscribe();
+      };
+    } catch (error) {
+      console.error("AuthContext: Error setting up auth listener:", error);
+      setLoading(false);
+    }
   }, []);
 
   const signInWithGoogle = async () => {
