@@ -283,9 +283,9 @@ function AppContent() {
   // Show loading state while checking authentication
   if (loading) {
     return (
-      <div className="h-screen flex items-center justify-center bg-[#0A0A14]">
+      <div className="h-screen flex items-center justify-center bg-[#0B1426]">
         <div className="text-center">
-          <div className="w-8 h-8 border-2 border-violet-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <div className="w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-white/70">Loading...</p>
         </div>
       </div>
@@ -310,9 +310,9 @@ function AppContent() {
   if (!user) {
     return (
       <>
-        <div className="h-screen flex items-center justify-center bg-[#0A0A14]">
+        <div className="h-screen flex items-center justify-center bg-[#0B1426]">
           <div className="text-center max-w-md mx-auto p-8">
-            <div className="w-16 h-16 bg-gradient-to-br from-violet-500 to-fuchsia-500 rounded-full flex items-center justify-center mx-auto mb-6">
+            <div className="w-16 h-16 bg-gradient-to-br from-amber-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6">
               <span className="text-white font-bold text-2xl">SA</span>
             </div>
             <h1 className="text-3xl font-bold text-white mb-4">Welcome to Tipster Arena</h1>
@@ -320,7 +320,7 @@ function AppContent() {
             <div className="space-y-4">
               <button
                 onClick={() => handleShowAuthModal('login')}
-                className="w-full bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-violet-500 hover:to-fuchsia-500 transition-all duration-200"
+                className="w-full bg-gradient-to-r from-amber-600 to-orange-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-amber-500 hover:to-orange-500 transition-all duration-200"
               >
                 Sign In
               </button>
@@ -350,7 +350,7 @@ function AppContent() {
 
   return (
     <NotificationsProvider>
-      <div className="h-screen flex flex-col overflow-hidden">
+      <div className="h-screen flex flex-col overflow-hidden bg-[#0B1426]">
         <MobileHeader
           onOpenPost={() => setShowPost(true)}
           onMenu={() => { }}

@@ -77,23 +77,23 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
   ];
 
   return (
-    <div className="min-h-screen bg-[#0A0A14] text-white overflow-x-hidden">
+    <div className="min-h-screen bg-[#0B1426] text-white overflow-x-hidden">
       <style jsx>{`
         .glass-footer {
-          background: rgba(10, 10, 20, 0.7);
+          background: rgba(11, 20, 38, 0.7);
           backdrop-filter: blur(32px);
           -webkit-backdrop-filter: blur(32px);
           border-top: 1px solid rgba(255, 255, 255, 0.08);
           box-shadow:
             0 -1px 0 0 rgba(255, 255, 255, 0.05) inset,
-            0 -20px 60px -10px rgba(139, 92, 246, 0.1);
+            0 -20px 60px -10px rgba(245, 158, 11, 0.1);
         }
       `}</style>
       {/* Background Effects */}
       <div className="fixed inset-0 -z-20">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0A0A14] via-[#1a0d2e] to-[#0A0A14]"></div>
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0B1426] via-[#1a2332] to-[#0B1426]"></div>
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-amber-500/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-orange-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
       </div>
 
       {/* Navigation */}
@@ -102,7 +102,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
           <div className="mt-4 rounded-full border border-white/10 bg-white/5 backdrop-blur supports-[backdrop-filter]:bg-white/5">
             <div className="flex items-center justify-between px-4 py-3">
               <div className="flex items-center gap-3">
-                <span className="grid h-9 w-9 place-items-center ring-1 ring-white/20 bg-gradient-to-br from-blue-500 via-cyan-500 to-emerald-600 rounded-full">
+                <span className="grid h-9 w-9 place-items-center ring-1 ring-white/20 bg-gradient-to-br from-amber-500 via-orange-500 to-yellow-600 rounded-full">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-white/90">
                     <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
                   </svg>
@@ -129,7 +129,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
                 <a
                   href="#"
                   onClick={onGetStarted}
-                  className="inline-flex items-center gap-2 rounded-full bg-gradient-to-tr from-blue-600 to-cyan-600 px-4 py-2 text-sm font-medium tracking-tight text-white shadow-[0_8px_30px_rgba(59,130,246,0.35)] ring-1 ring-white/10 hover:from-blue-500 hover:to-cyan-500 transition-all duration-200 hover:shadow-[0_12px_40px_rgba(59,130,246,0.45)]"
+                  className="inline-flex items-center gap-2 rounded-full bg-gradient-to-tr from-amber-600 to-orange-600 px-4 py-2 text-sm font-medium tracking-tight text-white shadow-[0_8px_30px_rgba(245,158,11,0.35)] ring-1 ring-white/10 hover:from-amber-500 hover:to-orange-500 transition-all duration-200 hover:shadow-[0_12px_40px_rgba(245,158,11,0.45)]"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
                     <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path>
@@ -171,7 +171,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
 
             <h1 className={`max-w-5xl text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold tracking-tight transition-all duration-1000 delay-200 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
               The world's premier platform for
-              <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-emerald-400 bg-clip-text text-transparent"> sports tip sharing</span>
+              <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-400 bg-clip-text text-transparent"> sports tip sharing</span>
             </h1>
             <p className={`mt-6 max-w-2xl text-lg sm:text-xl text-white/70 leading-relaxed transition-all duration-1000 delay-400 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
               Share tips, track performance, and connect with fellow sports fans. Built by sports fans for sports fans - completely free, with transparent statistics and no bookmaker bias.
@@ -211,7 +211,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
               <a
                 href="#"
                 onClick={onGetStarted}
-                className="inline-flex items-center gap-2 ring-1 ring-white/10 shadow-[0_10px_40px_-10px_rgba(59,130,246,0.6)] hover:shadow-[0_15px_50px_-10px_rgba(59,130,246,0.8)] transition-all duration-300 relative overflow-hidden text-sm font-medium text-white tracking-tight bg-gradient-to-tr from-blue-600 to-cyan-600 border-2 rounded-full pt-3 pr-6 pb-3 pl-6"
+                className="inline-flex items-center gap-2 ring-1 ring-white/10 shadow-[0_10px_40px_-10px_rgba(245,158,11,0.6)] hover:shadow-[0_15px_50px_-10px_rgba(245,158,11,0.8)] transition-all duration-300 relative overflow-hidden text-sm font-medium text-white tracking-tight bg-gradient-to-tr from-amber-600 to-orange-600 border-2 rounded-full pt-3 pr-6 pb-3 pl-6"
                 style={{ borderColor: 'rgba(255, 255, 255, 0.3)' }}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
@@ -239,7 +239,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-white mb-4">
-              Where Sports Fans <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-emerald-400 bg-clip-text text-transparent">Share Tips</span>
+              Where Sports Fans <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-400 bg-clip-text text-transparent">Share Tips</span>
             </h2>
             <p className="text-lg text-white/70 max-w-2xl mx-auto leading-relaxed">
               From living rooms to stadiums, see how sports fans around the world use Tipster Arena to share tips, track performance, and build their reputation.
@@ -248,7 +248,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
 
           {/* Demo Video */}
           <div className="relative max-w-6xl mx-auto">
-            <div className="relative rounded-2xl overflow-hidden shadow-[0_30px_120px_-20px_rgba(59,130,246,0.45)]">
+            <div className="relative rounded-2xl overflow-hidden shadow-[0_30px_120px_-20px_rgba(245,158,11,0.45)]">
               <video
                 className="w-full h-auto object-cover"
                 controls
@@ -271,7 +271,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-white mb-6">
-              Why We Built <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-emerald-400 bg-clip-text text-transparent">Tipster Arena</span>
+              Why We Built <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-400 bg-clip-text text-transparent">Tipster Arena</span>
             </h2>
             <div className="max-w-3xl mx-auto">
               <p className="text-lg text-white/70 leading-relaxed mb-8">
@@ -279,13 +279,13 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
                 We wanted a platform where everyday punters could share their tips and track their performance transparently.
                 No politics, no drama - just pure sports tip sharing.&rdquo;
               </p>
-              <div className="bg-gradient-to-r from-blue-500/10 to-cyan-500/10 rounded-2xl p-8 border border-blue-500/20">
+              <div className="bg-gradient-to-r from-amber-500/10 to-orange-500/10 rounded-2xl p-8 border border-amber-500/20">
                 <p className="text-white/80 text-lg italic">
                   &ldquo;Sports tip sharing should be about community, transparency, and celebrating those who consistently find winners.
                   We built Tipster Arena to give every sports fan a voice and a way to prove their expertise through real results.&rdquo;
                 </p>
                 <div className="mt-6 flex items-center justify-center gap-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center">
+                  <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-500 rounded-full flex items-center justify-center">
                     <span className="text-white font-bold text-lg">TA</span>
                   </div>
                   <div className="text-left">
@@ -304,7 +304,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-white mb-6">
-              Share Tips for <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-emerald-400 bg-clip-text text-transparent">Every Sport</span>
+              Share Tips for <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-400 bg-clip-text text-transparent">Every Sport</span>
             </h2>
             <p className="text-lg text-white/70 max-w-3xl mx-auto">
               From mainstream favorites to niche competitions, share your tips for any sport that matters to you.
@@ -336,10 +336,10 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
           </div>
 
           {/* Coming Soon Section */}
-          <div className="bg-gradient-to-r from-blue-500/10 to-cyan-500/10 rounded-2xl p-8 border border-blue-500/20">
+          <div className="bg-gradient-to-r from-amber-500/10 to-orange-500/10 rounded-2xl p-8 border border-amber-500/20">
             <div className="text-center">
               <h3 className="text-2xl font-semibold text-white mb-4">
-                More Sports <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-emerald-400 bg-clip-text text-transparent">Coming Soon</span>
+                More Sports <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-400 bg-clip-text text-transparent">Coming Soon</span>
               </h3>
               <p className="text-white/70 mb-6 max-w-2xl mx-auto">
                 We&apos;re constantly expanding our coverage. Here are some sports we&apos;re working to add:
@@ -362,7 +362,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
               </div>
               <div className="mt-6">
                 <p className="text-white/60 text-sm">
-                  Don&apos;t see your sport? <span className="text-blue-400 font-medium">Let us know</span> and we&apos;ll prioritize adding it!
+                  Don&apos;t see your sport? <span className="text-amber-400 font-medium">Let us know</span> and we&apos;ll prioritize adding it!
                 </p>
               </div>
             </div>
@@ -375,7 +375,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-4">
-              Everything You Need for <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-emerald-400 bg-clip-text text-transparent">Tip Sharing</span>
+              Everything You Need for <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-400 bg-clip-text text-transparent">Tip Sharing</span>
             </h2>
             <p className="text-xl text-white/70 max-w-2xl mx-auto">
               Powerful features designed specifically for sports tip sharing, performance tracking, and community building. Built by sports fans for sports fans.
@@ -386,7 +386,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
             {features.map((feature, index) => (
               <div
                 key={index}
-                className={`group relative rounded-2xl border border-white/10 bg-white/[0.04] p-6 transition-all duration-300 hover:transform hover:scale-105 cursor-pointer ${activeFeature === index ? 'ring-2 ring-blue-500/50' : ''
+                className={`group relative rounded-2xl border border-white/10 bg-white/[0.04] p-6 transition-all duration-300 hover:transform hover:scale-105 cursor-pointer ${activeFeature === index ? 'ring-2 ring-amber-500/50' : ''
                   }`}
                 onMouseEnter={() => setActiveFeature(index)}
                 onClick={() => setActiveFeature(index)}
@@ -398,7 +398,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
                 <p className="text-white/70 leading-relaxed">{feature.description}</p>
 
                 {/* Hover effect */}
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-cyan-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-orange-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
             ))}
           </div>
@@ -410,7 +410,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-4">
-              Tips for <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-emerald-400 bg-clip-text text-transparent">50+ Sports</span>
+              Tips for <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-400 bg-clip-text text-transparent">50+ Sports</span>
             </h2>
             <p className="text-xl text-white/70 max-w-2xl mx-auto">
               From football to tennis, basketball to cricket - share your tips for any sport and help others discover winning strategies.
@@ -437,7 +437,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
       <section className="py-20">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <h2 className="text-4xl font-bold mb-6">
-            Ready to Start <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-emerald-400 bg-clip-text text-transparent">Sharing Tips</span>?
+            Ready to Start <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-400 bg-clip-text text-transparent">Sharing Tips</span>?
           </h2>
           <p className="text-xl text-white/70 mb-12 max-w-2xl mx-auto">
             Join thousands of sports fans who are sharing tips, tracking performance, and building their reputation in a community focused purely on sports success.
@@ -446,7 +446,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <button
               onClick={onGetStarted}
-              className="bg-gradient-to-r from-blue-600 to-cyan-600 px-8 py-4 rounded-full font-semibold text-lg hover:from-blue-500 hover:to-cyan-500 transition-all duration-200 transform hover:scale-105 shadow-2xl shadow-blue-500/25"
+              className="bg-gradient-to-r from-amber-600 to-orange-600 px-8 py-4 rounded-full font-semibold text-lg hover:from-amber-500 hover:to-orange-500 transition-all duration-200 transform hover:scale-105 shadow-2xl shadow-amber-500/25"
             >
               Start Sharing Tips Now
             </button>
@@ -464,10 +464,10 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
       {/* Footer */}
       <footer className="glass-footer">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="col-span-1 md:col-span-2">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="col-span-1 md:col-span-1">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-lg flex items-center justify-center">
+                <div className="w-8 h-8 bg-gradient-to-br from-amber-500 to-orange-600 rounded-lg flex items-center justify-center">
                   <span className="text-white font-bold text-sm">SA</span>
                 </div>
                 <span className="text-xl font-bold">Tipster Arena</span>
@@ -494,15 +494,6 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
               </div>
             </div>
 
-            <div>
-              <h4 className="font-semibold mb-4">Product</h4>
-              <ul className="space-y-2 text-white/70">
-                <li><a href="#" className="hover:text-white transition-colors">Features</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Pricing</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">API</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Integrations</a></li>
-              </ul>
-            </div>
 
             <div>
               <h4 className="font-semibold mb-4">Support</h4>
@@ -518,9 +509,9 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
           <div className="border-t border-white/10 mt-8 pt-8 flex flex-col sm:flex-row justify-between items-center">
             <p className="text-white/60 text-sm">© 2024 Tipster Arena. All rights reserved.</p>
             <div className="flex gap-6 mt-4 sm:mt-0">
-              <a href="#" className="text-white/60 hover:text-white text-sm transition-colors">Privacy</a>
-              <a href="#" className="text-white/60 hover:text-white text-sm transition-colors">Terms</a>
-              <a href="#" className="text-white/60 hover:text-white text-sm transition-colors">Cookies</a>
+              <a href="/privacy" className="text-white/60 hover:text-white text-sm transition-colors">Privacy</a>
+              <a href="/terms" className="text-white/60 hover:text-white text-sm transition-colors">Terms</a>
+              <a href="/cookies" className="text-white/60 hover:text-white text-sm transition-colors">Cookies</a>
             </div>
           </div>
         </div>

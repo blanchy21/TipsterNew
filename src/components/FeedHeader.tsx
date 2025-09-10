@@ -13,32 +13,32 @@ interface FeedHeaderProps {
 export default function FeedHeader({ isLoaded, query, onQueryChange, selected }: FeedHeaderProps) {
   return (
     <div className={[
-        "flex items-center justify-between px-4 md:px-6 py-4 md:py-6",
-        "border-b border-white/5 sticky top-0 z-20",
-        "bg-[#0B0F14]/80 backdrop-blur"
-      ].join(' ')}
+      "flex items-center justify-between px-4 md:px-6 py-4 md:py-6",
+      "border-b border-white/5 sticky top-0 z-20",
+      "bg-[#0B1426]/80 backdrop-blur"
+    ].join(' ')}
     >
       <div className={[
-          "flex items-center gap-3",
-          "transition duration-700",
-          isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
-        ].join(' ')}
+        "flex items-center gap-3",
+        "transition duration-700",
+        isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
+      ].join(' ')}
       >
         <h1 className="text-xl md:text-2xl lg:text-3xl font-semibold tracking-tight text-slate-100">
           {selected === 'top-articles' ? 'Trending Tips' : 'Tip Feed'}
         </h1>
         <span className="text-xs text-slate-400 hidden sm:inline">
-          {selected === 'top-articles' 
-            ? 'Most viewed tips on the platform' 
+          {selected === 'top-articles'
+            ? 'Most viewed tips on the platform'
             : 'Share your sports tips and analysis'
           }
         </span>
       </div>
       <div className={[
-          "hidden md:flex items-center gap-2",
-          "transition duration-700 delay-150",
-          isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
-        ].join(' ')}
+        "hidden md:flex items-center gap-2",
+        "transition duration-700 delay-150",
+        isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
+      ].join(' ')}
       >
         <div className="relative">
           <input
