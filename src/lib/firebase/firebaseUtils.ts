@@ -79,15 +79,18 @@ export const createNotification = async (notificationData: Omit<Notification, 'i
 
   console.log('🔔 Creating notification:', notificationData);
 
-  const notification: Notification = {
+  const notificationPayload = {
     ...notificationData,
-    id: 'n' + Math.random().toString(36).slice(2),
     createdAt: new Date().toISOString(),
     read: false,
   };
 
   try {
-    const docRef = await addDoc(collection(db, "notifications"), notification);
+    const docRef = await addDoc(collection(db, "notifications"), notificationPayload);
+    const notification: Notification = {
+      ...notificationPayload,
+      id: docRef.id,
+    };
     console.log('✅ Notification created successfully with ID:', docRef.id, notification);
     return docRef.id;
   } catch (error) {
@@ -149,7 +152,14 @@ export const deleteNotification = async (notificationId: string) => {
     throw new Error("Firebase Firestore not available");
   }
 
-  return deleteDoc(doc(db, "notifications", notificationId));
+  console.log('🗑️ Deleting notification with ID:', notificationId);
+  try {
+    await deleteDoc(doc(db, "notifications", notificationId));
+    console.log('✅ Notification deleted successfully');
+  } catch (error) {
+    console.error('❌ Error deleting notification:', error);
+    throw error;
+  }
 };
 
 export const updateDocument = (collectionName: string, id: string, data: any) => {

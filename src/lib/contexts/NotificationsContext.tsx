@@ -169,11 +169,14 @@ export function NotificationsProvider({ children }: { children: ReactNode }) {
   };
 
   const deleteNotification = async (id: string) => {
+    console.log('🗑️ NotificationsContext: Deleting notification with ID:', id);
     try {
       await deleteNotificationFirebase(id);
+      console.log('✅ NotificationsContext: Notification deleted successfully');
     } catch (error) {
-      console.error('Error deleting notification:', error);
+      console.error('❌ NotificationsContext: Error deleting notification:', error);
       // Fallback to local state update
+      console.log('🔄 NotificationsContext: Using fallback local state update');
       setNotifications(prev => prev.filter(notification => notification.id !== id));
     }
   };

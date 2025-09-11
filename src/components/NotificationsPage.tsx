@@ -246,6 +246,7 @@ export default function NotificationsPage() {
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
+                            console.log('🗑️ NotificationsPage: Delete button clicked for notification:', notification.id);
                             deleteNotification(notification.id);
                           }}
                           className="p-1 text-slate-500 hover:text-red-400 rounded"
