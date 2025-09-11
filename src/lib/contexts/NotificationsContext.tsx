@@ -2,11 +2,10 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { Notification, NotificationSettings } from "../types";
-import { sampleNotifications } from "../utils";
 import { useAuth } from "../hooks/useAuth";
-import { 
-  getUserNotifications, 
-  markNotificationAsRead, 
+import {
+  getUserNotifications,
+  markNotificationAsRead,
   markAllNotificationsAsRead as markAllAsReadFirebase,
   createNotification as createNotificationFirebase,
   deleteNotification as deleteNotificationFirebase
@@ -37,12 +36,12 @@ const NotificationsContext = createContext<NotificationsContextType>({
     matchResults: true,
     system: true,
   },
-  addNotification: () => {},
-  markAsRead: () => {},
-  markAllAsRead: () => {},
-  deleteNotification: () => {},
-  updateSettings: () => {},
-  clearAllNotifications: () => {},
+  addNotification: () => { },
+  markAsRead: () => { },
+  markAllAsRead: () => { },
+  deleteNotification: () => { },
+  updateSettings: () => { },
+  clearAllNotifications: () => { },
 });
 
 export function NotificationsProvider({ children }: { children: ReactNode }) {
@@ -77,26 +76,26 @@ export function NotificationsProvider({ children }: { children: ReactNode }) {
   // Set up real-time listener for notifications when user is authenticated
   useEffect(() => {
     if (!user || !db) {
-      // Fallback to sample data when not authenticated
-      setNotifications(sampleNotifications);
+      // Clear notifications when not authenticated
+      setNotifications([]);
       return;
     }
 
     const notificationsRef = collection(db, "notifications");
-    
+
     // Try the optimized query first, fallback to simpler query if index doesn't exist
     let q;
     try {
       q = query(
-        notificationsRef, 
-        where("recipientId", "==", user.uid), 
+        notificationsRef,
+        where("recipientId", "==", user.uid),
         orderBy("createdAt", "desc")
       );
     } catch (error) {
       console.warn('Composite index not found, using simpler query:', error);
       // Fallback to query without orderBy if index doesn't exist
       q = query(
-        notificationsRef, 
+        notificationsRef,
         where("recipientId", "==", user.uid)
       );
     }
@@ -110,17 +109,17 @@ export function NotificationsProvider({ children }: { children: ReactNode }) {
           recipientId: data.recipientId || user.uid // Ensure recipientId exists
         } as Notification;
       });
-      
+
       // Sort by createdAt if we couldn't use orderBy in the query
-      const sortedData = notificationsData.sort((a, b) => 
+      const sortedData = notificationsData.sort((a, b) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       );
-      
+
       setNotifications(sortedData);
     }, (error) => {
       console.error('Error listening to notifications:', error);
-      // Fallback to sample data on error
-      setNotifications(sampleNotifications);
+      // Clear notifications on error
+      setNotifications([]);
     });
 
     return () => unsubscribe();
@@ -130,7 +129,7 @@ export function NotificationsProvider({ children }: { children: ReactNode }) {
 
   const addNotification = async (notificationData: Omit<Notification, 'id' | 'createdAt' | 'read'>) => {
     if (!user) return;
-    
+
     try {
       await createNotificationFirebase({
         ...notificationData,
@@ -157,7 +156,7 @@ export function NotificationsProvider({ children }: { children: ReactNode }) {
 
   const markAllAsRead = async () => {
     if (!user) return;
-    
+
     try {
       await markAllAsReadFirebase(user.uid);
     } catch (error) {
@@ -185,18 +184,18 @@ export function NotificationsProvider({ children }: { children: ReactNode }) {
 
   const clearAllNotifications = async () => {
     if (!user) return;
-    
+
     try {
       // Delete all notifications for the user
       const notificationsRef = collection(db, "notifications");
       const q = query(notificationsRef, where("recipientId", "==", user.uid));
       const querySnapshot = await getDocs(q);
-      
+
       const batch = writeBatch(db);
       querySnapshot.docs.forEach(doc => {
         batch.delete(doc.ref);
       });
-      
+
       await batch.commit();
     } catch (error) {
       console.error('Error clearing all notifications:', error);

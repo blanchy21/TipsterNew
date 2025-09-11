@@ -77,6 +77,8 @@ export const createNotification = async (notificationData: Omit<Notification, 'i
     throw new Error("Firebase Firestore not available");
   }
 
+  console.log('🔔 Creating notification:', notificationData);
+
   const notification: Notification = {
     ...notificationData,
     id: 'n' + Math.random().toString(36).slice(2),
@@ -84,7 +86,14 @@ export const createNotification = async (notificationData: Omit<Notification, 'i
     read: false,
   };
 
-  return addDoc(collection(db, "notifications"), notification);
+  try {
+    const docRef = await addDoc(collection(db, "notifications"), notification);
+    console.log('✅ Notification created successfully with ID:', docRef.id, notification);
+    return docRef.id;
+  } catch (error) {
+    console.error('❌ Error creating notification:', error);
+    throw error;
+  }
 };
 
 export const getUserNotifications = async (userId: string) => {

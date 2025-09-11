@@ -8,6 +8,7 @@ import { Post, TipStatus } from '@/lib/types';
 import { getPosts, updatePost } from '@/lib/firebase/firebaseUtils';
 import { createTipVerification } from '@/lib/firebase/tipVerification';
 import { useAuth } from '@/lib/hooks/useAuth';
+import { createNotification } from '@/lib/firebase/firebaseUtils';
 
 const AdminPage: React.FC = () => {
   const { user } = useAuth();
@@ -167,6 +168,29 @@ const AdminPage: React.FC = () => {
     }
   };
 
+  const handleTestNotification = async () => {
+    if (!user) return;
+
+    setIsLoading(true);
+    setMessage(null);
+
+    try {
+      await createNotification({
+        type: 'system',
+        title: 'Test Notification',
+        message: 'This is a test notification to verify the notification system is working correctly.',
+        recipientId: user.uid,
+        actionUrl: '/notifications'
+      });
+      setMessage({ type: 'success', text: 'Test notification sent! Check your notifications page.' });
+    } catch (error) {
+      console.error('Error creating test notification:', error);
+      setMessage({ type: 'error', text: 'Failed to create test notification' });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-slate-900 to-[#2c1376]/70 min-h-screen">
       <div className="max-w-6xl mx-auto px-4 lg:px-8 py-8">
@@ -222,7 +246,7 @@ const AdminPage: React.FC = () => {
         {selectedTab === 'data' && (
           <>
             {/* Actions */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {/* Populate Data */}
               <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
                 <div className="flex items-center gap-3 mb-4">
@@ -270,6 +294,31 @@ const AdminPage: React.FC = () => {
                     <Trash2 className="w-5 h-5" />
                   )}
                   {isLoading ? 'Clearing...' : 'Clear Data'}
+                </button>
+              </div>
+
+              {/* Test Notification */}
+              <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-2 bg-green-500/20 rounded-xl">
+                    <AlertCircle className="w-6 h-6 text-green-400" />
+                  </div>
+                  <h2 className="text-xl font-semibold text-white">Test Notification</h2>
+                </div>
+                <p className="text-neutral-400 mb-6">
+                  Send a test notification to verify the notification system is working correctly.
+                </p>
+                <button
+                  onClick={handleTestNotification}
+                  disabled={isLoading}
+                  className="w-full bg-green-500 text-white py-3 px-6 rounded-xl hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+                >
+                  {isLoading ? (
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                  ) : (
+                    <AlertCircle className="w-5 h-5" />
+                  )}
+                  {isLoading ? 'Sending...' : 'Test Notification'}
                 </button>
               </div>
             </div>

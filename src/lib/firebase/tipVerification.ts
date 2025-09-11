@@ -1,5 +1,5 @@
 import { db } from './firebase';
-import { collection, addDoc, query, where, getDocs, orderBy, onSnapshot } from 'firebase/firestore';
+import { collection, addDoc, query, where, getDocs, orderBy, onSnapshot, getDoc, doc } from 'firebase/firestore';
 import { createNotification } from './firebaseUtils';
 
 export interface TipVerification {
@@ -38,15 +38,29 @@ export const createTipVerification = async (verificationData: Omit<TipVerificati
 
         const docRef = await addDoc(collection(db, 'tipVerifications'), verification);
 
+        // Get admin user profile for notification
+        console.log('🔍 Getting admin profile for notification:', verificationData.adminId);
+        const adminDoc = await getDoc(doc(db, 'users', verificationData.adminId));
+        const adminData = adminDoc.data();
+        console.log('👤 Admin data:', adminData);
+
         // Create notification for the tipster
-        await createNotification({
+        console.log('🔔 Creating notification for tipster:', verificationData.tipsterId);
+        const notificationId = await createNotification({
             type: 'tip',
             title: 'Tip Verified',
             message: `Your tip has been marked as ${verificationData.status}`,
+            user: adminData ? {
+                id: verificationData.adminId,
+                name: adminData.displayName || adminData.name || 'Admin',
+                handle: adminData.handle || '@admin',
+                avatar: adminData.photoURL || adminData.avatar || ''
+            } : undefined,
             recipientId: verificationData.tipsterId,
             postId: verificationData.postId,
             actionUrl: `/post/${verificationData.postId}`
         });
+        console.log('✅ Notification created with ID:', notificationId);
 
         return { id: docRef.id, ...verification };
     } catch (error) {
