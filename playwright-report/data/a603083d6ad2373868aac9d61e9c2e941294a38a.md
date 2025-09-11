@@ -1,0 +1,288 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - alert [ref=e2]
+  - iframe [ref=e3]:
+    
+  - generic [ref=e4]:
+    - navigation [ref=e9]:
+      - generic [ref=e12]:
+        - generic [ref=e13]:
+          - img [ref=e15]
+          - generic [ref=e17]: Tipster Arena
+        - generic [ref=e18]:
+          - button "Sign in" [ref=e19] [cursor=pointer]
+          - link "Get started" [ref=e20] [cursor=pointer]:
+            - /url: "#"
+            - img [ref=e21] [cursor=pointer]
+            - text: Get started
+          - button [ref=e26] [cursor=pointer]:
+            - img [ref=e27] [cursor=pointer]
+    - generic [ref=e30]:
+      - generic [ref=e31]:
+        - generic [ref=e35]: Now with transparent tip tracking
+        - img [ref=e36]
+      - heading "The world's premier platform for sports tip sharing" [level=1] [ref=e38]:
+        - text: The world's premier platform for
+        - generic [ref=e39]: sports tip sharing
+      - paragraph [ref=e40]: Share tips, track performance, and connect with fellow sports fans. Built by sports fans for sports fans - completely free, with transparent statistics and no bookmaker bias.
+      - generic [ref=e41]:
+        - generic [ref=e42]:
+          - img [ref=e43]
+          - generic [ref=e48]: 10K+ active tipsters
+        - generic [ref=e49]:
+          - img [ref=e50]
+          - generic [ref=e52]: 100% free forever
+        - generic [ref=e53]:
+          - img [ref=e54]
+          - generic [ref=e57]: Transparent tracking
+      - generic [ref=e58]:
+        - link "Start sharing tips now" [ref=e59] [cursor=pointer]:
+          - /url: "#"
+          - img [ref=e60] [cursor=pointer]
+          - text: Start sharing tips now
+        - link "Watch product demo" [ref=e65] [cursor=pointer]:
+          - /url: "#demo-video"
+          - img [ref=e66] [cursor=pointer]
+          - text: Watch product demo
+    - generic [ref=e70]:
+      - generic [ref=e71]:
+        - heading "Where Sports Fans Share Tips" [level=2] [ref=e72]:
+          - text: Where Sports Fans
+          - generic [ref=e73]: Share Tips
+        - paragraph [ref=e74]: From living rooms to stadiums, see how sports fans around the world use Tipster Arena to share tips, track performance, and build their reputation.
+      - generic [ref=e77]: Your browser does not support the video tag.
+    - generic [ref=e80]:
+      - heading "Why We Built Tipster Arena" [level=2] [ref=e81]:
+        - text: Why We Built
+        - generic [ref=e82]: Tipster Arena
+      - generic [ref=e83]:
+        - paragraph [ref=e84]: “We were tired of traditional tipster services with hidden fees, bookmaker bias, and marketing hype. We wanted a platform where everyday punters could share their tips and track their performance transparently. No politics, no drama - just pure sports tip sharing.”
+        - generic [ref=e85]:
+          - paragraph [ref=e86]: “Sports tip sharing should be about community, transparency, and celebrating those who consistently find winners. We built Tipster Arena to give every sports fan a voice and a way to prove their expertise through real results.”
+          - generic [ref=e87]:
+            - generic [ref=e89]: TA
+            - generic [ref=e90]:
+              - generic [ref=e91]: Tipster Arena Founders
+              - generic [ref=e92]: Built by sports fans, for sports fans
+    - generic [ref=e94]:
+      - generic [ref=e95]:
+        - heading "Share Tips for Every Sport" [level=2] [ref=e96]:
+          - text: Share Tips for
+          - generic [ref=e97]: Every Sport
+        - paragraph [ref=e98]: From mainstream favorites to niche competitions, share your tips for any sport that matters to you. Find your community and help others discover winning strategies.
+      - generic [ref=e99]:
+        - heading "Currently Covered Sports" [level=3] [ref=e100]
+        - generic [ref=e101]:
+          - generic [ref=e103]: Football
+          - generic [ref=e105]: Basketball
+          - generic [ref=e107]: Tennis
+          - generic [ref=e109]: Baseball
+          - generic [ref=e111]: Hockey
+          - generic [ref=e113]: Cricket
+          - generic [ref=e115]: Golf
+          - generic [ref=e117]: Boxing
+          - generic [ref=e119]: MMA
+          - generic [ref=e121]: Esports
+          - generic [ref=e123]: Rugby
+          - generic [ref=e125]: Volleyball
+          - generic [ref=e127]: Badminton
+          - generic [ref=e129]: Table Tennis
+          - generic [ref=e131]: Snooker
+          - generic [ref=e133]: Darts
+          - generic [ref=e135]: Cycling
+          - generic [ref=e137]: Formula 1
+          - generic [ref=e139]: MotoGP
+          - generic [ref=e141]: American Football
+          - generic [ref=e143]: NBA
+          - generic [ref=e145]: MLB
+          - generic [ref=e147]: NHL
+      - generic [ref=e149]:
+        - heading "More Sports Coming Soon" [level=3] [ref=e150]:
+          - text: More Sports
+          - generic [ref=e151]: Coming Soon
+        - paragraph [ref=e152]: "We're constantly expanding our coverage. Here are some sports we're working to add:"
+        - generic [ref=e153]:
+          - generic [ref=e154]: Gaelic Games
+          - generic [ref=e155]: Aussie Rules
+          - generic [ref=e156]: Lacrosse
+          - generic [ref=e157]: Water Polo
+          - generic [ref=e158]: Handball
+          - generic [ref=e159]: Squash
+          - generic [ref=e160]: Rowing
+          - generic [ref=e161]: Sailing
+          - generic [ref=e162]: Surfing
+          - generic [ref=e163]: Snowboarding
+          - generic [ref=e164]: Skiing
+          - generic [ref=e165]: Wrestling
+          - generic [ref=e166]: Judo
+          - generic [ref=e167]: Taekwondo
+          - generic [ref=e168]: Karate
+          - generic [ref=e169]: Swimming
+          - generic [ref=e170]: Track & Field
+          - generic [ref=e171]: Gymnastics
+          - generic [ref=e172]: Figure Skating
+          - generic [ref=e173]: Curling
+          - generic [ref=e174]: Bobsleigh
+          - generic [ref=e175]: Skeleton
+          - generic [ref=e176]: Luge
+        - paragraph [ref=e178]:
+          - text: Don't see your sport?
+          - generic [ref=e179]: Let us know
+          - text: and we'll prioritize adding it!
+    - generic [ref=e181]:
+      - generic [ref=e182]:
+        - heading "Everything You Need for Tip Sharing" [level=2] [ref=e183]:
+          - text: Everything You Need for
+          - generic [ref=e184]: Tip Sharing
+        - paragraph [ref=e185]: Powerful features designed specifically for sports tip sharing, performance tracking, and community building. Built by sports fans for sports fans.
+      - generic [ref=e186]:
+        - generic [ref=e187] [cursor=pointer]:
+          - generic [ref=e188] [cursor=pointer]: 🎯
+          - heading "Share Your Tips" [level=3] [ref=e189] [cursor=pointer]
+          - paragraph [ref=e190] [cursor=pointer]: Post your sports predictions and tips for any sport. Share your insights with the community and build your reputation.
+        - generic [ref=e192] [cursor=pointer]:
+          - generic [ref=e193] [cursor=pointer]: 💬
+          - heading "Live Sports Chat" [level=3] [ref=e194] [cursor=pointer]
+          - paragraph [ref=e195] [cursor=pointer]: Join dedicated chat rooms for each sport - Football, Horse Racing, Golf, Tennis, Basketball & General. Real-time discussions with fellow tipsters during games.
+        - generic [ref=e197] [cursor=pointer]:
+          - generic [ref=e198] [cursor=pointer]: 📊
+          - heading "Transparent Tracking" [level=3] [ref=e199] [cursor=pointer]
+          - paragraph [ref=e200] [cursor=pointer]: Automatic win/loss tracking with transparent statistics. See real performance data including win rates and average odds.
+        - generic [ref=e202] [cursor=pointer]:
+          - generic [ref=e203] [cursor=pointer]: 🔍
+          - heading "Find Top Tipsters" [level=3] [ref=e204] [cursor=pointer]
+          - paragraph [ref=e205] [cursor=pointer]: Search user profiles to find the best performing tipsters. No more scrolling through message boards - find winners easily.
+        - generic [ref=e207] [cursor=pointer]:
+          - generic [ref=e208] [cursor=pointer]: 👥
+          - heading "Community Driven" [level=3] [ref=e209] [cursor=pointer]
+          - paragraph [ref=e210] [cursor=pointer]: Celebrate everyday punters who consistently find winners. No bookmaker bias or conflicts of interest - just pure community tips.
+        - generic [ref=e212] [cursor=pointer]:
+          - generic [ref=e213] [cursor=pointer]: 🛡️
+          - heading "Sports Only" [level=3] [ref=e214] [cursor=pointer]
+          - paragraph [ref=e215] [cursor=pointer]: A politics-free zone focused purely on sports. No distractions from politics, religion, or drama - just sports discussion.
+        - generic [ref=e217] [cursor=pointer]:
+          - generic [ref=e218] [cursor=pointer]: 💰
+          - heading "100% Free" [level=3] [ref=e219] [cursor=pointer]
+          - paragraph [ref=e220] [cursor=pointer]: Completely free forever with no hidden fees or premium tiers. Unlimited tips, real-time notifications, and full statistics.
+    - generic [ref=e223]:
+      - generic [ref=e224]:
+        - heading "Live Sports Chat Rooms" [level=2] [ref=e225]:
+          - generic [ref=e226]: Live Sports Chat
+          - text: Rooms
+        - paragraph [ref=e227]: Join dedicated chat rooms for each sport and discuss tips, strategies, and live action with fellow tipsters. Each room is isolated so you only see relevant discussions for your sport.
+      - generic [ref=e228]:
+        - generic [ref=e229] [cursor=pointer]:
+          - generic [ref=e230] [cursor=pointer]: 💬
+          - heading "General Chat" [level=3] [ref=e231] [cursor=pointer]
+          - paragraph [ref=e232] [cursor=pointer]: Discuss anything sports-related
+          - generic [ref=e234] [cursor=pointer]: 127 online
+        - generic [ref=e237] [cursor=pointer]:
+          - generic [ref=e238] [cursor=pointer]: ⚽
+          - heading "Football" [level=3] [ref=e239] [cursor=pointer]
+          - paragraph [ref=e240] [cursor=pointer]: Premier League, Champions League & more
+          - generic [ref=e242] [cursor=pointer]: 89 online
+        - generic [ref=e245] [cursor=pointer]:
+          - generic [ref=e246] [cursor=pointer]: 🏇
+          - heading "Horse Racing" [level=3] [ref=e247] [cursor=pointer]
+          - paragraph [ref=e248] [cursor=pointer]: Flat Racing, Jump Racing & Major Festivals
+          - generic [ref=e250] [cursor=pointer]: 38 online
+        - generic [ref=e253] [cursor=pointer]:
+          - generic [ref=e254] [cursor=pointer]: ⛳
+          - heading "Golf" [level=3] [ref=e255] [cursor=pointer]
+          - paragraph [ref=e256] [cursor=pointer]: Masters, PGA Championship & Ryder Cup
+          - generic [ref=e258] [cursor=pointer]: 31 online
+        - generic [ref=e261] [cursor=pointer]:
+          - generic [ref=e262] [cursor=pointer]: 🎾
+          - heading "Tennis" [level=3] [ref=e263] [cursor=pointer]
+          - paragraph [ref=e264] [cursor=pointer]: Grand Slams, ATP & WTA Tours
+          - generic [ref=e266] [cursor=pointer]: 42 online
+        - generic [ref=e269] [cursor=pointer]:
+          - generic [ref=e270] [cursor=pointer]: 🏀
+          - heading "Basketball" [level=3] [ref=e271] [cursor=pointer]
+          - paragraph [ref=e272] [cursor=pointer]: NBA, EuroLeague & College Basketball
+          - generic [ref=e274] [cursor=pointer]: 64 online
+      - generic [ref=e277]:
+        - paragraph [ref=e278]: Real-time messaging • Channel isolation • Live during games
+        - button "Join Live Chat Now" [ref=e279] [cursor=pointer]:
+          - img [ref=e280] [cursor=pointer]
+          - text: Join Live Chat Now
+    - generic [ref=e283]:
+      - generic [ref=e284]:
+        - heading "Tips for 50+ Sports" [level=2] [ref=e285]:
+          - text: Tips for
+          - generic [ref=e286]: 50+ Sports
+        - paragraph [ref=e287]: From football to tennis, basketball to cricket - share your tips for any sport and help others discover winning strategies.
+      - generic [ref=e288]:
+        - generic [ref=e289] [cursor=pointer]:
+          - generic [ref=e290] [cursor=pointer]: ⚽
+          - generic [ref=e291] [cursor=pointer]: Football
+        - generic [ref=e292] [cursor=pointer]:
+          - generic [ref=e293] [cursor=pointer]: 🏇
+          - generic [ref=e294] [cursor=pointer]: Horse Racing
+        - generic [ref=e295] [cursor=pointer]:
+          - generic [ref=e296] [cursor=pointer]: ⛳
+          - generic [ref=e297] [cursor=pointer]: Golf
+        - generic [ref=e298] [cursor=pointer]:
+          - generic [ref=e299] [cursor=pointer]: 🎾
+          - generic [ref=e300] [cursor=pointer]: Tennis
+        - generic [ref=e301] [cursor=pointer]:
+          - generic [ref=e302] [cursor=pointer]: 🏀
+          - generic [ref=e303] [cursor=pointer]: Basketball
+        - generic [ref=e304] [cursor=pointer]:
+          - generic [ref=e305] [cursor=pointer]: 🏏
+          - generic [ref=e306] [cursor=pointer]: Cricket
+    - generic [ref=e308]:
+      - heading "Ready to Start Sharing Tips?" [level=2] [ref=e309]:
+        - text: Ready to Start
+        - generic [ref=e310]: Sharing Tips
+        - text: "?"
+      - paragraph [ref=e311]: Join thousands of sports fans who are sharing tips, tracking performance, and building their reputation in a community focused purely on sports success.
+      - generic [ref=e312]:
+        - button "Start Sharing Tips Now" [ref=e313] [cursor=pointer]
+        - button "Browse Top Tipsters" [ref=e314] [cursor=pointer]
+      - paragraph [ref=e315]: Completely free forever • No hidden fees • No credit card required
+    - contentinfo [ref=e316]:
+      - generic [ref=e317]:
+        - generic [ref=e318]:
+          - generic [ref=e319]:
+            - generic [ref=e320]:
+              - generic [ref=e322]: SA
+              - generic [ref=e323]: Tipster Arena
+            - paragraph [ref=e324]: The world's premier platform for sports tip sharing. Share tips, track performance, and connect with fellow sports fans - completely free and transparent.
+            - generic [ref=e325]:
+              - link [ref=e326] [cursor=pointer]:
+                - /url: "#"
+                - img [ref=e327] [cursor=pointer]
+              - link [ref=e329] [cursor=pointer]:
+                - /url: "#"
+                - img [ref=e330] [cursor=pointer]
+              - link [ref=e332] [cursor=pointer]:
+                - /url: "#"
+                - img [ref=e333] [cursor=pointer]
+          - generic [ref=e335]:
+            - heading "Support" [level=4] [ref=e336]
+            - list [ref=e337]:
+              - listitem [ref=e338]:
+                - link "Help Center" [ref=e339] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e340]:
+                - link "Community" [ref=e341] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e342]:
+                - link "Contact" [ref=e343] [cursor=pointer]:
+                  - /url: "#"
+              - listitem [ref=e344]:
+                - link "Status" [ref=e345] [cursor=pointer]:
+                  - /url: "#"
+        - generic [ref=e346]:
+          - paragraph [ref=e347]: © 2024 Tipster Arena. All rights reserved.
+          - generic [ref=e348]:
+            - link "Privacy" [ref=e349] [cursor=pointer]:
+              - /url: /privacy
+            - link "Terms" [ref=e350] [cursor=pointer]:
+              - /url: /terms
+            - link "Cookies" [ref=e351] [cursor=pointer]:
+              - /url: /cookies
+```

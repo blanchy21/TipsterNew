@@ -1,4 +1,7 @@
+'use client';
+
 import React from 'react';
+import { AuthProvider } from '@/lib/contexts/AuthContext';
 
 export default function ProfileLayout({
   children,
@@ -6,8 +9,10 @@ export default function ProfileLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen">
-      {children}
-    </div>
+    <AuthProvider>
+      <div className="min-h-screen">
+        {children}
+      </div>
+    </AuthProvider>
   );
 }

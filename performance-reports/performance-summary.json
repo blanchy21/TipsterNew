@@ -1,0 +1,35 @@
+{
+  "timestamp": "2025-09-11T16:42:33.861Z",
+  "baseUrl": "http://localhost:3000",
+  "results": [
+    {
+      "page": "homepage",
+      "url": "/",
+      "performance": 28,
+      "accessibility": 87,
+      "bestPractices": 100,
+      "seo": 100,
+      "fcp": 18276.1084,
+      "lcp": 27580.478590000006,
+      "cls": 0,
+      "passed": false
+    },
+    {
+      "page": "chat",
+      "url": "/chat",
+      "performance": 48,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 100,
+      "fcp": 1689.7402499999998,
+      "lcp": 17194.5001,
+      "cls": 0.018566521149815666,
+      "passed": false
+    }
+  ],
+  "summary": {
+    "total": 2,
+    "passed": 0,
+    "failed": 2
+  }
+}
