@@ -393,7 +393,7 @@ function AppContent() {
               <ProfilePage onNavigate={handleProfileNavigation} userId={viewingUserId || undefined} />
             </div>
           ) : selected === 'messages' ? (
-            <div className="flex-1">
+            <div className="flex-1 overflow-y-auto">
               <MessagesPage />
             </div>
           ) : selected === 'chat' ? (
@@ -401,11 +401,11 @@ function AppContent() {
               <ChatPage />
             </div>
           ) : selected === 'notifications' ? (
-            <div className="flex-1">
+            <div className="flex-1 overflow-y-auto">
               <NotificationsPage />
             </div>
           ) : selected === 'following' ? (
-            <div className="flex-1">
+            <div className="flex-1 overflow-y-auto">
               <FollowingPage onNavigateToProfile={handleNavigateToProfile} />
             </div>
           ) : selected === 'top-tipsters' ? (
