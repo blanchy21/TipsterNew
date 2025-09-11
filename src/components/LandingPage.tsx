@@ -29,6 +29,12 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
       color: 'from-emerald-500 to-teal-600'
     },
     {
+      icon: '💬',
+      title: 'Live Sports Chat',
+      description: 'Join dedicated chat rooms for each sport - Football, Horse Racing, Golf, Tennis, Basketball & General. Real-time discussions with fellow tipsters during games.',
+      color: 'from-cyan-500 to-blue-600'
+    },
+    {
       icon: '📊',
       title: 'Transparent Tracking',
       description: 'Automatic win/loss tracking with transparent statistics. See real performance data including win rates and average odds.',
@@ -62,11 +68,11 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
 
   const sports = [
     { name: 'Football', icon: '⚽', color: 'text-green-400' },
-    { name: 'Basketball', icon: '🏀', color: 'text-orange-400' },
+    { name: 'Horse Racing', icon: '🏇', color: 'text-amber-400' },
+    { name: 'Golf', icon: '⛳', color: 'text-emerald-400' },
     { name: 'Tennis', icon: '🎾', color: 'text-yellow-400' },
-    { name: 'Cricket', icon: '🏏', color: 'text-blue-400' },
-    { name: 'Baseball', icon: '⚾', color: 'text-red-400' },
-    { name: 'Hockey', icon: '🏒', color: 'text-cyan-400' }
+    { name: 'Basketball', icon: '🏀', color: 'text-orange-400' },
+    { name: 'Cricket', icon: '🏏', color: 'text-blue-400' }
   ];
 
   const stats = [
@@ -401,6 +407,65 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
                 <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-orange-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Live Chat Rooms Section */}
+      <section className="py-20 bg-black/20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold mb-4">
+              <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-400 bg-clip-text text-transparent">Live Sports Chat</span> Rooms
+            </h2>
+            <p className="text-xl text-white/70 max-w-3xl mx-auto">
+              Join dedicated chat rooms for each sport and discuss tips, strategies, and live action with fellow tipsters.
+              Each room is isolated so you only see relevant discussions for your sport.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              { name: 'General Chat', icon: '💬', description: 'Discuss anything sports-related', users: '127 online', color: 'from-blue-500 to-cyan-600' },
+              { name: 'Football', icon: '⚽', description: 'Premier League, Champions League & more', users: '89 online', color: 'from-green-500 to-emerald-600' },
+              { name: 'Horse Racing', icon: '🏇', description: 'Flat Racing, Jump Racing & Major Festivals', users: '38 online', color: 'from-amber-500 to-yellow-600' },
+              { name: 'Golf', icon: '⛳', description: 'Masters, PGA Championship & Ryder Cup', users: '31 online', color: 'from-emerald-500 to-teal-600' },
+              { name: 'Tennis', icon: '🎾', description: 'Grand Slams, ATP & WTA Tours', users: '42 online', color: 'from-purple-500 to-pink-600' },
+              { name: 'Basketball', icon: '🏀', description: 'NBA, EuroLeague & College Basketball', users: '64 online', color: 'from-orange-500 to-red-600' }
+            ].map((room, index) => (
+              <div
+                key={index}
+                className="group relative rounded-2xl border border-white/10 bg-white/[0.04] p-6 transition-all duration-300 hover:transform hover:scale-105 cursor-pointer hover:border-white/20"
+              >
+                <div className={`w-16 h-16 bg-gradient-to-br ${room.color} rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                  {room.icon}
+                </div>
+                <h3 className="text-xl font-semibold mb-2 text-white">{room.name}</h3>
+                <p className="text-white/70 text-sm mb-3 leading-relaxed">{room.description}</p>
+                <div className="flex items-center justify-between">
+                  <span className="text-green-400 text-sm font-medium">{room.users}</span>
+                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                </div>
+
+                {/* Hover effect */}
+                <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-orange-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center mt-12">
+            <p className="text-white/60 text-lg mb-6">
+              Real-time messaging • Channel isolation • Live during games
+            </p>
+            <button
+              onClick={onGetStarted}
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-600 to-orange-600 px-8 py-4 rounded-full font-semibold text-lg hover:from-amber-500 hover:to-orange-500 transition-all duration-200 transform hover:scale-105 shadow-2xl shadow-amber-500/25"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+              </svg>
+              Join Live Chat Now
+            </button>
           </div>
         </div>
       </section>
