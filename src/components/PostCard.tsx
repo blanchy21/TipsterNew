@@ -37,6 +37,14 @@ export default function PostCard({ post, onLikeChange, onCommentCountChange, onN
   const [showMenu, setShowMenu] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [editForm, setEditForm] = useState({
+    title: post.title,
+    content: post.content,
+    odds: post.odds || '',
+    tags: post.tags.join(', '),
+    sport: post.sport
+  });
   const menuRef = useRef<HTMLDivElement>(null);
 
   const handleCommentCountChange = (newCount: number) => {
@@ -87,8 +95,55 @@ export default function PostCard({ post, onLikeChange, onCommentCountChange, onN
 
   const handleEditPost = () => {
     if (!canEdit) return;
+    // Reset form to current post values
+    setEditForm({
+      title: post.title,
+      content: post.content,
+      odds: post.odds || '',
+      tags: post.tags.join(', '),
+      sport: post.sport
+    });
     setShowEditModal(true);
     setShowMenu(false);
+  };
+
+  const handleEditSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!canEdit) return;
+
+    setIsUpdating(true);
+    try {
+      const updatedPost = {
+        ...post,
+        title: editForm.title.trim(),
+        content: editForm.content.trim(),
+        odds: editForm.odds.trim() || undefined,
+        tags: editForm.tags.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0),
+        sport: editForm.sport,
+        updatedAt: new Date().toISOString()
+      };
+
+      await updatePost(post.id, updatedPost);
+      onPostUpdated?.(post.id, updatedPost);
+      setShowEditModal(false);
+    } catch (error) {
+      console.error('Error updating post:', error);
+      alert('Failed to update tip. Please try again.');
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  const handleEditCancel = () => {
+    setShowEditModal(false);
+    // Reset form to original values
+    setEditForm({
+      title: post.title,
+      content: post.content,
+      odds: post.odds || '',
+      tags: post.tags.join(', '),
+      sport: post.sport
+    });
   };
 
   const getTipStatusDisplay = (status: TipStatus | undefined) => {
@@ -288,27 +343,119 @@ export default function PostCard({ post, onLikeChange, onCommentCountChange, onN
       {/* Edit Modal */}
       {showEditModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-slate-800 rounded-lg max-w-md w-full p-6">
-            <h3 className="text-lg font-semibold text-white mb-4">Edit Tip</h3>
-            <p className="text-slate-300 mb-4">
-              Edit functionality will be implemented in a future update. For now, you can delete and recreate the tip.
-            </p>
-            <div className="flex gap-3 justify-end">
-              <button
-                onClick={() => setShowEditModal(false)}
-                className="px-4 py-2 text-slate-300 hover:text-white transition"
-              >
-                Close
-              </button>
-              <button
-                onClick={() => {
-                  setShowEditModal(false);
-                  handleDeletePost();
-                }}
-                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
-              >
-                Delete & Recreate
-              </button>
+          <div className="bg-slate-800 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <h3 className="text-xl font-semibold text-white mb-6">Edit Tip</h3>
+
+              <form onSubmit={handleEditSubmit} className="space-y-4">
+                {/* Title */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                    Tip Title
+                  </label>
+                  <input
+                    type="text"
+                    value={editForm.title}
+                    onChange={(e) => setEditForm(prev => ({ ...prev, title: e.target.value }))}
+                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Enter tip title..."
+                    required
+                  />
+                </div>
+
+                {/* Content */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                    Analysis & Reasoning
+                  </label>
+                  <textarea
+                    value={editForm.content}
+                    onChange={(e) => setEditForm(prev => ({ ...prev, content: e.target.value }))}
+                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 h-32 resize-none"
+                    placeholder="Share your analysis and reasoning..."
+                    required
+                  />
+                </div>
+
+                {/* Sport and Odds */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-300 mb-2">
+                      Sport
+                    </label>
+                    <select
+                      value={editForm.sport}
+                      onChange={(e) => setEditForm(prev => ({ ...prev, sport: e.target.value }))}
+                      className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      required
+                    >
+                      <option value="Football">Football</option>
+                      <option value="Basketball">Basketball</option>
+                      <option value="Tennis">Tennis</option>
+                      <option value="Baseball">Baseball</option>
+                      <option value="Hockey">Hockey</option>
+                      <option value="Soccer">Soccer</option>
+                      <option value="Boxing">Boxing</option>
+                      <option value="MMA">MMA</option>
+                      <option value="Golf">Golf</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-slate-300 mb-2">
+                      Odds (Optional)
+                    </label>
+                    <input
+                      type="text"
+                      value={editForm.odds}
+                      onChange={(e) => setEditForm(prev => ({ ...prev, odds: e.target.value }))}
+                      className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      placeholder="e.g., 2.5, 3/1, +150"
+                    />
+                  </div>
+                </div>
+
+                {/* Tags */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                    Tags (comma-separated)
+                  </label>
+                  <input
+                    type="text"
+                    value={editForm.tags}
+                    onChange={(e) => setEditForm(prev => ({ ...prev, tags: e.target.value }))}
+                    className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="e.g., prediction, analysis, hot-tip"
+                  />
+                </div>
+
+                {/* Buttons */}
+                <div className="flex gap-3 justify-end pt-4">
+                  <button
+                    type="button"
+                    onClick={handleEditCancel}
+                    disabled={isUpdating}
+                    className="px-4 py-2 text-slate-300 hover:text-white transition disabled:opacity-50"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isUpdating || !editForm.title.trim() || !editForm.content.trim()}
+                    className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center gap-2"
+                  >
+                    {isUpdating ? (
+                      <>
+                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        Updating...
+                      </>
+                    ) : (
+                      'Update Tip'
+                    )}
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>

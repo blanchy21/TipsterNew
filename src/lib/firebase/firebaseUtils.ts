@@ -178,6 +178,7 @@ export const deletePost = async (postId: string) => {
   }
 };
 
+
 export const updateDocument = (collectionName: string, id: string, data: any) => {
   if (!db) {
     console.warn("Firebase Firestore not available");
