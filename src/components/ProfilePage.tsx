@@ -195,7 +195,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate, userId }) => {
 
   if (!profileUser) {
     return (
-      <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-slate-900 to-[#2c1376]/70 min-h-screen flex items-center justify-center">
+      <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
           <p className="text-neutral-400">Loading profile...</p>
@@ -276,7 +276,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate, userId }) => {
   };
 
   return (
-    <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-slate-900 to-[#2c1376]/70">
+    <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
       <div className="max-w-7xl mx-auto px-4 lg:px-8 py-12 space-y-16 opacity-0 translate-y-8 blur-sm" style={{ animation: 'fadeInSlideUp 1.2s ease-out 0.3s forwards' }}>
         {/* GRID */}
         <section className="grid lg:grid-cols-3 gap-8">

@@ -251,10 +251,14 @@ export default function TipVerificationAnalytics({
                                     </Pie>
                                     <Tooltip
                                         contentStyle={{
-                                            backgroundColor: 'rgba(15, 23, 42, 0.95)',
-                                            border: '1px solid rgba(255, 255, 255, 0.1)',
+                                            backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                                            border: '1px solid rgba(255, 255, 255, 0.2)',
                                             borderRadius: '8px',
-                                            color: 'white'
+                                            color: 'white',
+                                            fontSize: '14px',
+                                            fontWeight: '500',
+                                            padding: '8px 12px',
+                                            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)'
                                         }}
                                         formatter={(value: any, name: string, props: any) => [
                                             `${value} tips`,
@@ -308,10 +312,14 @@ export default function TipVerificationAnalytics({
                                     />
                                     <Tooltip
                                         contentStyle={{
-                                            backgroundColor: 'rgba(15, 23, 42, 0.95)',
-                                            border: '1px solid rgba(255, 255, 255, 0.1)',
+                                            backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                                            border: '1px solid rgba(255, 255, 255, 0.2)',
                                             borderRadius: '8px',
-                                            color: 'white'
+                                            color: 'white',
+                                            fontSize: '14px',
+                                            fontWeight: '500',
+                                            padding: '8px 12px',
+                                            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)'
                                         }}
                                         formatter={(value: any, name: string, props: any) => [
                                             `${value}%`,

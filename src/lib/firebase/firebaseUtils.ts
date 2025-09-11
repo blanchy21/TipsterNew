@@ -1010,7 +1010,7 @@ export const getFollowSuggestions = async (userId: string, limit: number = 10): 
     const currentUser = await getUserProfile(userId);
     const followingIds = currentUser?.following || [];
 
-    // Filter out current user and already followed users
+    // Filter out current user, already followed users, and deleted users
     const suggestions = allUsers
       .filter((user: any) => {
         // Skip if it's the current user

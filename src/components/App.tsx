@@ -124,7 +124,10 @@ function AppContent() {
   // Real-time posts listener
   useEffect(() => {
     if (!user || !db) {
-      console.log('❌ No user authenticated or Firebase not available, not setting up posts listener');
+      // Only log this message if we're not in loading state (to avoid console spam during auth initialization)
+      if (!loading) {
+        console.log('❌ No user authenticated or Firebase not available, not setting up posts listener');
+      }
       setPosts([]);
       return;
     }
@@ -161,7 +164,7 @@ function AppContent() {
       console.log('🧹 Cleaning up real-time posts listener');
       unsubscribe();
     };
-  }, [user]);
+  }, [user, loading]);
 
 
   const filteredPosts = useMemo(() => {

@@ -265,10 +265,28 @@ export const populateTestData = async () => {
   try {
     console.log('Starting to populate test data...');
 
-    // Add test users
+    // Check for existing users first to prevent duplicates
+    const existingUsers = await getDocuments('users');
+    const existingUserNames = new Set(existingUsers.map((user: any) => user.displayName || user.name));
+
+    // Add test users only if they don't already exist
     const userIds: string[] = [];
     for (let i = 0; i < testUsers.length; i++) {
       const userData = testUsers[i];
+
+      // Check if user already exists by displayName
+      if (existingUserNames.has(userData.displayName)) {
+        console.log(`User ${userData.displayName} already exists, skipping...`);
+        // Find the existing user ID to use for posts
+        const existingUser = existingUsers.find((user: any) =>
+          (user.displayName || user.name) === userData.displayName
+        );
+        if (existingUser) {
+          userIds.push(existingUser.id);
+        }
+        continue;
+      }
+
       const docRef = await addDocument('users', userData);
       userIds.push(docRef.id);
       console.log(`Added user: ${userData.displayName} with ID: ${docRef.id}`);
@@ -338,6 +356,55 @@ export const clearTestData = async () => {
     return { success: true };
   } catch (error) {
     console.error('Error clearing test data:', error);
+    return { success: false, error };
+  }
+};
+
+export const removeDuplicateUsers = async () => {
+  try {
+    console.log('Removing duplicate users...');
+
+    // Get all users
+    const users = await getDocuments('users');
+
+    // Group users by displayName to find duplicates
+    const userGroups = new Map<string, any[]>();
+
+    users.forEach((user: any) => {
+      const displayName = user.displayName || user.name || 'Unknown';
+      if (!userGroups.has(displayName)) {
+        userGroups.set(displayName, []);
+      }
+      userGroups.get(displayName)!.push(user);
+    });
+
+    let removedCount = 0;
+
+    // For each group, keep the oldest user and mark others as deleted
+    for (const [displayName, userGroup] of Array.from(userGroups.entries())) {
+      if (userGroup.length > 1) {
+        console.log(`Found ${userGroup.length} duplicates for ${displayName}`);
+
+        // Sort by creation date, keep the oldest
+        userGroup.sort((a, b) => {
+          const aDate = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(a.createdAt);
+          const bDate = b.createdAt?.toDate ? b.createdAt.toDate() : new Date(b.createdAt);
+          return aDate.getTime() - bDate.getTime();
+        });
+
+        // Mark all but the first (oldest) as deleted
+        for (let i = 1; i < userGroup.length; i++) {
+          await updateDocument('users', userGroup[i].id, { deleted: true });
+          removedCount++;
+          console.log(`Marked duplicate user as deleted: ${userGroup[i].displayName || userGroup[i].name} (ID: ${userGroup[i].id})`);
+        }
+      }
+    }
+
+    console.log(`Removed ${removedCount} duplicate users successfully!`);
+    return { success: true, removedCount };
+  } catch (error) {
+    console.error('Error removing duplicate users:', error);
     return { success: false, error };
   }
 };

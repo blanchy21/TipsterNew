@@ -26,7 +26,7 @@ import {
     Settings,
     RefreshCw
 } from 'lucide-react';
-import { populateTestData, clearTestData } from '@/lib/populateTestData';
+import { populateTestData, clearTestData, removeDuplicateUsers } from '@/lib/populateTestData';
 import { Post, TipStatus, User } from '@/lib/types';
 import { getPosts, updatePost, getDocuments } from '@/lib/firebase/firebaseUtils';
 import { useAuth } from '@/lib/hooks/useAuth';
@@ -182,6 +182,24 @@ const AdminDashboard: React.FC = () => {
             }
         } catch (error) {
             setMessage({ type: 'error', text: 'An error occurred while clearing test data.' });
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleRemoveDuplicates = async () => {
+        setIsLoading(true);
+        setMessage(null);
+
+        try {
+            const result = await removeDuplicateUsers();
+            if (result.success) {
+                setMessage({ type: 'success', text: `Removed ${result.removedCount} duplicate users successfully! Refresh the page to see the changes.` });
+            } else {
+                setMessage({ type: 'error', text: 'Failed to remove duplicate users. Check console for details.' });
+            }
+        } catch (error) {
+            setMessage({ type: 'error', text: 'An error occurred while removing duplicate users.' });
         } finally {
             setIsLoading(false);
         }
@@ -395,6 +413,31 @@ const AdminDashboard: React.FC = () => {
                                         <Users className="w-5 h-5" />
                                     )}
                                     {isLoading ? 'Populating...' : 'Populate Data'}
+                                </button>
+                            </div>
+
+                            {/* Remove Duplicates */}
+                            <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <div className="p-2 bg-orange-500/20 rounded-xl">
+                                        <RefreshCw className="w-6 h-6 text-orange-400" />
+                                    </div>
+                                    <h2 className="text-xl font-semibold text-white">Remove Duplicate Users</h2>
+                                </div>
+                                <p className="text-neutral-400 mb-6">
+                                    Clean up duplicate users that may have been created by multiple test data population runs.
+                                </p>
+                                <button
+                                    onClick={handleRemoveDuplicates}
+                                    disabled={isLoading}
+                                    className="w-full bg-orange-500 text-white py-3 px-6 rounded-xl hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+                                >
+                                    {isLoading ? (
+                                        <Loader2 className="w-5 h-5 animate-spin" />
+                                    ) : (
+                                        <RefreshCw className="w-5 h-5" />
+                                    )}
+                                    {isLoading ? 'Removing...' : 'Remove Duplicates'}
                                 </button>
                             </div>
 
