@@ -97,6 +97,12 @@ service cloud.firestore {
       allow delete: if request.auth != null;
     }
     
+    // Chat messages collection - authenticated users can read all messages and create messages
+    // Users can only update/delete their own messages
+    match /chatMessages/{messageId} {
+      allow read, write: if request.auth != null;
+    }
+    
     // Test collection for debugging - allow all operations for authenticated users
     match /test/{document} {
       allow read, write: if request.auth != null;

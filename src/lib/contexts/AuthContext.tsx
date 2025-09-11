@@ -87,7 +87,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const timeout = setTimeout(() => {
         console.log("AuthContext: Timeout reached, setting loading to false");
         setLoading(false);
-      }, 3000);
+      }, 5000);
 
       return () => {
         console.log("AuthContext: Cleaning up auth listener");

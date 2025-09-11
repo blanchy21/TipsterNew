@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Post, FollowingUser } from '@/lib/types';
 import { sampleFollowing, sampleTrending } from '@/lib/utils';
 import { createPost, togglePostLike, incrementPostViews } from '@/lib/firebase/firebaseUtils';
@@ -31,6 +31,7 @@ import RealtimeIndicator from './RealtimeIndicator';
 function AppContent() {
   const { user, loading } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [selected, setSelected] = useState('home');
   const [posts, setPosts] = useState<Post[]>([]);
   // Following data is now managed by FollowingContext
@@ -57,6 +58,14 @@ function AppContent() {
     }, 50);
     return () => clearTimeout(timer);
   }, [user, loading]);
+
+  // Handle URL parameters for direct navigation
+  useEffect(() => {
+    const tab = searchParams.get('tab');
+    if (tab && ['home', 'messages', 'chat', 'notifications', 'following', 'top-tipsters', 'sports', 'profile'].includes(tab)) {
+      setSelected(tab);
+    }
+  }, [searchParams]);
 
   // Close auth modal when user is successfully authenticated
   useEffect(() => {
