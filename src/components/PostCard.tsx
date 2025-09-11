@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
-import { MoreHorizontal, MessageCircle, Eye, Hash, ChevronDown, ChevronUp, CheckCircle, XCircle, Clock, AlertCircle, Trophy, Edit, Trash2 } from 'lucide-react';
+import { MoreHorizontal, MessageCircle, Eye, Hash, ChevronDown, ChevronUp, CheckCircle, XCircle, Clock, AlertCircle, Trophy, Edit, Trash2, X } from 'lucide-react';
 import { Post, TipStatus } from '@/lib/types';
 import { timeAgo } from '@/lib/utils';
 import LikeButton from './LikeButton';
@@ -69,6 +69,22 @@ export default function PostCard({ post, onLikeChange, onCommentCountChange, onN
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
+  // Close edit modal with Escape key
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && showEditModal) {
+        handleEditCancel();
+      }
+    };
+
+    if (showEditModal) {
+      document.addEventListener('keydown', handleEscape);
+      return () => {
+        document.removeEventListener('keydown', handleEscape);
+      };
+    }
+  }, [showEditModal]);
 
   // Check if current user can edit/delete this post
   const canEdit = user && user.uid === post.user.id;
@@ -342,10 +358,18 @@ export default function PostCard({ post, onLikeChange, onCommentCountChange, onN
 
       {/* Edit Modal */}
       {showEditModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-slate-800 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black/50 flex items-start justify-center z-50 p-4 overflow-y-auto">
+          <div className="bg-slate-800 rounded-lg max-w-2xl w-full my-8 max-h-[calc(100vh-4rem)] overflow-y-auto">
             <div className="p-6">
-              <h3 className="text-xl font-semibold text-white mb-6">Edit Tip</h3>
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-xl font-semibold text-white">Edit Tip</h3>
+                <button
+                  onClick={handleEditCancel}
+                  className="p-2 text-slate-400 hover:text-white transition"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
 
               <form onSubmit={handleEditSubmit} className="space-y-4">
                 {/* Title */}
