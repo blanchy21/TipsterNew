@@ -12,31 +12,31 @@ interface PostModalProps {
 }
 
 const sports = [
-  'Football',
-  'Basketball',
-  'Tennis',
-  'Baseball',
-  'Hockey',
-  'Cricket',
-  'Golf',
-  'Horse Racing',
-  'Greyhound Racing',
-  'Boxing',
-  'MMA',
-  'Esports',
-  'Rugby',
-  'Volleyball',
-  'Badminton',
-  'Table Tennis',
-  'Snooker',
-  'Darts',
-  'Cycling',
-  'Formula 1',
-  'MotoGP',
   'American Football',
-  'NBA',
+  'Badminton',
+  'Baseball',
+  'Basketball',
+  'Boxing',
+  'Cricket',
+  'Cycling',
+  'Darts',
+  'Esports',
+  'Football',
+  'Formula 1',
+  'Golf',
+  'Greyhound Racing',
+  'Hockey',
+  'Horse Racing',
   'MLB',
-  'NHL'
+  'MMA',
+  'MotoGP',
+  'NBA',
+  'NHL',
+  'Rugby',
+  'Snooker',
+  'Table Tennis',
+  'Tennis',
+  'Volleyball'
 ];
 
 export default function PostModal({ open, onClose, onSubmit, selectedSport }: PostModalProps) {
@@ -114,8 +114,8 @@ export default function PostModal({ open, onClose, onSubmit, selectedSport }: Po
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div 
-        className="fixed inset-0 bg-black/60 backdrop-blur-sm" 
+      <div
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm"
         onClick={onClose}
       />
       <div className="relative w-full max-w-4xl bg-slate-900/95 border border-white/20 rounded-2xl shadow-2xl">
@@ -190,15 +190,14 @@ export default function PostModal({ open, onClose, onSubmit, selectedSport }: Po
               <label className="block text-sm font-medium text-slate-200 mb-2">
                 Sports Tip Details
               </label>
-              
+
               {/* Formatting Toolbar */}
               <div className="flex items-center gap-2 p-2 bg-white/5 border border-white/10 rounded-t-lg border-b-0">
                 <button
                   type="button"
                   onClick={() => handleFormat('bold')}
-                  className={`p-2 rounded hover:bg-white/10 transition-colors ${
-                    isBold ? 'bg-sky-500/20 text-sky-400' : 'text-slate-400'
-                  }`}
+                  className={`p-2 rounded hover:bg-white/10 transition-colors ${isBold ? 'bg-sky-500/20 text-sky-400' : 'text-slate-400'
+                    }`}
                   title="Bold"
                 >
                   <Bold className="w-4 h-4" />
@@ -206,9 +205,8 @@ export default function PostModal({ open, onClose, onSubmit, selectedSport }: Po
                 <button
                   type="button"
                   onClick={() => handleFormat('italic')}
-                  className={`p-2 rounded hover:bg-white/10 transition-colors ${
-                    isItalic ? 'bg-sky-500/20 text-sky-400' : 'text-slate-400'
-                  }`}
+                  className={`p-2 rounded hover:bg-white/10 transition-colors ${isItalic ? 'bg-sky-500/20 text-sky-400' : 'text-slate-400'
+                    }`}
                   title="Italic"
                 >
                   <Italic className="w-4 h-4" />
@@ -216,9 +214,8 @@ export default function PostModal({ open, onClose, onSubmit, selectedSport }: Po
                 <button
                   type="button"
                   onClick={() => handleFormat('underline')}
-                  className={`p-2 rounded hover:bg-white/10 transition-colors ${
-                    isUnderline ? 'bg-sky-500/20 text-sky-400' : 'text-slate-400'
-                  }`}
+                  className={`p-2 rounded hover:bg-white/10 transition-colors ${isUnderline ? 'bg-sky-500/20 text-sky-400' : 'text-slate-400'
+                    }`}
                   title="Underline"
                 >
                   <Underline className="w-4 h-4" />

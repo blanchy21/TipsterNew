@@ -413,16 +413,31 @@ export default function PostCard({ post, onLikeChange, onCommentCountChange, onN
                       className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                       required
                     >
-                      <option value="Football">Football</option>
-                      <option value="Basketball">Basketball</option>
-                      <option value="Tennis">Tennis</option>
+                      <option value="American Football">American Football</option>
+                      <option value="Badminton">Badminton</option>
                       <option value="Baseball">Baseball</option>
-                      <option value="Hockey">Hockey</option>
-                      <option value="Soccer">Soccer</option>
+                      <option value="Basketball">Basketball</option>
                       <option value="Boxing">Boxing</option>
-                      <option value="MMA">MMA</option>
+                      <option value="Cricket">Cricket</option>
+                      <option value="Cycling">Cycling</option>
+                      <option value="Darts">Darts</option>
+                      <option value="Esports">Esports</option>
+                      <option value="Football">Football</option>
+                      <option value="Formula 1">Formula 1</option>
                       <option value="Golf">Golf</option>
-                      <option value="Other">Other</option>
+                      <option value="Greyhound Racing">Greyhound Racing</option>
+                      <option value="Hockey">Hockey</option>
+                      <option value="Horse Racing">Horse Racing</option>
+                      <option value="MLB">MLB</option>
+                      <option value="MMA">MMA</option>
+                      <option value="MotoGP">MotoGP</option>
+                      <option value="NBA">NBA</option>
+                      <option value="NHL">NHL</option>
+                      <option value="Rugby">Rugby</option>
+                      <option value="Snooker">Snooker</option>
+                      <option value="Table Tennis">Table Tennis</option>
+                      <option value="Tennis">Tennis</option>
+                      <option value="Volleyball">Volleyball</option>
                     </select>
                   </div>
 
