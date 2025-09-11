@@ -6,12 +6,12 @@ import { useNotifications } from '@/lib/contexts/NotificationsContext';
 import { Notification } from '@/lib/types';
 
 export default function NotificationsPage() {
-  const { 
-    notifications, 
-    unreadCount, 
-    markAsRead, 
-    markAllAsRead, 
-    deleteNotification, 
+  const {
+    notifications,
+    unreadCount,
+    markAsRead,
+    markAllAsRead,
+    deleteNotification,
     clearAllNotifications,
     settings,
     updateSettings
@@ -71,12 +71,12 @@ export default function NotificationsPage() {
   };
 
   const filteredNotifications = notifications.filter(notification => {
-    const matchesReadFilter = filter === 'all' || 
-      (filter === 'unread' && !notification.read) || 
+    const matchesReadFilter = filter === 'all' ||
+      (filter === 'unread' && !notification.read) ||
       (filter === 'read' && notification.read);
-    
+
     const matchesTypeFilter = typeFilter === 'all' || notification.type === typeFilter;
-    
+
     return matchesReadFilter && matchesTypeFilter;
   });
 
@@ -91,7 +91,7 @@ export default function NotificationsPage() {
   };
 
   return (
-    <div className="h-full flex flex-col bg-[#0B0F14]">
+    <div className="h-full flex flex-col bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
       {/* Header */}
       <div className="border-b border-white/10 px-6 py-4">
         <div className="flex items-center justify-between">
@@ -135,14 +135,12 @@ export default function NotificationsPage() {
                 </span>
                 <button
                   onClick={() => updateSettings({ [key]: !value })}
-                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                    value ? 'bg-blue-600' : 'bg-slate-600'
-                  }`}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${value ? 'bg-blue-600' : 'bg-slate-600'
+                    }`}
                 >
                   <span
-                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                      value ? 'translate-x-6' : 'translate-x-1'
-                    }`}
+                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${value ? 'translate-x-6' : 'translate-x-1'
+                      }`}
                   />
                 </button>
               </label>
@@ -158,17 +156,16 @@ export default function NotificationsPage() {
             <Filter className="w-4 h-4 text-slate-400" />
             <span className="text-sm text-slate-300">Filter:</span>
           </div>
-          
+
           <div className="flex space-x-2">
             {(['all', 'unread', 'read'] as const).map((filterType) => (
               <button
                 key={filterType}
                 onClick={() => setFilter(filterType)}
-                className={`px-3 py-1 text-sm rounded-full transition-colors ${
-                  filter === filterType
-                    ? 'bg-blue-500/20 text-blue-300'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
-                }`}
+                className={`px-3 py-1 text-sm rounded-full transition-colors ${filter === filterType
+                  ? 'bg-blue-500/20 text-blue-300'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
+                  }`}
               >
                 {filterType === 'all' ? 'All' : filterType}
               </button>
@@ -213,11 +210,11 @@ export default function NotificationsPage() {
             <Bell className="w-12 h-12 text-slate-500 mb-4" />
             <h3 className="text-lg font-medium text-slate-100 mb-2">No notifications</h3>
             <p className="text-sm text-slate-400 text-center max-w-sm">
-              {filter === 'unread' 
+              {filter === 'unread'
                 ? "You're all caught up! No unread notifications."
                 : filter === 'read'
-                ? "No read notifications to show."
-                : "You'll see notifications here when people interact with your content."
+                  ? "No read notifications to show."
+                  : "You'll see notifications here when people interact with your content."
               }
             </p>
           </div>
@@ -227,9 +224,8 @@ export default function NotificationsPage() {
               <div
                 key={notification.id}
                 onClick={() => handleNotificationClick(notification)}
-                className={`p-6 hover:bg-white/5 cursor-pointer transition-all duration-300 ${
-                  !notification.read ? 'bg-blue-500/10 border-l-4 border-l-blue-500' : ''
-                }`}
+                className={`p-6 hover:bg-white/5 cursor-pointer transition-all duration-300 ${!notification.read ? 'bg-blue-500/10 border-l-4 border-l-blue-500' : ''
+                  }`}
               >
                 <div className="flex items-start space-x-4">
                   <div className="text-2xl">{getNotificationIcon(notification.type)}</div>

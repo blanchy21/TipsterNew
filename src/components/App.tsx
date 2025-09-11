@@ -292,7 +292,7 @@ function AppContent() {
   // Show loading state while checking authentication
   if (loading) {
     return (
-      <div className="h-screen flex items-center justify-center bg-[#0B1426]">
+      <div className="h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
         <div className="text-center">
           <div className="w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-white/70">Loading...</p>
@@ -319,7 +319,7 @@ function AppContent() {
   if (!user) {
     return (
       <>
-        <div className="h-screen flex items-center justify-center bg-[#0B1426]">
+        <div className="h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
           <div className="text-center max-w-md mx-auto p-8">
             <div className="w-16 h-16 bg-gradient-to-br from-amber-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6">
               <span className="text-white font-bold text-2xl">SA</span>
@@ -359,7 +359,7 @@ function AppContent() {
 
   return (
     <NotificationsProvider>
-      <div className="h-screen flex flex-col overflow-hidden bg-[#0B1426]">
+      <div className="h-screen flex flex-col overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
         <MobileHeader
           onOpenPost={() => setShowPost(true)}
           onMenu={() => { }}

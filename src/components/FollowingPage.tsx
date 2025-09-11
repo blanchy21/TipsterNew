@@ -2,12 +2,12 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { 
-  Search, 
-  Users, 
-  UserPlus, 
-  UserMinus, 
-  Check, 
+import {
+  Search,
+  Users,
+  UserPlus,
+  UserMinus,
+  Check,
   Loader2,
   Filter,
   X
@@ -26,19 +26,19 @@ interface FollowingPageProps {
 }
 
 const FollowingPage: React.FC<FollowingPageProps> = ({ initialTab = 'following', onNavigateToProfile }) => {
-  const { 
-    following, 
-    followers, 
-    suggestions, 
-    loading, 
-    searchUsers, 
-    refreshFollowing, 
-    refreshFollowers, 
-    refreshSuggestions 
+  const {
+    following,
+    followers,
+    suggestions,
+    loading,
+    searchUsers,
+    refreshFollowing,
+    refreshFollowers,
+    refreshSuggestions
   } = useFollowing();
-  
+
   const { user } = useAuth();
-  
+
   const [activeTab, setActiveTab] = useState(initialTab);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<User[]>([]);
@@ -80,9 +80,9 @@ const FollowingPage: React.FC<FollowingPageProps> = ({ initialTab = 'following',
     return users;
   };
 
-  const UserCard: React.FC<{ user: User; showFollowButton?: boolean }> = ({ 
-    user, 
-    showFollowButton = true 
+  const UserCard: React.FC<{ user: User; showFollowButton?: boolean }> = ({
+    user,
+    showFollowButton = true
   }) => (
     <div className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/10 hover:bg-white/10 transition-all duration-300 group backdrop-blur-sm">
       <div className="flex items-center gap-4">
@@ -103,8 +103,8 @@ const FollowingPage: React.FC<FollowingPageProps> = ({ initialTab = 'following',
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
             {onNavigateToProfile ? (
-              <UserProfileLink 
-                user={user} 
+              <UserProfileLink
+                user={user}
                 onNavigateToProfile={onNavigateToProfile}
                 className="font-semibold text-white truncate hover:text-blue-400"
               >
@@ -145,8 +145,8 @@ const FollowingPage: React.FC<FollowingPageProps> = ({ initialTab = 'following',
         </div>
       </div>
       {showFollowButton && (
-        <FollowButton 
-          targetUser={user} 
+        <FollowButton
+          targetUser={user}
           variant="compact"
           onFollowChange={() => {
             if (activeTab === 'following') {
@@ -184,7 +184,7 @@ const FollowingPage: React.FC<FollowingPageProps> = ({ initialTab = 'following',
               <Loader2 className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-neutral-400 animate-spin" />
             )}
           </div>
-          
+
           {searchQuery && (
             <div className="flex items-center gap-2 text-sm text-neutral-400 mb-4">
               <span>{searchResults.length} results for "{searchQuery}"</span>
@@ -288,46 +288,12 @@ const FollowingPage: React.FC<FollowingPageProps> = ({ initialTab = 'following',
   };
 
   return (
-    <div className="w-full text-gray-100 font-[Inter] bg-[#0B0F14] min-h-screen">
+    <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-screen">
       <div className="max-w-4xl mx-auto px-4 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-white mb-2">People</h1>
           <p className="text-neutral-400">Discover and connect with sports enthusiasts</p>
-          
-          {/* Debug Info */}
-          {user && (
-            <div className="mt-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
-              <h3 className="text-sm font-semibold text-blue-400 mb-2">Debug Info</h3>
-              <div className="text-xs text-blue-300 space-y-1">
-                <p>User ID: {user.uid}</p>
-                <p>Following: {following.length}</p>
-                <p>Followers: {followers.length}</p>
-                <p>Suggestions: {suggestions.length}</p>
-                <p>Loading: {loading ? 'Yes' : 'No'}</p>
-              </div>
-                      <div className="flex gap-2 mt-2">
-                        <button
-                          onClick={refreshSuggestions}
-                          className="px-3 py-1 bg-blue-500 text-white text-xs rounded hover:bg-blue-600 transition-colors"
-                        >
-                          Refresh Suggestions
-                        </button>
-                        <button
-                          onClick={async () => {
-                            if (user?.uid) {
-                              const exists = await checkUserProfileExists(user.uid);
-                              console.log(`Current user profile exists: ${exists}`);
-                              alert(`Current user profile exists: ${exists}`);
-                            }
-                          }}
-                          className="px-3 py-1 bg-green-500 text-white text-xs rounded hover:bg-green-600 transition-colors"
-                        >
-                          Check Profile
-                        </button>
-                      </div>
-            </div>
-          )}
         </div>
 
         {/* Tabs */}
@@ -336,19 +302,17 @@ const FollowingPage: React.FC<FollowingPageProps> = ({ initialTab = 'following',
             <button
               key={tab.key}
               onClick={() => setActiveTab(tab.key as any)}
-              className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-medium transition-all duration-200 ${
-                activeTab === tab.key
-                  ? 'bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white shadow-lg'
-                  : 'text-neutral-400 hover:text-white hover:bg-white/10'
-              }`}
+              className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-medium transition-all duration-200 ${activeTab === tab.key
+                ? 'bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white shadow-lg'
+                : 'text-neutral-400 hover:text-white hover:bg-white/10'
+                }`}
             >
               <span>{tab.label}</span>
               {tab.count > 0 && (
-                <span className={`px-2 py-1 text-xs rounded-full ${
-                  activeTab === tab.key 
-                    ? 'bg-white/20' 
-                    : 'bg-neutral-600'
-                }`}>
+                <span className={`px-2 py-1 text-xs rounded-full ${activeTab === tab.key
+                  ? 'bg-white/20'
+                  : 'bg-neutral-600'
+                  }`}>
                   {tab.count}
                 </span>
               )}
@@ -369,11 +333,10 @@ const FollowingPage: React.FC<FollowingPageProps> = ({ initialTab = 'following',
                 <button
                   key={filterOption.key}
                   onClick={() => setFilter(filterOption.key as any)}
-                  className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
-                    filter === filterOption.key
-                      ? 'bg-blue-500 text-white'
-                      : 'text-neutral-400 hover:text-white hover:bg-white/10'
-                  }`}
+                  className={`px-3 py-1.5 text-sm rounded-md transition-colors ${filter === filterOption.key
+                    ? 'bg-blue-500 text-white'
+                    : 'text-neutral-400 hover:text-white hover:bg-white/10'
+                    }`}
                 >
                   {filterOption.label}
                 </button>

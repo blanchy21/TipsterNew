@@ -83,7 +83,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
   ];
 
   return (
-    <div className="min-h-screen bg-[#0B1426] text-white overflow-x-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white overflow-x-hidden">
       <style jsx>{`
         .glass-footer {
           background: rgba(11, 20, 38, 0.7);
@@ -97,7 +97,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
       `}</style>
       {/* Background Effects */}
       <div className="fixed inset-0 -z-20">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0B1426] via-[#1a2332] to-[#0B1426]"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"></div>
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-amber-500/20 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-orange-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
       </div>
