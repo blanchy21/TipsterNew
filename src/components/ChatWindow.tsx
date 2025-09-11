@@ -1,9 +1,11 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { Conversation, Message, User } from '@/lib/types';
 import { ArrowLeft, Phone, Video, MoreVertical, Send, Image as ImageIcon, Smile } from 'lucide-react';
+import { subscribeToMessages, sendMessage, markMessagesAsRead } from '@/lib/firebase/messagingUtils';
+import { useAuth } from '@/lib/hooks/useAuth';
 
 interface ChatWindowProps {
   conversation: Conversation | null;
@@ -18,8 +20,11 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   onSendMessage,
   onBack
 }) => {
+  const { user } = useAuth();
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const [newMessage, setNewMessage] = React.useState('');
+  const [newMessage, setNewMessage] = useState('');
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -27,13 +32,40 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 
   useEffect(() => {
     scrollToBottom();
-  }, [conversation?.lastMessage]);
+  }, [messages]);
 
-  const handleSendMessage = (e: React.FormEvent) => {
+  // Set up real-time message listener
+  useEffect(() => {
+    if (!conversation || !user) {
+      setMessages([]);
+      return;
+    }
+
+    setLoading(true);
+    const unsubscribe = subscribeToMessages(conversation.id, (messagesData) => {
+      setMessages(messagesData);
+      setLoading(false);
+    });
+
+    // Mark messages as read when conversation is opened
+    markMessagesAsRead(conversation.id, user.uid).catch(console.error);
+
+    return () => unsubscribe();
+  }, [conversation, user]);
+
+  const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (newMessage.trim() && conversation) {
-      onSendMessage(newMessage.trim());
-      setNewMessage('');
+    if (!newMessage.trim() || !conversation || !user) return;
+
+    const messageText = newMessage.trim();
+    setNewMessage(''); // Clear input immediately for better UX
+
+    try {
+      await sendMessage(conversation.id, user.uid, messageText);
+    } catch (error) {
+      console.error('Error sending message:', error);
+      // Restore message on error
+      setNewMessage(messageText);
     }
   };
 
@@ -74,7 +106,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
           >
             <ArrowLeft className="w-5 h-5 text-neutral-400" />
           </button>
-          
+
           <Image
             src={otherParticipant?.avatar || '/default-avatar.png'}
             alt={otherParticipant?.name || 'User'}
@@ -82,12 +114,12 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
             height={40}
             className="rounded-full object-cover border-2 border-white/20"
           />
-          
+
           <div className="flex-1">
             <h3 className="font-semibold text-white">{otherParticipant?.name}</h3>
             <p className="text-sm text-neutral-400">@{otherParticipant?.handle}</p>
           </div>
-          
+
           <div className="flex items-center gap-2">
             <button className="p-2 rounded-lg hover:bg-white/10 transition-colors">
               <Phone className="w-5 h-5 text-neutral-400" />
@@ -104,56 +136,11 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {conversation.lastMessage ? (
-          <div className="space-y-4">
-            {/* Sample messages - in a real app, you'd fetch these from an API */}
-            <div className="flex justify-start">
-              <div className="flex items-start gap-2 max-w-xs">
-                <Image
-                  src={otherParticipant?.avatar || '/default-avatar.png'}
-                  alt={otherParticipant?.name || 'User'}
-                  width={32}
-                  height={32}
-                  className="rounded-full object-cover border border-white/20"
-                />
-                <div className="bg-white/10 rounded-2xl rounded-tl-sm px-4 py-2">
-                  <p className="text-white text-sm">Hey! Great analysis on the Arsenal match yesterday. What do you think about their chances in the Champions League?</p>
-                  <span className="text-xs text-neutral-400 mt-1 block">10:30 AM</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex justify-end">
-              <div className="bg-indigo-500 rounded-2xl rounded-tr-sm px-4 py-2 max-w-xs">
-                <p className="text-white text-sm">Thanks! I think they have a real chance this year. Their midfield is looking solid with the new signings.</p>
-                <span className="text-xs text-indigo-200 mt-1 block">10:32 AM</span>
-              </div>
-            </div>
-
-            <div className="flex justify-start">
-              <div className="flex items-start gap-2 max-w-xs">
-                <Image
-                  src={otherParticipant?.avatar || '/default-avatar.png'}
-                  alt={otherParticipant?.name || 'User'}
-                  width={32}
-                  height={32}
-                  className="rounded-full object-cover border border-white/20"
-                />
-                <div className="bg-white/10 rounded-2xl rounded-tl-sm px-4 py-2">
-                  <p className="text-white text-sm">Absolutely! The way they&apos;re playing now is much more consistent. Do you have any insights on their upcoming fixtures?</p>
-                  <span className="text-xs text-neutral-400 mt-1 block">10:35 AM</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex justify-end">
-              <div className="bg-indigo-500 rounded-2xl rounded-tr-sm px-4 py-2 max-w-xs">
-                <p className="text-white text-sm">I&apos;ll be posting a detailed analysis later today. The key will be how they handle the away games in Europe.</p>
-                <span className="text-xs text-indigo-200 mt-1 block">10:37 AM</span>
-              </div>
-            </div>
+        {loading ? (
+          <div className="flex items-center justify-center h-32">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-500"></div>
           </div>
-        ) : (
+        ) : messages.length === 0 ? (
           <div className="flex items-center justify-center h-full">
             <div className="text-center">
               <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -162,6 +149,66 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
               <h3 className="text-lg font-semibold text-white mb-2">Start the conversation</h3>
               <p className="text-neutral-400 text-sm">Send your first message to {otherParticipant?.name}</p>
             </div>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {messages.map((message, index) => {
+              const isCurrentUser = message.senderId === user?.uid;
+              const prevMessage = index > 0 ? messages[index - 1] : null;
+              const showAvatar = !prevMessage || prevMessage.senderId !== message.senderId;
+              const showDate = !prevMessage ||
+                new Date(prevMessage.timestamp).toDateString() !== new Date(message.timestamp).toDateString();
+
+              return (
+                <div key={message.id}>
+                  {showDate && (
+                    <div className="flex items-center justify-center my-4">
+                      <div className="bg-slate-700/50 px-3 py-1 rounded-full text-xs text-slate-400">
+                        {new Date(message.timestamp).toLocaleDateString()}
+                      </div>
+                    </div>
+                  )}
+
+                  <div className={`flex gap-3 ${isCurrentUser ? 'flex-row-reverse' : 'flex-row'}`}>
+                    {showAvatar && (
+                      <div className={`w-8 h-8 rounded-full flex-shrink-0 ${isCurrentUser ? 'order-1' : ''}`}>
+                        <Image
+                          src={isCurrentUser ? (user?.photoURL || '/default-avatar.png') : (otherParticipant?.avatar || '/default-avatar.png')}
+                          alt={isCurrentUser ? 'You' : (otherParticipant?.name || 'User')}
+                          width={32}
+                          height={32}
+                          className="rounded-full object-cover border border-white/20"
+                        />
+                      </div>
+                    )}
+
+                    <div className={`flex-1 ${isCurrentUser ? 'text-right' : 'text-left'}`}>
+                      {showAvatar && (
+                        <div className={`text-xs text-slate-400 mb-1 ${isCurrentUser ? 'text-right' : 'text-left'}`}>
+                          {isCurrentUser ? 'You' : otherParticipant?.name}
+                        </div>
+                      )}
+
+                      <div
+                        className={`inline-block max-w-[70%] rounded-2xl px-4 py-2 ${isCurrentUser
+                          ? 'bg-indigo-500 text-white'
+                          : 'bg-white/10 text-slate-100'
+                          }`}
+                      >
+                        <p className="text-sm leading-relaxed">{message.content}</p>
+                      </div>
+
+                      <div className={`text-xs text-slate-400 mt-1 flex items-center gap-1 ${isCurrentUser ? 'justify-end' : 'justify-start'}`}>
+                        {formatMessageTime(message.timestamp)}
+                        {isCurrentUser && message.read && (
+                          <span className="text-indigo-300">✓</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         )}
         <div ref={messagesEndRef} />
@@ -177,7 +224,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
           >
             <ImageIcon className="w-5 h-5 text-neutral-400" />
           </button>
-          
+
           <div className="flex-1 relative">
             <input
               type="text"
@@ -193,7 +240,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
               <Smile className="w-5 h-5 text-neutral-400" />
             </button>
           </div>
-          
+
           <button
             type="submit"
             disabled={!newMessage.trim()}

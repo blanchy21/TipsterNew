@@ -1,141 +1,60 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Conversation, User, Message } from '@/lib/types';
 import MessagesList from './MessagesList';
 import ChatWindow from './ChatWindow';
 import { normalizeImageUrl } from '@/lib/imageUtils';
+import { useAuth } from '@/lib/hooks/useAuth';
+import { subscribeToConversations, getOrCreateConversation, sendMessage } from '@/lib/firebase/messagingUtils';
 
 const MessagesPage: React.FC = () => {
+  const { user } = useAuth();
   const [selectedConversationId, setSelectedConversationId] = useState<string | null>(null);
   const [showMobileChat, setShowMobileChat] = useState(false);
+  const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Current user (in a real app, this would come from auth context)
-  const currentUser: User = {
-    id: 'current-user',
+  // Current user from auth context
+  const currentUser: User = user ? {
+    id: user.uid,
+    name: user.displayName || 'You',
+    handle: `@${user.displayName?.toLowerCase().replace(/\s+/g, '') || 'user'}`,
+    avatar: user.photoURL || 'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=96&h=96&fit=crop&crop=face'
+  } : {
+    id: 'anonymous',
     name: 'You',
     handle: '@you',
     avatar: 'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=96&h=96&fit=crop&crop=face'
   };
 
-  // Sample conversations data
-  const conversations: Conversation[] = [
-    {
-      id: 'conv-1',
-      participants: [
-        currentUser,
-        {
-          id: 'user-1',
-          name: 'Sarah Chen',
-          handle: '@sarahchen',
-          avatar: 'https://images.unsplash.com/photo-1640402882370-eb3d172f026e?w=96&h=96&fit=crop&crop=face'
-        }
-      ],
-      lastMessage: {
-        id: 'msg-1',
-        senderId: 'user-1',
-        receiverId: 'current-user',
-        content: 'Great analysis on the Arsenal match! What do you think about their Champions League chances?',
-        timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), // 2 hours ago
-        read: false,
-        type: 'text'
-      },
-      unreadCount: 2,
-      updatedAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString()
-    },
-    {
-      id: 'conv-2',
-      participants: [
-        currentUser,
-        {
-          id: 'user-2',
-          name: 'Marcus Rodriguez',
-          handle: '@marcusrod',
-          avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=96&h=96&fit=crop&crop=face'
-        }
-      ],
-      lastMessage: {
-        id: 'msg-2',
-        senderId: 'current-user',
-        receiverId: 'user-2',
-        content: 'Thanks! I think they have a real chance this year.',
-        timestamp: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(), // 4 hours ago
-        read: true,
-        type: 'text'
-      },
-      unreadCount: 0,
-      updatedAt: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString()
-    },
-    {
-      id: 'conv-3',
-      participants: [
-        currentUser,
-        {
-          id: 'user-3',
-          name: 'Alex Thompson',
-          handle: '@alexthompson',
-          avatar: normalizeImageUrl('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=96&h=96&fit=crop&crop=face')
-        }
-      ],
-      lastMessage: {
-        id: 'msg-3',
-        senderId: 'user-3',
-        receiverId: 'current-user',
-        content: 'Can you share your thoughts on the Liverpool vs City match?',
-        timestamp: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(), // 6 hours ago
-        read: false,
-        type: 'text'
-      },
-      unreadCount: 1,
-      updatedAt: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString()
-    },
-    {
-      id: 'conv-4',
-      participants: [
-        currentUser,
-        {
-          id: 'user-4',
-          name: 'Emma Wilson',
-          handle: '@emmawilson',
-          avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=96&h=96&fit=crop&crop=face'
-        }
-      ],
-      lastMessage: {
-        id: 'msg-4',
-        senderId: 'user-4',
-        receiverId: 'current-user',
-        content: 'Your tactical breakdown was spot on! 🔥',
-        timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), // 1 day ago
-        read: true,
-        type: 'text'
-      },
-      unreadCount: 0,
-      updatedAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
-    },
-    {
-      id: 'conv-5',
-      participants: [
-        currentUser,
-        {
-          id: 'user-5',
-          name: 'David Kim',
-          handle: '@davidkim',
-          avatar: normalizeImageUrl('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=96&h=96&fit=crop&crop=face')
-        }
-      ],
-      lastMessage: {
-        id: 'msg-5',
-        senderId: 'current-user',
-        receiverId: 'user-5',
-        content: 'Looking forward to the analysis!',
-        timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(), // 2 days ago
-        read: true,
-        type: 'text'
-      },
-      unreadCount: 0,
-      updatedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString()
+  // Set up real-time conversation listener
+  useEffect(() => {
+    if (!user) {
+      console.log('MessagesPage: No user, setting loading to false');
+      setLoading(false);
+      return;
     }
-  ];
+
+    console.log('MessagesPage: Setting up conversation listener for user:', user.uid);
+
+    const unsubscribe = subscribeToConversations(user.uid, (conversationsData) => {
+      console.log('MessagesPage: Received conversations data:', conversationsData);
+      setConversations(conversationsData);
+      setLoading(false);
+    });
+
+    // Add a timeout fallback in case the listener never fires
+    const timeout = setTimeout(() => {
+      console.log('MessagesPage: Timeout reached, setting loading to false');
+      setLoading(false);
+    }, 10000); // 10 second timeout
+
+    return () => {
+      clearTimeout(timeout);
+      unsubscribe();
+    };
+  }, [user]);
 
   const selectedConversation = conversations.find(conv => conv.id === selectedConversationId);
 
@@ -144,15 +63,41 @@ const MessagesPage: React.FC = () => {
     setShowMobileChat(true);
   };
 
-  const handleSendMessage = (content: string) => {
-    // In a real app, this would send the message to the server
-    console.log('Sending message:', content);
-    // You would typically update the conversation's lastMessage here
+  const handleSendMessage = async (content: string) => {
+    if (!user || !selectedConversationId) return;
+
+    try {
+      await sendMessage(selectedConversationId, user.uid, content);
+    } catch (error) {
+      console.error('Error sending message:', error);
+    }
   };
 
   const handleBack = () => {
     setShowMobileChat(false);
   };
+
+  if (!user) {
+    return (
+      <div className="flex items-center justify-center h-full bg-gradient-to-br from-slate-900 to-[#2c1376]/70">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-white mb-4">Please Sign In</h1>
+          <p className="text-slate-400 mb-6">You need to be signed in to access messages</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-full bg-gradient-to-br from-slate-900 to-[#2c1376]/70">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-500 mx-auto mb-4"></div>
+          <p className="text-slate-400">Loading messages...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-full bg-gradient-to-br from-slate-900 to-[#2c1376]/70">
@@ -166,7 +111,7 @@ const MessagesPage: React.FC = () => {
             selectedConversationId={selectedConversationId || undefined}
           />
         </div>
-        
+
         <div className="flex-1">
           <ChatWindow
             conversation={selectedConversation || null}
