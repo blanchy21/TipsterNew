@@ -15,9 +15,11 @@ interface FeedProps {
   selected?: string;
   onLikeChange: (postId: string, newLikes: number, newLikedBy: string[]) => void;
   onNavigateToProfile?: (userId: string) => void;
+  onPostDeleted?: (postId: string) => void;
+  onPostUpdated?: (postId: string, updatedPost: Post) => void;
 }
 
-export default function Feed({ posts, isLoaded, query, onQueryChange, selectedSport, selected, onLikeChange, onNavigateToProfile }: FeedProps) {
+export default function Feed({ posts, isLoaded, query, onQueryChange, selectedSport, selected, onLikeChange, onNavigateToProfile, onPostDeleted, onPostUpdated }: FeedProps) {
   console.log('📱 Feed component rendering:', {
     postsCount: posts.length,
     isLoaded,
@@ -38,7 +40,13 @@ export default function Feed({ posts, isLoaded, query, onQueryChange, selectedSp
               `delay-[${Math.min(idx * 60, 400)}ms]`
             ].join(' ')}
           >
-            <PostCard post={post} onLikeChange={onLikeChange} onNavigateToProfile={onNavigateToProfile} />
+            <PostCard
+              post={post}
+              onLikeChange={onLikeChange}
+              onNavigateToProfile={onNavigateToProfile}
+              onPostDeleted={onPostDeleted}
+              onPostUpdated={onPostUpdated}
+            />
           </div>
         ))}
         {posts.length === 0 && (

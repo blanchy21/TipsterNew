@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
-import { MoreHorizontal, MessageCircle, Eye, Hash, ChevronDown, ChevronUp, CheckCircle, XCircle, Clock, AlertCircle, Trophy } from 'lucide-react';
+import { MoreHorizontal, MessageCircle, Eye, Hash, ChevronDown, ChevronUp, CheckCircle, XCircle, Clock, AlertCircle, Trophy, Edit, Trash2 } from 'lucide-react';
 import { Post, TipStatus } from '@/lib/types';
 import { timeAgo } from '@/lib/utils';
 import LikeButton from './LikeButton';
@@ -11,15 +11,19 @@ import CommentsList from './CommentsList';
 import AvatarWithFallback from './AvatarWithFallback';
 import UserProfileLink from './UserProfileLink';
 import TipVerificationStatus from './TipVerificationStatus';
+import { useAuth } from '@/lib/hooks/useAuth';
+import { deletePost, updatePost } from '@/lib/firebase/firebaseUtils';
 
 interface PostCardProps {
   post: Post;
   onLikeChange: (postId: string, newLikes: number, newLikedBy: string[]) => void;
   onCommentCountChange?: (postId: string, newCount: number) => void;
   onNavigateToProfile?: (userId: string) => void;
+  onPostDeleted?: (postId: string) => void;
+  onPostUpdated?: (postId: string, updatedPost: Post) => void;
 }
 
-export default function PostCard({ post, onLikeChange, onCommentCountChange, onNavigateToProfile }: PostCardProps) {
+export default function PostCard({ post, onLikeChange, onCommentCountChange, onNavigateToProfile, onPostDeleted, onPostUpdated }: PostCardProps) {
   console.log('📄 PostCard rendering:', {
     id: post.id,
     title: post.title,
@@ -27,8 +31,13 @@ export default function PostCard({ post, onLikeChange, onCommentCountChange, onN
     tipStatus: post.tipStatus
   });
 
+  const { user } = useAuth();
   const [showComments, setShowComments] = useState(false);
   const [commentCount, setCommentCount] = useState(post.comments);
+  const [showMenu, setShowMenu] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const handleCommentCountChange = (newCount: number) => {
     setCommentCount(newCount);
@@ -37,6 +46,49 @@ export default function PostCard({ post, onLikeChange, onCommentCountChange, onN
 
   const toggleComments = () => {
     setShowComments(!showComments);
+  };
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setShowMenu(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  // Check if current user can edit/delete this post
+  const canEdit = user && user.uid === post.user.id;
+  const canDelete = user && user.uid === post.user.id;
+
+  const handleDeletePost = async () => {
+    if (!canDelete) return;
+
+    const confirmed = window.confirm('Are you sure you want to delete this tip? This action cannot be undone.');
+    if (!confirmed) return;
+
+    setIsDeleting(true);
+    try {
+      await deletePost(post.id);
+      onPostDeleted?.(post.id);
+      setShowMenu(false);
+    } catch (error) {
+      console.error('Error deleting post:', error);
+      alert('Failed to delete tip. Please try again.');
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  const handleEditPost = () => {
+    if (!canEdit) return;
+    setShowEditModal(true);
+    setShowMenu(false);
   };
 
   const getTipStatusDisplay = (status: TipStatus | undefined) => {
@@ -119,9 +171,42 @@ export default function PostCard({ post, onLikeChange, onCommentCountChange, onN
                 {post.sport}
               </span>
               <FollowButton targetUser={post.user} variant="minimal" />
-              <button className="p-2 rounded-md hover:bg-white/5 transition ring-1 ring-transparent hover:ring-white/10">
-                <MoreHorizontal className="w-4 h-4 text-slate-400" />
-              </button>
+              {(canEdit || canDelete) && (
+                <div className="relative" ref={menuRef}>
+                  <button
+                    onClick={() => setShowMenu(!showMenu)}
+                    className="p-2 rounded-md hover:bg-white/5 transition ring-1 ring-transparent hover:ring-white/10"
+                  >
+                    <MoreHorizontal className="w-4 h-4 text-slate-400" />
+                  </button>
+
+                  {showMenu && (
+                    <div className="absolute right-0 top-full mt-1 w-48 bg-slate-800 border border-slate-700 rounded-lg shadow-lg z-50">
+                      <div className="py-1">
+                        {canEdit && (
+                          <button
+                            onClick={handleEditPost}
+                            className="w-full px-4 py-2 text-left text-sm text-slate-200 hover:bg-slate-700 flex items-center gap-2"
+                          >
+                            <Edit className="w-4 h-4" />
+                            Edit Tip
+                          </button>
+                        )}
+                        {canDelete && (
+                          <button
+                            onClick={handleDeletePost}
+                            disabled={isDeleting}
+                            className="w-full px-4 py-2 text-left text-sm text-red-400 hover:bg-slate-700 flex items-center gap-2 disabled:opacity-50"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                            {isDeleting ? 'Deleting...' : 'Delete Tip'}
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
 
@@ -197,6 +282,35 @@ export default function PostCard({ post, onLikeChange, onCommentCountChange, onN
             postId={post.id}
             onCommentCountChange={handleCommentCountChange}
           />
+        </div>
+      )}
+
+      {/* Edit Modal */}
+      {showEditModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-slate-800 rounded-lg max-w-md w-full p-6">
+            <h3 className="text-lg font-semibold text-white mb-4">Edit Tip</h3>
+            <p className="text-slate-300 mb-4">
+              Edit functionality will be implemented in a future update. For now, you can delete and recreate the tip.
+            </p>
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={() => setShowEditModal(false)}
+                className="px-4 py-2 text-slate-300 hover:text-white transition"
+              >
+                Close
+              </button>
+              <button
+                onClick={() => {
+                  setShowEditModal(false);
+                  handleDeletePost();
+                }}
+                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
+              >
+                Delete & Recreate
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </article>

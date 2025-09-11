@@ -44,6 +44,17 @@ function AppContent() {
   const [authModalMode, setAuthModalMode] = useState<'login' | 'signup'>('login');
   const [viewingUserId, setViewingUserId] = useState<string | null>(null);
 
+  // Handler functions
+  const handlePostDeleted = (postId: string) => {
+    setPosts(prev => prev.filter(post => post.id !== postId));
+  };
+
+  const handlePostUpdated = (postId: string, updatedPost: Post) => {
+    setPosts(prev => prev.map(post =>
+      post.id === postId ? updatedPost : post
+    ));
+  };
+
   useEffect(() => {
     // Check if user has seen landing page
     const hasSeenLandingPage = localStorage.getItem('hasSeenLandingPage');
@@ -412,6 +423,8 @@ function AppContent() {
                 selected={selected}
                 onLikeChange={handleLikeChange}
                 onNavigateToProfile={handleNavigateToProfile}
+                onPostDeleted={handlePostDeleted}
+                onPostUpdated={handlePostUpdated}
               />
               <RightSidebar posts={posts} isLoaded={isLoaded} onNavigateToProfile={handleNavigateToProfile} />
             </div>
@@ -426,6 +439,8 @@ function AppContent() {
                 selected={selected}
                 onLikeChange={handleLikeChange}
                 onNavigateToProfile={handleNavigateToProfile}
+                onPostDeleted={handlePostDeleted}
+                onPostUpdated={handlePostUpdated}
               />
 
               <RightSidebar

@@ -162,6 +162,22 @@ export const deleteNotification = async (notificationId: string) => {
   }
 };
 
+export const deletePost = async (postId: string) => {
+  if (!db) {
+    console.warn("Firebase Firestore not available");
+    throw new Error("Firebase Firestore not available");
+  }
+
+  console.log('🗑️ Deleting post with ID:', postId);
+  try {
+    await deleteDoc(doc(db, "posts", postId));
+    console.log('✅ Post deleted successfully');
+  } catch (error) {
+    console.error('❌ Error deleting post:', error);
+    throw error;
+  }
+};
+
 export const updateDocument = (collectionName: string, id: string, data: any) => {
   if (!db) {
     console.warn("Firebase Firestore not available");
