@@ -18,7 +18,12 @@ export default function RightSidebar({
   isLoaded,
   onNavigateToProfile
 }: RightSidebarProps) {
-  const { following, suggestions } = useFollowing();
+  const { following, suggestions, unfollowUser, loading } = useFollowing();
+
+  const handleToggleFollow = async (userId: string) => {
+    await unfollowUser(userId);
+  };
+
   return (
     <aside className={[
       "hidden lg:flex lg:flex-col shrink-0",
@@ -32,7 +37,12 @@ export default function RightSidebar({
       style={{ width: '340px' }}
     >
       <FixturesCard />
-      <FollowingCard list={following} onToggle={() => { }} onNavigateToProfile={onNavigateToProfile} />
+      <FollowingCard
+        list={following}
+        onToggle={handleToggleFollow}
+        onNavigateToProfile={onNavigateToProfile}
+        loading={loading}
+      />
       <TopArticlesCard articles={posts} />
     </aside>
   );

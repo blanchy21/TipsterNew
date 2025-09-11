@@ -13,6 +13,9 @@ import Feed from './Feed';
 import RightSidebar from './RightSidebar';
 import PostModal from './PostModal';
 import ProfilePage from './ProfilePage';
+import AdminPage from './AdminPage';
+import AdminAccessModal from './AdminAccessModal';
+import ProfileAccessModal from './ProfileAccessModal';
 import MessagesPage from './MessagesPage';
 import ChatPage from './ChatPage';
 import NotificationsPage from './NotificationsPage';
@@ -38,11 +41,23 @@ function AppContent() {
   const [showPost, setShowPost] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [query, setQuery] = useState('');
+  const [debouncedQuery, setDebouncedQuery] = useState('');
   const [selectedSport, setSelectedSport] = useState('All Sports');
+  const [filters, setFilters] = useState({
+    timeRange: 'all',
+    tipStatus: 'all',
+    engagement: 'all',
+    userType: 'all',
+    oddsRange: 'all',
+    selectedTags: [] as string[]
+  });
   const [showLandingPage, setShowLandingPage] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authModalMode, setAuthModalMode] = useState<'login' | 'signup'>('login');
   const [viewingUserId, setViewingUserId] = useState<string | null>(null);
+  const [showAdminAccessModal, setShowAdminAccessModal] = useState(false);
+  const [showProfileAccessModal, setShowProfileAccessModal] = useState(false);
+  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
 
   // Handler functions
   const handlePostDeleted = (postId: string) => {
@@ -73,10 +88,30 @@ function AppContent() {
   // Handle URL parameters for direct navigation
   useEffect(() => {
     const tab = searchParams.get('tab');
-    if (tab && ['home', 'messages', 'chat', 'notifications', 'following', 'top-tipsters', 'sports', 'profile'].includes(tab)) {
-      setSelected(tab);
+    if (tab && ['home', 'messages', 'chat', 'notifications', 'following', 'top-tipsters', 'sports', 'admin', 'profile'].includes(tab)) {
+      if (tab === 'admin') {
+        handleAdminAccess();
+      } else if (tab === 'profile') {
+        // For profile, check if user is authenticated
+        if (user) {
+          setSelected('profile');
+        } else {
+          handleProfileAccess();
+        }
+      } else {
+        setSelected(tab);
+      }
     }
   }, [searchParams]);
+
+  // Debounce search query
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedQuery(query);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [query]);
 
   // Close auth modal when user is successfully authenticated
   useEffect(() => {
@@ -85,19 +120,6 @@ function AppContent() {
     }
   }, [user, showAuthModal]);
 
-  // Handle URL hash navigation for admin panel
-  useEffect(() => {
-    const handleHashChange = () => {
-      if (window.location.hash === '#admin') {
-        setSelected('admin');
-      }
-    };
-
-    window.addEventListener('hashchange', handleHashChange);
-    handleHashChange(); // Check initial hash
-
-    return () => window.removeEventListener('hashchange', handleHashChange);
-  }, []);
 
   // Real-time posts listener
   useEffect(() => {
@@ -147,7 +169,8 @@ function AppContent() {
       totalPosts: posts.length,
       selected,
       selectedSport,
-      query: query.trim()
+      query: query.trim(),
+      filters
     });
 
     let filtered = posts;
@@ -169,8 +192,8 @@ function AppContent() {
     }
 
     // Filter by search query
-    if (query.trim()) {
-      const searchQuery = query.toLowerCase();
+    if (debouncedQuery.trim()) {
+      const searchQuery = debouncedQuery.toLowerCase();
       filtered = filtered.filter((post: Post) =>
         post.title.toLowerCase().includes(searchQuery) ||
         post.content.toLowerCase().includes(searchQuery) ||
@@ -182,9 +205,124 @@ function AppContent() {
       console.log('🔍 Filtered by search:', searchQuery, filtered.length, 'posts');
     }
 
+    // Apply advanced filters
+    // Time range filter
+    if (filters.timeRange !== 'all') {
+      const now = new Date();
+      const postDate = (post: Post) => new Date(post.createdAt);
+
+      switch (filters.timeRange) {
+        case 'today':
+          filtered = filtered.filter(post => {
+            const postTime = postDate(post);
+            return postTime.toDateString() === now.toDateString();
+          });
+          break;
+        case 'week':
+          const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+          filtered = filtered.filter(post => postDate(post) >= weekAgo);
+          break;
+        case 'month':
+          const monthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+          filtered = filtered.filter(post => postDate(post) >= monthAgo);
+          break;
+        case '30days':
+          const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+          filtered = filtered.filter(post => postDate(post) >= thirtyDaysAgo);
+          break;
+      }
+      console.log('📅 Filtered by time range:', filters.timeRange, filtered.length, 'posts');
+    }
+
+    // Tip status filter
+    if (filters.tipStatus !== 'all') {
+      filtered = filtered.filter(post => {
+        if (filters.tipStatus === 'verified') {
+          return post.tipStatus && post.tipStatus !== 'pending';
+        }
+        return post.tipStatus === filters.tipStatus;
+      });
+      console.log('🏆 Filtered by tip status:', filters.tipStatus, filtered.length, 'posts');
+    }
+
+    // User type filter
+    if (filters.userType !== 'all') {
+      filtered = filtered.filter(post => {
+        switch (filters.userType) {
+          case 'verified':
+            return post.user.isVerified === true;
+          case 'following':
+            // This would need to be implemented with following context
+            return true; // Placeholder
+          case 'highWinRate':
+            // This would need win rate calculation
+            return true; // Placeholder
+          case 'new':
+            const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+            return post.user.memberSince && new Date(post.user.memberSince) >= thirtyDaysAgo;
+          default:
+            return true;
+        }
+      });
+      console.log('👤 Filtered by user type:', filters.userType, filtered.length, 'posts');
+    }
+
+    // Odds range filter
+    if (filters.oddsRange !== 'all') {
+      filtered = filtered.filter(post => {
+        if (!post.odds) return false;
+        const oddsValue = parseFloat(post.odds);
+        if (isNaN(oddsValue)) return false;
+
+        switch (filters.oddsRange) {
+          case 'low':
+            return oddsValue >= 1.1 && oddsValue <= 2.0;
+          case 'medium':
+            return oddsValue > 2.0 && oddsValue <= 5.0;
+          case 'high':
+            return oddsValue > 5.0;
+          default:
+            return true;
+        }
+      });
+      console.log('🎯 Filtered by odds range:', filters.oddsRange, filtered.length, 'posts');
+    }
+
+    // Tags filter
+    if (filters.selectedTags.length > 0) {
+      filtered = filtered.filter(post =>
+        filters.selectedTags.some(tag =>
+          post.tags.some(postTag =>
+            postTag.toLowerCase().includes(tag.toLowerCase())
+          )
+        )
+      );
+      console.log('🏷️ Filtered by tags:', filters.selectedTags, filtered.length, 'posts');
+    }
+
+    // Engagement sorting
+    if (filters.engagement !== 'all') {
+      switch (filters.engagement) {
+        case 'likes':
+          filtered = filtered.sort((a, b) => b.likes - a.likes);
+          break;
+        case 'comments':
+          filtered = filtered.sort((a, b) => b.comments - a.comments);
+          break;
+        case 'views':
+          filtered = filtered.sort((a, b) => b.views - a.views);
+          break;
+        case 'trending':
+          // Sort by recent high engagement (likes + comments in last 24h)
+          filtered = filtered.sort((a, b) => (b.likes + b.comments) - (a.likes + a.comments));
+          break;
+      }
+      console.log('📊 Sorted by engagement:', filters.engagement, filtered.length, 'posts');
+    }
+
     console.log('✅ Final filtered posts:', filtered.length, 'posts');
     return filtered;
-  }, [posts, selected, selectedSport, query]);
+  }, [posts, selected, selectedSport, debouncedQuery, filters]);
 
   const handleSubmitPost = async (postData: Omit<Post, 'id' | 'user' | 'createdAt' | 'likes' | 'comments' | 'views' | 'likedBy'>) => {
     if (!user) {
@@ -290,7 +428,14 @@ function AppContent() {
 
   const handleNavigation = (page: string) => {
     if (page === 'admin') {
-      router.push('/admin');
+      handleAdminAccess();
+    } else if (page === 'profile') {
+      // For profile, check if user is authenticated
+      if (user) {
+        setSelected('profile');
+      } else {
+        handleProfileAccess();
+      }
     } else {
       setSelected(page);
     }
@@ -298,6 +443,28 @@ function AppContent() {
 
   const handleShowLandingPage = () => {
     setShowLandingPage(true);
+  };
+
+  const handleAdminAccess = () => {
+    if (isAdminAuthenticated) {
+      setSelected('admin');
+    } else {
+      setShowAdminAccessModal(true);
+    }
+  };
+
+  const handleProfileAccess = () => {
+    if (user) {
+      setSelected('profile');
+    } else {
+      setShowProfileAccessModal(true);
+    }
+  };
+
+  const handleAdminSuccess = () => {
+    setIsAdminAuthenticated(true);
+    setShowAdminAccessModal(false);
+    setSelected('admin');
   };
 
   // Show loading state while checking authentication
@@ -330,7 +497,7 @@ function AppContent() {
   if (!user) {
     return (
       <>
-        <div className="h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+        <div className="h-screen flex items-center justify-center bg-slate-900">
           <div className="text-center max-w-md mx-auto p-8">
             <div className="w-16 h-16 bg-gradient-to-br from-amber-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6">
               <span className="text-white font-bold text-2xl">SA</span>
@@ -388,7 +555,11 @@ function AppContent() {
             onShowAuthModal={handleShowAuthModal}
           />
 
-          {selected === 'profile' ? (
+          {selected === 'admin' && isAdminAuthenticated ? (
+            <div className="flex-1 overflow-y-auto">
+              <AdminPage />
+            </div>
+          ) : selected === 'profile' ? (
             <div className="flex-1 overflow-y-auto">
               <ProfilePage onNavigate={handleProfileNavigation} userId={viewingUserId || undefined} />
             </div>
@@ -425,6 +596,8 @@ function AppContent() {
                 onNavigateToProfile={handleNavigateToProfile}
                 onPostDeleted={handlePostDeleted}
                 onPostUpdated={handlePostUpdated}
+                onFiltersChange={setFilters}
+                currentFilters={filters}
               />
               <RightSidebar posts={posts} isLoaded={isLoaded} onNavigateToProfile={handleNavigateToProfile} />
             </div>
@@ -441,6 +614,8 @@ function AppContent() {
                 onNavigateToProfile={handleNavigateToProfile}
                 onPostDeleted={handlePostDeleted}
                 onPostUpdated={handlePostUpdated}
+                onFiltersChange={setFilters}
+                currentFilters={filters}
               />
 
               <RightSidebar
@@ -465,8 +640,47 @@ function AppContent() {
           initialMode={authModalMode}
         />
 
+        {showAdminAccessModal && (
+          <AdminAccessModal
+            isOpen={showAdminAccessModal}
+            onClose={() => setShowAdminAccessModal(false)}
+            onSuccess={handleAdminSuccess}
+          />
+        )}
+
+        {showProfileAccessModal && (
+          <ProfileAccessModal
+            isOpen={showProfileAccessModal}
+            onClose={() => setShowProfileAccessModal(false)}
+            onLogin={() => handleShowAuthModal('login')}
+            onSignup={() => handleShowAuthModal('signup')}
+          />
+        )}
+
         <NotificationToastManager />
         <RealtimeIndicator isConnected={!!user} />
+
+        {/* Hidden admin access - only visible in development */}
+        {process.env.NODE_ENV === 'development' && (
+          <div className="fixed bottom-4 right-4 z-40">
+            <div className="flex gap-2">
+              <button
+                onClick={handleAdminAccess}
+                className="px-3 py-2 text-xs bg-red-500/20 text-red-300 rounded-lg hover:bg-red-500/30 transition-colors"
+                title="Admin Access (Dev Only)"
+              >
+                Admin
+              </button>
+              <button
+                onClick={handleProfileAccess}
+                className="px-3 py-2 text-xs bg-blue-500/20 text-blue-300 rounded-lg hover:bg-blue-500/30 transition-colors"
+                title="Profile Access (Dev Only)"
+              >
+                Profile
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </NotificationsProvider>
   );

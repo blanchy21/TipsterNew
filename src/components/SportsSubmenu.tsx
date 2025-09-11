@@ -44,10 +44,8 @@ export default function SportsSubmenu({ isOpen, selectedSport, onSportSelect, on
 
   return (
     <div
-      className="absolute left-0 top-full mt-1 w-64 border border-white/40 rounded-lg shadow-2xl"
+      className="absolute left-0 top-full mt-1 w-64 border border-white/40 rounded-lg shadow-2xl bg-slate-800"
       style={{
-        backgroundColor: '#000000',
-        background: '#000000',
         opacity: 1,
         backdropFilter: 'none',
         position: 'absolute',
@@ -59,10 +57,8 @@ export default function SportsSubmenu({ isOpen, selectedSport, onSportSelect, on
       }}
     >
       <div
-        className="p-3 rounded-lg"
+        className="p-3 rounded-lg bg-slate-800"
         style={{
-          backgroundColor: '#000000',
-          background: '#000000',
           position: 'relative',
           zIndex: 1
         }}
@@ -77,10 +73,8 @@ export default function SportsSubmenu({ isOpen, selectedSport, onSportSelect, on
           </button>
         </div>
         <div
-          className="max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent"
+          className="max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent bg-slate-800"
           style={{
-            backgroundColor: '#000000',
-            background: '#000000',
             position: 'relative',
             zIndex: 1
           }}
@@ -100,8 +94,7 @@ export default function SportsSubmenu({ isOpen, selectedSport, onSportSelect, on
                   : "text-slate-300 hover:text-slate-100"
               ].join(' ')}
               style={{
-                backgroundColor: selectedSport === sport ? 'rgba(14, 165, 233, 0.8)' : '#000000',
-                background: selectedSport === sport ? 'rgba(14, 165, 233, 0.8)' : '#000000'
+                backgroundColor: selectedSport === sport ? 'rgba(14, 165, 233, 0.8)' : 'transparent'
               }}
             >
               {sport}

@@ -195,7 +195,7 @@ const AdminDashboard: React.FC = () => {
     ];
 
     return (
-        <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-slate-900 to-[#2c1376]/70 min-h-screen">
+        <div className="w-full text-gray-100 font-[Inter] bg-slate-900 min-h-screen">
             <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8">
                 {/* Header */}
                 <div className="mb-8">

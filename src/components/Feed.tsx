@@ -6,6 +6,15 @@ import { Post } from '@/lib/types';
 import PostCard from './PostCard';
 import FeedHeader from './FeedHeader';
 
+interface FilterOptions {
+  timeRange: string;
+  tipStatus: string;
+  engagement: string;
+  userType: string;
+  oddsRange: string;
+  selectedTags: string[];
+}
+
 interface FeedProps {
   posts: Post[];
   isLoaded: boolean;
@@ -17,19 +26,36 @@ interface FeedProps {
   onNavigateToProfile?: (userId: string) => void;
   onPostDeleted?: (postId: string) => void;
   onPostUpdated?: (postId: string, updatedPost: Post) => void;
+  onFiltersChange?: (filters: FilterOptions) => void;
+  currentFilters?: FilterOptions;
 }
 
-export default function Feed({ posts, isLoaded, query, onQueryChange, selectedSport, selected, onLikeChange, onNavigateToProfile, onPostDeleted, onPostUpdated }: FeedProps) {
+export default function Feed({ posts, isLoaded, query, onQueryChange, selectedSport, selected, onLikeChange, onNavigateToProfile, onPostDeleted, onPostUpdated, onFiltersChange, currentFilters }: FeedProps) {
   console.log('📱 Feed component rendering:', {
     postsCount: posts.length,
     isLoaded,
     selectedSport,
-    selected
+    selected,
+    query
   });
 
   return (
     <main className="flex-1 flex flex-col overflow-hidden">
-      <FeedHeader isLoaded={isLoaded} query={query} onQueryChange={onQueryChange} selected={selected} />
+      <FeedHeader
+        isLoaded={isLoaded}
+        query={query}
+        onQueryChange={onQueryChange}
+        selected={selected}
+        onFiltersChange={onFiltersChange}
+        currentFilters={currentFilters}
+      />
+      {query.trim() && (
+        <div className="px-4 md:px-6 py-2 border-b border-white/10">
+          <p className="text-sm text-slate-400">
+            {posts.length === 0 ? 'No results found' : `${posts.length} result${posts.length === 1 ? '' : 's'} found`} for "{query}"
+          </p>
+        </div>
+      )}
       <div className="flex-1 overflow-y-auto px-4 md:px-6 py-4 space-y-4 md:space-y-5">
         {posts.map((post, idx) => (
           <div
@@ -55,7 +81,12 @@ export default function Feed({ posts, isLoaded, query, onQueryChange, selectedSp
               <div className="mx-auto w-12 h-12 rounded-full bg-white/5 ring-1 ring-white/10 grid place-items-center mb-3">
                 <Inbox className="w-5 h-5 text-slate-400" />
               </div>
-              {selectedSport && selectedSport !== 'All Sports' ? (
+              {query.trim() ? (
+                <>
+                  <p className="text-slate-300 font-medium">No results found for "{query}"</p>
+                  <p className="text-slate-500 text-sm">Try different keywords or check your spelling.</p>
+                </>
+              ) : selectedSport && selectedSport !== 'All Sports' ? (
                 <>
                   <p className="text-slate-300 font-medium">No {selectedSport} tips found</p>
                   <p className="text-slate-500 text-sm">Try selecting a different sport or be the first to share a {selectedSport} tip.</p>

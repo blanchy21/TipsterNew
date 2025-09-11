@@ -20,6 +20,7 @@ export interface VerificationStats {
     pendingTips: number;
     winRate: number;
     totalWins: number;
+    totalLosses: number;
     avgOdds: number;
     topSports: { sport: string; count: number; winRate: number }[];
 }
@@ -78,12 +79,17 @@ export const getUserVerificationStats = async (userId: string): Promise<Verifica
             pendingTips: 0,
             winRate: 0,
             totalWins: 0,
+            totalLosses: 0,
             avgOdds: 0,
             topSports: []
         };
     }
 
     try {
+        console.log('🔍 getUserVerificationStats called for userId:', userId);
+        console.log('🔍 User ID type:', typeof userId);
+        console.log('🔍 User ID length:', userId?.length);
+
         // Get all posts by the user
         const postsQuery = query(
             collection(db, 'posts'),
@@ -92,21 +98,99 @@ export const getUserVerificationStats = async (userId: string): Promise<Verifica
         const postsSnapshot = await getDocs(postsQuery);
         const posts = postsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as any[];
 
-        // Get all verifications for the user's posts
-        const verificationsQuery = query(
-            collection(db, 'tipVerifications'),
-            where('tipsterId', '==', userId)
-        );
-        const verificationsSnapshot = await getDocs(verificationsQuery);
-        const verifications = verificationsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as any[];
+        console.log('📊 Found posts for user:', posts.length);
+
+        // Debug: Check if we're getting the right posts
+        console.log('🔍 Posts found for user:', posts.map(p => ({
+            id: p.id,
+            title: p.title,
+            userId: p.userId,
+            tipStatus: p.tipStatus
+        })));
+
+        // Debug: Log all posts to see their user IDs and statuses
+        console.log('🔍 All posts found:', posts.map(p => ({
+            id: p.id,
+            title: p.title,
+            userId: p.userId,
+            tipStatus: p.tipStatus,
+            sport: p.sport
+        })));
+
+        // Also get ALL posts to compare
+        const allPostsQuery = query(collection(db, 'posts'));
+        const allPostsSnapshot = await getDocs(allPostsQuery);
+        const allPosts = allPostsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as any[];
+
+        // Check for posts with your specific user ID from ALL posts
+        const yourPostsFromAll = allPosts.filter(p => p.userId === userId);
+        console.log('🔍 Posts with your user ID from ALL posts:', yourPostsFromAll.map(p => ({
+            id: p.id,
+            title: p.title,
+            userId: p.userId,
+            tipStatus: p.tipStatus
+        })));
+
+        console.log('🔍 Query found:', posts.length, 'posts, but ALL posts shows:', yourPostsFromAll.length, 'posts for your user ID');
+
+        // Use the more complete data if there's a discrepancy
+        const finalPosts = yourPostsFromAll.length > posts.length ? yourPostsFromAll : posts;
+        console.log('🔍 Using final posts:', finalPosts.length, 'posts');
 
         // Only count posts that have a tipStatus (actual tips, not test posts)
-        const actualTips = posts.filter(p => p.tipStatus !== undefined);
+        const actualTips = finalPosts.filter(p => p.tipStatus !== undefined);
         const totalTips = actualTips.length;
-        const verifiedTips = verifications.length;
         const pendingTips = actualTips.filter(p => p.tipStatus === 'pending').length;
-        const wins = verifications.filter(v => v.status === 'win').length;
+        const wins = actualTips.filter(p => p.tipStatus === 'win').length;
+        const losses = actualTips.filter(p => p.tipStatus === 'loss').length;
+        const voids = actualTips.filter(p => p.tipStatus === 'void').length;
+        const places = actualTips.filter(p => p.tipStatus === 'place').length;
+        const verifiedTips = wins + losses + voids + places;
         const winRate = verifiedTips > 0 ? Math.round((wins / verifiedTips) * 100) : 0;
+
+        // Debug logging
+        console.log('🔍 getUserVerificationStats Debug:', {
+            userId,
+            totalPosts: posts.length,
+            actualTips: actualTips.length,
+            pendingTips,
+            wins,
+            losses,
+            voids,
+            places,
+            verifiedTips,
+            winRate
+        });
+
+        // Log all posts with their statuses
+        console.log('📋 All posts with tipStatus:', actualTips.map(p => ({
+            id: p.id,
+            title: p.title,
+            tipStatus: p.tipStatus,
+            sport: p.sport,
+            userId: p.userId
+        })));
+
+        // Log pending posts specifically
+        const pendingPosts = actualTips.filter(p => p.tipStatus === 'pending');
+        console.log('⏳ Pending posts:', pendingPosts.map(p => ({
+            id: p.id,
+            title: p.title,
+            tipStatus: p.tipStatus,
+            sport: p.sport,
+            userId: p.userId
+        })));
+
+        // Log all status counts
+        console.log('📊 Status breakdown:', {
+            total: actualTips.length,
+            pending: actualTips.filter(p => p.tipStatus === 'pending').length,
+            wins: actualTips.filter(p => p.tipStatus === 'win').length,
+            losses: actualTips.filter(p => p.tipStatus === 'loss').length,
+            voids: actualTips.filter(p => p.tipStatus === 'void').length,
+            places: actualTips.filter(p => p.tipStatus === 'place').length,
+            undefined: actualTips.filter(p => p.tipStatus === undefined).length
+        });
 
 
         // Calculate average odds
@@ -132,11 +216,7 @@ export const getUserVerificationStats = async (userId: string): Promise<Verifica
                 sportStats[post.sport] = { count: 0, wins: 0 };
             }
             sportStats[post.sport].count++;
-        });
-
-        verifications.forEach(verification => {
-            const post = posts.find(p => p.id === verification.postId);
-            if (post && verification.status === 'win') {
+            if (post.tipStatus === 'win') {
                 sportStats[post.sport].wins++;
             }
         });
@@ -156,6 +236,7 @@ export const getUserVerificationStats = async (userId: string): Promise<Verifica
             pendingTips,
             winRate,
             totalWins: wins,
+            totalLosses: losses,
             avgOdds,
             topSports
         };
@@ -167,6 +248,7 @@ export const getUserVerificationStats = async (userId: string): Promise<Verifica
             pendingTips: 0,
             winRate: 0,
             totalWins: 0,
+            totalLosses: 0,
             avgOdds: 0,
             topSports: []
         };

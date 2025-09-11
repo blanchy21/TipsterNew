@@ -10,8 +10,10 @@ import {
     Calendar,
     Trophy,
     Activity,
-    RefreshCw
+    RefreshCw,
+    PieChart
 } from 'lucide-react';
+import { PieChart as RechartsPieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { getUserVerificationStats, VerificationStats } from '@/lib/firebase/tipVerification';
 import { useAuth } from '@/lib/hooks/useAuth';
 
@@ -31,6 +33,7 @@ export default function TipVerificationAnalytics({
         pendingTips: 0,
         winRate: 0,
         totalWins: 0,
+        totalLosses: 0,
         avgOdds: 0,
         topSports: []
     });
@@ -173,6 +176,12 @@ export default function TipVerificationAnalytics({
                             </span>
                         </div>
                         <div className="flex items-center justify-between">
+                            <span className="text-slate-300">Total Losses</span>
+                            <span className="text-red-400 font-medium">
+                                {stats.totalLosses || 0}
+                            </span>
+                        </div>
+                        <div className="flex items-center justify-between">
                             <span className="text-slate-300">Verification Rate</span>
                             <span className="text-blue-400 font-medium">
                                 {stats.totalTips > 0 ? Math.round((stats.verifiedTips / stats.totalTips) * 100) : 0}%
@@ -190,16 +199,196 @@ export default function TipVerificationAnalytics({
                 </div>
             </div>
 
-            {/* Performance Chart Placeholder */}
-            <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-                <div className="flex items-center gap-3 mb-4">
-                    <BarChart3 className="w-6 h-6 text-purple-400" />
-                    <h3 className="text-lg font-semibold text-white">Performance Over Time</h3>
+            {/* Performance Charts */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Sports Distribution Pie Chart */}
+                <div className="bg-white/5 rounded-xl p-6 border border-white/10 hover:border-white/20 hover:scale-[1.02] transition-all duration-500 group">
+                    <div className="flex items-center gap-3 mb-6">
+                        <div className="p-2 bg-amber-500/20 rounded-xl group-hover:scale-110 transition-transform duration-300">
+                            <PieChart className="w-6 h-6 text-amber-400" />
+                        </div>
+                        <h3 className="text-lg font-semibold text-white">Tips by Sport</h3>
+                    </div>
+                    <div className="h-64">
+                        {stats.topSports.length > 0 ? (
+                            <ResponsiveContainer width="100%" height="100%">
+                                <RechartsPieChart>
+                                    <Pie
+                                        data={stats.topSports.map((sport, index) => ({
+                                            name: sport.sport,
+                                            value: sport.count,
+                                            color: [
+                                                '#F59E0B', // amber-500 - more vibrant
+                                                '#F97316', // orange-500 - bright orange
+                                                '#EF4444', // red-500 - bold red
+                                                '#8B5CF6', // violet-500 - purple
+                                                '#06B6D4', // cyan-500 - bright cyan
+                                                '#10B981', // emerald-500 - green
+                                                '#3B82F6', // blue-500 - blue
+                                                '#EC4899'  // pink-500 - bright pink
+                                            ][index % 8]
+                                        }))}
+                                        cx="50%"
+                                        cy="50%"
+                                        labelLine={false}
+                                        label={({ name, percent }: any) => `${name} ${(percent * 100).toFixed(0)}%`}
+                                        outerRadius={80}
+                                        fill="#8884d8"
+                                        dataKey="value"
+                                        className="hover:scale-105 transition-transform duration-300"
+                                        animationBegin={0}
+                                        animationDuration={1000}
+                                    >
+                                        {stats.topSports.map((_, index) => (
+                                            <Cell
+                                                key={`cell-${index}`}
+                                                fill={[
+                                                    '#F59E0B', '#F97316', '#EF4444', '#8B5CF6',
+                                                    '#06B6D4', '#10B981', '#3B82F6', '#EC4899'
+                                                ][index % 8]}
+                                            />
+                                        ))}
+                                    </Pie>
+                                    <Tooltip
+                                        contentStyle={{
+                                            backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                                            border: '1px solid rgba(255, 255, 255, 0.1)',
+                                            borderRadius: '8px',
+                                            color: 'white'
+                                        }}
+                                        formatter={(value: any, name: string, props: any) => [
+                                            `${value} tips`,
+                                            props.payload.sport
+                                        ]}
+                                        labelFormatter={() => ''}
+                                    />
+                                </RechartsPieChart>
+                            </ResponsiveContainer>
+                        ) : (
+                            <div className="h-full flex items-center justify-center">
+                                <div className="text-center">
+                                    <PieChart className="w-12 h-12 text-slate-400 mx-auto mb-2" />
+                                    <p className="text-slate-400">No sports data available</p>
+                                </div>
+                            </div>
+                        )}
+                    </div>
                 </div>
-                <div className="h-48 flex items-center justify-center">
+
+                {/* Win Rate by Sport Bar Chart */}
+                <div className="bg-white/5 rounded-xl p-6 border border-white/10 hover:border-white/20 hover:scale-[1.02] transition-all duration-500 group">
+                    <div className="flex items-center gap-3 mb-6">
+                        <div className="p-2 bg-orange-500/20 rounded-xl group-hover:scale-110 transition-transform duration-300">
+                            <BarChart3 className="w-6 h-6 text-orange-400" />
+                        </div>
+                        <h3 className="text-lg font-semibold text-white">Win Rate by Sport</h3>
+                    </div>
+                    <div className="h-64">
+                        {stats.topSports.length > 0 ? (
+                            <ResponsiveContainer width="100%" height="100%">
+                                <BarChart data={stats.topSports.map((sport, index) => ({
+                                    sport: sport.sport,
+                                    winRate: sport.winRate,
+                                    tips: sport.count,
+                                    color: [
+                                        '#F59E0B', '#F97316', '#EF4444', '#8B5CF6',
+                                        '#06B6D4', '#10B981', '#3B82F6', '#EC4899'
+                                    ][index % 8]
+                                }))}>
+                                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 255, 255, 0.1)" />
+                                    <XAxis
+                                        dataKey="sport"
+                                        tick={{ fill: '#94A3B8', fontSize: 12 }}
+                                        axisLine={{ stroke: 'rgba(255, 255, 255, 0.1)' }}
+                                    />
+                                    <YAxis
+                                        tick={{ fill: '#94A3B8', fontSize: 12 }}
+                                        axisLine={{ stroke: 'rgba(255, 255, 255, 0.1)' }}
+                                        label={{ value: 'Win Rate %', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: '#94A3B8' } }}
+                                    />
+                                    <Tooltip
+                                        contentStyle={{
+                                            backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                                            border: '1px solid rgba(255, 255, 255, 0.1)',
+                                            borderRadius: '8px',
+                                            color: 'white'
+                                        }}
+                                        formatter={(value: any, name: string, props: any) => [
+                                            `${value}%`,
+                                            'Win Rate'
+                                        ]}
+                                        labelFormatter={(label) => `${label}`}
+                                    />
+                                    <Bar
+                                        dataKey="winRate"
+                                        radius={[4, 4, 0, 0]}
+                                        className="hover:opacity-80 transition-opacity duration-300"
+                                        animationBegin={0}
+                                        animationDuration={1000}
+                                    >
+                                        {stats.topSports.map((_, index) => (
+                                            <Cell
+                                                key={`cell-${index}`}
+                                                fill={[
+                                                    '#F59E0B', '#F97316', '#EF4444', '#8B5CF6',
+                                                    '#06B6D4', '#10B981', '#3B82F6', '#EC4899'
+                                                ][index % 8]}
+                                            />
+                                        ))}
+                                    </Bar>
+                                </BarChart>
+                            </ResponsiveContainer>
+                        ) : (
+                            <div className="h-full flex items-center justify-center">
+                                <div className="text-center">
+                                    <BarChart3 className="w-12 h-12 text-slate-400 mx-auto mb-2" />
+                                    <p className="text-slate-400">No sports data available</p>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </div>
+
+            {/* Performance Summary */}
+            <div className="bg-gradient-to-r from-amber-500/10 to-orange-500/10 rounded-xl p-6 border border-amber-500/20">
+                <div className="flex items-center gap-3 mb-6">
+                    <div className="p-2 bg-amber-500/20 rounded-xl">
+                        <Trophy className="w-6 h-6 text-amber-400" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-white">Performance Summary</h3>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                     <div className="text-center">
-                        <BarChart3 className="w-12 h-12 text-slate-400 mx-auto mb-2" />
-                        <p className="text-slate-400">Performance chart coming soon</p>
+                        <div className="text-3xl font-bold text-amber-400 mb-2">{stats.winRate}%</div>
+                        <div className="text-sm text-slate-300">Overall Win Rate</div>
+                        <div className="w-full bg-slate-700 rounded-full h-2 mt-2">
+                            <div
+                                className="bg-gradient-to-r from-amber-400 to-orange-500 h-2 rounded-full transition-all duration-1000"
+                                style={{ width: `${Math.min(stats.winRate, 100)}%` }}
+                            />
+                        </div>
+                    </div>
+                    <div className="text-center">
+                        <div className="text-3xl font-bold text-green-400 mb-2">{stats.totalWins}</div>
+                        <div className="text-sm text-slate-300">Total Wins</div>
+                        <div className="text-xs text-slate-400 mt-1">
+                            {stats.verifiedTips > 0 ? `${Math.round((stats.totalWins / stats.verifiedTips) * 100)}% of verified` : 'No verified tips'}
+                        </div>
+                    </div>
+                    <div className="text-center">
+                        <div className="text-3xl font-bold text-red-400 mb-2">{stats.totalLosses || 0}</div>
+                        <div className="text-sm text-slate-300">Total Losses</div>
+                        <div className="text-xs text-slate-400 mt-1">
+                            {stats.verifiedTips > 0 ? `${Math.round(((stats.totalLosses || 0) / stats.verifiedTips) * 100)}% of verified` : 'No verified tips'}
+                        </div>
+                    </div>
+                    <div className="text-center">
+                        <div className="text-3xl font-bold text-orange-400 mb-2">{stats.topSports.length}</div>
+                        <div className="text-sm text-slate-300">Sports Covered</div>
+                        <div className="text-xs text-slate-400 mt-1">
+                            {stats.topSports.map(s => s.sport).join(', ')}
+                        </div>
                     </div>
                 </div>
             </div>

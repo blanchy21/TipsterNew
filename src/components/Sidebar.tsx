@@ -13,7 +13,6 @@ import {
   ExternalLink,
   LogOut,
   Users,
-  Settings,
   Target
 } from 'lucide-react';
 import Logo from './Logo';
@@ -44,7 +43,6 @@ const items: SidebarItemType[] = [
   { icon: Mail, label: 'Messages', key: 'messages' },
   { icon: User, label: 'Profile', key: 'profile' },
   { icon: Target, label: 'Sports', key: 'sports' },
-  { icon: Settings, label: 'Admin', key: 'admin' },
 ];
 
 export default function Sidebar({ selected, onSelect, onOpenPost, isLoaded, selectedSport, onSportSelect, onShowLandingPage, onShowAuthModal }: SidebarProps) {

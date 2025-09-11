@@ -22,11 +22,13 @@ interface TopTipstersProps {
 const TopTipsters: React.FC<TopTipstersProps> = ({ onNavigateToProfile }) => {
     const [tipsters, setTipsters] = useState<LeaderboardEntry[]>([]);
     const [loading, setLoading] = useState(true);
-    const [sortBy, setSortBy] = useState<'winRate' | 'totalTips' | 'averageOdds' | 'totalWins'>('winRate');
+    const [sortBy, setSortBy] = useState<'winRate' | 'totalTips' | 'averageOdds' | 'totalWins' | 'totalLosses' | 'pendingTips'>('winRate');
     const [stats, setStats] = useState({
         totalUsers: 0,
         totalTips: 0,
         totalWins: 0,
+        totalLosses: 0,
+        totalPending: 0,
         averageWinRate: 0,
         averageOdds: 0
     });
@@ -94,7 +96,7 @@ const TopTipsters: React.FC<TopTipstersProps> = ({ onNavigateToProfile }) => {
     };
 
 
-    const sortTipsters = (newSortBy: 'winRate' | 'totalTips' | 'averageOdds' | 'totalWins') => {
+    const sortTipsters = (newSortBy: 'winRate' | 'totalTips' | 'averageOdds' | 'totalWins' | 'totalLosses' | 'pendingTips') => {
         setSortBy(newSortBy);
         const sorted = sortLeaderboard(tipsters, newSortBy);
         setTipsters(sorted);
@@ -150,7 +152,7 @@ const TopTipsters: React.FC<TopTipstersProps> = ({ onNavigateToProfile }) => {
                     </p>
 
                     {/* Stats Overview */}
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 max-w-6xl mx-auto">
                         <div className="bg-white/5 rounded-xl p-4 border border-white/10">
                             <div className="text-2xl font-bold text-white">{stats.totalUsers}</div>
                             <div className="text-sm text-neutral-400">Active Tipsters</div>
@@ -160,12 +162,20 @@ const TopTipsters: React.FC<TopTipstersProps> = ({ onNavigateToProfile }) => {
                             <div className="text-sm text-neutral-400">Total Tips</div>
                         </div>
                         <div className="bg-white/5 rounded-xl p-4 border border-white/10">
-                            <div className="text-2xl font-bold text-white">{stats.averageWinRate}%</div>
-                            <div className="text-sm text-neutral-400">Avg Win Rate</div>
+                            <div className="text-2xl font-bold text-green-400">{stats.totalWins.toLocaleString()}</div>
+                            <div className="text-sm text-neutral-400">Total Wins</div>
                         </div>
                         <div className="bg-white/5 rounded-xl p-4 border border-white/10">
-                            <div className="text-2xl font-bold text-white">{stats.averageOdds.toFixed(2)}</div>
-                            <div className="text-sm text-neutral-400">Avg Odds</div>
+                            <div className="text-2xl font-bold text-red-400">{stats.totalLosses.toLocaleString()}</div>
+                            <div className="text-sm text-neutral-400">Total Losses</div>
+                        </div>
+                        <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                            <div className="text-2xl font-bold text-yellow-400">{stats.totalPending.toLocaleString()}</div>
+                            <div className="text-sm text-neutral-400">Pending Tips</div>
+                        </div>
+                        <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+                            <div className="text-2xl font-bold text-white">{stats.averageWinRate}%</div>
+                            <div className="text-sm text-neutral-400">Avg Win Rate</div>
                         </div>
                     </div>
                 </div>
@@ -208,6 +218,24 @@ const TopTipsters: React.FC<TopTipstersProps> = ({ onNavigateToProfile }) => {
                                 }`}
                         >
                             Avg Odds
+                        </button>
+                        <button
+                            onClick={() => sortTipsters('totalLosses')}
+                            className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 ${sortBy === 'totalLosses'
+                                ? 'bg-red-500 text-white shadow-lg'
+                                : 'bg-white/10 text-neutral-300 hover:bg-white/20'
+                                }`}
+                        >
+                            Total Losses
+                        </button>
+                        <button
+                            onClick={() => sortTipsters('pendingTips')}
+                            className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 ${sortBy === 'pendingTips'
+                                ? 'bg-yellow-500 text-white shadow-lg'
+                                : 'bg-white/10 text-neutral-300 hover:bg-white/20'
+                                }`}
+                        >
+                            Pending Tips
                         </button>
                     </div>
                 </div>
@@ -278,7 +306,7 @@ const TopTipsters: React.FC<TopTipstersProps> = ({ onNavigateToProfile }) => {
                                     </div>
 
                                     {/* Stats */}
-                                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+                                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 text-center">
                                         <div className="group-hover:scale-110 transition-transform duration-300">
                                             <div className="text-2xl font-bold text-white">{tipster.winRate}%</div>
                                             <div className="text-xs text-neutral-400">Win Rate</div>
@@ -288,8 +316,16 @@ const TopTipsters: React.FC<TopTipstersProps> = ({ onNavigateToProfile }) => {
                                             <div className="text-xs text-neutral-400">Total Tips</div>
                                         </div>
                                         <div className="group-hover:scale-110 transition-transform duration-300">
-                                            <div className="text-2xl font-bold text-white">{tipster.totalWins}</div>
-                                            <div className="text-xs text-neutral-400">Total Wins</div>
+                                            <div className="text-2xl font-bold text-green-400">{tipster.totalWins}</div>
+                                            <div className="text-xs text-neutral-400">Wins</div>
+                                        </div>
+                                        <div className="group-hover:scale-110 transition-transform duration-300">
+                                            <div className="text-2xl font-bold text-red-400">{tipster.totalLosses}</div>
+                                            <div className="text-xs text-neutral-400">Losses</div>
+                                        </div>
+                                        <div className="group-hover:scale-110 transition-transform duration-300">
+                                            <div className="text-2xl font-bold text-yellow-400">{tipster.pendingTips}</div>
+                                            <div className="text-xs text-neutral-400">Pending</div>
                                         </div>
                                         <div className="group-hover:scale-110 transition-transform duration-300">
                                             <div className="text-2xl font-bold text-white">{tipster.averageOdds.toFixed(2)}</div>
