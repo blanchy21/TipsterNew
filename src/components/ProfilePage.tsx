@@ -670,20 +670,6 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate, userId }) => {
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-4 p-4 rounded-2xl hover:bg-white/5 transition-all duration-300 group opacity-0 translate-x-8 blur-sm hover:scale-105 backdrop-blur-md" style={{ animation: 'fadeInSlideLeft 0.6s ease-out 3.8s forwards' }}>
-                      <div className="p-2 rounded-xl bg-purple-500/20 text-purple-400 group-hover:scale-110 transition-transform duration-300 backdrop-blur-sm">
-                        <Settings className="w-4 h-4" />
-                      </div>
-                      <div>
-                        <button
-                          onClick={() => onNavigate?.('admin')}
-                          className="font-medium text-white hover:text-purple-400 transition-colors"
-                        >
-                          Admin Panel
-                        </button>
-                        <div className="text-xs text-neutral-400">Populate test data for development</div>
-                      </div>
-                    </div>
                   </>
                 )}
               </div>

@@ -663,27 +663,6 @@ function AppContent() {
         <NotificationToastManager />
         <RealtimeIndicator isConnected={!!user} />
 
-        {/* Hidden admin access - only visible in development */}
-        {process.env.NODE_ENV === 'development' && (
-          <div className="fixed bottom-4 right-4 z-40">
-            <div className="flex gap-2">
-              <button
-                onClick={handleAdminAccess}
-                className="px-3 py-2 text-xs bg-red-500/20 text-red-300 rounded-lg hover:bg-red-500/30 transition-colors"
-                title="Admin Access (Dev Only)"
-              >
-                Admin
-              </button>
-              <button
-                onClick={handleProfileAccess}
-                className="px-3 py-2 text-xs bg-blue-500/20 text-blue-300 rounded-lg hover:bg-blue-500/30 transition-colors"
-                title="Profile Access (Dev Only)"
-              >
-                Profile
-              </button>
-            </div>
-          </div>
-        )}
       </div>
     </NotificationsProvider>
   );

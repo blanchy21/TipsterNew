@@ -13,7 +13,7 @@ import {
     RefreshCw,
     PieChart
 } from 'lucide-react';
-import { PieChart as RechartsPieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { PieChart as RechartsPieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, TooltipProps } from 'recharts';
 import { getUserVerificationStats, VerificationStats } from '@/lib/firebase/tipVerification';
 import { useAuth } from '@/lib/hooks/useAuth';
 
@@ -21,6 +21,38 @@ interface TipVerificationAnalyticsProps {
     userId?: string;
     className?: string;
 }
+
+// Custom Tooltip Component for Pie Chart
+const CustomPieTooltip = ({ active, payload }: any) => {
+    if (active && payload && payload.length) {
+        const data = payload[0];
+        return (
+            <div
+                style={{
+                    backgroundColor: 'rgba(0, 0, 0, 0.95)',
+                    border: '2px solid rgba(255, 255, 255, 0.4)',
+                    borderRadius: '8px',
+                    color: '#ffffff',
+                    fontSize: '14px',
+                    fontWeight: '700',
+                    padding: '12px 16px',
+                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.8)',
+                    backdropFilter: 'blur(12px)',
+                    zIndex: 9999,
+                    textShadow: '0 1px 2px rgba(0, 0, 0, 0.8)'
+                }}
+            >
+                <p style={{ color: '#ffffff', margin: 0, fontWeight: '700' }}>
+                    <strong>{data.payload.sport}</strong>
+                </p>
+                <p style={{ color: '#ffffff', margin: '4px 0 0 0', fontWeight: '700' }}>
+                    {data.value} tips
+                </p>
+            </div>
+        );
+    }
+    return null;
+};
 
 export default function TipVerificationAnalytics({
     userId,
@@ -249,23 +281,7 @@ export default function TipVerificationAnalytics({
                                             />
                                         ))}
                                     </Pie>
-                                    <Tooltip
-                                        contentStyle={{
-                                            backgroundColor: 'rgba(0, 0, 0, 0.9)',
-                                            border: '1px solid rgba(255, 255, 255, 0.2)',
-                                            borderRadius: '8px',
-                                            color: 'white',
-                                            fontSize: '14px',
-                                            fontWeight: '500',
-                                            padding: '8px 12px',
-                                            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)'
-                                        }}
-                                        formatter={(value: any, name: string, props: any) => [
-                                            `${value} tips`,
-                                            props.payload.sport
-                                        ]}
-                                        labelFormatter={() => ''}
-                                    />
+                                    <Tooltip content={<CustomPieTooltip />} />
                                 </RechartsPieChart>
                             </ResponsiveContainer>
                         ) : (
@@ -312,14 +328,17 @@ export default function TipVerificationAnalytics({
                                     />
                                     <Tooltip
                                         contentStyle={{
-                                            backgroundColor: 'rgba(0, 0, 0, 0.9)',
-                                            border: '1px solid rgba(255, 255, 255, 0.2)',
+                                            backgroundColor: 'rgba(0, 0, 0, 0.95)',
+                                            border: '2px solid rgba(255, 255, 255, 0.4)',
                                             borderRadius: '8px',
-                                            color: 'white',
+                                            color: '#ffffff',
                                             fontSize: '14px',
-                                            fontWeight: '500',
-                                            padding: '8px 12px',
-                                            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)'
+                                            fontWeight: '700',
+                                            padding: '12px 16px',
+                                            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.8)',
+                                            backdropFilter: 'blur(12px)',
+                                            zIndex: 9999,
+                                            textShadow: '0 1px 2px rgba(0, 0, 0, 0.8)'
                                         }}
                                         formatter={(value: any, name: string, props: any) => [
                                             `${value}%`,
