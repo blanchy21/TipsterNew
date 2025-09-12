@@ -31,8 +31,9 @@
   ],
   "exclude": [
     "node_modules",
-    "src/**/*.test.tsx",
-    "src/**/*.test.ts",
-    "src/__tests__"
+    "tests-disabled",
+    "**/*.test.tsx",
+    "**/*.test.ts",
+    "**/__tests__"
   ]
 }
