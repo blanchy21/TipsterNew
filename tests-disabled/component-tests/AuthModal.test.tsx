@@ -51,7 +51,7 @@ jest.mock('../SignupForm', () => {
 describe('AuthModal', () => {
     const defaultProps = {
         isOpen: true,
-        mode: 'login' as const,
+        initialMode: 'login' as const,
         onClose: jest.fn(),
         onSuccess: jest.fn(),
         onSwitchMode: jest.fn(),
@@ -61,15 +61,15 @@ describe('AuthModal', () => {
         jest.clearAllMocks()
     })
 
-    it('renders login form when mode is login', () => {
+    it('renders login form when initialMode is login', () => {
         render(<AuthModal {...defaultProps} />)
 
         expect(screen.getByTestId('login-form')).toBeInTheDocument()
         expect(screen.queryByTestId('signup-form')).not.toBeInTheDocument()
     })
 
-    it('renders signup form when mode is signup', () => {
-        render(<AuthModal {...defaultProps} mode="signup" />)
+    it('renders signup form when initialMode is signup', () => {
+        render(<AuthModal {...defaultProps} initialMode="signup" />)
 
         expect(screen.getByTestId('signup-form')).toBeInTheDocument()
         expect(screen.queryByTestId('login-form')).not.toBeInTheDocument()
@@ -110,7 +110,7 @@ describe('AuthModal', () => {
     })
 
     it('calls onSwitchMode when switching from login to signup', () => {
-        render(<AuthModal {...defaultProps} mode="login" />)
+        render(<AuthModal {...defaultProps} initialMode="login" />)
 
         const switchButton = screen.getByText('Switch to Signup')
         fireEvent.click(switchButton)
@@ -119,7 +119,7 @@ describe('AuthModal', () => {
     })
 
     it('calls onSwitchMode when switching from signup to login', () => {
-        render(<AuthModal {...defaultProps} mode="signup" />)
+        render(<AuthModal {...defaultProps} initialMode="signup" />)
 
         const switchButton = screen.getByText('Switch to Login')
         fireEvent.click(switchButton)
@@ -128,7 +128,7 @@ describe('AuthModal', () => {
     })
 
     it('calls onSuccess when login is successful', () => {
-        render(<AuthModal {...defaultProps} mode="login" />)
+        render(<AuthModal {...defaultProps} initialMode="login" />)
 
         const loginButton = screen.getByText('Login')
         fireEvent.click(loginButton)
@@ -137,7 +137,7 @@ describe('AuthModal', () => {
     })
 
     it('calls onSuccess when signup is successful', () => {
-        render(<AuthModal {...defaultProps} mode="signup" />)
+        render(<AuthModal {...defaultProps} initialMode="signup" />)
 
         const signupButton = screen.getByText('Signup')
         fireEvent.click(signupButton)
@@ -178,12 +178,12 @@ describe('AuthModal', () => {
         expect(defaultProps.onClose).toHaveBeenCalled()
     })
 
-    it('displays correct title based on mode', () => {
-        const { rerender } = render(<AuthModal {...defaultProps} mode="login" />)
+    it('displays correct title based on initialMode', () => {
+        const { rerender } = render(<AuthModal {...defaultProps} initialMode="login" />)
 
         expect(screen.getByText(/sign in/i)).toBeInTheDocument()
 
-        rerender(<AuthModal {...defaultProps} mode="signup" />)
+        rerender(<AuthModal {...defaultProps} initialMode="signup" />)
 
         expect(screen.getByText(/create account/i)).toBeInTheDocument()
     })

@@ -1,0 +1,164 @@
+<testsuites id="" name="" tests="39" failures="0" skipped="39" errors="0" time="0.014682999999999993">
+<testsuite name="auth-flow.spec.ts" timestamp="2025-09-12T22:37:32.063Z" hostname="chromium" tests="10" failures="0" skipped="10" time="0" errors="0">
+<testcase name="Authentication Flow › should display authentication modal when not signed in" classname="auth-flow.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › should open authentication modal" classname="auth-flow.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › should have Google sign-in option" classname="auth-flow.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › should have email/password sign-in form" classname="auth-flow.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › should have sign-up option" classname="auth-flow.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › should validate email format" classname="auth-flow.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › should require password" classname="auth-flow.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › should close modal when clicking outside" classname="auth-flow.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › should navigate to protected routes when authenticated" classname="auth-flow.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › should handle authentication errors gracefully" classname="auth-flow.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="landing-page.spec.ts" timestamp="2025-09-12T22:37:32.063Z" hostname="chromium" tests="19" failures="0" skipped="19" time="0" errors="0">
+<testcase name="Landing Page › should display the main heading" classname="landing-page.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Landing Page › should display the tagline" classname="landing-page.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Landing Page › should show all feature cards" classname="landing-page.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Landing Page › should navigate to auth modal when Get Started is clicked" classname="landing-page.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Landing Page › should open login modal when Sign In is clicked" classname="landing-page.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Landing Page › should display feature descriptions" classname="landing-page.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Landing Page › should show navigation menu" classname="landing-page.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Landing Page › should be responsive on mobile" classname="landing-page.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Landing Page › should have proper accessibility attributes" classname="landing-page.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Landing Page › should handle keyboard navigation" classname="landing-page.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Landing Page › should display statistics section" classname="landing-page.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Landing Page › should show footer information" classname="landing-page.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Landing Page › should load quickly" classname="landing-page.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Landing Page › should handle feature card interactions" classname="landing-page.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Landing Page › should display proper meta information" classname="landing-page.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Landing Page › should handle scroll interactions" classname="landing-page.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Landing Page › should display call-to-action section" classname="landing-page.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Landing Page › should handle different screen sizes" classname="landing-page.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Landing Page › should handle external links properly" classname="landing-page.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="user-flow.spec.ts" timestamp="2025-09-12T22:37:32.063Z" hostname="chromium" tests="10" failures="0" skipped="10" time="0" errors="0">
+<testcase name="User Authentication Flow › should complete signup flow" classname="user-flow.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="User Authentication Flow › should complete login flow" classname="user-flow.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="User Authentication Flow › should handle Google sign-in" classname="user-flow.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Post Creation Flow › should verify landing page functionality" classname="user-flow.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Navigation Flow › should navigate between main sections" classname="user-flow.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Navigation Flow › should handle mobile navigation" classname="user-flow.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Feed Interaction Flow › should verify landing page features section" classname="user-flow.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Chat Flow › should verify chat feature description" classname="user-flow.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Performance Tests › should load pages quickly" classname="user-flow.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Performance Tests › should handle page scrolling" classname="user-flow.spec.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+</testsuites>
