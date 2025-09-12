@@ -14,7 +14,7 @@ Our test suite covers multiple layers of testing to ensure the highest quality:
 
 ## 📁 Test Structure
 
-```
+```text
 ├── src/
 │   ├── __tests__/
 │   │   └── utils/
@@ -80,7 +80,7 @@ node scripts/performance-test.js  # Custom performance script
 
 - **Browsers**: Chromium, Firefox, WebKit
 - **Devices**: Desktop, Mobile Chrome, Mobile Safari
-- **Base URL**: http://localhost:3000
+- **Base URL**: <http://localhost:3000>
 - **Auto-start**: Development server before tests
 
 ### Lighthouse CI Configuration
@@ -190,7 +190,7 @@ export const mockUser = {
   uid: "test-user-id",
   email: "test@example.com",
   displayName: "Test User",
-  photoURL: "https://example.com/avatar.jpg",
+  photoURL: "<https://example.com/avatar.jpg>",
 };
 
 // Mock post data
@@ -294,7 +294,7 @@ npx playwright test landing-page.spec.ts
 node scripts/performance-test.js
 
 # Lighthouse with specific config
-npx lighthouse http://localhost:3000 --config-path=lighthouserc.js
+npx lighthouse <http://localhost:3000> --config-path=lighthouserc.js
 ```
 
 ## 📝 Writing Tests
