@@ -42,12 +42,12 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login' }: Au
       />
 
       {/* Modal */}
-      <div className="relative z-10 w-full max-w-md mx-4">
+      <div className="relative z-10 w-full max-w-md mx-4" data-testid="auth-modal">
         <div className="bg-[#0A0A14] border border-white/10 rounded-2xl p-8 shadow-2xl">
           {loading && (
             <div className="absolute inset-0 bg-[#0A0A14]/80 backdrop-blur-sm rounded-2xl flex items-center justify-center z-20">
               <div className="text-center">
-                <div className="w-8 h-8 border-2 border-violet-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                <div className="w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
                 <p className="text-white/70">Signing in...</p>
               </div>
             </div>

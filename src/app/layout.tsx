@@ -10,7 +10,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <title>Tipster Arena - Your Sports Hub</title>
-        <meta name="description" content="Tipster Arena - Connect with sports fans, share insights, and stay updated with the latest sports news and discussions." />
+        <meta name="description" content="Tipster Arena - The ultimate platform for sports tipsters. Share tips, track performance, and connect with fellow sports fans." />
       </head>
       <body>{children}</body>
     </html>

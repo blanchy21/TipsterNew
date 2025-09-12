@@ -16,19 +16,14 @@ test.describe('Authentication Flow', () => {
     })
 
     test('should open authentication modal', async ({ page }) => {
-        // Try to find and click a sign-in button
-        const signInButton = page.locator('button:has-text("Sign In")').first()
+        // Try to find and click a sign-in button in navigation
+        const signInButton = page.locator('nav button:has-text("Sign In")').first()
         if (await signInButton.isVisible()) {
             await signInButton.click()
         }
 
-        // Check if auth modal is visible
-        const authModal = page.locator('[data-testid="auth-modal"]').or(
-            page.locator('text=Sign In').or(
-                page.locator('text=Sign Up')
-            )
-        )
-
+        // Check if auth modal is visible using specific test ID
+        const authModal = page.locator('[data-testid="auth-modal"]')
         await expect(authModal).toBeVisible()
     })
 
@@ -54,21 +49,17 @@ test.describe('Authentication Flow', () => {
             await signInButton.click()
         }
 
-        // Look for email input field
-        const emailInput = page.locator('input[type="email"]').or(
-            page.locator('input[placeholder*="email" i]')
-        )
+        // Look for email input field in the login form
+        const emailInput = page.locator('[data-testid="login-form"] input[type="email"]')
 
         await expect(emailInput).toBeVisible()
 
-        // Look for password input field
-        const passwordInput = page.locator('input[type="password"]')
+        // Look for password input field in the login form
+        const passwordInput = page.locator('[data-testid="login-form"] input[type="password"]')
         await expect(passwordInput).toBeVisible()
 
-        // Look for sign-in button
-        const signInSubmitButton = page.locator('button[type="submit"]').or(
-            page.locator('button:has-text("Sign In")')
-        )
+        // Look for sign-in button in the login form
+        const signInSubmitButton = page.locator('[data-testid="login-form"] button[type="submit"]')
         await expect(signInSubmitButton).toBeVisible()
     })
 
@@ -95,18 +86,14 @@ test.describe('Authentication Flow', () => {
         }
 
         // Find email input
-        const emailInput = page.locator('input[type="email"]').or(
-            page.locator('input[placeholder*="email" i]')
-        )
+        const emailInput = page.locator('[data-testid="login-form"] input[type="email"]')
 
         if (await emailInput.isVisible()) {
             // Enter invalid email
             await emailInput.fill('invalid-email')
 
             // Try to submit
-            const submitButton = page.locator('button[type="submit"]').or(
-                page.locator('button:has-text("Sign In")')
-            )
+            const submitButton = page.locator('[data-testid="login-form"] button[type="submit"]')
 
             if (await submitButton.isVisible()) {
                 await submitButton.click()
@@ -125,25 +112,21 @@ test.describe('Authentication Flow', () => {
 
     test('should require password', async ({ page }) => {
         // Open auth modal
-        const signInButton = page.locator('button:has-text("Sign In")').first()
+        const signInButton = page.locator('nav button:has-text("Sign In")').first()
         if (await signInButton.isVisible()) {
             await signInButton.click()
         }
 
-        // Find email and password inputs
-        const emailInput = page.locator('input[type="email"]').or(
-            page.locator('input[placeholder*="email" i]')
-        )
-        const passwordInput = page.locator('input[type="password"]')
+        // Find email and password inputs in the login form
+        const emailInput = page.locator('[data-testid="login-form"] input[type="email"]')
+        const passwordInput = page.locator('[data-testid="login-form"] input[type="password"]')
 
         if (await emailInput.isVisible() && await passwordInput.isVisible()) {
             // Enter email but no password
             await emailInput.fill('test@example.com')
 
             // Try to submit
-            const submitButton = page.locator('button[type="submit"]').or(
-                page.locator('button:has-text("Sign In")')
-            )
+            const submitButton = page.locator('[data-testid="login-form"] button[type="submit"]')
 
             if (await submitButton.isVisible()) {
                 await submitButton.click()
@@ -179,8 +162,8 @@ test.describe('Authentication Flow', () => {
         await page.goto('/profile')
 
         // Should either show profile page or redirect to sign-in
-        const profileContent = page.locator('text=Profile').or(
-            page.locator('text=Please Sign In')
+        const profileContent = page.locator('h1:has-text("Profile")').or(
+            page.locator('h1:has-text("Profile Access Required")')
         )
 
         await expect(profileContent).toBeVisible()
@@ -194,18 +177,14 @@ test.describe('Authentication Flow', () => {
         }
 
         // Try to sign in with invalid credentials
-        const emailInput = page.locator('input[type="email"]').or(
-            page.locator('input[placeholder*="email" i]')
-        )
-        const passwordInput = page.locator('input[type="password"]')
+        const emailInput = page.locator('[data-testid="login-form"] input[type="email"]')
+        const passwordInput = page.locator('[data-testid="login-form"] input[type="password"]')
 
         if (await emailInput.isVisible() && await passwordInput.isVisible()) {
             await emailInput.fill('invalid@example.com')
             await passwordInput.fill('wrongpassword')
 
-            const submitButton = page.locator('button[type="submit"]').or(
-                page.locator('button:has-text("Sign In")')
-            )
+            const submitButton = page.locator('[data-testid="login-form"] button[type="submit"]')
 
             if (await submitButton.isVisible()) {
                 await submitButton.click()

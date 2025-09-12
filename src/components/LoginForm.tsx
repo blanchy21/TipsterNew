@@ -67,7 +67,7 @@ export default function LoginForm({ onSwitchToSignup, onClose }: LoginFormProps)
   };
 
   return (
-    <div className="w-full max-w-md mx-auto">
+    <div className="w-full max-w-md mx-auto" data-testid="login-form">
       <div className="text-center mb-8">
         <h2 className="text-3xl font-bold text-white mb-2">Welcome back</h2>
         <p className="text-white/70">Sign in to your Tipster Arena account</p>
@@ -96,7 +96,7 @@ export default function LoginForm({ onSwitchToSignup, onClose }: LoginFormProps)
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
             placeholder="Enter your email"
           />
         </div>
@@ -109,7 +109,7 @@ export default function LoginForm({ onSwitchToSignup, onClose }: LoginFormProps)
             <button
               type="button"
               onClick={handlePasswordReset}
-              className="text-sm text-violet-400 hover:text-violet-300 transition-colors"
+              className="text-sm text-amber-400 hover:text-amber-300 transition-colors"
             >
               Forgot password?
             </button>
@@ -120,7 +120,7 @@ export default function LoginForm({ onSwitchToSignup, onClose }: LoginFormProps)
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
             placeholder="Enter your password"
           />
         </div>
@@ -128,7 +128,7 @@ export default function LoginForm({ onSwitchToSignup, onClose }: LoginFormProps)
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white py-3 px-4 rounded-lg font-semibold hover:from-violet-500 hover:to-fuchsia-500 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full bg-gradient-to-r from-amber-600 to-orange-600 text-white py-3 px-4 rounded-lg font-semibold hover:from-amber-500 hover:to-orange-500 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_8px_30px_rgba(245,158,11,0.35)] hover:shadow-[0_12px_40px_rgba(245,158,11,0.45)]"
         >
           {loading ? 'Signing in...' : 'Sign in'}
         </button>
@@ -159,7 +159,7 @@ export default function LoginForm({ onSwitchToSignup, onClose }: LoginFormProps)
           Don&apos;t have an account?{' '}
           <button
             onClick={onSwitchToSignup}
-            className="text-violet-400 hover:text-violet-300 font-semibold"
+            className="text-amber-400 hover:text-amber-300 font-semibold"
           >
             Sign up
           </button>

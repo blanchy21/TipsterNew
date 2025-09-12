@@ -145,7 +145,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
                   </svg>
                   Get started
                 </a>
-                <button className="md:hidden inline-flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/5">
+                <button data-testid="mobile-menu" className="md:hidden inline-flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/5">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-white/80">
                     <path d="M4 12h16"></path>
                     <path d="M4 18h16"></path>
@@ -180,11 +180,11 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
               <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-400 bg-clip-text text-transparent"> sports tip sharing</span>
             </h1>
             <p className={`mt-6 max-w-2xl text-lg sm:text-xl text-white/70 leading-relaxed transition-all duration-1000 delay-400 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-              Share tips, track performance, and connect with fellow sports fans. Built by sports fans for sports fans - completely free, with transparent statistics and no bookmaker bias.
+              The ultimate platform for sports tipsters. Share tips, track performance, and connect with fellow sports fans. Built by sports fans for sports fans - completely free, with transparent statistics and no bookmaker bias.
             </p>
 
             {/* Stats */}
-            <div className={`mt-8 flex flex-col sm:flex-row items-center gap-6 text-sm text-white/60 transition-all duration-1000 delay-600 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <div className={`mt-8 flex flex-col sm:flex-row items-center gap-6 text-sm text-white/60 transition-all duration-1000 delay-600 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} data-testid="stats-section">
               <div className="flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 text-violet-400">
                   <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
@@ -526,6 +526,32 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
         </div>
       </section>
 
+      {/* Call to Action Section */}
+      <section className="py-20 bg-gradient-to-r from-amber-500/10 to-orange-500/10">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-4xl font-bold text-white mb-6">
+            Ready to start sharing your tips?
+          </h2>
+          <p className="text-xl text-white/70 mb-8 max-w-2xl mx-auto">
+            Join thousands of sports fans sharing insights, tracking performance, and building a community around their passion.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button
+              onClick={onGetStarted}
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-600 to-orange-600 text-white px-8 py-4 rounded-full font-semibold hover:from-amber-500 hover:to-orange-500 transition-all duration-200 shadow-[0_8px_30px_rgba(245,158,11,0.35)] hover:shadow-[0_12px_40px_rgba(245,158,11,0.45)]"
+            >
+              Get Started Free
+            </button>
+            <button
+              onClick={() => onShowAuthModal?.('login')}
+              className="inline-flex items-center gap-2 border border-white/20 bg-white/5 text-white px-8 py-4 rounded-full font-semibold hover:bg-white/10 transition-all duration-200"
+            >
+              Sign In
+            </button>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="glass-footer">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -533,7 +559,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
             <div className="col-span-1 md:col-span-1">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-8 h-8 bg-gradient-to-br from-amber-500 to-orange-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">SA</span>
+                  <span className="text-white font-bold text-sm">TA</span>
                 </div>
                 <span className="text-xl font-bold">Tipster Arena</span>
               </div>

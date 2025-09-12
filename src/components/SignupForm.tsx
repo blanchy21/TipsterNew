@@ -59,7 +59,7 @@ export default function SignupForm({ onSwitchToLogin, onClose }: SignupFormProps
   };
 
   return (
-    <div className="w-full max-w-md mx-auto">
+    <div className="w-full max-w-md mx-auto" data-testid="signup-form">
       <div className="text-center mb-8">
         <h2 className="text-3xl font-bold text-white mb-2">Join Tipster Arena</h2>
         <p className="text-white/70">Create your account to start discussing sports</p>
@@ -82,7 +82,7 @@ export default function SignupForm({ onSwitchToLogin, onClose }: SignupFormProps
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
             required
-            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
             placeholder="Enter your display name"
           />
         </div>
@@ -97,7 +97,7 @@ export default function SignupForm({ onSwitchToLogin, onClose }: SignupFormProps
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
             placeholder="Enter your email"
           />
         </div>
@@ -112,7 +112,7 @@ export default function SignupForm({ onSwitchToLogin, onClose }: SignupFormProps
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
             placeholder="Create a password (min. 6 characters)"
           />
         </div>
@@ -127,7 +127,7 @@ export default function SignupForm({ onSwitchToLogin, onClose }: SignupFormProps
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
-            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
             placeholder="Confirm your password"
           />
         </div>
@@ -135,7 +135,7 @@ export default function SignupForm({ onSwitchToLogin, onClose }: SignupFormProps
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white py-3 px-4 rounded-lg font-semibold hover:from-violet-500 hover:to-fuchsia-500 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full bg-gradient-to-r from-amber-600 to-orange-600 text-white py-3 px-4 rounded-lg font-semibold hover:from-amber-500 hover:to-orange-500 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_8px_30px_rgba(245,158,11,0.35)] hover:shadow-[0_12px_40px_rgba(245,158,11,0.45)]"
         >
           {loading ? 'Creating account...' : 'Create account'}
         </button>
@@ -166,7 +166,7 @@ export default function SignupForm({ onSwitchToLogin, onClose }: SignupFormProps
           Already have an account?{' '}
           <button
             onClick={onSwitchToLogin}
-            className="text-violet-400 hover:text-violet-300 font-semibold"
+            className="text-amber-400 hover:text-amber-300 font-semibold"
           >
             Sign in
           </button>

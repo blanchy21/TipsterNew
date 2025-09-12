@@ -503,10 +503,10 @@ function AppContent() {
         <div className="h-screen flex items-center justify-center bg-slate-900">
           <div className="text-center max-w-md mx-auto p-8">
             <div className="w-16 h-16 bg-gradient-to-br from-amber-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6">
-              <span className="text-white font-bold text-2xl">SA</span>
+              <span className="text-white font-bold text-2xl">TA</span>
             </div>
             <h1 className="text-3xl font-bold text-white mb-4">Welcome to Tipster Arena</h1>
-            <p className="text-white/70 mb-8">Please sign in to access the sports discussion platform</p>
+            <p className="text-white/70 mb-8">Please sign in to access the sports tip sharing platform</p>
             <div className="space-y-4">
               <button
                 onClick={() => handleShowAuthModal('login')}
