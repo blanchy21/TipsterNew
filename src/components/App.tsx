@@ -30,6 +30,9 @@ import { FollowingProvider } from '@/lib/contexts/FollowingContext';
 import { useAuth } from '@/lib/hooks/useAuth';
 import NotificationToastManager from './features/NotificationToastManager';
 import RealtimeIndicator from './ui/RealtimeIndicator';
+import ErrorBoundary from './ui/ErrorBoundary';
+import AsyncErrorBoundary from './ui/AsyncErrorBoundary';
+import { PageLoadingState } from './ui/LoadingState';
 
 function AppContent() {
   const { user, loading } = useAuth();
@@ -652,12 +655,30 @@ function AppContent() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <ProfileProvider>
-        <FollowingProvider>
-          <AppContent />
-        </FollowingProvider>
-      </ProfileProvider>
-    </AuthProvider>
+    <ErrorBoundary
+      onError={(error, errorInfo) => {
+        // Log error to monitoring service in production
+        if (process.env.NODE_ENV === 'production') {
+          // Example: Sentry.captureException(error, { extra: errorInfo });
+          console.error('App Error:', error, errorInfo);
+        }
+      }}
+    >
+      <AuthProvider>
+        <ProfileProvider>
+          <FollowingProvider>
+            <AsyncErrorBoundary
+              onError={(error, errorInfo) => {
+                console.error('Async Error:', error, errorInfo);
+              }}
+              maxRetries={2}
+              retryDelay={1000}
+            >
+              <AppContent />
+            </AsyncErrorBoundary>
+          </FollowingProvider>
+        </ProfileProvider>
+      </AuthProvider>
+    </ErrorBoundary>
   );
 }

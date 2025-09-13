@@ -5,6 +5,8 @@ import { Inbox } from 'lucide-react';
 import { Post } from '@/lib/types';
 import PostCard from './PostCard';
 import FeedHeader from '@/components/layout/FeedHeader';
+import AsyncErrorBoundary from '@/components/ui/AsyncErrorBoundary';
+import { FeedLoadingState } from '@/components/ui/LoadingState';
 
 interface FilterOptions {
   timeRange: string;
@@ -50,48 +52,66 @@ export default function Feed({ posts, isLoaded, query, onQueryChange, selectedSp
         </div>
       )}
       <div className="flex-1 overflow-y-auto px-4 md:px-6 py-4 space-y-4 md:space-y-5">
-        {posts.map((post, idx) => (
-          <div
-            key={post.id}
-            className={[
-              "transition duration-700",
-              isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3",
-              `delay-[${Math.min(idx * 60, 400)}ms]`
-            ].join(' ')}
-          >
-            <PostCard
-              post={post}
-              onLikeChange={onLikeChange}
-              onNavigateToProfile={onNavigateToProfile}
-              onPostDeleted={onPostDeleted}
-              onPostUpdated={onPostUpdated}
-            />
-          </div>
-        ))}
-        {posts.length === 0 && (
-          <div className="h-64 grid place-items-center">
-            <div className="text-center">
-              <div className="mx-auto w-12 h-12 rounded-full bg-white/5 ring-1 ring-white/10 grid place-items-center mb-3">
-                <Inbox className="w-5 h-5 text-slate-400" />
+        {!isLoaded ? (
+          <FeedLoadingState />
+        ) : (
+          <AsyncErrorBoundary
+            fallback={
+              <div className="h-64 grid place-items-center">
+                <div className="text-center">
+                  <div className="mx-auto w-12 h-12 rounded-full bg-red-500/20 ring-1 ring-red-500/30 grid place-items-center mb-3">
+                    <Inbox className="w-5 h-5 text-red-400" />
+                  </div>
+                  <p className="text-red-300 font-medium">Failed to load posts</p>
+                  <p className="text-red-500 text-sm">Please try again or refresh the page.</p>
+                </div>
               </div>
-              {query.trim() ? (
-                <>
-                  <p className="text-slate-300 font-medium">No results found for "{query}"</p>
-                  <p className="text-slate-500 text-sm">Try different keywords or check your spelling.</p>
-                </>
-              ) : selectedSport && selectedSport !== 'All Sports' ? (
-                <>
-                  <p className="text-slate-300 font-medium">No {selectedSport} tips found</p>
-                  <p className="text-slate-500 text-sm">Try selecting a different sport or be the first to share a {selectedSport} tip.</p>
-                </>
-              ) : (
-                <>
-                  <p className="text-slate-300 font-medium">No tips yet</p>
-                  <p className="text-slate-500 text-sm">Be the first to share a tip.</p>
-                </>
-              )}
-            </div>
-          </div>
+            }
+          >
+            {posts.map((post, idx) => (
+              <div
+                key={post.id}
+                className={[
+                  "transition duration-700",
+                  isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3",
+                  `delay-[${Math.min(idx * 60, 400)}ms]`
+                ].join(' ')}
+              >
+                <PostCard
+                  post={post}
+                  onLikeChange={onLikeChange}
+                  onNavigateToProfile={onNavigateToProfile}
+                  onPostDeleted={onPostDeleted}
+                  onPostUpdated={onPostUpdated}
+                />
+              </div>
+            ))}
+            {posts.length === 0 && (
+              <div className="h-64 grid place-items-center">
+                <div className="text-center">
+                  <div className="mx-auto w-12 h-12 rounded-full bg-white/5 ring-1 ring-white/10 grid place-items-center mb-3">
+                    <Inbox className="w-5 h-5 text-slate-400" />
+                  </div>
+                  {query.trim() ? (
+                    <>
+                      <p className="text-slate-300 font-medium">No results found for "{query}"</p>
+                      <p className="text-slate-500 text-sm">Try different keywords or check your spelling.</p>
+                    </>
+                  ) : selectedSport && selectedSport !== 'All Sports' ? (
+                    <>
+                      <p className="text-slate-300 font-medium">No {selectedSport} tips found</p>
+                      <p className="text-slate-500 text-sm">Try selecting a different sport or be the first to share a {selectedSport} tip.</p>
+                    </>
+                  ) : (
+                    <>
+                      <p className="text-slate-300 font-medium">No tips yet</p>
+                      <p className="text-slate-500 text-sm">Be the first to share a tip.</p>
+                    </>
+                  )}
+                </div>
+              </div>
+            )}
+          </AsyncErrorBoundary>
         )}
       </div>
     </main>
