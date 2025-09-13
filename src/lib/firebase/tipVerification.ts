@@ -93,34 +93,8 @@ export const getUserVerificationStats = async (userId: string): Promise<Verifica
         const postsSnapshot = await getDocs(postsQuery);
         const posts = postsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as any[];
 
-        // Debug: Check if we're getting the right posts
-        // Debug: Posts found for user
-
-        // Debug: Log all posts to see their user IDs and statuses
-        console.log('🔍 All posts found:', posts.map(p => ({
-            id: p.id,
-            title: p.title,
-            userId: p.userId,
-            tipStatus: p.tipStatus,
-            sport: p.sport
-        })));
-
-        // Also get ALL posts to compare
-        const allPostsQuery = query(collection(db, 'posts'));
-        const allPostsSnapshot = await getDocs(allPostsQuery);
-        const allPosts = allPostsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as any[];
-
-        // Check for posts with your specific user ID from ALL posts
-        const yourPostsFromAll = allPosts.filter(p => p.userId === userId);
-        console.log('🔍 Posts with your user ID from ALL posts:', yourPostsFromAll.map(p => ({
-            id: p.id,
-            title: p.title,
-            userId: p.userId,
-            tipStatus: p.tipStatus
-        })));
-
-        // Use the more complete data if there's a discrepancy
-        const finalPosts = yourPostsFromAll.length > posts.length ? yourPostsFromAll : posts;
+        // Use the posts from the query
+        const finalPosts = posts;
 
         // Only count posts that have a tipStatus (actual tips, not test posts)
         const actualTips = finalPosts.filter(p => p.tipStatus !== undefined);
@@ -133,37 +107,7 @@ export const getUserVerificationStats = async (userId: string): Promise<Verifica
         const verifiedTips = wins + losses + voids + places;
         const winRate = verifiedTips > 0 ? Math.round((wins / verifiedTips) * 100) : 0;
 
-        // Debug logging
-
-        // Log all posts with their statuses
-        console.log('📋 All posts with tipStatus:', actualTips.map(p => ({
-            id: p.id,
-            title: p.title,
-            tipStatus: p.tipStatus,
-            sport: p.sport,
-            userId: p.userId
-        })));
-
-        // Log pending posts specifically
-        const pendingPosts = actualTips.filter(p => p.tipStatus === 'pending');
-        console.log('⏳ Pending posts:', pendingPosts.map(p => ({
-            id: p.id,
-            title: p.title,
-            tipStatus: p.tipStatus,
-            sport: p.sport,
-            userId: p.userId
-        })));
-
-        // Log all status counts
-        console.log('📊 Status breakdown:', {
-            total: actualTips.length,
-            pending: actualTips.filter(p => p.tipStatus === 'pending').length,
-            wins: actualTips.filter(p => p.tipStatus === 'win').length,
-            losses: actualTips.filter(p => p.tipStatus === 'loss').length,
-            voids: actualTips.filter(p => p.tipStatus === 'void').length,
-            places: actualTips.filter(p => p.tipStatus === 'place').length,
-            undefined: actualTips.filter(p => p.tipStatus === undefined).length
-        });
+        // Calculate stats without debug logging
 
         // Calculate average odds
         const oddsValues = actualTips

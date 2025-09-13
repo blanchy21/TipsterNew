@@ -47,7 +47,7 @@ try {
           (args[0].includes('heartbeats') ||
             args[0].includes('undefined') ||
             args[0].includes('WebChannelConnection') ||
-            args[0].includes('Firebase') && args[0].includes('heartbeat'))) {
+            (args[0].includes('Firebase') && args[0].includes('heartbeat')))) {
           return; // Suppress Firebase noise
         }
         originalConsoleWarn.apply(console, args);
@@ -59,7 +59,7 @@ try {
         if (args[0] && typeof args[0] === 'string' &&
           (args[0].includes('heartbeats') ||
             args[0].includes('WebChannelConnection') ||
-            args[0].includes('Firebase') && args[0].includes('heartbeat') ||
+            (args[0].includes('Firebase') && args[0].includes('heartbeat')) ||
             args[0].includes('undefined'))) {
           return; // Suppress Firebase noise and heartbeats
         }

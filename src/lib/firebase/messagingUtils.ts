@@ -243,44 +243,29 @@ export const subscribeToConversations = (
     userId: string,
     callback: (conversations: Conversation[]) => void
 ): (() => void) => {
-    if (!db) {
-        console.error('Firebase not initialized');
+    if (!db || !userId) {
+        console.error('Firebase not initialized or userId missing');
         return () => { };
     }
 
     const conversationsRef = collection(db, 'conversations');
 
-    // Try the optimized query first, fallback to simpler query if index doesn't exist
-    let q;
-    try {
-        q = query(
-            conversationsRef,
-            where('participants', 'array-contains', userId),
-            orderBy('updatedAt', 'desc'),
-            limit(50)
-        );
-    } catch (error) {
-
-        // Fallback to simpler query without orderBy if index doesn't exist
-        q = query(
-            conversationsRef,
-            where('participants', 'array-contains', userId),
-            limit(50)
-        );
-    }
+    // Use simpler query to avoid index issues and permissions problems
+    const q = query(
+        conversationsRef,
+        where('participants', 'array-contains', userId),
+        limit(50)
+    );
 
     return onSnapshot(q, async (snapshot) => {
-
-        const conversations = [];
-
-        // If no conversations, call callback immediately with empty array
-        if (snapshot.docs.length === 0) {
-
-            callback([]);
-            return;
-        }
-
         try {
+            const conversations = [];
+
+            // If no conversations, call callback immediately with empty array
+            if (snapshot.docs.length === 0) {
+                callback([]);
+                return;
+            }
             for (const docSnapshot of snapshot.docs) {
                 const data = docSnapshot.data();
                 const otherParticipantId = data.participants.find((id: string) => id !== userId);
@@ -339,7 +324,12 @@ export const subscribeToConversations = (
             callback([]); // Call callback with empty array on error
         }
     }, (error) => {
-        console.error('Error listening to conversations:', error);
+        // Only log permission errors, suppress other Firebase noise
+        if (error.code === 'permission-denied') {
+            console.error('Permission denied for conversations. User may not be authenticated:', error);
+        } else if (!error.message?.includes('heartbeats') && !error.message?.includes('undefined')) {
+            console.error('Error listening to conversations:', error);
+        }
         callback([]); // Call callback with empty array on error
     });
 };
