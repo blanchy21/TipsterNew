@@ -38,7 +38,6 @@ const AdminPage: React.FC = () => {
   const handleVerifyTip = async (postId: string, status: TipStatus) => {
     if (!user) return;
 
-    console.log(`🔍 AdminPage: Verifying tip ${postId} as ${status}`);
     setIsLoading(true);
     try {
       // Update the post status
@@ -49,21 +48,11 @@ const AdminPage: React.FC = () => {
         isGameFinished: true
       });
 
-      console.log(`📝 AdminPage: Post update result:`, updateResult);
 
       // Create verification record for leaderboard tracking
       const post = posts.find(p => p.id === postId);
-      console.log(`🔍 AdminPage: Looking for post ${postId}:`, post ? 'Found' : 'Not found');
-      console.log(`🔍 AdminPage: Current user:`, user ? 'Authenticated' : 'Not authenticated');
 
       if (post) {
-        console.log(`👤 AdminPage: Creating verification record for user ${post.user.id}`);
-        console.log(`📋 AdminPage: Post details:`, {
-          id: post.id,
-          userId: post.user?.id,
-          title: post.title,
-          odds: post.odds
-        });
 
         const verificationResult = await createTipVerification({
           postId: postId,
@@ -75,10 +64,7 @@ const AdminPage: React.FC = () => {
           finalOdds: post.odds
         });
 
-        console.log('✅ AdminPage: Verification record created successfully:', verificationResult);
       } else {
-        console.log('❌ AdminPage: Could not create verification record - post not found');
-        console.log('❌ AdminPage: Available posts:', posts.map(p => ({ id: p.id, title: p.title })));
       }
 
       setPosts(prev => prev.map(post =>

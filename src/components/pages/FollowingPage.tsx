@@ -17,8 +17,8 @@ import { useFollowing } from '@/lib/contexts/FollowingContext';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { normalizeImageUrl } from '@/lib/imageUtils';
 import { checkUserProfileExists } from '@/lib/firebase/firebaseUtils';
-import FollowButton from './FollowButton';
-import UserProfileLink from './UserProfileLink';
+import FollowButton from '@/components/features/FollowButton';
+import UserProfileLink from '@/components/ui/UserProfileLink';
 
 interface FollowingPageProps {
   initialTab?: 'following' | 'followers' | 'suggestions' | 'search';

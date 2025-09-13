@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import LoginForm from './LoginForm';
-import SignupForm from './SignupForm';
+import LoginForm from '@/components/forms/LoginForm';
+import SignupForm from '@/components/forms/SignupForm';
 import { useAuth } from '@/lib/hooks/useAuth';
 
 interface AuthModalProps {

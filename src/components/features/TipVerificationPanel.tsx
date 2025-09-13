@@ -63,7 +63,6 @@ export default function TipVerificationPanel({ onTipVerified }: TipVerificationP
             return;
         }
 
-        console.log('🔄 Setting up real-time tip verification listener');
         setLoading(true);
 
         const postsRef = collection(db, 'posts');
@@ -71,7 +70,7 @@ export default function TipVerificationPanel({ onTipVerified }: TipVerificationP
 
         const unsubscribe = onSnapshot(q,
             (snapshot) => {
-                console.log('📡 Real-time tip verification update received');
+
                 const postsData = snapshot.docs.map(doc => {
                     const data = doc.data();
                     return {
@@ -91,7 +90,7 @@ export default function TipVerificationPanel({ onTipVerified }: TipVerificationP
         );
 
         return () => {
-            console.log('🧹 Cleaning up tip verification listener');
+
             unsubscribe();
         };
     }, []);
@@ -194,7 +193,6 @@ export default function TipVerificationPanel({ onTipVerified }: TipVerificationP
         setMessage(null);
 
         try {
-            console.log(`🔍 Verifying tip ${postId} as ${status}`);
 
             // Update the post status
             const updateResult = await updatePost(postId, {
@@ -204,21 +202,10 @@ export default function TipVerificationPanel({ onTipVerified }: TipVerificationP
                 isGameFinished: true
             });
 
-            console.log(`📝 Post update result:`, updateResult);
-
             // Create verification record for leaderboard tracking
             const post = posts.find(p => p.id === postId);
-            console.log(`🔍 Looking for post ${postId}:`, post ? 'Found' : 'Not found');
-            console.log(`🔍 Current user:`, user ? 'Authenticated' : 'Not authenticated');
 
             if (post && user) {
-                console.log(`👤 Creating verification record for user ${post.user.id}`);
-                console.log(`📋 Post details:`, {
-                    id: post.id,
-                    userId: post.user?.id,
-                    title: post.title,
-                    odds: post.odds
-                });
 
                 const verificationResult = await createTipVerification({
                     postId: postId,
@@ -230,13 +217,10 @@ export default function TipVerificationPanel({ onTipVerified }: TipVerificationP
                     finalOdds: post.odds
                 });
 
-                console.log('✅ Verification record created successfully:', verificationResult);
             } else {
-                console.log('❌ Could not create verification record - missing post or user');
-                console.log('❌ Post found:', !!post);
-                console.log('❌ User authenticated:', !!user);
+
                 if (post) {
-                    console.log('❌ Post user object:', post.user);
+
                 }
             }
 

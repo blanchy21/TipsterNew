@@ -8,8 +8,8 @@ import { timeAgo } from '@/lib/utils';
 import LikeButton from './LikeButton';
 import FollowButton from './FollowButton';
 import CommentsList from './CommentsList';
-import AvatarWithFallback from './AvatarWithFallback';
-import UserProfileLink from './UserProfileLink';
+import AvatarWithFallback from '@/components/ui/AvatarWithFallback';
+import UserProfileLink from '@/components/ui/UserProfileLink';
 import TipVerificationStatus from './TipVerificationStatus';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { deletePost, updatePost } from '@/lib/firebase/firebaseUtils';
@@ -24,12 +24,6 @@ interface PostCardProps {
 }
 
 export default function PostCard({ post, onLikeChange, onCommentCountChange, onNavigateToProfile, onPostDeleted, onPostUpdated }: PostCardProps) {
-  console.log('📄 PostCard rendering:', {
-    id: post.id,
-    title: post.title,
-    sport: post.sport,
-    tipStatus: post.tipStatus
-  });
 
   const { user } = useAuth();
   const [showComments, setShowComments] = useState(false);

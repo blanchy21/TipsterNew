@@ -5,7 +5,7 @@ import { MessageCircle, Loader2 } from 'lucide-react';
 import { Comment } from '@/lib/types';
 import { getCommentsByPostId, updateComment } from '@/lib/firebase/firebaseUtils';
 import CommentItem from './CommentItem';
-import CommentForm from './CommentForm';
+import CommentForm from '@/components/forms/CommentForm';
 import { collection, query, where, orderBy as firestoreOrderBy, onSnapshot } from 'firebase/firestore';
 import { db } from '@/lib/firebase/firebase';
 
@@ -28,7 +28,6 @@ export default function CommentsList({ postId, onCommentCountChange }: CommentsL
       return;
     }
 
-    console.log('🔄 Setting up real-time comments listener for post:', postId);
     setLoading(true);
 
     const commentsRef = collection(db, 'comments');
@@ -40,7 +39,7 @@ export default function CommentsList({ postId, onCommentCountChange }: CommentsL
 
     const unsubscribe = onSnapshot(q,
       (snapshot) => {
-        console.log('📡 Real-time comments update received for post:', postId);
+
         const commentsData = snapshot.docs.map(doc => {
           const data = doc.data();
           return {
@@ -60,7 +59,7 @@ export default function CommentsList({ postId, onCommentCountChange }: CommentsL
         setLoading(false);
         // Fallback to one-time fetch on error
         getCommentsByPostId(postId).then(fallbackComments => {
-          console.log('🔄 Fallback: Loading comments via one-time fetch');
+
           setComments(fallbackComments);
           onCommentCountChange?.(fallbackComments.length);
         }).catch(fallbackError => {
@@ -70,7 +69,7 @@ export default function CommentsList({ postId, onCommentCountChange }: CommentsL
     );
 
     return () => {
-      console.log('🧹 Cleaning up real-time comments listener for post:', postId);
+
       unsubscribe();
     };
   }, [postId]);

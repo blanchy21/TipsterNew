@@ -4,9 +4,9 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useChat } from '@ai-sdk/react';
 import { Bot, Phone, Video, MoreVertical, Trash2, RotateCcw } from 'lucide-react';
 import MessageList from './MessageList';
-import InputField from './InputField';
+import InputField from '@/components/forms/InputField';
 import ModelSelector from './ModelSelector';
-import ErrorDisplay from './ErrorDisplay';
+import ErrorDisplay from '@/components/ui/ErrorDisplay';
 
 interface Message {
     id: string;

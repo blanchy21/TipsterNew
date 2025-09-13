@@ -11,8 +11,8 @@ import {
   updateProfile
 } from "firebase/auth";
 import { User } from "firebase/auth";
-import { auth } from "../firebase/firebase";
-import { createUserProfile } from "../firebase/firebaseUtils";
+import { auth } from "@/lib/firebase/firebase";
+import { createUserProfile } from "@/lib/firebase/firebaseUtils";
 
 interface AuthContextType {
   user: User | null;
@@ -39,14 +39,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log("AuthContext: useEffect triggered");
-    console.log("AuthContext: auth object:", auth);
-    console.log("AuthContext: auth type:", typeof auth);
-    console.log("AuthContext: auth onAuthStateChanged:", typeof auth?.onAuthStateChanged);
 
     // Check if Firebase auth is available
     if (!auth) {
-      console.warn("Firebase auth not available. Running in demo mode.");
+
       setLoading(false);
       return;
     }
@@ -58,39 +54,37 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    console.log("AuthContext: Setting up auth state listener");
     try {
       const unsubscribe = auth.onAuthStateChanged((user: User | null) => {
-        console.log("AuthContext: Auth state changed, user:", user);
-        console.log("AuthContext: Setting loading to false");
+
         setUser(user);
         setLoading(false);
 
         // If user is signed in, close any open auth modals
         if (user) {
-          console.log("AuthContext: User signed in successfully");
+
         } else {
-          console.log("AuthContext: No user signed in");
+
         }
       });
 
       // Check current user immediately in case the listener doesn't fire
       const currentUser = auth.currentUser;
-      console.log("AuthContext: Current user check:", currentUser);
+
       if (currentUser !== null) {
-        console.log("AuthContext: User already signed in, setting user and stopping loading");
+
         setUser(currentUser);
         setLoading(false);
       }
 
       // Add a timeout to prevent infinite loading
       const timeout = setTimeout(() => {
-        console.log("AuthContext: Timeout reached, setting loading to false");
+
         setLoading(false);
       }, 5000);
 
       return () => {
-        console.log("AuthContext: Cleaning up auth listener");
+
         clearTimeout(timeout);
         unsubscribe();
       };
@@ -102,7 +96,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signInWithGoogle = async () => {
     if (!auth) {
-      console.warn("Firebase auth not available. Cannot sign in.");
+
       return;
     }
 
@@ -125,7 +119,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signInWithEmail = async (email: string, password: string) => {
     if (!auth) {
-      console.warn("Firebase auth not available. Cannot sign in.");
+
       return;
     }
 
@@ -139,7 +133,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signUpWithEmail = async (email: string, password: string, displayName: string) => {
     if (!auth) {
-      console.warn("Firebase auth not available. Cannot sign up.");
+
       return;
     }
 
@@ -164,7 +158,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const resetPassword = async (email: string) => {
     if (!auth) {
-      console.warn("Firebase auth not available. Cannot reset password.");
+
       return;
     }
 
@@ -178,7 +172,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signOutUser = async () => {
     if (!auth) {
-      console.warn("Firebase auth not available. Cannot sign out.");
+
       return;
     }
 

@@ -41,7 +41,7 @@ export default function LikeButton({ post, onLikeChange }: LikeButtonProps) {
       if (user) {
         await togglePostLike(post.id, user.uid, !isLiked);
       } else {
-        console.log('Demo mode: Like button clicked (not saved to backend)');
+        // Demo mode: Like button clicked (not saved to backend)
       }
     } catch (error) {
       console.error('Error toggling like:', error);

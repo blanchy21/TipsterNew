@@ -5,8 +5,8 @@ import Image from 'next/image';
 import { Users } from 'lucide-react';
 import { User } from '@/lib/types';
 import { normalizeImageUrl } from '@/lib/imageUtils';
-import AvatarWithFallback from './AvatarWithFallback';
-import UserProfileLink from './UserProfileLink';
+import AvatarWithFallback from '@/components/ui/AvatarWithFallback';
+import UserProfileLink from '@/components/ui/UserProfileLink';
 
 interface FollowingCardProps {
   list: User[];

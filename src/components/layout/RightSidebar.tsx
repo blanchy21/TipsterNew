@@ -2,9 +2,9 @@
 
 import React from 'react';
 import { Fixture, Post } from '@/lib/types';
-import FixturesCard from './FixturesCard';
-import FollowingCard from './FollowingCard';
-import TopArticlesCard from './TopArticlesCard';
+import FixturesCard from '@/components/features/FixturesCard';
+import FollowingCard from '@/components/features/FollowingCard';
+import TopArticlesCard from '@/components/features/TopArticlesCard';
 import { useFollowing } from '@/lib/contexts/FollowingContext';
 
 interface RightSidebarProps {

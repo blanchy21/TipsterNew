@@ -24,7 +24,6 @@ export function useRealtimeData<T>(
             return;
         }
 
-        console.log(`🔄 Setting up real-time listener for ${collectionName}`);
         setLoading(true);
         setError(null);
 
@@ -34,7 +33,6 @@ export function useRealtimeData<T>(
         const unsubscribe = onSnapshot(
             q,
             (snapshot) => {
-                console.log(`📡 Real-time update received for ${collectionName}:`, snapshot.size, 'documents');
 
                 const newData = snapshot.docs.map(doc => {
                     const docData = doc.data();
@@ -61,7 +59,7 @@ export function useRealtimeData<T>(
         );
 
         return () => {
-            console.log(`🧹 Cleaning up real-time listener for ${collectionName}`);
+
             unsubscribe();
         };
     }, [collectionName, enabled, JSON.stringify(queryConstraints)]);

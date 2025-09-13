@@ -263,7 +263,6 @@ const testPosts = [
 
 export const populateTestData = async () => {
   try {
-    console.log('Starting to populate test data...');
 
     // Check for existing users first to prevent duplicates
     const existingUsers = await getDocuments('users');
@@ -276,7 +275,7 @@ export const populateTestData = async () => {
 
       // Check if user already exists by displayName
       if (existingUserNames.has(userData.displayName)) {
-        console.log(`User ${userData.displayName} already exists, skipping...`);
+
         // Find the existing user ID to use for posts
         const existingUser = existingUsers.find((user: any) =>
           (user.displayName || user.name) === userData.displayName
@@ -289,7 +288,7 @@ export const populateTestData = async () => {
 
       const docRef = await addDocument('users', userData);
       userIds.push(docRef.id);
-      console.log(`Added user: ${userData.displayName} with ID: ${docRef.id}`);
+
     }
 
     // Add test posts
@@ -304,7 +303,7 @@ export const populateTestData = async () => {
         }
       };
       const docRef = await addDocument('posts', postData);
-      console.log(`Added post: ${postData.title} with ID: ${docRef.id}`);
+
     }
 
     // Create some following relationships
@@ -323,10 +322,8 @@ export const populateTestData = async () => {
       await followUser(userIds[2], userIds[1]);
       await followUser(userIds[2], userIds[4]);
 
-      console.log('Created following relationships');
     }
 
-    console.log('Test data population completed successfully!');
     return { success: true, userIds };
   } catch (error) {
     console.error('Error populating test data:', error);
@@ -336,7 +333,6 @@ export const populateTestData = async () => {
 
 export const clearTestData = async () => {
   try {
-    console.log('Clearing test data...');
 
     // Get all users and posts
     const users = await getDocuments('users');
@@ -352,7 +348,6 @@ export const clearTestData = async () => {
       await updateDocument('posts', post.id, { deleted: true });
     }
 
-    console.log('Test data cleared successfully!');
     return { success: true };
   } catch (error) {
     console.error('Error clearing test data:', error);
@@ -362,7 +357,6 @@ export const clearTestData = async () => {
 
 export const removeDuplicateUsers = async () => {
   try {
-    console.log('Removing duplicate users...');
 
     // Get all users
     const users = await getDocuments('users');
@@ -383,7 +377,6 @@ export const removeDuplicateUsers = async () => {
     // For each group, keep the oldest user and mark others as deleted
     for (const [displayName, userGroup] of Array.from(userGroups.entries())) {
       if (userGroup.length > 1) {
-        console.log(`Found ${userGroup.length} duplicates for ${displayName}`);
 
         // Sort by creation date, keep the oldest
         userGroup.sort((a, b) => {
@@ -396,12 +389,11 @@ export const removeDuplicateUsers = async () => {
         for (let i = 1; i < userGroup.length; i++) {
           await updateDocument('users', userGroup[i].id, { deleted: true });
           removedCount++;
-          console.log(`Marked duplicate user as deleted: ${userGroup[i].displayName || userGroup[i].name} (ID: ${userGroup[i].id})`);
+          // Marked duplicate user as deleted
         }
       }
     }
 
-    console.log(`Removed ${removedCount} duplicate users successfully!`);
     return { success: true, removedCount };
   } catch (error) {
     console.error('Error removing duplicate users:', error);

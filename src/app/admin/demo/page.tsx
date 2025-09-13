@@ -23,9 +23,8 @@ export default function DemoAdmin() {
         setMessage(null);
 
         try {
-            console.log('🔄 Starting to populate test data...');
+
             const result = await populateTestData();
-            console.log('📊 Populate result:', result);
 
             if (result.success) {
                 setMessage({ type: 'success', text: 'Test data populated successfully! Refresh the page to see the changes.' });
@@ -45,9 +44,8 @@ export default function DemoAdmin() {
         setMessage(null);
 
         try {
-            console.log('🔄 Starting to clear test data...');
+
             const result = await clearTestData();
-            console.log('📊 Clear result:', result);
 
             if (result.success) {
                 setMessage({ type: 'success', text: 'Test data cleared successfully! Refresh the page to see the changes.' });

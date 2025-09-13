@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { MessageCircle, Users, Trophy, Zap, TrendingUp, CircleDot, Target } from 'lucide-react';
-import ChatRoom from './ChatRoom';
+import ChatRoom from '@/components/features/ChatRoom';
 
 interface ChatChannel {
   id: string;

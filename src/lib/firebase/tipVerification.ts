@@ -40,13 +40,12 @@ export const createTipVerification = async (verificationData: Omit<TipVerificati
         const docRef = await addDoc(collection(db, 'tipVerifications'), verification);
 
         // Get admin user profile for notification
-        console.log('🔍 Getting admin profile for notification:', verificationData.adminId);
+
         const adminDoc = await getDoc(doc(db, 'users', verificationData.adminId));
         const adminData = adminDoc.data();
-        console.log('👤 Admin data:', adminData);
 
         // Create notification for the tipster
-        console.log('🔔 Creating notification for tipster:', verificationData.tipsterId);
+
         const notificationId = await createNotification({
             type: 'tip',
             title: 'Tip Verified',
@@ -61,7 +60,6 @@ export const createTipVerification = async (verificationData: Omit<TipVerificati
             postId: verificationData.postId,
             actionUrl: `/post/${verificationData.postId}`
         });
-        console.log('✅ Notification created with ID:', notificationId);
 
         return { id: docRef.id, ...verification };
     } catch (error) {
@@ -86,9 +84,6 @@ export const getUserVerificationStats = async (userId: string): Promise<Verifica
     }
 
     try {
-        console.log('🔍 getUserVerificationStats called for userId:', userId);
-        console.log('🔍 User ID type:', typeof userId);
-        console.log('🔍 User ID length:', userId?.length);
 
         // Get all posts by the user
         const postsQuery = query(
@@ -98,15 +93,8 @@ export const getUserVerificationStats = async (userId: string): Promise<Verifica
         const postsSnapshot = await getDocs(postsQuery);
         const posts = postsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as any[];
 
-        console.log('📊 Found posts for user:', posts.length);
-
         // Debug: Check if we're getting the right posts
-        console.log('🔍 Posts found for user:', posts.map(p => ({
-            id: p.id,
-            title: p.title,
-            userId: p.userId,
-            tipStatus: p.tipStatus
-        })));
+        // Debug: Posts found for user
 
         // Debug: Log all posts to see their user IDs and statuses
         console.log('🔍 All posts found:', posts.map(p => ({
@@ -131,11 +119,8 @@ export const getUserVerificationStats = async (userId: string): Promise<Verifica
             tipStatus: p.tipStatus
         })));
 
-        console.log('🔍 Query found:', posts.length, 'posts, but ALL posts shows:', yourPostsFromAll.length, 'posts for your user ID');
-
         // Use the more complete data if there's a discrepancy
         const finalPosts = yourPostsFromAll.length > posts.length ? yourPostsFromAll : posts;
-        console.log('🔍 Using final posts:', finalPosts.length, 'posts');
 
         // Only count posts that have a tipStatus (actual tips, not test posts)
         const actualTips = finalPosts.filter(p => p.tipStatus !== undefined);
@@ -149,18 +134,6 @@ export const getUserVerificationStats = async (userId: string): Promise<Verifica
         const winRate = verifiedTips > 0 ? Math.round((wins / verifiedTips) * 100) : 0;
 
         // Debug logging
-        console.log('🔍 getUserVerificationStats Debug:', {
-            userId,
-            totalPosts: posts.length,
-            actualTips: actualTips.length,
-            pendingTips,
-            wins,
-            losses,
-            voids,
-            places,
-            verifiedTips,
-            winRate
-        });
 
         // Log all posts with their statuses
         console.log('📋 All posts with tipStatus:', actualTips.map(p => ({
@@ -191,7 +164,6 @@ export const getUserVerificationStats = async (userId: string): Promise<Verifica
             places: actualTips.filter(p => p.tipStatus === 'place').length,
             undefined: actualTips.filter(p => p.tipStatus === undefined).length
         });
-
 
         // Calculate average odds
         const oddsValues = actualTips

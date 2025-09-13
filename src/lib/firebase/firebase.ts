@@ -8,12 +8,6 @@ const hasFirebaseConfig = process.env.NEXT_PUBLIC_FIREBASE_API_KEY &&
   process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN &&
   process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
 
-console.log("Firebase config check:");
-console.log("API Key present:", !!process.env.NEXT_PUBLIC_FIREBASE_API_KEY);
-console.log("Auth Domain present:", !!process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN);
-console.log("Project ID present:", !!process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID);
-console.log("Has Firebase config:", hasFirebaseConfig);
-
 const firebaseConfig = hasFirebaseConfig ? {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -44,13 +38,6 @@ try {
     db = getFirestore(app);
     storage = getStorage(app);
 
-    console.log('✅ Firebase initialized successfully');
-    console.log('📊 Firebase config:', {
-      projectId: firebaseConfig.projectId,
-      authDomain: firebaseConfig.authDomain,
-      hasApiKey: !!firebaseConfig.apiKey
-    });
-
     // Reduce Firebase console warnings in development
     if (process.env.NODE_ENV === 'development') {
       // Suppress Firebase heartbeats warnings
@@ -74,7 +61,7 @@ try {
       };
     }
   } else {
-    console.warn("Firebase configuration not found. Authentication features will be disabled.");
+
     // Create mock objects to prevent errors
     app = null;
     auth = null;

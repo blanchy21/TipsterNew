@@ -7,7 +7,7 @@ import { Comment } from '@/lib/types';
 import { timeAgo } from '@/lib/utils';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { toggleCommentLike, deleteComment } from '@/lib/firebase/firebaseUtils';
-import AvatarWithFallback from './AvatarWithFallback';
+import AvatarWithFallback from '@/components/ui/AvatarWithFallback';
 
 interface CommentItemProps {
   comment: Comment;
@@ -17,12 +17,12 @@ interface CommentItemProps {
   isReply?: boolean;
 }
 
-export default function CommentItem({ 
-  comment, 
-  onDelete, 
-  onReply, 
-  onEdit, 
-  isReply = false 
+export default function CommentItem({
+  comment,
+  onDelete,
+  onReply,
+  onEdit,
+  isReply = false
 }: CommentItemProps) {
   const { user } = useAuth();
   const [isLiked, setIsLiked] = useState(comment.likedBy.includes(user?.uid || ''));
@@ -151,11 +151,10 @@ export default function CommentItem({
             <button
               onClick={handleLike}
               disabled={!user}
-              className={`inline-flex items-center gap-1 text-xs transition ${
-                isLiked 
-                  ? 'text-red-400 hover:text-red-300' 
-                  : 'text-slate-400 hover:text-slate-200'
-              } ${!user ? 'opacity-50 cursor-not-allowed' : ''}`}
+              className={`inline-flex items-center gap-1 text-xs transition ${isLiked
+                ? 'text-red-400 hover:text-red-300'
+                : 'text-slate-400 hover:text-slate-200'
+                } ${!user ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
               <Heart className={`w-3 h-3 ${isLiked ? 'fill-current' : ''}`} />
               <span>{likes}</span>
@@ -165,9 +164,8 @@ export default function CommentItem({
               <button
                 onClick={() => onReply(comment.id)}
                 disabled={!user}
-                className={`inline-flex items-center gap-1 text-xs text-slate-400 hover:text-slate-200 transition ${
-                  !user ? 'opacity-50 cursor-not-allowed' : ''
-                }`}
+                className={`inline-flex items-center gap-1 text-xs text-slate-400 hover:text-slate-200 transition ${!user ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
               >
                 <Reply className="w-3 h-3" />
                 <span>Reply</span>

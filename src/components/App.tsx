@@ -7,29 +7,29 @@ import { sampleFollowing, sampleTrending } from '@/lib/utils';
 import { createPost, togglePostLike, incrementPostViews } from '@/lib/firebase/firebaseUtils';
 import { collection, query as firestoreQuery, orderBy as firestoreOrderBy, onSnapshot, where } from 'firebase/firestore';
 import { db } from '@/lib/firebase/firebase';
-import Sidebar from './Sidebar';
-import MobileHeader from './MobileHeader';
-import Feed from './Feed';
-import RightSidebar from './RightSidebar';
-import PostModal from './PostModal';
-import ProfilePage from './ProfilePage';
-import AdminPage from './AdminPage';
-import AdminAccessModal from './AdminAccessModal';
-import ProfileAccessModal from './ProfileAccessModal';
-import MessagesPage from './MessagesPage';
-import ChatPage from './ChatPage';
-import NotificationsPage from './NotificationsPage';
-import FollowingPage from './FollowingPage';
-import TopTipsters from './TopTipsters';
-import LandingPage from './LandingPage';
-import AuthModal from './AuthModal';
+import Sidebar from './layout/Sidebar';
+import MobileHeader from './layout/MobileHeader';
+import Feed from './features/Feed';
+import RightSidebar from './layout/RightSidebar';
+import PostModal from './modals/PostModal';
+import ProfilePage from './pages/ProfilePage';
+import AdminPage from './admin/AdminPage';
+import AdminAccessModal from './admin/AdminAccessModal';
+import ProfileAccessModal from './modals/ProfileAccessModal';
+import MessagesPage from './pages/MessagesPage';
+import ChatPage from './pages/ChatPage';
+import NotificationsPage from './pages/NotificationsPage';
+import FollowingPage from './pages/FollowingPage';
+import TopTipsters from './features/TopTipsters';
+import LandingPage from './pages/LandingPage';
+import AuthModal from './modals/AuthModal';
 import { NotificationsProvider } from '@/lib/contexts/NotificationsContext';
 import { AuthProvider } from '@/lib/contexts/AuthContext';
 import { ProfileProvider } from '@/lib/contexts/ProfileContext';
 import { FollowingProvider } from '@/lib/contexts/FollowingContext';
 import { useAuth } from '@/lib/hooks/useAuth';
-import NotificationToastManager from './NotificationToastManager';
-import RealtimeIndicator from './RealtimeIndicator';
+import NotificationToastManager from './features/NotificationToastManager';
+import RealtimeIndicator from './ui/RealtimeIndicator';
 
 function AppContent() {
   const { user, loading } = useAuth();
@@ -120,26 +120,23 @@ function AppContent() {
     }
   }, [user, showAuthModal]);
 
-
   // Real-time posts listener
   useEffect(() => {
     if (!user || !db) {
       // Only log this message if we're not in loading state (to avoid console spam during auth initialization)
       if (!loading) {
-        console.log('❌ No user authenticated or Firebase not available, not setting up posts listener');
+
       }
       setPosts([]);
       return;
     }
-
-    console.log('🔄 Setting up real-time posts listener for user:', user.uid);
 
     const postsRef = collection(db, 'posts');
     const q = firestoreQuery(postsRef, firestoreOrderBy('createdAt', 'desc'));
 
     const unsubscribe = onSnapshot(q,
       (snapshot) => {
-        console.log('📡 Real-time posts update received');
+
         const postsData = snapshot.docs.map(doc => {
           const data = doc.data();
           return {
@@ -149,49 +146,46 @@ function AppContent() {
           } as Post;
         });
 
-        console.log('📋 Real-time posts updated:', postsData.length, 'posts');
         setPosts(postsData);
       },
       (error) => {
         console.error('❌ Real-time posts listener error:', error);
         // Fallback: Set empty posts array on error
-        console.log('🔄 Fallback: Setting empty posts array due to error');
+
         setPosts([]);
       }
     );
 
     return () => {
-      console.log('🧹 Cleaning up real-time posts listener');
+
       unsubscribe();
     };
   }, [user, loading]);
 
-
   const filteredPosts = useMemo(() => {
-    console.log('🔍 Filtering posts:', {
-      totalPosts: posts.length,
-      selected,
-      selectedSport,
-      query: query.trim(),
-      filters
-    });
+    // Debug: Filtering posts
+    // totalPosts: posts.length,
+    // selected,
+    // selectedSport,
+    // query: query.trim(),
+    // filters
 
     let filtered = posts;
 
     // Filter by selected tab
     if (selected === 'top') {
       filtered = filtered.filter(post => post.likes >= 20);
-      console.log('📊 Filtered by top tab:', filtered.length, 'posts');
+
     } else if (selected === 'top-articles') {
       // Sort by engagement (likes + comments) in descending order for trending tips
       filtered = filtered.sort((a, b) => (b.likes + b.comments) - (a.likes + a.comments));
-      console.log('📊 Sorted by engagement:', filtered.length, 'posts');
+
     }
 
     // Filter by selected sport
     if (selectedSport !== 'All Sports') {
       filtered = filtered.filter((post: Post) => post.sport === selectedSport);
-      console.log('🏈 Filtered by sport:', selectedSport, filtered.length, 'posts');
+
     }
 
     // Filter by search query
@@ -205,7 +199,7 @@ function AppContent() {
         post.user.name.toLowerCase().includes(searchQuery) ||
         post.user.handle.toLowerCase().includes(searchQuery)
       );
-      console.log('🔍 Filtered by search:', searchQuery, filtered.length, 'posts');
+
     }
 
     // Apply advanced filters
@@ -234,7 +228,7 @@ function AppContent() {
           filtered = filtered.filter(post => postDate(post) >= thirtyDaysAgo);
           break;
       }
-      console.log('📅 Filtered by time range:', filters.timeRange, filtered.length, 'posts');
+
     }
 
     // Tip status filter
@@ -245,7 +239,7 @@ function AppContent() {
         }
         return post.tipStatus === filters.tipStatus;
       });
-      console.log('🏆 Filtered by tip status:', filters.tipStatus, filtered.length, 'posts');
+
     }
 
     // User type filter
@@ -267,7 +261,7 @@ function AppContent() {
             return true;
         }
       });
-      console.log('👤 Filtered by user type:', filters.userType, filtered.length, 'posts');
+
     }
 
     // Odds range filter
@@ -288,7 +282,7 @@ function AppContent() {
             return true;
         }
       });
-      console.log('🎯 Filtered by odds range:', filters.oddsRange, filtered.length, 'posts');
+
     }
 
     // Tags filter
@@ -300,7 +294,7 @@ function AppContent() {
           )
         )
       );
-      console.log('🏷️ Filtered by tags:', filters.selectedTags, filtered.length, 'posts');
+
     }
 
     // Engagement sorting
@@ -320,10 +314,9 @@ function AppContent() {
           filtered = filtered.sort((a, b) => (b.likes + b.comments) - (a.likes + a.comments));
           break;
       }
-      console.log('📊 Sorted by engagement:', filters.engagement, filtered.length, 'posts');
+
     }
 
-    console.log('✅ Final filtered posts:', filtered.length, 'posts');
     return filtered;
   }, [posts, selected, selectedSport, debouncedQuery, filters]);
 
@@ -334,12 +327,6 @@ function AppContent() {
     }
 
     try {
-      console.log('📝 Creating new post:', postData);
-      console.log('👤 User info:', {
-        uid: user.uid,
-        displayName: user.displayName,
-        email: user.email
-      });
 
       const newPostData = {
         ...postData,
@@ -351,21 +338,16 @@ function AppContent() {
         }
       };
 
-      console.log('📝 Post data with user info:', newPostData);
       const newPost = await createPost(newPostData);
-      console.log('✅ Post created successfully in Firebase:', newPost);
 
       const formattedPost = { ...newPost, createdAt: newPost.createdAt.toISOString() } as Post;
-      console.log('📋 Adding post to local state:', formattedPost);
 
       setPosts((prev: Post[]) => {
         const updated = [formattedPost, ...prev];
-        console.log('📋 Updated local posts array:', updated.length, 'posts');
-        console.log('📋 All posts in state:', updated);
+
         return updated;
       });
 
-      console.log('✅ Post creation process completed successfully');
     } catch (error) {
       console.error('❌ Error creating post:', error);
       console.error('❌ Error details:', {

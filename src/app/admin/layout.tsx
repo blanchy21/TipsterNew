@@ -14,8 +14,6 @@ function AdminLayoutContent({
   const { user, loading } = useAuth();
   const router = useRouter();
 
-  console.log("AdminLayout: loading:", loading, "user:", user);
-
   useEffect(() => {
     if (!loading && !user) {
       router.push('/');
@@ -23,7 +21,7 @@ function AdminLayoutContent({
   }, [user, loading, router]);
 
   if (loading) {
-    console.log("AdminLayout: Showing loading state");
+
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 to-[#2c1376]/70 flex items-center justify-center">
         <div className="text-white text-lg">Loading...</div>

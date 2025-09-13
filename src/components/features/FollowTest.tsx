@@ -19,7 +19,7 @@ const FollowTest: React.FC = () => {
   });
 
   const handleFollowChange = (isFollowing: boolean) => {
-    console.log('Follow status changed:', isFollowing);
+
   };
 
   return (

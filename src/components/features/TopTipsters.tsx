@@ -56,12 +56,11 @@ const TopTipsters: React.FC<TopTipstersProps> = ({ onNavigateToProfile }) => {
 
     // Real-time listener for verification updates
     useEffect(() => {
-        console.log('🔄 Setting up real-time verification listener for leaderboard');
 
         const unsubscribe = onSnapshot(
             query(collection(db, 'tipVerifications')),
             (snapshot) => {
-                console.log('📡 Leaderboard: Verification update received, reloading leaderboard');
+
                 // Reload leaderboard when verifications change
                 const loadTipsters = async () => {
                     try {
@@ -83,7 +82,7 @@ const TopTipsters: React.FC<TopTipstersProps> = ({ onNavigateToProfile }) => {
         );
 
         return () => {
-            console.log('🧹 Cleaning up verification listener for leaderboard');
+
             unsubscribe();
         };
     }, []);
@@ -94,7 +93,6 @@ const TopTipsters: React.FC<TopTipstersProps> = ({ onNavigateToProfile }) => {
         if (position === 3) return <Award className="w-6 h-6 text-amber-600" />;
         return <span className="text-2xl font-bold text-neutral-400">#{position}</span>;
     };
-
 
     const sortTipsters = (newSortBy: 'winRate' | 'totalTips' | 'averageOdds' | 'totalWins' | 'totalLosses' | 'pendingTips') => {
         setSortBy(newSortBy);

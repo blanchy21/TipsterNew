@@ -90,9 +90,9 @@ export const FollowingProvider: React.FC<FollowingProviderProps> = ({ children }
     setLoading(true);
     setError(null);
     try {
-      console.log(`Loading suggestions for user: ${user.uid}`);
+
       const suggestionsList = await getFollowSuggestions(user.uid, 10);
-      console.log(`Loaded ${suggestionsList.length} suggestions:`, suggestionsList);
+
       setSuggestions(suggestionsList);
     } catch (err) {
       setError('Failed to load suggestions');
@@ -176,8 +176,6 @@ export const FollowingProvider: React.FC<FollowingProviderProps> = ({ children }
       return;
     }
 
-    console.log('🔄 Setting up real-time following listeners for user:', user.uid);
-
     // Real-time following listener
     const followingUnsubscribe = (async () => {
       try {
@@ -202,7 +200,7 @@ export const FollowingProvider: React.FC<FollowingProviderProps> = ({ children }
     loadSuggestions();
 
     return () => {
-      console.log('🧹 Cleaning up following listeners');
+
     };
   }, [user?.uid]);
 
@@ -212,13 +210,10 @@ export const FollowingProvider: React.FC<FollowingProviderProps> = ({ children }
       return;
     }
 
-    console.log('🔄 Setting up real-time user profile listener for user:', user.uid);
-
     const userRef = doc(db, 'users', user.uid);
     const unsubscribe = onSnapshot(userRef, (doc) => {
       if (doc.exists()) {
         const userData = doc.data();
-        console.log('📡 Real-time user profile update received');
 
         // Update following and followers counts in real-time
         if (userData.following) {
@@ -235,7 +230,7 @@ export const FollowingProvider: React.FC<FollowingProviderProps> = ({ children }
     });
 
     return () => {
-      console.log('🧹 Cleaning up user profile listener');
+
       unsubscribe();
     };
   }, [user?.uid]);

@@ -1,17 +1,17 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import { Notification, NotificationSettings } from "../types";
-import { useAuth } from "../hooks/useAuth";
+import { Notification, NotificationSettings } from "@/lib/types";
+import { useAuth } from "@/lib/hooks/useAuth";
 import {
   getUserNotifications,
   markNotificationAsRead,
   markAllNotificationsAsRead as markAllAsReadFirebase,
   createNotification as createNotificationFirebase,
   deleteNotification as deleteNotificationFirebase
-} from "../firebase/firebaseUtils";
+} from "@/lib/firebase/firebaseUtils";
 import { onSnapshot, query, collection, where, orderBy, getDocs, writeBatch } from "firebase/firestore";
-import { db } from "../firebase/firebase";
+import { db } from "@/lib/firebase/firebase";
 
 interface NotificationsContextType {
   notifications: Notification[];
@@ -92,7 +92,7 @@ export function NotificationsProvider({ children }: { children: ReactNode }) {
         orderBy("createdAt", "desc")
       );
     } catch (error) {
-      console.warn('Composite index not found, using simpler query:', error);
+
       // Fallback to query without orderBy if index doesn't exist
       q = query(
         notificationsRef,
@@ -169,14 +169,14 @@ export function NotificationsProvider({ children }: { children: ReactNode }) {
   };
 
   const deleteNotification = async (id: string) => {
-    console.log('🗑️ NotificationsContext: Deleting notification with ID:', id);
+
     try {
       await deleteNotificationFirebase(id);
-      console.log('✅ NotificationsContext: Notification deleted successfully');
+
     } catch (error) {
       console.error('❌ NotificationsContext: Error deleting notification:', error);
       // Fallback to local state update
-      console.log('🔄 NotificationsContext: Using fallback local state update');
+
       setNotifications(prev => prev.filter(notification => notification.id !== id));
     }
   };

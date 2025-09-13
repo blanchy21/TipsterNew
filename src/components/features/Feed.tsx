@@ -4,7 +4,7 @@ import React from 'react';
 import { Inbox } from 'lucide-react';
 import { Post } from '@/lib/types';
 import PostCard from './PostCard';
-import FeedHeader from './FeedHeader';
+import FeedHeader from '@/components/layout/FeedHeader';
 
 interface FilterOptions {
   timeRange: string;
@@ -31,13 +31,6 @@ interface FeedProps {
 }
 
 export default function Feed({ posts, isLoaded, query, onQueryChange, selectedSport, selected, onLikeChange, onNavigateToProfile, onPostDeleted, onPostUpdated, onFiltersChange, currentFilters }: FeedProps) {
-  console.log('📱 Feed component rendering:', {
-    postsCount: posts.length,
-    isLoaded,
-    selectedSport,
-    selected,
-    query
-  });
 
   return (
     <main className="flex-1 flex flex-col overflow-hidden">

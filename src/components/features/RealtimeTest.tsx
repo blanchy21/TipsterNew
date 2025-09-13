@@ -36,7 +36,6 @@ export default function RealtimeTest() {
                 }
             });
 
-            console.log('✅ Test post created successfully');
         } catch (error) {
             console.error('❌ Error creating test post:', error);
         } finally {

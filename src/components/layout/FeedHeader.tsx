@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Search, SlidersHorizontal, X } from 'lucide-react';
-import FilterModal from './FilterModal';
+import FilterModal from '@/components/modals/FilterModal';
 
 interface FilterOptions {
   timeRange: string;

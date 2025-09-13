@@ -21,13 +21,13 @@ import {
   orderBy,
 } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
-import { User, Post, Comment, CommentFormData, Notification } from "../types";
-import { normalizeImageUrl } from "../imageUtils";
+import { User, Post, Comment, CommentFormData, Notification } from "@/lib/types";
+import { normalizeImageUrl } from "@/lib/imageUtils";
 
 // Auth functions
 export const logoutUser = () => {
   if (!auth) {
-    console.warn("Firebase auth not available");
+
     return Promise.resolve();
   }
   return signOut(auth);
@@ -35,7 +35,7 @@ export const logoutUser = () => {
 
 export const signInWithGoogle = async () => {
   if (!auth) {
-    console.warn("Firebase auth not available");
+
     throw new Error("Firebase auth not available");
   }
 
@@ -52,7 +52,7 @@ export const signInWithGoogle = async () => {
 // Firestore functions
 export const addDocument = (collectionName: string, data: any) => {
   if (!db) {
-    console.warn("Firebase Firestore not available");
+
     throw new Error("Firebase Firestore not available");
   }
   return addDoc(collection(db, collectionName), data);
@@ -60,7 +60,7 @@ export const addDocument = (collectionName: string, data: any) => {
 
 export const getDocuments = async (collectionName: string) => {
   if (!db) {
-    console.warn("Firebase Firestore not available");
+
     return [];
   }
   const querySnapshot = await getDocs(collection(db, collectionName));
@@ -73,11 +73,9 @@ export const getDocuments = async (collectionName: string) => {
 // Notification functions
 export const createNotification = async (notificationData: Omit<Notification, 'id' | 'createdAt' | 'read'>) => {
   if (!db) {
-    console.warn("Firebase Firestore not available");
+
     throw new Error("Firebase Firestore not available");
   }
-
-  console.log('🔔 Creating notification:', notificationData);
 
   const notificationPayload = {
     ...notificationData,
@@ -91,7 +89,7 @@ export const createNotification = async (notificationData: Omit<Notification, 'i
       ...notificationPayload,
       id: docRef.id,
     };
-    console.log('✅ Notification created successfully with ID:', docRef.id, notification);
+
     return docRef.id;
   } catch (error) {
     console.error('❌ Error creating notification:', error);
@@ -101,7 +99,7 @@ export const createNotification = async (notificationData: Omit<Notification, 'i
 
 export const getUserNotifications = async (userId: string) => {
   if (!db) {
-    console.warn("Firebase Firestore not available");
+
     return [];
   }
 
@@ -118,7 +116,7 @@ export const getUserNotifications = async (userId: string) => {
 
 export const markNotificationAsRead = async (notificationId: string) => {
   if (!db) {
-    console.warn("Firebase Firestore not available");
+
     throw new Error("Firebase Firestore not available");
   }
 
@@ -129,7 +127,7 @@ export const markNotificationAsRead = async (notificationId: string) => {
 
 export const markAllNotificationsAsRead = async (userId: string) => {
   if (!db) {
-    console.warn("Firebase Firestore not available");
+
     throw new Error("Firebase Firestore not available");
   }
 
@@ -148,14 +146,13 @@ export const markAllNotificationsAsRead = async (userId: string) => {
 
 export const deleteNotification = async (notificationId: string) => {
   if (!db) {
-    console.warn("Firebase Firestore not available");
+
     throw new Error("Firebase Firestore not available");
   }
 
-  console.log('🗑️ Deleting notification with ID:', notificationId);
   try {
     await deleteDoc(doc(db, "notifications", notificationId));
-    console.log('✅ Notification deleted successfully');
+
   } catch (error) {
     console.error('❌ Error deleting notification:', error);
     throw error;
@@ -164,24 +161,22 @@ export const deleteNotification = async (notificationId: string) => {
 
 export const deletePost = async (postId: string) => {
   if (!db) {
-    console.warn("Firebase Firestore not available");
+
     throw new Error("Firebase Firestore not available");
   }
 
-  console.log('🗑️ Deleting post with ID:', postId);
   try {
     await deleteDoc(doc(db, "posts", postId));
-    console.log('✅ Post deleted successfully');
+
   } catch (error) {
     console.error('❌ Error deleting post:', error);
     throw error;
   }
 };
 
-
 export const updateDocument = (collectionName: string, id: string, data: any) => {
   if (!db) {
-    console.warn("Firebase Firestore not available");
+
     throw new Error("Firebase Firestore not available");
   }
   return updateDoc(doc(db, collectionName, id), data);
@@ -189,7 +184,7 @@ export const updateDocument = (collectionName: string, id: string, data: any) =>
 
 export const deleteDocument = (collectionName: string, id: string) => {
   if (!db) {
-    console.warn("Firebase Firestore not available");
+
     throw new Error("Firebase Firestore not available");
   }
   return deleteDoc(doc(db, collectionName, id));
@@ -198,7 +193,7 @@ export const deleteDocument = (collectionName: string, id: string) => {
 // Like functions
 export const likePost = async (postId: string, userId: string) => {
   if (!db) {
-    console.warn("Firebase Firestore not available");
+
     throw new Error("Firebase Firestore not available");
   }
 
@@ -242,7 +237,7 @@ export const likePost = async (postId: string, userId: string) => {
 
 export const unlikePost = async (postId: string, userId: string) => {
   if (!db) {
-    console.warn("Firebase Firestore not available");
+
     throw new Error("Firebase Firestore not available");
   }
 
@@ -256,7 +251,7 @@ export const unlikePost = async (postId: string, userId: string) => {
 // Helper function to ensure user profile exists
 const ensureUserProfileExists = async (userId: string) => {
   if (!db) {
-    console.warn("Firebase Firestore not available");
+
     return;
   }
 
@@ -264,7 +259,7 @@ const ensureUserProfileExists = async (userId: string) => {
   const userSnap = await getDoc(userRef);
 
   if (!userSnap.exists()) {
-    console.log(`Creating missing user profile for ${userId}`);
+
     // Create a minimal user profile
     await setDoc(userRef, {
       id: userId,
@@ -280,16 +275,16 @@ const ensureUserProfileExists = async (userId: string) => {
       favoriteSports: [],
       isVerified: false
     });
-    console.log(`Successfully created user profile for ${userId}`);
+
   } else {
-    console.log(`User profile already exists for ${userId}`);
+
   }
 };
 
 // Export function to check if user profile exists (for debugging)
 export const checkUserProfileExists = async (userId: string): Promise<boolean> => {
   if (!db) {
-    console.warn("Firebase Firestore not available");
+
     return false;
   }
 
@@ -301,7 +296,7 @@ export const checkUserProfileExists = async (userId: string): Promise<boolean> =
 // Follow functions
 export const followUser = async (followerId: string, followingId: string) => {
   if (!db) {
-    console.warn("Firebase Firestore not available");
+
     throw new Error("Firebase Firestore not available");
   }
 
@@ -352,7 +347,7 @@ export const followUser = async (followerId: string, followingId: string) => {
 
 export const unfollowUser = async (followerId: string, followingId: string) => {
   if (!db) {
-    console.warn("Firebase Firestore not available");
+
     throw new Error("Firebase Firestore not available");
   }
 
@@ -381,7 +376,7 @@ export const unfollowUser = async (followerId: string, followingId: string) => {
 
 export const checkIfFollowing = async (followerId: string, followingId: string): Promise<boolean> => {
   if (!db) {
-    console.warn("Firebase Firestore not available");
+
     return false;
   }
 
@@ -398,7 +393,7 @@ export const checkIfFollowing = async (followerId: string, followingId: string):
 
 export const getUserFollowers = async (userId: string): Promise<User[]> => {
   if (!db) {
-    console.warn("Firebase Firestore not available");
+
     return [];
   }
 
@@ -468,7 +463,7 @@ export const getUserFollowers = async (userId: string): Promise<User[]> => {
 
 export const getUserFollowing = async (userId: string): Promise<User[]> => {
   if (!db) {
-    console.warn("Firebase Firestore not available");
+
     return [];
   }
 
@@ -539,7 +534,7 @@ export const getUserFollowing = async (userId: string): Promise<User[]> => {
 // Storage functions
 export const uploadFile = async (file: File, path: string) => {
   if (!storage) {
-    console.warn("Firebase Storage not available");
+
     throw new Error("Firebase Storage not available");
   }
   const storageRef = ref(storage, path);
@@ -552,7 +547,7 @@ export const uploadFile = async (file: File, path: string) => {
 // User Profile Management
 export const createUserProfile = async (user: any, additionalData: any = {}) => {
   if (!db) {
-    console.warn("Firebase Firestore not available");
+
     throw new Error("Firebase Firestore not available");
   }
 
@@ -579,28 +574,26 @@ export const createUserProfile = async (user: any, additionalData: any = {}) => 
         followingCount: 0,
         ...additionalData
       });
-      console.log(`Created user profile for ${displayName} with ID: ${user.uid}`);
+
     } catch (error) {
       console.error('Error creating user profile:', error);
       throw error;
     }
   } else {
-    console.log(`User profile already exists for ${user.uid}`);
+
   }
 
   return userRef;
 };
 
-
 // Firebase Diagnostics
 export const testFirebaseConnection = async () => {
   if (!db) {
-    console.warn("❌ Firebase Firestore not available");
+
     return { success: false, error: "Firebase not initialized" };
   }
 
   try {
-    console.log('🔍 Testing Firebase connection...');
 
     // Try to read from a test collection
     const testRef = collection(db, 'test');
@@ -609,11 +602,8 @@ export const testFirebaseConnection = async () => {
       timestamp: new Date()
     });
 
-    console.log('✅ Firebase connection test successful:', testDoc.id);
-
     // Clean up test document
     await deleteDoc(testDoc);
-    console.log('🧹 Test document cleaned up');
 
     return { success: true, docId: testDoc.id };
   } catch (error: any) {
@@ -629,12 +619,11 @@ export const testFirebaseConnection = async () => {
 // Check what's actually in the Firebase database
 export const inspectFirebaseData = async () => {
   if (!db) {
-    console.warn("❌ Firebase Firestore not available");
+
     return { success: false, error: "Firebase not initialized" };
   }
 
   try {
-    console.log('🔍 Inspecting Firebase data...');
 
     // Check posts collection
     const postsSnapshot = await getDocs(collection(db, 'posts'));
@@ -643,18 +632,12 @@ export const inspectFirebaseData = async () => {
       ...doc.data()
     }));
 
-    console.log('📋 Posts in Firebase:', posts.length, 'posts');
-    console.log('📋 Posts data:', posts);
-
     // Check users collection
     const usersSnapshot = await getDocs(collection(db, 'users'));
     const users = usersSnapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data()
     }));
-
-    console.log('👤 Users in Firebase:', users.length, 'users');
-    console.log('👤 Users data:', users);
 
     return {
       success: true,
@@ -676,12 +659,11 @@ export const inspectFirebaseData = async () => {
 // Posts Management
 export const createPost = async (postData: Omit<Post, 'id' | 'user' | 'createdAt' | 'likes' | 'comments' | 'views' | 'likedBy'> & { user: Post['user'] }) => {
   if (!db) {
-    console.warn("❌ Firebase Firestore not available");
+
     throw new Error("Firebase Firestore not available");
   }
 
   try {
-    console.log('📝 Creating new post with data:', postData);
 
     const newPost = {
       ...postData,
@@ -693,16 +675,13 @@ export const createPost = async (postData: Omit<Post, 'id' | 'user' | 'createdAt
       likedBy: []
     };
 
-    console.log('📝 Post data prepared for Firestore:', newPost);
     const docRef = await addDocument('posts', newPost);
-    console.log('✅ Post created successfully with ID:', docRef.id);
 
     const createdPost = {
       id: docRef.id,
       ...newPost,
       user: postData.user // Ensure user property is included for Post type
     };
-    console.log('📋 Created post object:', createdPost);
 
     return createdPost;
   } catch (error: any) {
@@ -726,14 +705,13 @@ export const createPost = async (postData: Omit<Post, 'id' | 'user' | 'createdAt
 
 export const getPosts = async () => {
   if (!db) {
-    console.warn("❌ Firebase Firestore not available");
+
     return [];
   }
 
   try {
-    console.log('🔄 Fetching posts from Firestore...');
+
     const posts = await getDocuments('posts');
-    console.log('📋 Raw posts from Firestore:', posts.length, 'posts');
 
     const processedPosts = posts.map((post: any) => ({
       ...post,
@@ -746,7 +724,6 @@ export const getPosts = async () => {
       return bTime - aTime;
     });
 
-    console.log('✅ Successfully processed and sorted posts:', sortedPosts.length, 'posts');
     return sortedPosts;
   } catch (error: any) {
     console.error('❌ Error getting posts:', error);
@@ -758,7 +735,7 @@ export const getPosts = async () => {
 
     // If it's a permission error, return empty array but don't crash
     if (error.code === 'permission-denied' || error.code === 'unauthenticated') {
-      console.warn('⚠️ Permission denied or unauthenticated - returning empty posts array');
+
       return [];
     }
 
@@ -768,7 +745,7 @@ export const getPosts = async () => {
 
 export const togglePostLike = async (postId: string, userId: string, isLiked: boolean) => {
   if (!db) {
-    console.warn("Firebase Firestore not available");
+
     throw new Error("Firebase Firestore not available");
   }
 
@@ -802,7 +779,7 @@ export const togglePostLike = async (postId: string, userId: string, isLiked: bo
 
 export const incrementPostViews = async (postId: string) => {
   if (!db) {
-    console.warn("Firebase Firestore not available");
+
     return;
   }
 
@@ -968,7 +945,7 @@ export const removeProfilePhoto = async (userId: string, photoUrl: string): Prom
 // Following System Functions
 export const getFollowingUsers = async (userId: string): Promise<User[]> => {
   if (!db) {
-    console.warn("Firebase Firestore not available");
+
     return [];
   }
 
@@ -983,7 +960,7 @@ export const getFollowingUsers = async (userId: string): Promise<User[]> => {
 
 export const getFollowers = async (userId: string): Promise<User[]> => {
   if (!db) {
-    console.warn("Firebase Firestore not available");
+
     return [];
   }
 
@@ -998,7 +975,7 @@ export const getFollowers = async (userId: string): Promise<User[]> => {
 
 export const getFollowSuggestions = async (userId: string, limit: number = 10): Promise<User[]> => {
   if (!db) {
-    console.warn("Firebase Firestore not available");
+
     return [];
   }
 
@@ -1037,7 +1014,6 @@ export const getFollowSuggestions = async (userId: string, limit: number = 10): 
         isVerified: user.isVerified || false
       }));
 
-    console.log(`Found ${suggestions.length} suggestions for user ${userId}`);
     return suggestions;
   } catch (error) {
     console.error('Error getting follow suggestions:', error);
@@ -1047,7 +1023,7 @@ export const getFollowSuggestions = async (userId: string, limit: number = 10): 
 
 export const searchUsers = async (query: string, limit: number = 20): Promise<User[]> => {
   if (!db) {
-    console.warn("Firebase Firestore not available");
+
     return [];
   }
 
@@ -1088,7 +1064,7 @@ export const searchUsers = async (query: string, limit: number = 20): Promise<Us
 // Comments Management Functions
 export const createComment = async (postId: string, userId: string, commentData: CommentFormData): Promise<Comment | null> => {
   if (!db) {
-    console.warn("Firebase Firestore not available");
+
     throw new Error("Firebase Firestore not available");
   }
 
@@ -1155,7 +1131,7 @@ export const createComment = async (postId: string, userId: string, commentData:
 
 export const getCommentsByPostId = async (postId: string): Promise<Comment[]> => {
   if (!db) {
-    console.warn("Firebase Firestore not available");
+
     return [];
   }
 
@@ -1179,7 +1155,7 @@ export const getCommentsByPostId = async (postId: string): Promise<Comment[]> =>
 
 export const updateComment = async (commentId: string, content: string): Promise<boolean> => {
   if (!db) {
-    console.warn("Firebase Firestore not available");
+
     throw new Error("Firebase Firestore not available");
   }
 
@@ -1198,7 +1174,7 @@ export const updateComment = async (commentId: string, content: string): Promise
 
 export const deleteComment = async (commentId: string, postId: string): Promise<boolean> => {
   if (!db) {
-    console.warn("Firebase Firestore not available");
+
     throw new Error("Firebase Firestore not available");
   }
 
@@ -1217,7 +1193,7 @@ export const deleteComment = async (commentId: string, postId: string): Promise<
 
 export const toggleCommentLike = async (commentId: string, userId: string, isLiked: boolean): Promise<boolean> => {
   if (!db) {
-    console.warn("Firebase Firestore not available");
+
     throw new Error("Firebase Firestore not available");
   }
 
@@ -1253,7 +1229,7 @@ export const toggleCommentLike = async (commentId: string, userId: string, isLik
 
 export const incrementPostCommentCount = async (postId: string): Promise<void> => {
   if (!db) {
-    console.warn("Firebase Firestore not available");
+
     return;
   }
 
@@ -1274,7 +1250,7 @@ export const incrementPostCommentCount = async (postId: string): Promise<void> =
 
 export const decrementPostCommentCount = async (postId: string): Promise<void> => {
   if (!db) {
-    console.warn("Firebase Firestore not available");
+
     return;
   }
 
@@ -1301,7 +1277,7 @@ export const getUserStats = async (userId: string): Promise<{
   engagementRate: number;
 }> => {
   if (!db) {
-    console.warn("Firebase Firestore not available");
+
     return {
       totalPosts: 0,
       totalLikes: 0,
@@ -1346,7 +1322,7 @@ export const getUserStats = async (userId: string): Promise<{
 
 export const updatePost = async (postId: string, data: Partial<Post>): Promise<boolean> => {
   if (!db) {
-    console.warn("Firebase Firestore not available");
+
     throw new Error("Firebase Firestore not available");
   }
 

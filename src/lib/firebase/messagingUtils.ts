@@ -17,7 +17,7 @@ import {
     writeBatch
 } from 'firebase/firestore';
 import { db } from './firebase';
-import { Message, Conversation, User } from '../types';
+import { Message, Conversation, User } from '@/lib/types';
 
 // Create a new conversation between two users
 export const createConversation = async (participantIds: string[]): Promise<string> => {
@@ -260,7 +260,7 @@ export const subscribeToConversations = (
             limit(50)
         );
     } catch (error) {
-        console.warn('Complex query failed, using simpler query:', error);
+
         // Fallback to simpler query without orderBy if index doesn't exist
         q = query(
             conversationsRef,
@@ -270,12 +270,12 @@ export const subscribeToConversations = (
     }
 
     return onSnapshot(q, async (snapshot) => {
-        console.log('subscribeToConversations: Received snapshot with', snapshot.docs.length, 'conversations');
+
         const conversations = [];
 
         // If no conversations, call callback immediately with empty array
         if (snapshot.docs.length === 0) {
-            console.log('subscribeToConversations: No conversations found, calling callback with empty array');
+
             callback([]);
             return;
         }
@@ -286,7 +286,7 @@ export const subscribeToConversations = (
                 const otherParticipantId = data.participants.find((id: string) => id !== userId);
 
                 if (!otherParticipantId) {
-                    console.warn('No other participant found for conversation:', docSnapshot.id);
+
                     continue;
                 }
 
@@ -324,7 +324,7 @@ export const subscribeToConversations = (
                         updatedAt: data.updatedAt?.toDate?.()?.toISOString() || new Date().toISOString()
                     });
                 } else {
-                    console.warn('No user data found for participant:', otherParticipantId);
+
                 }
             }
 
@@ -333,7 +333,6 @@ export const subscribeToConversations = (
                 new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
             );
 
-            console.log('subscribeToConversations: Calling callback with', sortedConversations.length, 'conversations');
             callback(sortedConversations);
         } catch (error) {
             console.error('Error processing conversations:', error);

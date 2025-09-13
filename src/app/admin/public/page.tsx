@@ -51,12 +51,11 @@ const PublicAdminPage: React.FC = () => {
     useEffect(() => {
         const loadStats = async () => {
             if (!db) {
-                console.log('❌ Firebase not available');
+
                 return;
             }
 
             try {
-                console.log('🔄 Loading admin stats...');
 
                 // Load data with timeout
                 const timeoutPromise = new Promise((_, reject) =>
@@ -74,8 +73,6 @@ const PublicAdminPage: React.FC = () => {
                     dataPromise,
                     timeoutPromise
                 ]) as any[];
-
-                console.log('📊 Loaded data:', { posts: posts.length, users: users.length, comments: comments.length, notifications: notifications.length });
 
                 // Calculate statistics
                 const totalUsers = users.length;
@@ -142,7 +139,6 @@ const PublicAdminPage: React.FC = () => {
                     recentActivity
                 });
 
-                console.log('✅ Admin stats loaded successfully');
             } catch (error) {
                 console.error('❌ Error loading admin stats:', error);
                 // Set default stats on error

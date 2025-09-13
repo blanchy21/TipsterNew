@@ -26,20 +26,33 @@ import {
     Settings,
     RefreshCw
 } from 'lucide-react';
-import { populateTestData, clearTestData } from '@/lib/populateTestData';
+import { populateTestData, clearTestData, removeDuplicateUsers } from '@/lib/populateTestData';
 import { Post, TipStatus, User } from '@/lib/types';
 import { getPosts, updatePost, getDocuments } from '@/lib/firebase/firebaseUtils';
 import { useAuth } from '@/lib/hooks/useAuth';
-import TipVerificationPanel from './TipVerificationPanel';
+import TipVerificationPanel from '@/components/features/TipVerificationPanel';
+import { collection, query, orderBy, onSnapshot, where } from 'firebase/firestore';
 import { db } from '@/lib/firebase/firebase';
 
-const AdminDashboardSimple: React.FC = () => {
-    const { user, loading: authLoading } = useAuth();
+interface AdminStats {
+    totalUsers: number;
+    totalPosts: number;
+    totalComments: number;
+    totalNotifications: number;
+    pendingTips: number;
+    verifiedTips: number;
+    winRate: number;
+    avgOdds: number;
+    topSports: { sport: string; count: number }[];
+    recentActivity: { type: string; description: string; timestamp: string }[];
+}
+
+const AdminDashboard: React.FC = () => {
+    const { user } = useAuth();
     const [isLoading, setIsLoading] = useState(false);
-    const [statsLoading, setStatsLoading] = useState(true);
     const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
     const [selectedTab, setSelectedTab] = useState<'overview' | 'tips' | 'users' | 'data'>('overview');
-    const [stats, setStats] = useState({
+    const [stats, setStats] = useState<AdminStats>({
         totalUsers: 0,
         totalPosts: 0,
         totalComments: 0,
@@ -55,15 +68,9 @@ const AdminDashboardSimple: React.FC = () => {
     // Load admin statistics
     useEffect(() => {
         const loadStats = async () => {
-            if (!user || !db) {
-                setStatsLoading(false);
-                return;
-            }
+            if (!user || !db) return;
 
             try {
-                setStatsLoading(true);
-                console.log('🔄 Loading admin stats...');
-
                 // Load all data in parallel
                 const [posts, users, comments, notifications] = await Promise.all([
                     getDocuments('posts'),
@@ -72,27 +79,25 @@ const AdminDashboardSimple: React.FC = () => {
                     getDocuments('notifications')
                 ]);
 
-                console.log('📊 Loaded data:', { posts: posts.length, users: users.length, comments: comments.length, notifications: notifications.length });
-
                 // Calculate statistics
                 const totalUsers = users.length;
                 const totalPosts = posts.length;
                 const totalComments = comments.length;
                 const totalNotifications = notifications.length;
 
-                const pendingTips = posts.filter((p: any) => p.tipStatus === 'pending').length;
-                const verifiedTips = posts.filter((p: any) => p.tipStatus && p.tipStatus !== 'pending').length;
-                const wins = posts.filter((p: any) => p.tipStatus === 'win').length;
+                const pendingTips = posts.filter((p: Post) => p.tipStatus === 'pending').length;
+                const verifiedTips = posts.filter((p: Post) => p.tipStatus && p.tipStatus !== 'pending').length;
+                const wins = posts.filter((p: Post) => p.tipStatus === 'win').length;
                 const winRate = verifiedTips > 0 ? Math.round((wins / verifiedTips) * 100) : 0;
 
                 // Calculate average odds
                 const oddsValues = posts
-                    .filter((p: any) => p.odds)
-                    .map((p: any) => {
+                    .filter((p: Post) => p.odds)
+                    .map((p: Post) => {
                         const odds = p.odds || '0';
                         if (odds.includes('/')) {
                             const [numerator, denominator] = odds.split('/').map(Number);
-                            return (numerator / denominator) + 1;
+                            return denominator !== 0 ? (numerator / denominator) + 1 : 0;
                         }
                         return parseFloat(odds) || 0;
                     });
@@ -138,12 +143,8 @@ const AdminDashboardSimple: React.FC = () => {
                     topSports,
                     recentActivity
                 });
-
-                console.log('✅ Admin stats loaded successfully');
             } catch (error) {
-                console.error('❌ Error loading admin stats:', error);
-            } finally {
-                setStatsLoading(false);
+                console.error('Error loading admin stats:', error);
             }
         };
 
@@ -186,6 +187,24 @@ const AdminDashboardSimple: React.FC = () => {
         }
     };
 
+    const handleRemoveDuplicates = async () => {
+        setIsLoading(true);
+        setMessage(null);
+
+        try {
+            const result = await removeDuplicateUsers();
+            if (result.success) {
+                setMessage({ type: 'success', text: `Removed ${result.removedCount} duplicate users successfully! Refresh the page to see the changes.` });
+            } else {
+                setMessage({ type: 'error', text: 'Failed to remove duplicate users. Check console for details.' });
+            }
+        } catch (error) {
+            setMessage({ type: 'error', text: 'An error occurred while removing duplicate users.' });
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     const tabs = [
         { id: 'overview', label: 'Overview', icon: BarChart3 },
         { id: 'tips', label: 'Tip Verification', icon: CheckCircle },
@@ -193,46 +212,8 @@ const AdminDashboardSimple: React.FC = () => {
         { id: 'data', label: 'Data Management', icon: Database }
     ];
 
-    // Debug logging
-    console.log("AdminDashboardSimple: authLoading:", authLoading, "user:", user);
-    console.log("AdminDashboardSimple: user type:", typeof user);
-    console.log("AdminDashboardSimple: user null check:", user === null);
-
-    // Show loading state while authenticating
-    if (authLoading) {
-        console.log("AdminDashboardSimple: Showing loading state");
-        return (
-            <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-slate-900 to-[#2c1376]/70 min-h-screen flex items-center justify-center">
-                <div className="text-center">
-                    <Loader2 className="w-12 h-12 animate-spin text-blue-400 mx-auto mb-4" />
-                    <h2 className="text-2xl font-bold text-white mb-2">Loading Admin Panel</h2>
-                    <p className="text-slate-400">Authenticating user...</p>
-                </div>
-            </div>
-        );
-    }
-
-    // Show authentication required message
-    if (!user) {
-        return (
-            <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-slate-900 to-[#2c1376]/70 min-h-screen flex items-center justify-center">
-                <div className="text-center max-w-md mx-auto">
-                    <Shield className="w-16 h-16 text-red-400 mx-auto mb-6" />
-                    <h2 className="text-3xl font-bold text-white mb-4">Authentication Required</h2>
-                    <p className="text-slate-400 mb-6">You need to be logged in to access the admin panel.</p>
-                    <button
-                        onClick={() => window.location.href = '/'}
-                        className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors"
-                    >
-                        Go to Login
-                    </button>
-                </div>
-            </div>
-        );
-    }
-
     return (
-        <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-slate-900 to-[#2c1376]/70 min-h-screen">
+        <div className="w-full text-gray-100 font-[Inter] bg-slate-900 min-h-screen">
             <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8">
                 {/* Header */}
                 <div className="mb-8">
@@ -289,115 +270,104 @@ const AdminDashboardSimple: React.FC = () => {
                 {/* Overview Tab */}
                 {selectedTab === 'overview' && (
                     <div className="space-y-6">
-                        {statsLoading ? (
-                            <div className="flex items-center justify-center py-12">
-                                <div className="text-center">
-                                    <Loader2 className="w-8 h-8 animate-spin text-blue-400 mx-auto mb-4" />
-                                    <p className="text-slate-400">Loading admin statistics...</p>
+                        {/* Key Metrics */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                                <div className="flex items-center justify-between">
+                                    <div>
+                                        <p className="text-slate-400 text-sm">Total Users</p>
+                                        <p className="text-3xl font-bold text-white">{stats.totalUsers}</p>
+                                    </div>
+                                    <Users className="w-8 h-8 text-blue-400" />
                                 </div>
                             </div>
-                        ) : (
-                            <>
-                                {/* Key Metrics */}
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                                    <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-                                        <div className="flex items-center justify-between">
-                                            <div>
-                                                <p className="text-slate-400 text-sm">Total Users</p>
-                                                <p className="text-3xl font-bold text-white">{stats.totalUsers}</p>
-                                            </div>
-                                            <Users className="w-8 h-8 text-blue-400" />
-                                        </div>
-                                    </div>
 
-                                    <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-                                        <div className="flex items-center justify-between">
-                                            <div>
-                                                <p className="text-slate-400 text-sm">Total Tips</p>
-                                                <p className="text-3xl font-bold text-white">{stats.totalPosts}</p>
-                                            </div>
-                                            <FileText className="w-8 h-8 text-green-400" />
-                                        </div>
+                            <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                                <div className="flex items-center justify-between">
+                                    <div>
+                                        <p className="text-slate-400 text-sm">Total Tips</p>
+                                        <p className="text-3xl font-bold text-white">{stats.totalPosts}</p>
                                     </div>
+                                    <FileText className="w-8 h-8 text-green-400" />
+                                </div>
+                            </div>
 
-                                    <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-                                        <div className="flex items-center justify-between">
-                                            <div>
-                                                <p className="text-slate-400 text-sm">Pending Verification</p>
-                                                <p className="text-3xl font-bold text-yellow-400">{stats.pendingTips}</p>
-                                            </div>
-                                            <Clock className="w-8 h-8 text-yellow-400" />
-                                        </div>
+                            <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                                <div className="flex items-center justify-between">
+                                    <div>
+                                        <p className="text-slate-400 text-sm">Pending Verification</p>
+                                        <p className="text-3xl font-bold text-yellow-400">{stats.pendingTips}</p>
                                     </div>
+                                    <Clock className="w-8 h-8 text-yellow-400" />
+                                </div>
+                            </div>
 
-                                    <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-                                        <div className="flex items-center justify-between">
-                                            <div>
-                                                <p className="text-slate-400 text-sm">Win Rate</p>
-                                                <p className="text-3xl font-bold text-green-400">{stats.winRate}%</p>
-                                            </div>
-                                            <TrendingUp className="w-8 h-8 text-green-400" />
+                            <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                                <div className="flex items-center justify-between">
+                                    <div>
+                                        <p className="text-slate-400 text-sm">Win Rate</p>
+                                        <p className="text-3xl font-bold text-green-400">{stats.winRate}%</p>
+                                    </div>
+                                    <TrendingUp className="w-8 h-8 text-green-400" />
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Additional Stats */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                                <div className="flex items-center justify-between mb-4">
+                                    <h3 className="text-lg font-semibold text-white">Top Sports</h3>
+                                    <Activity className="w-5 h-5 text-slate-400" />
+                                </div>
+                                <div className="space-y-2">
+                                    {stats.topSports.map((sport, index) => (
+                                        <div key={sport.sport} className="flex items-center justify-between">
+                                            <span className="text-slate-300">{sport.sport}</span>
+                                            <span className="text-blue-400 font-medium">{sport.count} tips</span>
                                         </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                                <div className="flex items-center justify-between mb-4">
+                                    <h3 className="text-lg font-semibold text-white">Platform Stats</h3>
+                                    <BarChart3 className="w-5 h-5 text-slate-400" />
+                                </div>
+                                <div className="space-y-3">
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-slate-300">Comments</span>
+                                        <span className="text-purple-400 font-medium">{stats.totalComments}</span>
+                                    </div>
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-slate-300">Notifications</span>
+                                        <span className="text-purple-400 font-medium">{stats.totalNotifications}</span>
+                                    </div>
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-slate-300">Avg Odds</span>
+                                        <span className="text-purple-400 font-medium">{stats.avgOdds}</span>
                                     </div>
                                 </div>
+                            </div>
 
-                                {/* Additional Stats */}
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                    <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-                                        <div className="flex items-center justify-between mb-4">
-                                            <h3 className="text-lg font-semibold text-white">Top Sports</h3>
-                                            <Activity className="w-5 h-5 text-slate-400" />
-                                        </div>
-                                        <div className="space-y-2">
-                                            {stats.topSports.map((sport, index) => (
-                                                <div key={sport.sport} className="flex items-center justify-between">
-                                                    <span className="text-slate-300">{sport.sport}</span>
-                                                    <span className="text-blue-400 font-medium">{sport.count} tips</span>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-
-                                    <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-                                        <div className="flex items-center justify-between mb-4">
-                                            <h3 className="text-lg font-semibold text-white">Platform Stats</h3>
-                                            <BarChart3 className="w-5 h-5 text-slate-400" />
-                                        </div>
-                                        <div className="space-y-3">
-                                            <div className="flex items-center justify-between">
-                                                <span className="text-slate-300">Comments</span>
-                                                <span className="text-purple-400 font-medium">{stats.totalComments}</span>
-                                            </div>
-                                            <div className="flex items-center justify-between">
-                                                <span className="text-slate-300">Notifications</span>
-                                                <span className="text-purple-400 font-medium">{stats.totalNotifications}</span>
-                                            </div>
-                                            <div className="flex items-center justify-between">
-                                                <span className="text-slate-300">Avg Odds</span>
-                                                <span className="text-purple-400 font-medium">{stats.avgOdds}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="bg-white/5 rounded-xl p-6 border border-white/10">
-                                        <div className="flex items-center justify-between mb-4">
-                                            <h3 className="text-lg font-semibold text-white">Recent Activity</h3>
-                                            <Clock className="w-5 h-5 text-slate-400" />
-                                        </div>
-                                        <div className="space-y-2">
-                                            {stats.recentActivity.map((activity, index) => (
-                                                <div key={index} className="text-sm">
-                                                    <p className="text-slate-300">{activity.description}</p>
-                                                    <p className="text-slate-500 text-xs">
-                                                        {new Date(activity.timestamp).toLocaleDateString()}
-                                                    </p>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
+                            <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                                <div className="flex items-center justify-between mb-4">
+                                    <h3 className="text-lg font-semibold text-white">Recent Activity</h3>
+                                    <Clock className="w-5 h-5 text-slate-400" />
                                 </div>
-                            </>
-                        )}
+                                <div className="space-y-2">
+                                    {stats.recentActivity.map((activity, index) => (
+                                        <div key={index} className="text-sm">
+                                            <p className="text-slate-300">{activity.description}</p>
+                                            <p className="text-slate-500 text-xs">
+                                                {new Date(activity.timestamp).toLocaleDateString()}
+                                            </p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 )}
 
@@ -443,6 +413,31 @@ const AdminDashboardSimple: React.FC = () => {
                                         <Users className="w-5 h-5" />
                                     )}
                                     {isLoading ? 'Populating...' : 'Populate Data'}
+                                </button>
+                            </div>
+
+                            {/* Remove Duplicates */}
+                            <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <div className="p-2 bg-orange-500/20 rounded-xl">
+                                        <RefreshCw className="w-6 h-6 text-orange-400" />
+                                    </div>
+                                    <h2 className="text-xl font-semibold text-white">Remove Duplicate Users</h2>
+                                </div>
+                                <p className="text-neutral-400 mb-6">
+                                    Clean up duplicate users that may have been created by multiple test data population runs.
+                                </p>
+                                <button
+                                    onClick={handleRemoveDuplicates}
+                                    disabled={isLoading}
+                                    className="w-full bg-orange-500 text-white py-3 px-6 rounded-xl hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+                                >
+                                    {isLoading ? (
+                                        <Loader2 className="w-5 h-5 animate-spin" />
+                                    ) : (
+                                        <RefreshCw className="w-5 h-5" />
+                                    )}
+                                    {isLoading ? 'Removing...' : 'Remove Duplicates'}
                                 </button>
                             </div>
 
@@ -494,4 +489,4 @@ const AdminDashboardSimple: React.FC = () => {
     );
 };
 
-export default AdminDashboardSimple;
+export default AdminDashboard;

@@ -34,14 +34,14 @@ import {
   Edit3,
   Settings
 } from 'lucide-react';
-import FollowButton from './FollowButton';
-import ProfileEditModal from './ProfileEditModal';
+import FollowButton from '@/components/features/FollowButton';
+import ProfileEditModal from '@/components/modals/ProfileEditModal';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { useProfile } from '@/lib/contexts/ProfileContext';
 import { useFollowing } from '@/lib/contexts/FollowingContext';
 import { normalizeImageUrl } from '@/lib/imageUtils';
 import { getUserVerificationStats } from '@/lib/firebase/tipVerification';
-import TipVerificationAnalytics from './TipVerificationAnalytics';
+import TipVerificationAnalytics from '@/components/features/TipVerificationAnalytics';
 import { collection, query, where, onSnapshot } from 'firebase/firestore';
 import { db } from '@/lib/firebase/firebase';
 
@@ -154,12 +154,10 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate, userId }) => {
   useEffect(() => {
     if (!profileUser?.id) return;
 
-    console.log('🔄 Setting up real-time verification listener for profile page');
-
     const unsubscribe = onSnapshot(
       query(collection(db, 'tipVerifications'), where('tipsterId', '==', profileUser.id)),
       (snapshot) => {
-        console.log('📡 Profile page: Verification update received, reloading stats');
+
         // Reload stats when verifications change
         const loadUserStats = async () => {
           try {
@@ -188,7 +186,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate, userId }) => {
     );
 
     return () => {
-      console.log('🧹 Cleaning up verification listener for profile page');
+
       unsubscribe();
     };
   }, [profileUser?.id, followers.length, following.length]);
@@ -724,7 +722,6 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate, userId }) => {
         </section>
 
       </div>
-
 
       {/* Profile Edit Modal */}
       <ProfileEditModal

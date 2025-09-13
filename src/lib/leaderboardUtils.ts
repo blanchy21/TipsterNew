@@ -35,7 +35,7 @@ export interface LeaderboardStats {
 // Get all users with their tip statistics
 export const getAllUsersWithStats = async (): Promise<LeaderboardEntry[]> => {
     if (!db) {
-        console.warn('Firebase not initialized');
+
         return [];
     }
 
@@ -44,7 +44,6 @@ export const getAllUsersWithStats = async (): Promise<LeaderboardEntry[]> => {
         const usersQuery = query(collection(db, 'users'));
         const usersSnapshot = await getDocs(usersQuery);
         const users = usersSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as User[];
-        console.log(`👥 Found ${users.length} users`);
 
         // Get stats for each user
         const leaderboardEntries: LeaderboardEntry[] = [];
@@ -73,9 +72,9 @@ export const getAllUsersWithStats = async (): Promise<LeaderboardEntry[]> => {
                     };
 
                     leaderboardEntries.push(entry);
-                    console.log(`✅ Added ${user.displayName || user.name || user.id} to leaderboard with ${verificationStats.totalTips} tips`);
+
                 } else {
-                    console.log(`❌ User ${user.displayName || user.name || user.id} has no tips (${verificationStats.totalTips})`);
+                    // User has no tips
                 }
             } catch (error) {
                 console.error(`Error getting stats for user ${user.id}:`, error);

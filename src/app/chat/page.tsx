@@ -10,7 +10,7 @@ function ChatPageContent() {
     const router = useRouter();
 
     useEffect(() => {
-        console.log('ChatPageContent - user:', user, 'loading:', loading);
+
     }, [user, loading]);
 
     if (loading) {

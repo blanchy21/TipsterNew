@@ -15,9 +15,9 @@ import {
   Users,
   Target
 } from 'lucide-react';
-import Logo from './Logo';
-import SidebarItem from './SidebarItem';
-import SportsSubmenu from './SportsSubmenu';
+import Logo from '@/components/ui/Logo';
+import SidebarItem from '@/components/layout/SidebarItem';
+import SportsSubmenu from '@/components/features/SportsSubmenu';
 import { SidebarItem as SidebarItemType } from '@/lib/types';
 import { useNotifications } from '@/lib/contexts/NotificationsContext';
 import { useAuth } from '@/lib/hooks/useAuth';

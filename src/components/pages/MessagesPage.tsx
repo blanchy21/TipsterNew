@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { Conversation, User, Message } from '@/lib/types';
-import MessagesList from './MessagesList';
-import ChatWindow from './ChatWindow';
+import MessagesList from '@/components/features/MessagesList';
+import ChatWindow from '@/components/features/ChatWindow';
 import { normalizeImageUrl } from '@/lib/imageUtils';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { subscribeToConversations, getOrCreateConversation, sendMessage } from '@/lib/firebase/messagingUtils';
@@ -31,22 +31,20 @@ const MessagesPage: React.FC = () => {
   // Set up real-time conversation listener
   useEffect(() => {
     if (!user) {
-      console.log('MessagesPage: No user, setting loading to false');
+
       setLoading(false);
       return;
     }
 
-    console.log('MessagesPage: Setting up conversation listener for user:', user.uid);
-
     const unsubscribe = subscribeToConversations(user.uid, (conversationsData) => {
-      console.log('MessagesPage: Received conversations data:', conversationsData);
+
       setConversations(conversationsData);
       setLoading(false);
     });
 
     // Add a timeout fallback in case the listener never fires
     const timeout = setTimeout(() => {
-      console.log('MessagesPage: Timeout reached, setting loading to false');
+
       setLoading(false);
     }, 10000); // 10 second timeout
 
