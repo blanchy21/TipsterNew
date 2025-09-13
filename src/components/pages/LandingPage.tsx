@@ -108,12 +108,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
           <div className="mt-4 rounded-full border border-white/10 bg-white/5 backdrop-blur supports-[backdrop-filter]:bg-white/5">
             <div className="flex items-center justify-between px-4 py-3">
               <div className="flex items-center gap-3">
-                <span className="grid h-9 w-9 place-items-center ring-1 ring-white/20 bg-gradient-to-br from-amber-500 via-orange-500 to-yellow-600 rounded-full">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-white/90">
-                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                  </svg>
-                </span>
-                <span className="text-[17px] font-medium tracking-tight">Tipster Arena</span>
+                <Image src="/tipster-logo2.svg" alt="Tipster Arena" width={120} height={30} className="h-8 w-auto" />
               </div>
 
               <div className="hidden md:flex items-center gap-8">
