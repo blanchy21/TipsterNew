@@ -257,72 +257,74 @@ export const subscribeToConversations = (
         limit(50)
     );
 
-    return onSnapshot(q, async (snapshot) => {
-        try {
-            const conversations = [];
+    return onSnapshot(q, (snapshot) => {
+        const processConversations = async () => {
+            try {
+                const conversations = [];
 
-            // If no conversations, call callback immediately with empty array
-            if (snapshot.docs.length === 0) {
-                callback([]);
-                return;
-            }
-            for (const docSnapshot of snapshot.docs) {
-                const data = docSnapshot.data();
-                const otherParticipantId = data.participants.find((id: string) => id !== userId);
-
-                if (!otherParticipantId) {
-
-                    continue;
+                // If no conversations, call callback immediately with empty array
+                if (snapshot.docs.length === 0) {
+                    callback([]);
+                    return;
                 }
 
-                // Get other participant's user data
-                const userDoc = await getDoc(doc(db, 'users', otherParticipantId));
-                const userData = userDoc.data() as any;
+                for (const docSnapshot of snapshot.docs) {
+                    const data = docSnapshot.data();
+                    const otherParticipantId = data.participants.find((id: string) => id !== userId);
 
-                if (userData) {
-                    conversations.push({
-                        id: docSnapshot.id,
-                        participants: [
-                            {
-                                id: userId,
-                                name: 'You',
-                                handle: '@you',
-                                avatar: ''
-                            },
-                            {
-                                id: otherParticipantId,
-                                name: userData.displayName || userData.name || 'Unknown',
-                                handle: userData.handle || `@user${otherParticipantId.slice(0, 8)}`,
-                                avatar: userData.photoURL || userData.avatar || ''
-                            }
-                        ],
-                        lastMessage: data.lastMessage ? {
-                            id: data.lastMessage.id,
-                            senderId: data.lastMessage.senderId,
-                            receiverId: data.lastMessage.senderId === userId ? otherParticipantId : userId,
-                            content: data.lastMessage.content,
-                            timestamp: data.lastMessage.createdAt?.toDate?.()?.toISOString() || new Date().toISOString(),
-                            read: data.lastMessage.senderId === userId,
-                            type: data.lastMessage.type || 'text'
-                        } : null,
-                        unreadCount: data.unreadCount || 0,
-                        updatedAt: data.updatedAt?.toDate?.()?.toISOString() || new Date().toISOString()
-                    });
-                } else {
+                    if (!otherParticipantId) {
+                        continue;
+                    }
 
+                    // Get other participant's user data
+                    const userDoc = await getDoc(doc(db, 'users', otherParticipantId));
+                    const userData = userDoc.data() as any;
+
+                    if (userData) {
+                        conversations.push({
+                            id: docSnapshot.id,
+                            participants: [
+                                {
+                                    id: userId,
+                                    name: 'You',
+                                    handle: '@you',
+                                    avatar: ''
+                                },
+                                {
+                                    id: otherParticipantId,
+                                    name: userData.displayName || userData.name || 'Unknown',
+                                    handle: userData.handle || `@user${otherParticipantId.slice(0, 8)}`,
+                                    avatar: userData.photoURL || userData.avatar || ''
+                                }
+                            ],
+                            lastMessage: data.lastMessage ? {
+                                id: data.lastMessage.id,
+                                senderId: data.lastMessage.senderId,
+                                receiverId: data.lastMessage.senderId === userId ? otherParticipantId : userId,
+                                content: data.lastMessage.content,
+                                timestamp: data.lastMessage.createdAt?.toDate?.()?.toISOString() || new Date().toISOString(),
+                                read: data.lastMessage.senderId === userId,
+                                type: data.lastMessage.type || 'text'
+                            } : null,
+                            unreadCount: data.unreadCount || 0,
+                            updatedAt: data.updatedAt?.toDate?.()?.toISOString() || new Date().toISOString()
+                        });
+                    }
                 }
+
+                // Sort conversations by updatedAt if we couldn't use orderBy in the query
+                const sortedConversations = conversations.sort((a, b) =>
+                    new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+                );
+
+                callback(sortedConversations);
+            } catch (error) {
+                console.error('Error processing conversations:', error);
+                callback([]); // Call callback with empty array on error
             }
+        };
 
-            // Sort conversations by updatedAt if we couldn't use orderBy in the query
-            const sortedConversations = conversations.sort((a, b) =>
-                new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-            );
-
-            callback(sortedConversations);
-        } catch (error) {
-            console.error('Error processing conversations:', error);
-            callback([]); // Call callback with empty array on error
-        }
+        processConversations();
     }, (error) => {
         // Only log permission errors, suppress other Firebase noise
         if (error.code === 'permission-denied') {
