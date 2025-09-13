@@ -15,7 +15,7 @@ import { useProfileData } from '@/lib/hooks/useProfileData';
 import { PageLoadingState } from '@/components/ui/LoadingState';
 import PostCard from '@/components/features/PostCard';
 import { Post } from '@/lib/types';
-import { collection, query, where, orderBy, onSnapshot } from 'firebase/firestore';
+import { collection, query, where, orderBy, onSnapshot, limit } from 'firebase/firestore';
 import { db } from '@/lib/firebase/firebase';
 
 interface ProfilePageProps {
@@ -68,7 +68,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
     const postsQuery = query(
       collection(db, 'posts'),
       where('userId', '==', profileUser.id),
-      orderBy('createdAt', 'desc')
+      limit(50) // Add limit to reduce data transfer
     );
 
     const unsubscribe = onSnapshot(postsQuery, (snapshot) => {
@@ -76,7 +76,15 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
         id: doc.id,
         ...doc.data()
       })) as Post[];
-      setUserPosts(posts);
+
+      // Sort posts by createdAt on the client side
+      const sortedPosts = posts.sort((a, b) => {
+        const aTime = new Date(a.createdAt).getTime();
+        const bTime = new Date(b.createdAt).getTime();
+        return bTime - aTime; // Descending order
+      });
+
+      setUserPosts(sortedPosts);
       setPostsLoading(false);
     }, (error) => {
       console.error('Error fetching user posts:', error);

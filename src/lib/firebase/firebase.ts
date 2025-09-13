@@ -43,11 +43,12 @@ try {
       // Suppress Firebase heartbeats warnings and other noise
       const originalConsoleWarn = console.warn;
       console.warn = (...args) => {
-        if (args[0] && typeof args[0] === 'string' &&
-          (args[0].includes('heartbeats') ||
-            args[0].includes('undefined') ||
-            args[0].includes('WebChannelConnection') ||
-            (args[0].includes('Firebase') && args[0].includes('heartbeat')))) {
+        const message = args[0];
+        if (typeof message === 'string' &&
+          (message.includes('heartbeats') ||
+            message.includes('undefined') ||
+            message.includes('WebChannelConnection') ||
+            message.includes('Firebase') && message.includes('heartbeat'))) {
           return; // Suppress Firebase noise
         }
         originalConsoleWarn.apply(console, args);
@@ -56,14 +57,27 @@ try {
       // Also suppress console.log for heartbeats and Firebase noise
       const originalConsoleLog = console.log;
       console.log = (...args) => {
-        if (args[0] && typeof args[0] === 'string' &&
-          (args[0].includes('heartbeats') ||
-            args[0].includes('WebChannelConnection') ||
-            (args[0].includes('Firebase') && args[0].includes('heartbeat')) ||
-            args[0].includes('undefined'))) {
+        const message = args[0];
+        if (typeof message === 'string' &&
+          (message.includes('heartbeats') ||
+            message.includes('WebChannelConnection') ||
+            (message.includes('Firebase') && message.includes('heartbeat')) ||
+            message.includes('undefined'))) {
           return; // Suppress Firebase noise and heartbeats
         }
         originalConsoleLog.apply(console, args);
+      };
+
+      // Also suppress console.error for Firebase heartbeats
+      const originalConsoleError = console.error;
+      console.error = (...args) => {
+        const message = args[0];
+        if (typeof message === 'string' &&
+          (message.includes('heartbeats') ||
+            message.includes('undefined'))) {
+          return; // Suppress Firebase heartbeats errors
+        }
+        originalConsoleError.apply(console, args);
       };
     }
   } else {
