@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, memo, useCallback } from 'react';
+import Image from 'next/image';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { useProfile } from '@/lib/contexts/ProfileContext';
 import { useFollowing } from '@/lib/contexts/FollowingContext';
@@ -31,17 +32,19 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
   const [userPosts, setUserPosts] = useState<Post[]>([]);
   const [postsLoading, setPostsLoading] = useState(true);
 
-  // Use real user data or fallback to current user
-  const profileUser = profile || (currentUser ? {
-    id: currentUser.uid,
-    name: currentUser.displayName || 'User',
-    handle: `@${currentUser.email?.split('@')[0] || 'user'}`,
-    avatar: normalizeImageUrl(currentUser.photoURL || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=96&h=96&fit=crop&crop=face'),
-    followers: [],
-    following: [],
-    followersCount: 0,
-    followingCount: 0
-  } : null);
+  // Use real user data or fallback to current user - memoized for performance
+  const profileUser = useMemo(() => {
+    return profile || (currentUser ? {
+      id: currentUser.uid,
+      name: currentUser.displayName || 'User',
+      handle: `@${currentUser.email?.split('@')[0] || 'user'}`,
+      avatar: normalizeImageUrl(currentUser.photoURL || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=96&h=96&fit=crop&crop=face'),
+      followers: [],
+      following: [],
+      followersCount: 0,
+      followingCount: 0
+    } : null);
+  }, [profile, currentUser]);
 
   // Load user profile when userId changes
   useEffect(() => {
@@ -89,13 +92,13 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
 
   const isOwnProfile = !userId || userId === currentUser?.uid;
 
-  const handleEditProfile = () => {
+  const handleEditProfile = useCallback(() => {
     setShowEditModal(true);
-  };
+  }, []);
 
-  const handleCloseEditModal = () => {
+  const handleCloseEditModal = useCallback(() => {
     setShowEditModal(false);
-  };
+  }, []);
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -170,10 +173,13 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
               <div className="grid gap-4">
                 {followers.map((follower) => (
                   <div key={follower.id} className="flex items-center gap-3 p-4 bg-slate-800/50 rounded-lg">
-                    <img
+                    <Image
                       src={normalizeImageUrl(follower.avatar)}
                       alt={follower.name}
+                      width={40}
+                      height={40}
                       className="w-10 h-10 rounded-full"
+                      loading="lazy"
                     />
                     <div className="flex-1">
                       <h4 className="text-white font-medium">{follower.name}</h4>
@@ -204,10 +210,13 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
               <div className="grid gap-4">
                 {following.map((user) => (
                   <div key={user.id} className="flex items-center gap-3 p-4 bg-slate-800/50 rounded-lg">
-                    <img
+                    <Image
                       src={normalizeImageUrl(user.avatar)}
                       alt={user.name}
+                      width={40}
+                      height={40}
                       className="w-10 h-10 rounded-full"
+                      loading="lazy"
                     />
                     <div className="flex-1">
                       <h4 className="text-white font-medium">{user.name}</h4>
@@ -281,4 +290,4 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
   );
 };
 
-export default ProfilePage;
+export default memo(ProfilePage);

@@ -40,22 +40,28 @@ try {
 
     // Reduce Firebase console warnings in development
     if (process.env.NODE_ENV === 'development') {
-      // Suppress Firebase heartbeats warnings
+      // Suppress Firebase heartbeats warnings and other noise
       const originalConsoleWarn = console.warn;
       console.warn = (...args) => {
         if (args[0] && typeof args[0] === 'string' &&
-          (args[0].includes('heartbeats') || args[0].includes('undefined') || args[0].includes('WebChannelConnection'))) {
-          return; // Suppress heartbeats, undefined, and WebChannelConnection warnings
+          (args[0].includes('heartbeats') ||
+            args[0].includes('undefined') ||
+            args[0].includes('WebChannelConnection') ||
+            args[0].includes('Firebase') && args[0].includes('heartbeat'))) {
+          return; // Suppress Firebase noise
         }
         originalConsoleWarn.apply(console, args);
       };
 
-      // Also suppress console.log for heartbeats
+      // Also suppress console.log for heartbeats and Firebase noise
       const originalConsoleLog = console.log;
       console.log = (...args) => {
         if (args[0] && typeof args[0] === 'string' &&
-          (args[0].includes('heartbeats') || args[0].includes('WebChannelConnection'))) {
-          return; // Suppress heartbeats and WebChannelConnection logs
+          (args[0].includes('heartbeats') ||
+            args[0].includes('WebChannelConnection') ||
+            args[0].includes('Firebase') && args[0].includes('heartbeat') ||
+            args[0].includes('undefined'))) {
+          return; // Suppress Firebase noise and heartbeats
         }
         originalConsoleLog.apply(console, args);
       };

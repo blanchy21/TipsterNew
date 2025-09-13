@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, lazy, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Post, FollowingUser } from '@/lib/types';
 import { sampleFollowing, sampleTrending } from '@/lib/utils';
@@ -12,21 +12,26 @@ import MobileHeader from './layout/MobileHeader';
 import Feed from './features/Feed';
 import RightSidebar from './layout/RightSidebar';
 import PostModal from './modals/PostModal';
-import ProfilePage from './pages/ProfilePage';
-import AdminPage from './admin/AdminPage';
 import AdminAccessModal from './admin/AdminAccessModal';
 import ProfileAccessModal from './modals/ProfileAccessModal';
-import MessagesPage from './pages/MessagesPage';
-import ChatPage from './pages/ChatPage';
-import NotificationsPage from './pages/NotificationsPage';
-import FollowingPage from './pages/FollowingPage';
-import TopTipsters from './features/TopTipsters';
-import LandingPage from './pages/LandingPage';
 import AuthModal from './modals/AuthModal';
+
+// Dynamic imports for heavy components
+const TopTipsters = lazy(() => import('./features/TopTipsters'));
+
+// Lazy load heavy components
+const ProfilePage = lazy(() => import('./pages/ProfilePage'));
+const AdminPage = lazy(() => import('./admin/AdminPage'));
+const MessagesPage = lazy(() => import('./pages/MessagesPage'));
+const ChatPage = lazy(() => import('./pages/ChatPage'));
+const NotificationsPage = lazy(() => import('./pages/NotificationsPage'));
+const FollowingPage = lazy(() => import('./pages/FollowingPage'));
+const LandingPage = lazy(() => import('./pages/LandingPage'));
 import { NotificationsProvider } from '@/lib/contexts/NotificationsContext';
 import { AuthProvider } from '@/lib/contexts/AuthContext';
 import { ProfileProvider } from '@/lib/contexts/ProfileContext';
 import { FollowingProvider } from '@/lib/contexts/FollowingContext';
+import QueryProvider from '@/lib/providers/QueryProvider';
 import { useAuth } from '@/lib/hooks/useAuth';
 import NotificationToastManager from './features/NotificationToastManager';
 import RealtimeIndicator from './ui/RealtimeIndicator';
@@ -471,7 +476,9 @@ function AppContent() {
   if (showLandingPage) {
     return (
       <>
-        <LandingPage onGetStarted={handleGetStarted} onShowAuthModal={handleShowAuthModal} />
+        <Suspense fallback={<PageLoadingState />}>
+          <LandingPage onGetStarted={handleGetStarted} onShowAuthModal={handleShowAuthModal} />
+        </Suspense>
         <AuthModal
           isOpen={showAuthModal}
           onClose={handleCloseAuthModal}
@@ -545,31 +552,45 @@ function AppContent() {
 
           {selected === 'admin' && isAdminAuthenticated ? (
             <div className="flex-1 overflow-y-auto">
-              <AdminPage />
+              <Suspense fallback={<PageLoadingState />}>
+                <AdminPage />
+              </Suspense>
             </div>
           ) : selected === 'profile' ? (
             <div className="flex-1 overflow-y-auto">
-              <ProfilePage onNavigateToProfile={handleProfileNavigation} userId={viewingUserId || undefined} />
+              <Suspense fallback={<PageLoadingState />}>
+                <ProfilePage onNavigateToProfile={handleProfileNavigation} userId={viewingUserId || undefined} />
+              </Suspense>
             </div>
           ) : selected === 'messages' ? (
             <div className="flex-1 overflow-y-auto">
-              <MessagesPage />
+              <Suspense fallback={<PageLoadingState />}>
+                <MessagesPage />
+              </Suspense>
             </div>
           ) : selected === 'chat' ? (
             <div className="flex-1">
-              <ChatPage />
+              <Suspense fallback={<PageLoadingState />}>
+                <ChatPage />
+              </Suspense>
             </div>
           ) : selected === 'notifications' ? (
             <div className="flex-1 overflow-y-auto">
-              <NotificationsPage />
+              <Suspense fallback={<PageLoadingState />}>
+                <NotificationsPage />
+              </Suspense>
             </div>
           ) : selected === 'following' ? (
             <div className="flex-1 overflow-y-auto">
-              <FollowingPage onNavigateToProfile={handleNavigateToProfile} />
+              <Suspense fallback={<PageLoadingState />}>
+                <FollowingPage onNavigateToProfile={handleNavigateToProfile} />
+              </Suspense>
             </div>
           ) : selected === 'top-tipsters' ? (
             <div className="flex-1 overflow-y-auto">
-              <TopTipsters onNavigateToProfile={handleNavigateToProfile} />
+              <Suspense fallback={<PageLoadingState />}>
+                <TopTipsters onNavigateToProfile={handleNavigateToProfile} />
+              </Suspense>
             </div>
           ) : selected === 'sports' ? (
             <div className="flex-1 flex flex-col overflow-hidden">
@@ -664,21 +685,23 @@ export default function App() {
         }
       }}
     >
-      <AuthProvider>
-        <ProfileProvider>
-          <FollowingProvider>
-            <AsyncErrorBoundary
-              onError={(error, errorInfo) => {
-                console.error('Async Error:', error, errorInfo);
-              }}
-              maxRetries={2}
-              retryDelay={1000}
-            >
-              <AppContent />
-            </AsyncErrorBoundary>
-          </FollowingProvider>
-        </ProfileProvider>
-      </AuthProvider>
+      <QueryProvider>
+        <AuthProvider>
+          <ProfileProvider>
+            <FollowingProvider>
+              <AsyncErrorBoundary
+                onError={(error, errorInfo) => {
+                  console.error('Async Error:', error, errorInfo);
+                }}
+                maxRetries={2}
+                retryDelay={1000}
+              >
+                <AppContent />
+              </AsyncErrorBoundary>
+            </FollowingProvider>
+          </ProfileProvider>
+        </AuthProvider>
+      </QueryProvider>
     </ErrorBoundary>
   );
 }

@@ -10,7 +10,7 @@ import {
   createNotification as createNotificationFirebase,
   deleteNotification as deleteNotificationFirebase
 } from "@/lib/firebase/firebaseUtils";
-import { onSnapshot, query, collection, where, orderBy, getDocs, writeBatch } from "firebase/firestore";
+import { onSnapshot, query, collection, where, orderBy, getDocs, writeBatch, limit } from "firebase/firestore";
 import { db } from "@/lib/firebase/firebase";
 
 interface NotificationsContextType {
@@ -83,22 +83,14 @@ export function NotificationsProvider({ children }: { children: ReactNode }) {
 
     const notificationsRef = collection(db, "notifications");
 
-    // Try the optimized query first, fallback to simpler query if index doesn't exist
-    let q;
-    try {
-      q = query(
-        notificationsRef,
-        where("recipientId", "==", user.uid),
-        orderBy("createdAt", "desc")
-      );
-    } catch (error) {
-
-      // Fallback to query without orderBy if index doesn't exist
-      q = query(
-        notificationsRef,
-        where("recipientId", "==", user.uid)
-      );
-    }
+    // Use simple query without orderBy to avoid index requirements
+    // Sorting will be done in JavaScript for better performance
+    // Limit to 50 notifications to improve performance
+    const q = query(
+      notificationsRef,
+      where("recipientId", "==", user.uid),
+      limit(50)
+    );
 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const notificationsData = querySnapshot.docs.map(doc => {

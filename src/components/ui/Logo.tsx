@@ -24,6 +24,7 @@ export default function Logo({ collapsed = false }: LogoProps) {
           width={180}
           height={36}
           className="h-9 w-auto"
+          style={{ width: 'auto', height: 'auto' }}
         />
       )}
     </div>

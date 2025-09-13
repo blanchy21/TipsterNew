@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, memo, useCallback, useMemo } from 'react';
 import Image from 'next/image';
 import { MoreHorizontal, MessageCircle, Eye, Hash, ChevronDown, ChevronUp, CheckCircle, XCircle, Clock, AlertCircle, Trophy, Edit, Trash2, X } from 'lucide-react';
 import { Post, TipStatus } from '@/lib/types';
@@ -25,7 +25,7 @@ interface PostCardProps {
   onPostUpdated?: (postId: string, updatedPost: Post) => void;
 }
 
-export default function PostCard({ post, onLikeChange, onCommentCountChange, onNavigateToProfile, onPostDeleted, onPostUpdated }: PostCardProps) {
+const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChange, onNavigateToProfile, onPostDeleted, onPostUpdated }: PostCardProps) {
 
   const { user } = useAuth();
   const [showComments, setShowComments] = useState(false);
@@ -43,14 +43,14 @@ export default function PostCard({ post, onLikeChange, onCommentCountChange, onN
   });
   const menuRef = useRef<HTMLDivElement>(null);
 
-  const handleCommentCountChange = (newCount: number) => {
+  const handleCommentCountChange = useCallback((newCount: number) => {
     setCommentCount(newCount);
     onCommentCountChange?.(post.id, newCount);
-  };
+  }, [post.id, onCommentCountChange]);
 
-  const toggleComments = () => {
+  const toggleComments = useCallback(() => {
     setShowComments(!showComments);
-  };
+  }, [showComments]);
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -504,4 +504,6 @@ export default function PostCard({ post, onLikeChange, onCommentCountChange, onN
       </article>
     </AsyncErrorBoundary>
   );
-}
+});
+
+export default PostCard;
