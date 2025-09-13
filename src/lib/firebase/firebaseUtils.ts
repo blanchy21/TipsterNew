@@ -865,6 +865,12 @@ export const updateUserProfile = async (userId: string, profileData: Partial<Use
 
 export const uploadProfileImage = async (userId: string, file: File, type: 'avatar' | 'cover' | 'gallery'): Promise<string | null> => {
   try {
+    // Check if Firebase Storage is available
+    if (!storage) {
+      console.warn('Firebase Storage not available, using base64 fallback');
+      return await uploadImageAsBase64(userId, file, type);
+    }
+
     const fileExtension = file.name.split('.').pop();
     const fileName = `${type}_${userId}_${Date.now()}.${fileExtension}`;
     const storageRef = ref(storage, `profiles/${userId}/${fileName}`);
@@ -875,8 +881,51 @@ export const uploadProfileImage = async (userId: string, file: File, type: 'avat
     return downloadURL;
   } catch (error) {
     console.error('Error uploading profile image:', error);
+
+    // Fallback to base64 if Firebase Storage fails
+    if (error.code === 'storage/unauthorized' || error.code === 'storage/invalid-argument') {
+      console.warn('Firebase Storage not configured, using base64 fallback');
+      return await uploadImageAsBase64(userId, file, type);
+    }
+
     return null;
   }
+};
+
+// Fallback function to upload images as base64 to Firestore
+const uploadImageAsBase64 = async (userId: string, file: File, type: 'avatar' | 'cover' | 'gallery'): Promise<string | null> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = async (e) => {
+      try {
+        const base64String = e.target?.result as string;
+        const fileName = `${type}_${userId}_${Date.now()}`;
+
+        // Store base64 image in Firestore
+        const imageDoc = {
+          userId,
+          type,
+          fileName,
+          base64Data: base64String,
+          uploadedAt: new Date().toISOString(),
+          size: file.size,
+          contentType: file.type
+        };
+
+        // Store in a temporary collection for base64 images
+        await addDocument('base64Images', imageDoc);
+
+        // Return the base64 string as the URL
+        resolve(base64String);
+      } catch (error) {
+        reject(error);
+      }
+    };
+
+    reader.onerror = () => reject(new Error('Failed to read file'));
+    reader.readAsDataURL(file);
+  });
 };
 
 export const deleteProfileImage = async (imageUrl: string): Promise<boolean> => {
