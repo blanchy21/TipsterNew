@@ -9,13 +9,15 @@ import { useAuth } from '@/lib/hooks/useAuth';
 interface FollowButtonProps {
   targetUser: User;
   onFollowChange?: (isFollowing: boolean) => void;
+  onNavigateToProfile?: (userId: string) => void;
   variant?: 'default' | 'compact' | 'minimal';
   className?: string;
 }
 
-export default function FollowButton({ 
-  targetUser, 
-  onFollowChange, 
+export default function FollowButton({
+  targetUser,
+  onFollowChange,
+  onNavigateToProfile,
   variant = 'default',
   className = ''
 }: FollowButtonProps) {
@@ -27,7 +29,7 @@ export default function FollowButton({
   useEffect(() => {
     const checkFollowStatus = async () => {
       if (!user || !targetUser.id) return;
-      
+
       try {
         setIsChecking(true);
         const following = await checkIfFollowing(user.uid, targetUser.id);
@@ -52,7 +54,7 @@ export default function FollowButton({
 
     try {
       setIsLoading(true);
-      
+
       if (isFollowing) {
         await unfollowUser(user.uid, targetUser.id);
         setIsFollowing(false);
@@ -106,29 +108,26 @@ export default function FollowButton({
 
   const getButtonClasses = () => {
     const baseClasses = "inline-flex items-center justify-center font-medium transition-all duration-300 group";
-    
+
     if (variant === 'compact') {
-      return `${baseClasses} px-3 py-1.5 text-sm rounded-lg ${
-        isFollowing 
-          ? 'bg-slate-600/50 text-slate-300 hover:bg-slate-600/70 hover:text-slate-200 border border-slate-500/30' 
-          : 'bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 hover:text-blue-300 border border-blue-500/30'
-      }`;
+      return `${baseClasses} px-3 py-1.5 text-sm rounded-lg ${isFollowing
+        ? 'bg-slate-600/50 text-slate-300 hover:bg-slate-600/70 hover:text-slate-200 border border-slate-500/30'
+        : 'bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 hover:text-blue-300 border border-blue-500/30'
+        }`;
     }
-    
+
     if (variant === 'minimal') {
-      return `${baseClasses} p-2 rounded-lg ${
-        isFollowing 
-          ? 'text-slate-400 hover:text-slate-200 hover:bg-slate-600/30' 
-          : 'text-blue-400 hover:text-blue-300 hover:bg-blue-500/20'
-      }`;
+      return `${baseClasses} p-2 rounded-lg ${isFollowing
+        ? 'text-slate-400 hover:text-slate-200 hover:bg-slate-600/30'
+        : 'text-blue-400 hover:text-blue-300 hover:bg-blue-500/20'
+        }`;
     }
-    
+
     // Default variant
-    return `${baseClasses} px-4 py-2 rounded-xl ${
-      isFollowing 
-        ? 'bg-slate-600/50 text-slate-300 hover:bg-slate-600/70 hover:text-slate-200 border border-slate-500/30 hover:scale-105' 
-        : 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white hover:from-blue-600 hover:to-indigo-600 hover:scale-105 shadow-lg hover:shadow-blue-500/25'
-    }`;
+    return `${baseClasses} px-4 py-2 rounded-xl ${isFollowing
+      ? 'bg-slate-600/50 text-slate-300 hover:bg-slate-600/70 hover:text-slate-200 border border-slate-500/30 hover:scale-105'
+      : 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white hover:from-blue-600 hover:to-indigo-600 hover:scale-105 shadow-lg hover:shadow-blue-500/25'
+      }`;
   };
 
   return (

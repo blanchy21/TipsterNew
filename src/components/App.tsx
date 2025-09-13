@@ -549,7 +549,7 @@ function AppContent() {
             </div>
           ) : selected === 'profile' ? (
             <div className="flex-1 overflow-y-auto">
-              <ProfilePage onNavigate={handleProfileNavigation} userId={viewingUserId || undefined} />
+              <ProfilePage onNavigateToProfile={handleProfileNavigation} userId={viewingUserId || undefined} />
             </div>
           ) : selected === 'messages' ? (
             <div className="flex-1 overflow-y-auto">

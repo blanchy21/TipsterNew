@@ -9,9 +9,10 @@ import { User as UserType } from '@/lib/types';
 interface ProfileEditModalProps {
   isOpen: boolean;
   onClose: () => void;
+  user?: UserType;
 }
 
-const ProfileEditModal: React.FC<ProfileEditModalProps> = ({ isOpen, onClose }) => {
+const ProfileEditModal: React.FC<ProfileEditModalProps> = ({ isOpen, onClose, user }) => {
   const { profile, updateProfile, uploadAvatar, uploadCoverPhoto, addPhoto, removePhoto, loading } = useProfile();
   const [formData, setFormData] = useState<Partial<UserType>>({});
   const [activeTab, setActiveTab] = useState<'basic' | 'social' | 'photos' | 'privacy'>('basic');
@@ -146,11 +147,10 @@ const ProfileEditModal: React.FC<ProfileEditModalProps> = ({ isOpen, onClose }) 
             <button
               key={key}
               onClick={() => setActiveTab(key as any)}
-              className={`flex items-center gap-2 px-6 py-4 text-sm font-medium transition-colors ${
-                activeTab === key
-                  ? 'text-blue-400 border-b-2 border-blue-400 bg-blue-500/10'
-                  : 'text-neutral-400 hover:text-white hover:bg-white/5'
-              }`}
+              className={`flex items-center gap-2 px-6 py-4 text-sm font-medium transition-colors ${activeTab === key
+                ? 'text-blue-400 border-b-2 border-blue-400 bg-blue-500/10'
+                : 'text-neutral-400 hover:text-white hover:bg-white/5'
+                }`}
             >
               <Icon className="w-4 h-4" />
               {label}
