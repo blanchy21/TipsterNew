@@ -60,7 +60,7 @@ Restricts browser features:
 
 ## 📁 File Structure
 
-```
+```text
 src/
 ├── middleware.ts          # Main security middleware
 └── SECURITY_HEADERS.md    # This documentation
