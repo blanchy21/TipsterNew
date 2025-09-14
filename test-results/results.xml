@@ -1,0 +1,152 @@
+<testsuites id="" name="" tests="39" failures="0" skipped="11" errors="0" time="28.248986">
+<testsuite name="auth-flow.spec.ts" timestamp="2025-09-14T21:57:34.435Z" hostname="chromium" tests="10" failures="0" skipped="8" time="26.469" errors="0">
+<testcase name="Authentication Flow › should display authentication modal when not signed in" classname="auth-flow.spec.ts" time="2.765">
+</testcase>
+<testcase name="Authentication Flow › should open authentication modal" classname="auth-flow.spec.ts" time="2.54">
+<properties>
+<property name="skip" value="">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › should have Google sign-in option" classname="auth-flow.spec.ts" time="2.509">
+<properties>
+<property name="skip" value="">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › should have email/password sign-in form" classname="auth-flow.spec.ts" time="2.48">
+<properties>
+<property name="skip" value="">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › should have sign-up option" classname="auth-flow.spec.ts" time="2.54">
+<properties>
+<property name="skip" value="">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › should validate email format" classname="auth-flow.spec.ts" time="2.069">
+<properties>
+<property name="skip" value="">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › should require password" classname="auth-flow.spec.ts" time="2.075">
+<properties>
+<property name="skip" value="">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › should close modal when clicking outside" classname="auth-flow.spec.ts" time="2.028">
+<properties>
+<property name="skip" value="">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Authentication Flow › should navigate to protected routes when authenticated" classname="auth-flow.spec.ts" time="5.551">
+</testcase>
+<testcase name="Authentication Flow › should handle authentication errors gracefully" classname="auth-flow.spec.ts" time="1.912">
+<properties>
+<property name="skip" value="">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="landing-page.spec.ts" timestamp="2025-09-14T21:57:34.435Z" hostname="chromium" tests="19" failures="0" skipped="1" time="49.908" errors="0">
+<testcase name="Landing Page › should display the main heading" classname="landing-page.spec.ts" time="4.465">
+</testcase>
+<testcase name="Landing Page › should display the tagline" classname="landing-page.spec.ts" time="4.472">
+</testcase>
+<testcase name="Landing Page › should show all feature cards" classname="landing-page.spec.ts" time="4.607">
+</testcase>
+<testcase name="Landing Page › should navigate to auth modal when Get Started is clicked" classname="landing-page.spec.ts" time="4.403">
+</testcase>
+<testcase name="Landing Page › should open login modal when Sign In is clicked" classname="landing-page.spec.ts" time="1.602">
+<properties>
+<property name="skip" value="">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Landing Page › should display feature descriptions" classname="landing-page.spec.ts" time="2.206">
+</testcase>
+<testcase name="Landing Page › should show navigation menu" classname="landing-page.spec.ts" time="2.183">
+</testcase>
+<testcase name="Landing Page › should be responsive on mobile" classname="landing-page.spec.ts" time="2.468">
+</testcase>
+<testcase name="Landing Page › should have proper accessibility attributes" classname="landing-page.spec.ts" time="2.587">
+</testcase>
+<testcase name="Landing Page › should handle keyboard navigation" classname="landing-page.spec.ts" time="2.244">
+</testcase>
+<testcase name="Landing Page › should display statistics section" classname="landing-page.spec.ts" time="1.808">
+</testcase>
+<testcase name="Landing Page › should show footer information" classname="landing-page.spec.ts" time="1.905">
+</testcase>
+<testcase name="Landing Page › should load quickly" classname="landing-page.spec.ts" time="3.257">
+</testcase>
+<testcase name="Landing Page › should handle feature card interactions" classname="landing-page.spec.ts" time="1.846">
+</testcase>
+<testcase name="Landing Page › should display proper meta information" classname="landing-page.spec.ts" time="2.016">
+</testcase>
+<testcase name="Landing Page › should handle scroll interactions" classname="landing-page.spec.ts" time="2.261">
+</testcase>
+<testcase name="Landing Page › should display call-to-action section" classname="landing-page.spec.ts" time="1.958">
+</testcase>
+<testcase name="Landing Page › should handle different screen sizes" classname="landing-page.spec.ts" time="1.98">
+</testcase>
+<testcase name="Landing Page › should handle external links properly" classname="landing-page.spec.ts" time="1.64">
+</testcase>
+</testsuite>
+<testsuite name="user-flow.spec.ts" timestamp="2025-09-14T21:57:34.435Z" hostname="chromium" tests="10" failures="0" skipped="2" time="17.7" errors="0">
+<testcase name="User Authentication Flow › should complete signup flow" classname="user-flow.spec.ts" time="1.402">
+</testcase>
+<testcase name="User Authentication Flow › should complete login flow" classname="user-flow.spec.ts" time="1.541">
+<properties>
+<property name="skip" value="">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="User Authentication Flow › should handle Google sign-in" classname="user-flow.spec.ts" time="1.547">
+<properties>
+<property name="skip" value="">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Post Creation Flow › should verify landing page functionality" classname="user-flow.spec.ts" time="1.705">
+</testcase>
+<testcase name="Navigation Flow › should navigate between main sections" classname="user-flow.spec.ts" time="1.625">
+</testcase>
+<testcase name="Navigation Flow › should handle mobile navigation" classname="user-flow.spec.ts" time="2.312">
+</testcase>
+<testcase name="Feed Interaction Flow › should verify landing page features section" classname="user-flow.spec.ts" time="1.503">
+</testcase>
+<testcase name="Chat Flow › should verify chat feature description" classname="user-flow.spec.ts" time="1.838">
+</testcase>
+<testcase name="Performance Tests › should load pages quickly" classname="user-flow.spec.ts" time="1.385">
+</testcase>
+<testcase name="Performance Tests › should handle page scrolling" classname="user-flow.spec.ts" time="2.842">
+</testcase>
+</testsuite>
+</testsuites>
