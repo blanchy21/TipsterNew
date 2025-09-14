@@ -36,7 +36,7 @@ const AuthContext = createContext<AuthContextType>({
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false); // Temporarily set to false for performance testing
 
   useEffect(() => {
     if (process.env.NODE_ENV === 'development') {
@@ -107,7 +107,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           console.log("AuthContext: Timeout reached, setting loading to false");
         }
         setLoading(false);
-      }, 1000); // Reduced timeout for performance testing
+      }, 500); // Very short timeout for performance testing
 
       return () => {
 

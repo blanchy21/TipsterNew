@@ -3,7 +3,7 @@ module.exports = {
         collect: {
             url: ['http://localhost:3000', 'http://localhost:3000/profile', 'http://localhost:3000/chat'],
             startServerCommand: 'npm run dev',
-            startServerReadyPattern: 'ready - started server on',
+            startServerReadyPattern: 'Ready',
             startServerReadyTimeout: 120000,
             numberOfRuns: 3,
         },

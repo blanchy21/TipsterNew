@@ -48,6 +48,7 @@ function AppContent() {
   // Following data is now managed by FollowingContext
   const [showPost, setShowPost] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   const [query, setQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
   const [selectedSport, setSelectedSport] = useState('All Sports');
@@ -59,7 +60,7 @@ function AppContent() {
     oddsRange: 'all',
     selectedTags: [] as string[]
   });
-  const [showLandingPage, setShowLandingPage] = useState(false);
+  const [showLandingPage, setShowLandingPage] = useState(true); // Default to true for server-side rendering
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authModalMode, setAuthModalMode] = useState<'login' | 'signup'>('login');
   const [viewingUserId, setViewingUserId] = useState<string | null>(null);
@@ -79,6 +80,9 @@ function AppContent() {
   };
 
   useEffect(() => {
+    // Only run on client side to prevent hydration mismatch
+    if (!isClient) return;
+
     // Check if user has seen landing page
     const hasSeenLandingPage = localStorage.getItem('hasSeenLandingPage');
     if (!hasSeenLandingPage && !user && !loading) {
@@ -91,7 +95,7 @@ function AppContent() {
       document.body.classList.add('loaded');
     }, 50);
     return () => clearTimeout(timer);
-  }, [user, loading]);
+  }, [user, loading, isClient]);
 
   // Handler functions for navigation
   const handleAdminAccess = useCallback(() => {
@@ -376,6 +380,8 @@ function AppContent() {
     } catch (error) {
       // Error creating post - handled by UI feedback
       // Could implement toast notification here if needed
+      // eslint-disable-next-line no-console
+      console.error('Error creating post:', error);
     }
   };
 
@@ -458,13 +464,23 @@ function AppContent() {
     setSelected('admin');
   };
 
-  // Temporary fix: Always show landing page for debugging
+  // Set client flag to prevent hydration mismatch
   useEffect(() => {
-    setShowLandingPage(true);
+    setIsClient(true);
   }, []);
 
-  // Show loading state while checking authentication
-  if (loading) {
+  // Debug logging
+  useEffect(() => {
+    if (isClient) {
+      // eslint-disable-next-line no-console
+      console.log("App: Auth state changed - loading:", loading, "user:", user, "showLandingPage:", showLandingPage);
+    }
+  }, [loading, user, showLandingPage, isClient]);
+
+  // Show loading state while checking authentication (only on client side after hydration)
+  if (isClient && loading) {
+    // eslint-disable-next-line no-console
+    console.log("App: Showing loading state, loading:", loading, "user:", user);
     return (
       <div className="h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
         <div className="text-center">
