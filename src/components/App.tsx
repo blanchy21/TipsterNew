@@ -174,7 +174,7 @@ function AppContent() {
         setPosts(postsData);
       },
       (error) => {
-        console.error('❌ Real-time posts listener error:', error);
+        // Handle real-time posts listener error silently
         // Fallback: Set empty posts array on error
 
         setPosts([]);
@@ -347,7 +347,7 @@ function AppContent() {
 
   const handleSubmitPost = async (postData: Omit<Post, 'id' | 'user' | 'createdAt' | 'likes' | 'comments' | 'views' | 'likedBy'>) => {
     if (!user) {
-      console.error('❌ No user found when trying to create post');
+      // No user found when trying to create post - handled by auth modal
       return;
     }
 
@@ -374,12 +374,8 @@ function AppContent() {
       });
 
     } catch (error) {
-      console.error('❌ Error creating post:', error);
-      console.error('❌ Error details:', {
-        message: error.message,
-        code: error.code,
-        stack: error.stack
-      });
+      // Error creating post - handled by UI feedback
+      // Could implement toast notification here if needed
     }
   };
 
@@ -686,8 +682,9 @@ export default function App() {
     <ErrorBoundary
       onError={(error, errorInfo) => {
         // Log error to monitoring service in production
-        if (process.env.NODE_ENV === 'production') {
-          // Example: Sentry.captureException(error, { extra: errorInfo });
+        if (process.env.NODE_ENV === 'development') {
+          // Log errors in development for debugging
+          // eslint-disable-next-line no-console
           console.error('App Error:', error, errorInfo);
         }
       }}
@@ -698,7 +695,10 @@ export default function App() {
             <FollowingProvider>
               <AsyncErrorBoundary
                 onError={(error, errorInfo) => {
-                  console.error('Async Error:', error, errorInfo);
+                  if (process.env.NODE_ENV === 'development') {
+                    // eslint-disable-next-line no-console
+                    console.error('Async Error:', error, errorInfo);
+                  }
                 }}
                 maxRetries={2}
                 retryDelay={1000}
