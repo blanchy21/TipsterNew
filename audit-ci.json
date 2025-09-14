@@ -1,6 +1,6 @@
 {
-  "low": true,
-  "moderate": true,
+  "low": false,
+  "moderate": false,
   "high": true,
   "critical": true,
   "allowlist": [],
