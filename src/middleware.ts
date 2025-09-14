@@ -64,7 +64,7 @@ export function middleware(request: NextRequest) {
         // Rate limiting headers (basic implementation)
         response.headers.set('X-RateLimit-Limit', '100');
         response.headers.set('X-RateLimit-Remaining', '99');
-        response.headers.set('X-RateLimit-Reset', Math.floor(Date.now() / 1000) + 3600);
+        response.headers.set('X-RateLimit-Reset', String(Math.floor(Date.now() / 1000) + 3600));
     }
 
     // Static asset caching

@@ -55,16 +55,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     try {
+      console.log("AuthContext: Setting up auth listener");
       const unsubscribe = auth.onAuthStateChanged((user: User | null) => {
-
+        console.log("AuthContext: Auth state changed", user ? "user logged in" : "no user");
         setUser(user);
         setLoading(false);
 
         // If user is signed in, close any open auth modals
         if (user) {
-
+          console.log("AuthContext: User signed in, closing modals");
         } else {
-
+          console.log("AuthContext: No user, showing landing page");
         }
       });
 
@@ -79,9 +80,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       // Add a timeout to prevent infinite loading
       const timeout = setTimeout(() => {
-
+        console.log("AuthContext: Timeout reached, setting loading to false");
         setLoading(false);
-      }, 5000);
+      }, 2000);
 
       return () => {
 

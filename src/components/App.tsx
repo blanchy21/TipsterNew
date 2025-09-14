@@ -460,6 +460,11 @@ function AppContent() {
     setSelected('admin');
   };
 
+  // Temporary fix: Always show landing page for debugging
+  useEffect(() => {
+    setShowLandingPage(true);
+  }, []);
+
   // Show loading state while checking authentication
   if (loading) {
     return (

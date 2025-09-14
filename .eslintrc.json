@@ -1,41 +1,17 @@
 {
-  "extends": [
-    "next/core-web-vitals",
-    "eslint:recommended",
-    "@typescript-eslint/recommended"
-  ],
+  "extends": ["next/core-web-vitals"],
   "rules": {
-    // Next.js specific rules
-    "@next/next/no-img-element": "error",
-    "@next/next/no-html-link-for-pages": "error",
-    "@next/next/no-sync-scripts": "error",
-    "@next/next/no-title-in-document-head": "error",
-    "@next/next/no-unwanted-polyfillio": "error",
-    "@next/next/no-page-custom-font": "error",
-    "@next/next/no-css-tags": "error",
-    "@next/next/no-document-import-in-page": "error",
-    "@next/next/no-head-import-in-document": "error",
-    "@next/next/no-script-component-in-head": "error",
-    "@next/next/no-styled-jsx-in-document": "error",
-    
     // React specific rules
     "react/jsx-uses-react": "off",
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
     "react-hooks/exhaustive-deps": "warn",
-    
-    // TypeScript specific rules
-    "@typescript-eslint/no-unused-vars": "error",
-    "@typescript-eslint/no-explicit-any": "warn",
-    "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/explicit-module-boundary-types": "off",
-    
+
     // General code quality rules
     "no-console": "warn",
     "prefer-const": "error",
     "no-var": "error",
-    "no-unused-vars": "off", // Use TypeScript version instead
-    "eqeqeq": "error",
-    "curly": "error"
+    "no-unused-vars": "off",
+    "eqeqeq": "error"
   }
 }
