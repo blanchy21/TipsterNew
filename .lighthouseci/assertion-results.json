@@ -2,11 +2,11 @@
   {
     "name": "minScore",
     "expected": 0.8,
-    "actual": 0.51,
+    "actual": 0.55,
     "values": [
-      0.31,
       0.51,
-      0.51
+      0.54,
+      0.55
     ],
     "operator": ">=",
     "passed": false,
@@ -18,11 +18,11 @@
   {
     "name": "minScore",
     "expected": 0.9,
-    "actual": 0.87,
+    "actual": 0.8,
     "values": [
-      0.87,
-      0.87,
-      0.87
+      0.8,
+      0.8,
+      0.8
     ],
     "operator": ">=",
     "passed": false,
@@ -34,11 +34,11 @@
   {
     "name": "maxNumericValue",
     "expected": 2500,
-    "actual": 23293.9967,
+    "actual": 8340.912,
     "values": [
-      23910.364250000006,
-      23293.9967,
-      23304.3744
+      8340.912,
+      9986.838400000004,
+      10586.6441
     ],
     "operator": "<=",
     "passed": false,
@@ -51,11 +51,11 @@
   {
     "name": "maxNumericValue",
     "expected": 300,
-    "actual": 1147.2800000000007,
+    "actual": 890.67795,
     "values": [
-      1266.5,
-      1147.2800000000007,
-      1172.4505000000008
+      1247.0220000000024,
+      900.9999999999982,
+      890.67795
     ],
     "operator": "<=",
     "passed": false,
@@ -68,11 +68,11 @@
   {
     "name": "minScore",
     "expected": 0.8,
-    "actual": 0.47,
+    "actual": 0.68,
     "values": [
-      0.42,
-      0.47,
-      0.47
+      0.68,
+      0.64,
+      0.66
     ],
     "operator": ">=",
     "passed": false,
@@ -84,11 +84,11 @@
   {
     "name": "maxNumericValue",
     "expected": 2500,
-    "actual": 21970.5809,
+    "actual": 3471.1749999999997,
     "values": [
-      22220.9801,
-      21970.5809,
-      21979.372099999997
+      3471.1749999999997,
+      4061.435849999999,
+      3763.13295
     ],
     "operator": "<=",
     "passed": false,
@@ -101,11 +101,11 @@
   {
     "name": "maxNumericValue",
     "expected": 300,
-    "actual": 1723.9999999999964,
+    "actual": 1159.0940250000003,
     "values": [
-      1933,
-      1731,
-      1723.9999999999964
+      1176.8825000000015,
+      1159.0940250000003,
+      1160.811174999997
     ],
     "operator": "<=",
     "passed": false,
@@ -118,11 +118,11 @@
   {
     "name": "minScore",
     "expected": 0.8,
-    "actual": 0.55,
+    "actual": 0.66,
     "values": [
-      0.44,
-      0.48,
-      0.55
+      0.53,
+      0.62,
+      0.66
     ],
     "operator": ">=",
     "passed": false,
@@ -134,11 +134,11 @@
   {
     "name": "maxNumericValue",
     "expected": 2500,
-    "actual": 16415.1864,
+    "actual": 3618.3844999999997,
     "values": [
-      16436.255400000002,
-      16415.1864,
-      17696.279880000002
+      6642.5504,
+      4365.80235,
+      3618.3844999999997
     ],
     "operator": "<=",
     "passed": false,
@@ -147,5 +147,22 @@
     "url": "http://localhost:3000/chat",
     "auditTitle": "Largest Contentful Paint",
     "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/lighthouse-largest-contentful-paint/"
+  },
+  {
+    "name": "maxNumericValue",
+    "expected": 300,
+    "actual": 1159.3662750000003,
+    "values": [
+      1182.3405999999995,
+      1159.3662750000003,
+      1210.1615500000007
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "total-blocking-time",
+    "level": "error",
+    "url": "http://localhost:3000/chat",
+    "auditTitle": "Total Blocking Time",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/lighthouse-total-blocking-time/"
   }
 ]
