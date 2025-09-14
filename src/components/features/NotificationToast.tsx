@@ -10,10 +10,10 @@ interface NotificationToastProps {
   duration?: number;
 }
 
-export default function NotificationToast({ 
-  notification, 
-  onClose, 
-  duration = 5000 
+export default function NotificationToast({
+  notification,
+  onClose,
+  duration = 5000
 }: NotificationToastProps) {
   const [isVisible, setIsVisible] = useState(true);
 
@@ -52,11 +52,10 @@ export default function NotificationToast({
 
   return (
     <div
-      className={`fixed top-4 right-4 z-50 max-w-sm w-full bg-[#0B0F14] border border-white/10 rounded-lg shadow-lg transform transition-all duration-300 ${
-        isVisible 
-          ? 'translate-x-0 opacity-100 scale-100' 
+      className={`fixed top-4 right-4 z-50 max-w-sm w-full bg-[#0B0F14] border border-white/10 rounded-lg shadow-lg transform transition-all duration-300 ${isVisible
+          ? 'translate-x-0 opacity-100 scale-100'
           : 'translate-x-full opacity-0 scale-95'
-      }`}
+        }`}
     >
       <div className="p-4">
         <div className="flex items-start space-x-3">
@@ -86,10 +85,10 @@ export default function NotificationToast({
           </div>
         </div>
       </div>
-      
+
       {/* Progress bar */}
       <div className="h-1 bg-slate-700 rounded-b-lg overflow-hidden">
-        <div 
+        <div
           className="h-full bg-blue-500 transition-all duration-100 ease-linear"
           style={{
             width: '100%',
@@ -97,8 +96,8 @@ export default function NotificationToast({
           }}
         />
       </div>
-      
-      <style jsx>{`
+
+      <style>{`
         @keyframes shrink {
           from { width: 100%; }
           to { width: 0%; }
