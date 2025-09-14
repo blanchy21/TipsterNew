@@ -4,11 +4,9 @@ service cloud.firestore {
     // Helper function to check if user is admin
     function isAdmin(auth) {
       // Check if user email is in admin list or has admin custom claim
-      // For now, allow any authenticated user to be admin for testing
       return auth != null && (
         auth.token.email in ['paulblanche@gmail.com', 'admin@tipsterarena.com'] ||
-        auth.token.admin == true ||
-        true // Temporary: allow all authenticated users to be admin
+        auth.token.admin == true
       );
     }
     // Users collection - users can read all profiles (for leaderboard) and write their own profile

@@ -114,8 +114,28 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
               <div className="hidden md:flex items-center gap-8">
                 <a href="#features" className="text-white/70 hover:text-white transition-colors">Features</a>
                 <a href="#sports" className="text-white/70 hover:text-white transition-colors">Sports</a>
-                <a href="#community" className="text-white/70 hover:text-white transition-colors">Community</a>
-                <a href="#pricing" className="text-white/70 hover:text-white transition-colors">Pricing</a>
+                <a href="#features" className="text-white/70 hover:text-white transition-colors">Community</a>
+                <button
+                  onClick={() => {
+                    // Create a temporary popup element
+                    const popup = document.createElement('div');
+                    popup.innerHTML = '🎉 FREE FOREVER! 🎉';
+                    popup.className = 'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-green-500 text-black text-2xl font-bold px-8 py-4 rounded-full shadow-2xl z-50 animate-bounce';
+                    popup.style.animation = 'bounce 1s ease-in-out 3';
+                    document.body.appendChild(popup);
+
+                    // Remove popup after animation
+                    setTimeout(() => {
+                      popup.remove();
+                    }, 3000);
+
+                    // Also scroll to pricing section
+                    document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="text-white/70 hover:text-white transition-colors cursor-pointer"
+                >
+                  Pricing
+                </button>
               </div>
 
               <div className="flex items-center gap-2">
@@ -300,76 +320,6 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
         </div>
       </section>
 
-      {/* Sports Coverage Section */}
-      <section className="py-20 bg-gradient-to-b from-black/40 to-black/20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-white mb-6">
-              Share Tips for <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-400 bg-clip-text text-transparent">Every Sport</span>
-            </h2>
-            <p className="text-lg text-white/70 max-w-3xl mx-auto">
-              From mainstream favorites to niche competitions, share your tips for any sport that matters to you.
-              Find your community and help others discover winning strategies.
-            </p>
-          </div>
-
-          {/* Covered Sports Grid */}
-          <div className="mb-16">
-            <h3 className="text-2xl font-semibold text-white mb-8 text-center">Currently Covered Sports</h3>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-              {[
-                'Football', 'Basketball', 'Tennis', 'Baseball', 'Hockey', 'Cricket',
-                'Golf', 'Boxing', 'MMA', 'Esports', 'Rugby', 'Volleyball',
-                'Badminton', 'Table Tennis', 'Snooker', 'Darts', 'Cycling',
-                'Formula 1', 'MotoGP', 'American Football', 'NBA', 'MLB', 'NHL'
-              ].map((sport, index) => (
-                <div
-                  key={sport}
-                  className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-4 text-center hover:bg-white/10 transition-all duration-300 hover:scale-105"
-                  style={{
-                    animationDelay: `${index * 50}ms`
-                  }}
-                >
-                  <div className="text-white font-medium text-sm">{sport}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Coming Soon Section */}
-          <div className="bg-gradient-to-r from-amber-500/10 to-orange-500/10 rounded-2xl p-8 border border-amber-500/20">
-            <div className="text-center">
-              <h3 className="text-2xl font-semibold text-white mb-4">
-                More Sports <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-400 bg-clip-text text-transparent">Coming Soon</span>
-              </h3>
-              <p className="text-white/70 mb-6 max-w-2xl mx-auto">
-                We&apos;re constantly expanding our coverage. Here are some sports we&apos;re working to add:
-              </p>
-              <div className="flex flex-wrap justify-center gap-3">
-                {[
-                  'Gaelic Games', 'Aussie Rules', 'Lacrosse', 'Water Polo', 'Handball',
-                  'Squash', 'Rowing', 'Sailing', 'Surfing', 'Snowboarding',
-                  'Skiing', 'Wrestling', 'Judo', 'Taekwondo', 'Karate',
-                  'Swimming', 'Track & Field', 'Gymnastics', 'Figure Skating',
-                  'Curling', 'Bobsleigh', 'Skeleton', 'Luge'
-                ].map((sport) => (
-                  <span
-                    key={sport}
-                    className="px-4 py-2 bg-white/10 rounded-full text-white/80 text-sm border border-white/20"
-                  >
-                    {sport}
-                  </span>
-                ))}
-              </div>
-              <div className="mt-6">
-                <p className="text-white/60 text-sm">
-                  Don&apos;t see your sport? <span className="text-amber-400 font-medium">Let us know</span> and we&apos;ll prioritize adding it!
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Features Section */}
       <section id="features" className="py-20">
@@ -522,30 +472,6 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
       </section>
 
       {/* Call to Action Section */}
-      <section className="py-20 bg-gradient-to-r from-amber-500/10 to-orange-500/10">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-bold text-white mb-6">
-            Ready to start sharing your tips?
-          </h2>
-          <p className="text-xl text-white/70 mb-8 max-w-2xl mx-auto">
-            Join thousands of sports fans sharing insights, tracking performance, and building a community around their passion.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button
-              onClick={onGetStarted}
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-600 to-orange-600 text-white px-8 py-4 rounded-full font-semibold hover:from-amber-500 hover:to-orange-500 transition-all duration-200 shadow-[0_8px_30px_rgba(245,158,11,0.35)] hover:shadow-[0_12px_40px_rgba(245,158,11,0.45)]"
-            >
-              Get Started Free
-            </button>
-            <button
-              onClick={() => onShowAuthModal?.('login')}
-              className="inline-flex items-center gap-2 border border-white/20 bg-white/5 text-white px-8 py-4 rounded-full font-semibold hover:bg-white/10 transition-all duration-200"
-            >
-              Sign In
-            </button>
-          </div>
-        </div>
-      </section>
 
       {/* Footer */}
       <footer className="glass-footer">
