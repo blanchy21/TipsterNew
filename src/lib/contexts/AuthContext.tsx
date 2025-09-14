@@ -39,33 +39,55 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (process.env.NODE_ENV === 'development') {
+      // eslint-disable-next-line no-console
+      console.log("AuthContext: Starting auth setup, auth object:", auth);
+    }
 
     // Check if Firebase auth is available
     if (!auth) {
-
+      if (process.env.NODE_ENV === 'development') {
+        // eslint-disable-next-line no-console
+        console.log("AuthContext: No auth object available, setting loading to false");
+      }
       setLoading(false);
       return;
     }
 
     // Check if auth object has the required methods
     if (typeof auth.onAuthStateChanged !== 'function') {
-      console.error("AuthContext: auth.onAuthStateChanged is not a function");
+      if (process.env.NODE_ENV === 'development') {
+        // eslint-disable-next-line no-console
+        console.error("AuthContext: auth.onAuthStateChanged is not a function");
+      }
       setLoading(false);
       return;
     }
 
     try {
-      console.log("AuthContext: Setting up auth listener");
+      if (process.env.NODE_ENV === 'development') {
+        // eslint-disable-next-line no-console
+        console.log("AuthContext: Setting up auth listener");
+      }
       const unsubscribe = auth.onAuthStateChanged((user: User | null) => {
-        console.log("AuthContext: Auth state changed", user ? "user logged in" : "no user");
+        if (process.env.NODE_ENV === 'development') {
+          // eslint-disable-next-line no-console
+          console.log("AuthContext: Auth state changed", user ? "user logged in" : "no user");
+        }
         setUser(user);
         setLoading(false);
 
         // If user is signed in, close any open auth modals
         if (user) {
-          console.log("AuthContext: User signed in, closing modals");
+          if (process.env.NODE_ENV === 'development') {
+            // eslint-disable-next-line no-console
+            console.log("AuthContext: User signed in, closing modals");
+          }
         } else {
-          console.log("AuthContext: No user, showing landing page");
+          if (process.env.NODE_ENV === 'development') {
+            // eslint-disable-next-line no-console
+            console.log("AuthContext: No user, showing landing page");
+          }
         }
       });
 
@@ -80,9 +102,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       // Add a timeout to prevent infinite loading
       const timeout = setTimeout(() => {
-        console.log("AuthContext: Timeout reached, setting loading to false");
+        if (process.env.NODE_ENV === 'development') {
+          // eslint-disable-next-line no-console
+          console.log("AuthContext: Timeout reached, setting loading to false");
+        }
         setLoading(false);
-      }, 2000);
+      }, 1000); // Reduced timeout for performance testing
 
       return () => {
 
@@ -90,9 +115,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         unsubscribe();
       };
     } catch (error) {
-      console.error("AuthContext: Error setting up auth listener:", error);
+      if (process.env.NODE_ENV === 'development') {
+        // eslint-disable-next-line no-console
+        console.error("AuthContext: Error setting up auth listener:", error);
+      }
       setLoading(false);
     }
+
+    // Additional fallback to ensure loading is always resolved
+    const fallbackTimeout = setTimeout(() => {
+      if (process.env.NODE_ENV === 'development') {
+        // eslint-disable-next-line no-console
+        console.log("AuthContext: Fallback timeout reached, forcing loading to false");
+      }
+      setLoading(false);
+    }, 3000);
+
+    return () => {
+      clearTimeout(fallbackTimeout);
+    };
   }, []);
 
   const signInWithGoogle = async () => {
@@ -113,7 +154,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         following: []
       });
     } catch (error) {
-      console.error("Error signing in with Google", error);
+      if (process.env.NODE_ENV === 'development') {
+        // eslint-disable-next-line no-console
+        console.error("Error signing in with Google", error);
+      }
       throw error;
     }
   };
@@ -127,7 +171,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
-      console.error("Error signing in with email", error);
+      if (process.env.NODE_ENV === 'development') {
+        // eslint-disable-next-line no-console
+        console.error("Error signing in with email", error);
+      }
       throw error;
     }
   };
@@ -152,7 +199,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         following: []
       });
     } catch (error) {
-      console.error("Error signing up with email", error);
+      if (process.env.NODE_ENV === 'development') {
+        // eslint-disable-next-line no-console
+        console.error("Error signing up with email", error);
+      }
       throw error;
     }
   };
@@ -166,7 +216,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       await sendPasswordResetEmail(auth, email);
     } catch (error) {
-      console.error("Error resetting password", error);
+      if (process.env.NODE_ENV === 'development') {
+        // eslint-disable-next-line no-console
+        console.error("Error resetting password", error);
+      }
       throw error;
     }
   };
@@ -180,7 +233,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       await firebaseSignOut(auth);
     } catch (error) {
-      console.error("Error signing out", error);
+      if (process.env.NODE_ENV === 'development') {
+        // eslint-disable-next-line no-console
+        console.error("Error signing out", error);
+      }
       throw error;
     }
   };
