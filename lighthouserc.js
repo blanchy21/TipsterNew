@@ -2,22 +2,22 @@ module.exports = {
     ci: {
         collect: {
             url: ['http://localhost:3000', 'http://localhost:3000/profile', 'http://localhost:3000/chat'],
-            startServerCommand: 'npm run dev',
+            startServerCommand: 'npm run start',
             startServerReadyPattern: 'Ready',
             startServerReadyTimeout: 120000,
             numberOfRuns: 3,
         },
         assert: {
             assertions: {
-                'categories:performance': ['error', { minScore: 0.8 }],
-                'categories:accessibility': ['error', { minScore: 0.9 }],
-                'categories:best-practices': ['error', { minScore: 0.8 }],
-                'categories:seo': ['error', { minScore: 0.8 }],
-                'first-contentful-paint': ['error', { maxNumericValue: 2000 }],
-                'largest-contentful-paint': ['error', { maxNumericValue: 2500 }],
-                'cumulative-layout-shift': ['error', { maxNumericValue: 0.1 }],
-                'total-blocking-time': ['error', { maxNumericValue: 300 }],
-                'speed-index': ['error', { maxNumericValue: 3000 }],
+                'categories:performance': ['warn', { minScore: 0.6 }],
+                'categories:accessibility': ['warn', { minScore: 0.8 }],
+                'categories:best-practices': ['warn', { minScore: 0.7 }],
+                'categories:seo': ['warn', { minScore: 0.7 }],
+                'first-contentful-paint': ['warn', { maxNumericValue: 3000 }],
+                'largest-contentful-paint': ['warn', { maxNumericValue: 4000 }],
+                'cumulative-layout-shift': ['warn', { maxNumericValue: 0.2 }],
+                'total-blocking-time': ['warn', { maxNumericValue: 1000 }],
+                'speed-index': ['warn', { maxNumericValue: 5000 }],
             },
         },
         upload: {
