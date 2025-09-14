@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import {
   Search,
@@ -45,7 +45,7 @@ const FollowingPage: React.FC<FollowingPageProps> = ({ initialTab = 'following',
   const [isSearching, setIsSearching] = useState(false);
   const [filter, setFilter] = useState<'all' | 'verified' | 'sports'>('all');
 
-  const handleSearch = async (query: string) => {
+  const handleSearch = useCallback(async (query: string) => {
     if (!query.trim()) {
       setSearchResults([]);
       return;
@@ -60,7 +60,7 @@ const FollowingPage: React.FC<FollowingPageProps> = ({ initialTab = 'following',
     } finally {
       setIsSearching(false);
     }
-  };
+  }, [searchUsers]);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -68,7 +68,7 @@ const FollowingPage: React.FC<FollowingPageProps> = ({ initialTab = 'following',
     }, 300);
 
     return () => clearTimeout(timeoutId);
-  }, [searchQuery]);
+  }, [searchQuery, handleSearch]);
 
   const getFilteredUsers = (users: User[]) => {
     if (filter === 'verified') {
