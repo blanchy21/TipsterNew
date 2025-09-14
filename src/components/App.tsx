@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useMemo, lazy, Suspense } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, lazy, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Post, FollowingUser } from '@/lib/types';
 import { sampleFollowing, sampleTrending } from '@/lib/utils';
@@ -93,6 +93,23 @@ function AppContent() {
     return () => clearTimeout(timer);
   }, [user, loading]);
 
+  // Handler functions for navigation
+  const handleAdminAccess = useCallback(() => {
+    if (isAdminAuthenticated) {
+      setSelected('admin');
+    } else {
+      setShowAdminAccessModal(true);
+    }
+  }, [isAdminAuthenticated]);
+
+  const handleProfileAccess = useCallback(() => {
+    if (user) {
+      setSelected('profile');
+    } else {
+      setShowProfileAccessModal(true);
+    }
+  }, [user]);
+
   // Handle URL parameters for direct navigation
   useEffect(() => {
     const tab = searchParams.get('tab');
@@ -110,7 +127,7 @@ function AppContent() {
         setSelected(tab);
       }
     }
-  }, [searchParams]);
+  }, [searchParams, handleAdminAccess, handleProfileAccess, user]);
 
   // Debounce search query
   useEffect(() => {
@@ -419,7 +436,7 @@ function AppContent() {
     setSelected(page);
   };
 
-  const handleNavigation = (page: string) => {
+  const handleNavigation = useCallback((page: string) => {
     if (page === 'admin') {
       handleAdminAccess();
     } else if (page === 'profile') {
@@ -432,27 +449,12 @@ function AppContent() {
     } else {
       setSelected(page);
     }
-  };
+  }, [handleAdminAccess, handleProfileAccess, user]);
 
   const handleShowLandingPage = () => {
     setShowLandingPage(true);
   };
 
-  const handleAdminAccess = () => {
-    if (isAdminAuthenticated) {
-      setSelected('admin');
-    } else {
-      setShowAdminAccessModal(true);
-    }
-  };
-
-  const handleProfileAccess = () => {
-    if (user) {
-      setSelected('profile');
-    } else {
-      setShowProfileAccessModal(true);
-    }
-  };
 
   const handleAdminSuccess = () => {
     setIsAdminAuthenticated(true);
