@@ -187,7 +187,7 @@ const FollowingPage: React.FC<FollowingPageProps> = ({ initialTab = 'following',
 
           {searchQuery && (
             <div className="flex items-center gap-2 text-sm text-neutral-400 mb-4">
-              <span>{searchResults.length} results for "{searchQuery}"</span>
+              <span>{searchResults.length} results for &quot;{searchQuery}&quot;</span>
               <button
                 onClick={() => {
                   setSearchQuery('');
@@ -234,7 +234,7 @@ const FollowingPage: React.FC<FollowingPageProps> = ({ initialTab = 'following',
           ) : (
             <div className="text-center py-12">
               <Users className="w-12 h-12 text-neutral-400 mx-auto mb-4" />
-              <p className="text-neutral-400">You're not following anyone yet</p>
+              <p className="text-neutral-400">You&apos;re not following anyone yet</p>
               <p className="text-sm text-neutral-500 mt-2">Discover users to follow in the Suggestions tab</p>
             </div>
           )}

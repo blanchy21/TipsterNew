@@ -191,7 +191,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
             </div>
 
             <h1 className={`max-w-5xl text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold tracking-tight transition-all duration-1000 delay-200 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-              The world's premier platform for
+              The world&apos;s premier platform for
               <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-400 bg-clip-text text-transparent"> sports tip sharing</span>
             </h1>
             <p className={`mt-6 max-w-2xl text-lg sm:text-xl text-white/70 leading-relaxed transition-all duration-1000 delay-400 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
@@ -485,7 +485,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
                 <span className="text-xl font-bold">Tipster Arena</span>
               </div>
               <p className="text-white/70 max-w-md mb-6">
-                The world's premier platform for sports tip sharing. Share tips, track performance, and connect with fellow sports fans - completely free and transparent.
+                The world&apos;s premier platform for sports tip sharing. Share tips, track performance, and connect with fellow sports fans - completely free and transparent.
               </p>
               <div className="flex gap-4">
                 <a href="#" className="text-white/60 hover:text-white transition-colors">

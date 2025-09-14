@@ -142,7 +142,7 @@ export default function CookiesPage() {
                                 <div className="bg-white/5 border border-white/10 rounded-lg p-4">
                                     <h3 className="text-lg font-semibold mb-2 text-white">Cookie Consent Banner</h3>
                                     <p className="text-white/70 text-sm">
-                                        When you first visit our site, you'll see a cookie consent banner where you can choose which types of cookies to accept.
+                                        When you first visit our site, you&apos;ll see a cookie consent banner where you can choose which types of cookies to accept.
                                     </p>
                                 </div>
                                 <div className="bg-white/5 border border-white/10 rounded-lg p-4">
@@ -179,7 +179,7 @@ export default function CookiesPage() {
                         <section>
                             <h2 className="text-2xl font-semibold mb-4 text-white">Updates to This Policy</h2>
                             <p className="text-white/70 leading-relaxed">
-                                We may update this Cookie Policy from time to time. We will notify you of any changes by posting the new policy on this page and updating the "Last updated" date. We encourage you to review this policy periodically.
+                                We may update this Cookie Policy from time to time. We will notify you of any changes by posting the new policy on this page and updating the &quot;Last updated&quot; date. We encourage you to review this policy periodically.
                             </p>
                         </section>
 

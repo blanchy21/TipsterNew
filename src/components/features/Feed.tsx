@@ -47,7 +47,7 @@ export default function Feed({ posts, isLoaded, query, onQueryChange, selectedSp
       {query.trim() && (
         <div className="px-4 md:px-6 py-2 border-b border-white/10">
           <p className="text-sm text-slate-400">
-            {posts.length === 0 ? 'No results found' : `${posts.length} result${posts.length === 1 ? '' : 's'} found`} for "{query}"
+            {posts.length === 0 ? 'No results found' : `${posts.length} result${posts.length === 1 ? '' : 's'} found`} for &quot;{query}&quot;
           </p>
         </div>
       )}
@@ -94,7 +94,7 @@ export default function Feed({ posts, isLoaded, query, onQueryChange, selectedSp
                   </div>
                   {query.trim() ? (
                     <>
-                      <p className="text-slate-300 font-medium">No results found for "{query}"</p>
+                      <p className="text-slate-300 font-medium">No results found for &quot;{query}&quot;</p>
                       <p className="text-slate-500 text-sm">Try different keywords or check your spelling.</p>
                     </>
                   ) : selectedSport && selectedSport !== 'All Sports' ? (

@@ -58,7 +58,7 @@ export default function TermsPage() {
                         <section>
                             <h2 className="text-2xl font-semibold mb-4 text-white">1. Acceptance of Terms</h2>
                             <p className="text-white/70 leading-relaxed">
-                                By accessing and using Tipster Arena ("the Service"), you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.
+                                By accessing and using Tipster Arena (&quot;the Service&quot;), you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.
                             </p>
                         </section>
 
@@ -155,7 +155,7 @@ export default function TermsPage() {
                                     </p>
                                 </div>
                                 <p className="text-white/70 leading-relaxed">
-                                    The Service is provided "as is" without warranties of any kind. We disclaim all warranties, express or implied, including but not limited to merchantability, fitness for a particular purpose, and non-infringement.
+                                    The Service is provided &quot;as is&quot; without warranties of any kind. We disclaim all warranties, express or implied, including but not limited to merchantability, fitness for a particular purpose, and non-infringement.
                                 </p>
                             </div>
                         </section>
@@ -180,7 +180,7 @@ export default function TermsPage() {
                         <section>
                             <h2 className="text-2xl font-semibold mb-4 text-white">10. Modifications to Terms</h2>
                             <p className="text-white/70 leading-relaxed">
-                                We reserve the right to modify these Terms at any time. We will notify users of any material changes by posting the new Terms on this page and updating the "Last updated" date. Your continued use of the Service after such modifications constitutes acceptance of the updated Terms.
+                                We reserve the right to modify these Terms at any time. We will notify users of any material changes by posting the new Terms on this page and updating the &quot;Last updated&quot; date. Your continued use of the Service after such modifications constitutes acceptance of the updated Terms.
                             </p>
                         </section>
 

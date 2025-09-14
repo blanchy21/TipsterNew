@@ -47,7 +47,7 @@ export default function Following() {
                 <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
                     <div className="text-center mb-8">
                         <h1 className="text-3xl font-bold text-white mb-2">Following</h1>
-                        <p className="text-slate-400">Users you're following</p>
+                        <p className="text-slate-400">Users you&apos;re following</p>
                     </div>
 
                     <div className="text-center py-12">

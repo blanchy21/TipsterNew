@@ -94,12 +94,6 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
     return () => unsubscribe();
   }, [profileUser?.id]);
 
-  if (!profileUser) {
-    return <PageLoadingState />;
-  }
-
-  const isOwnProfile = !userId || userId === currentUser?.uid;
-
   const handleEditProfile = useCallback(() => {
     setShowEditModal(true);
   }, []);
@@ -107,6 +101,12 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
   const handleCloseEditModal = useCallback(() => {
     setShowEditModal(false);
   }, []);
+
+  if (!profileUser) {
+    return <PageLoadingState />;
+  }
+
+  const isOwnProfile = !userId || userId === currentUser?.uid;
 
   const renderTabContent = () => {
     switch (activeTab) {

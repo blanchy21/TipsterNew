@@ -58,7 +58,7 @@ export default function PrivacyPage() {
                         <section>
                             <h2 className="text-2xl font-semibold mb-4 text-white">1. Introduction</h2>
                             <p className="text-white/70 leading-relaxed mb-4">
-                                Tipster Arena ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our website and services.
+                                Tipster Arena (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;) is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our website and services.
                             </p>
                             <p className="text-white/70 leading-relaxed">
                                 By using Tipster Arena, you consent to the data practices described in this policy. If you do not agree with the terms of this Privacy Policy, please do not access the site.
@@ -215,7 +215,7 @@ export default function PrivacyPage() {
                                 Our service integrates with third-party services that have their own privacy policies:
                             </p>
                             <ul className="list-disc list-inside space-y-2 text-white/70 ml-4">
-                                <li><strong>Firebase:</strong> For authentication and database services (Google's Privacy Policy applies)</li>
+                                <li><strong>Firebase:</strong> For authentication and database services (Google&apos;s Privacy Policy applies)</li>
                                 <li><strong>Analytics Providers:</strong> For usage statistics and performance monitoring</li>
                                 <li><strong>Content Delivery Networks:</strong> For faster content loading</li>
                             </ul>
@@ -229,7 +229,7 @@ export default function PrivacyPage() {
                         </section>
 
                         <section>
-                            <h2 className="text-2xl font-semibold mb-4 text-white">11. Children's Privacy</h2>
+                            <h2 className="text-2xl font-semibold mb-4 text-white">11. Children&apos;s Privacy</h2>
                             <p className="text-white/70 leading-relaxed">
                                 Our service is not intended for children under 16 years of age. We do not knowingly collect personal information from children under 16. If you are a parent or guardian and believe your child has provided us with personal information, please contact us immediately.
                             </p>
@@ -238,7 +238,7 @@ export default function PrivacyPage() {
                         <section>
                             <h2 className="text-2xl font-semibold mb-4 text-white">12. Changes to This Privacy Policy</h2>
                             <p className="text-white/70 leading-relaxed">
-                                We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last updated" date. We encourage you to review this Privacy Policy periodically for any changes.
+                                We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the &quot;Last updated&quot; date. We encourage you to review this Privacy Policy periodically for any changes.
                             </p>
                         </section>
 

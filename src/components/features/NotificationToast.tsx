@@ -53,8 +53,8 @@ export default function NotificationToast({
   return (
     <div
       className={`fixed top-4 right-4 z-50 max-w-sm w-full bg-[#0B0F14] border border-white/10 rounded-lg shadow-lg transform transition-all duration-300 ${isVisible
-          ? 'translate-x-0 opacity-100 scale-100'
-          : 'translate-x-full opacity-0 scale-95'
+        ? 'translate-x-0 opacity-100 scale-100'
+        : 'translate-x-full opacity-0 scale-95'
         }`}
     >
       <div className="p-4">

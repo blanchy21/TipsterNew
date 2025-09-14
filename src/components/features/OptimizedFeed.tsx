@@ -134,7 +134,7 @@ const OptimizedFeed: React.FC<OptimizedFeedProps> = ({
             {/* End of feed indicator */}
             {!hasNextPage && posts.length > 0 && (
                 <div className="text-center py-8">
-                    <p className="text-slate-500">You've reached the end of the feed</p>
+                    <p className="text-slate-500">You&apos;ve reached the end of the feed</p>
                 </div>
             )}
         </div>
