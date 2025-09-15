@@ -21,14 +21,17 @@ export function middleware(request: NextRequest) {
         // Permissions Policy - control browser features
         'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=(), speaker=(), vibrate=(), fullscreen=(self), sync-xhr=()',
 
+        // Cross-Origin Embedder Policy - for better security
+        'Cross-Origin-Embedder-Policy': 'unsafe-none',
+
         // Content Security Policy - comprehensive CSP for Tipster Arena
         'Content-Security-Policy': [
             "default-src 'self'",
             "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.gstatic.com https://www.google.com https://apis.google.com",
             "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-            "img-src 'self' data: https: blob: https://images.unsplash.com https://lh3.googleusercontent.com https://firebasestorage.googleapis.com https://placehold.co https://replicate.delivery",
+            "img-src 'self' data: https: blob: https://images.unsplash.com https://lh3.googleusercontent.com https://firebasestorage.googleapis.com https://placehold.co https://replicate.delivery https://media.giphy.com https://i.giphy.com",
             "font-src 'self' https://fonts.gstatic.com",
-            "connect-src 'self' https://api.openai.com https://api.anthropic.com https://api.replicate.com https://api.deepgram.com https://*.firebaseapp.com https://*.googleapis.com https://firestore.googleapis.com https://firebase.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com",
+            "connect-src 'self' https://api.openai.com https://api.anthropic.com https://api.replicate.com https://api.deepgram.com https://api.giphy.com https://*.firebaseapp.com https://*.googleapis.com https://firestore.googleapis.com https://firebase.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com",
             "frame-src 'self' https://www.google.com https://accounts.google.com",
             "object-src 'none'",
             "base-uri 'self'",

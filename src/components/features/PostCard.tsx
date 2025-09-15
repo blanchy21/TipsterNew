@@ -289,9 +289,10 @@ const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChan
                 {post.title}
               </h3>
 
-              <p className="text-sm text-slate-300/90 leading-relaxed">
-                {post.content}
-              </p>
+              <div
+                className="text-sm text-slate-300/90 leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: post.content }}
+              />
 
               <div className="flex flex-wrap items-center gap-2">
                 {post.odds && (

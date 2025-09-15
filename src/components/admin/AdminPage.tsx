@@ -383,7 +383,10 @@ const AdminPage: React.FC = () => {
                           )}
                         </div>
                         <h3 className="text-lg font-semibold text-white mb-2">{post.title}</h3>
-                        <p className="text-slate-300 text-sm mb-3 line-clamp-2">{post.content}</p>
+                        <div
+                          className="text-slate-300 text-sm mb-3 line-clamp-2"
+                          dangerouslySetInnerHTML={{ __html: post.content }}
+                        />
                         <div className="flex items-center gap-4 text-sm text-slate-400">
                           <span>By {post.user.name}</span>
                           <span>•</span>

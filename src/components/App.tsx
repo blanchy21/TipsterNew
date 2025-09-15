@@ -376,8 +376,19 @@ function AppContent() {
       const formattedPost = { ...newPost, createdAt: newPost.createdAt.toISOString() } as Post;
 
       setPosts((prev: Post[]) => {
-        const updated = [formattedPost, ...prev];
+        // Check if post already exists to prevent duplicates
+        const exists = prev.some(post => post.id === formattedPost.id);
+        if (exists) {
+          console.warn('Post already exists, not adding duplicate:', formattedPost.id);
+          return prev;
+        }
 
+        // Deduplicate existing posts and add new one
+        const uniquePosts = prev.filter((post, index, self) =>
+          index === self.findIndex(p => p.id === post.id)
+        );
+
+        const updated = [formattedPost, ...uniquePosts];
         return updated;
       });
 

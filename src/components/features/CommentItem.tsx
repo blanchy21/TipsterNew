@@ -141,9 +141,10 @@ export default function CommentItem({
                 </div>
               </div>
             ) : (
-              <p className="text-slate-300 text-sm leading-relaxed mt-1">
-                {comment.content}
-              </p>
+              <div
+                className="text-slate-300 text-sm leading-relaxed mt-1"
+                dangerouslySetInnerHTML={{ __html: comment.content }}
+              />
             )}
           </div>
 

@@ -430,7 +430,10 @@ export default function TipVerificationPanel({ onTipVerified }: TipVerificationP
                                     </div>
 
                                     <h3 className="text-xl font-semibold text-white mb-3">{post.title}</h3>
-                                    <p className="text-slate-300 mb-4 line-clamp-3">{post.content}</p>
+                                    <div
+                                        className="text-slate-300 mb-4 line-clamp-3"
+                                        dangerouslySetInnerHTML={{ __html: post.content }}
+                                    />
 
                                     <div className="flex items-center gap-6 text-sm text-slate-400 mb-4">
                                         <div className="flex items-center gap-2">
