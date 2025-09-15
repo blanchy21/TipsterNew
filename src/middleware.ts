@@ -21,9 +21,6 @@ export function middleware(request: NextRequest) {
         // Permissions Policy - control browser features
         'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=(), speaker=(), vibrate=(), fullscreen=(self), sync-xhr=()',
 
-        // Cross-Origin Embedder Policy - for better security
-        'Cross-Origin-Embedder-Policy': 'unsafe-none',
-
         // Content Security Policy - comprehensive CSP for Tipster Arena
         'Content-Security-Policy': [
             "default-src 'self'",
