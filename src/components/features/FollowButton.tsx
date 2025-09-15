@@ -35,7 +35,7 @@ export default function FollowButton({
         const following = await checkIfFollowing(user.uid, targetUser.id);
         setIsFollowing(following);
       } catch (error) {
-        console.error('Error checking follow status:', error);
+        // Console statement removed for production
       } finally {
         setIsChecking(false);
       }
@@ -65,7 +65,7 @@ export default function FollowButton({
         onFollowChange?.(true);
       }
     } catch (error) {
-      console.error('Error toggling follow status:', error);
+      // Console statement removed for production
     } finally {
       setIsLoading(false);
     }

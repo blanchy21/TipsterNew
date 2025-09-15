@@ -77,7 +77,7 @@ export const getAllUsersWithStats = async (): Promise<LeaderboardEntry[]> => {
                     // User has no tips
                 }
             } catch (error) {
-                console.error(`Error getting stats for user ${user.id}:`, error);
+                // Console statement removed for production
                 // Continue with other users even if one fails
             }
         }
@@ -97,7 +97,7 @@ export const getAllUsersWithStats = async (): Promise<LeaderboardEntry[]> => {
 
         return leaderboardEntries;
     } catch (error) {
-        console.error('Error getting all users with stats:', error);
+        // Console statement removed for production
         return [];
     }
 };
@@ -139,7 +139,7 @@ export const getLeaderboardStats = async (): Promise<LeaderboardStats> => {
             averageOdds
         };
     } catch (error) {
-        console.error('Error getting leaderboard stats:', error);
+        // Console statement removed for production
         return {
             totalUsers: 0,
             totalTips: 0,

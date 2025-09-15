@@ -46,7 +46,7 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) =>
       setProfile(userProfile);
     } catch (err) {
       setError('Failed to load profile');
-      console.error('Error loading profile:', err);
+      // Console statement removed for production
     } finally {
       setLoading(false);
     }
@@ -75,7 +75,7 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) =>
       return success;
     } catch (err) {
       setError('Failed to update profile');
-      console.error('Error updating profile:', err);
+      // Console statement removed for production
       return false;
     } finally {
       setLoading(false);
@@ -99,7 +99,7 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) =>
       return false;
     } catch (err) {
       setError('Failed to upload avatar');
-      console.error('Error uploading avatar:', err);
+      // Console statement removed for production
       return false;
     } finally {
       setLoading(false);
@@ -123,7 +123,7 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) =>
       return false;
     } catch (err) {
       setError('Failed to upload cover photo');
-      console.error('Error uploading cover photo:', err);
+      // Console statement removed for production
       return false;
     } finally {
       setLoading(false);
@@ -150,7 +150,7 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) =>
       return false;
     } catch (err) {
       setError('Failed to add photo');
-      console.error('Error adding photo:', err);
+      // Console statement removed for production
       return false;
     } finally {
       setLoading(false);
@@ -173,7 +173,7 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) =>
       return success;
     } catch (err) {
       setError('Failed to remove photo');
-      console.error('Error removing photo:', err);
+      // Console statement removed for production
       return false;
     } finally {
       setLoading(false);

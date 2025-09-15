@@ -55,7 +55,7 @@ export default function CommentsList({ postId, onCommentCountChange }: CommentsL
         setLoading(false);
       },
       (error) => {
-        console.error('❌ Real-time comments listener error:', error);
+        // Console statement removed for production
         setLoading(false);
         // Fallback to one-time fetch on error
         getCommentsByPostId(postId).then(fallbackComments => {
@@ -63,7 +63,7 @@ export default function CommentsList({ postId, onCommentCountChange }: CommentsL
           setComments(fallbackComments);
           onCommentCountChange?.(fallbackComments.length);
         }).catch(fallbackError => {
-          console.error('❌ Fallback comments loading also failed:', fallbackError);
+          // Console statement removed for production
         });
       }
     );
@@ -96,7 +96,7 @@ export default function CommentsList({ postId, onCommentCountChange }: CommentsL
       );
       setEditingComment(null);
     } catch (error) {
-      console.error('Error updating comment:', error);
+      // Console statement removed for production
     }
   };
 

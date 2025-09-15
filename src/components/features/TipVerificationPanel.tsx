@@ -84,7 +84,7 @@ export default function TipVerificationPanel({ onTipVerified }: TipVerificationP
                 setLoading(false);
             },
             (error) => {
-                console.error('❌ Real-time tip verification listener error:', error);
+                // Console statement removed for production
                 setLoading(false);
             }
         );
@@ -227,7 +227,7 @@ export default function TipVerificationPanel({ onTipVerified }: TipVerificationP
             setMessage({ type: 'success', text: `Tip successfully marked as ${status}!` });
             onTipVerified?.(postId, status);
         } catch (error) {
-            console.error('Error verifying tip:', error);
+            // Console statement removed for production
             setMessage({ type: 'error', text: 'Failed to verify tip. Please try again.' });
         } finally {
             setVerifying(null);

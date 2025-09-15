@@ -138,7 +138,7 @@ const AdminDashboardSimple: React.FC = () => {
                 });
 
             } catch (error) {
-                console.error('❌ Error loading admin stats:', error);
+                // Console statement removed for production
                 setMessage({ type: 'error', text: 'Failed to load admin statistics. Please try again.' });
             } finally {
                 setStatsLoading(false);

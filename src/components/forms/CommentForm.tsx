@@ -48,7 +48,7 @@ export default function CommentForm({
       setContent('');
       onCommentAdded();
     } catch (error) {
-      console.error('Error creating comment:', error);
+      // Console statement removed for production
       // You could add a toast notification here
     } finally {
       setIsSubmitting(false);

@@ -44,7 +44,7 @@ export default function LikeButton({ post, onLikeChange }: LikeButtonProps) {
         // Demo mode: Like button clicked (not saved to backend)
       }
     } catch (error) {
-      console.error('Error toggling like:', error);
+      // Console statement removed for production
       // Revert the optimistic update on error
       if (isLiked) {
         const userId = user?.uid || 'demo-user';

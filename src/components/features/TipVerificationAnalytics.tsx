@@ -84,7 +84,7 @@ export default function TipVerificationAnalytics({
                 const verificationStats = await getUserVerificationStats(targetUserId);
                 setStats(verificationStats);
             } catch (error) {
-                console.error('Error loading verification stats:', error);
+                // Console statement removed for production
             } finally {
                 setLoading(false);
             }

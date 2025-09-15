@@ -326,7 +326,7 @@ export const populateTestData = async () => {
 
     return { success: true, userIds };
   } catch (error) {
-    console.error('Error populating test data:', error);
+    // Console statement removed for production
     return { success: false, error };
   }
 };
@@ -350,7 +350,7 @@ export const clearTestData = async () => {
 
     return { success: true };
   } catch (error) {
-    console.error('Error clearing test data:', error);
+    // Console statement removed for production
     return { success: false, error };
   }
 };
@@ -396,7 +396,7 @@ export const removeDuplicateUsers = async () => {
 
     return { success: true, removedCount };
   } catch (error) {
-    console.error('Error removing duplicate users:', error);
+    // Console statement removed for production
     return { success: false, error };
   }
 };

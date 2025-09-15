@@ -62,7 +62,7 @@ export const FollowingProvider: React.FC<FollowingProviderProps> = ({ children }
       setFollowing(followingUsers);
     } catch (err) {
       setError('Failed to load following users');
-      console.error('Error loading following:', err);
+      // Console statement removed for production
     } finally {
       setLoading(false);
     }
@@ -78,7 +78,7 @@ export const FollowingProvider: React.FC<FollowingProviderProps> = ({ children }
       setFollowers(followersList);
     } catch (err) {
       setError('Failed to load followers');
-      console.error('Error loading followers:', err);
+      // Console statement removed for production
     } finally {
       setLoading(false);
     }
@@ -96,7 +96,7 @@ export const FollowingProvider: React.FC<FollowingProviderProps> = ({ children }
       setSuggestions(suggestionsList);
     } catch (err) {
       setError('Failed to load suggestions');
-      console.error('Error loading suggestions:', err);
+      // Console statement removed for production
     } finally {
       setLoading(false);
     }
@@ -121,7 +121,7 @@ export const FollowingProvider: React.FC<FollowingProviderProps> = ({ children }
       const results = await searchUsers(query, 20);
       return results;
     } catch (err) {
-      console.error('Error searching users:', err);
+      // Console statement removed for production
       return [];
     }
   };
@@ -137,7 +137,7 @@ export const FollowingProvider: React.FC<FollowingProviderProps> = ({ children }
       setSuggestions(prev => prev.filter(user => user.id !== userId));
       return true;
     } catch (err) {
-      console.error('Error following user:', err);
+      // Console statement removed for production
       return false;
     }
   };
@@ -151,7 +151,7 @@ export const FollowingProvider: React.FC<FollowingProviderProps> = ({ children }
       await loadFollowing();
       return true;
     } catch (err) {
-      console.error('Error unfollowing user:', err);
+      // Console statement removed for production
       return false;
     }
   };
@@ -162,7 +162,7 @@ export const FollowingProvider: React.FC<FollowingProviderProps> = ({ children }
     try {
       return await checkIfFollowing(user.uid, userId);
     } catch (err) {
-      console.error('Error checking follow status:', err);
+      // Console statement removed for production
       return false;
     }
   };
@@ -182,7 +182,7 @@ export const FollowingProvider: React.FC<FollowingProviderProps> = ({ children }
         const followingUsers = await getFollowingUsers(user.uid);
         setFollowing(followingUsers);
       } catch (error) {
-        console.error('Error loading following users:', error);
+        // Console statement removed for production
       }
     })();
 
@@ -192,7 +192,7 @@ export const FollowingProvider: React.FC<FollowingProviderProps> = ({ children }
         const followersList = await getFollowers(user.uid);
         setFollowers(followersList);
       } catch (error) {
-        console.error('Error loading followers:', error);
+        // Console statement removed for production
       }
     })();
 
@@ -218,15 +218,15 @@ export const FollowingProvider: React.FC<FollowingProviderProps> = ({ children }
         // Update following and followers counts in real-time
         if (userData.following) {
           // Refresh following list when user's following array changes
-          getFollowingUsers(user.uid).then(setFollowing).catch(console.error);
+          getFollowingUsers(user.uid).then(setFollowing).catch(() => { });
         }
         if (userData.followers) {
           // Refresh followers list when user's followers array changes
-          getFollowers(user.uid).then(setFollowers).catch(console.error);
+          getFollowers(user.uid).then(setFollowers).catch(() => { });
         }
       }
     }, (error) => {
-      console.error('Real-time user profile listener error:', error);
+      // Console statement removed for production
     });
 
     return () => {

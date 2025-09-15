@@ -42,7 +42,7 @@ const MessagesList: React.FC<MessagesListProps> = ({
       setNewConversationUser('');
       setShowNewConversation(false);
     } catch (error) {
-      console.error('Error starting new conversation:', error);
+      // Console statement removed for production
     }
   };
 

@@ -140,7 +140,7 @@ const PublicAdminPage: React.FC = () => {
                 });
 
             } catch (error) {
-                console.error('❌ Error loading admin stats:', error);
+                // Console statement removed for production
                 // Set default stats on error
                 setStats({
                     totalUsers: 0,

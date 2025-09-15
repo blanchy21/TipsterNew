@@ -70,7 +70,7 @@ const DeepgramContextProvider: FunctionComponent<DeepgramContextProviderProps> =
       };
 
       socket.onerror = (error) => {
-        console.error("WebSocket error:", error);
+        // Console statement removed for production
         setError("Error connecting to Deepgram. Please try again.");
         disconnectFromDeepgram();
       };
@@ -82,7 +82,7 @@ const DeepgramContextProvider: FunctionComponent<DeepgramContextProviderProps> =
 
       setConnection(socket);
     } catch (error) {
-      console.error("Error starting voice recognition:", error);
+      // Console statement removed for production
       setError(error instanceof Error ? error.message : "An unknown error occurred");
       setConnectionState(SOCKET_STATES.closed);
     }

@@ -37,7 +37,7 @@ export default function RealtimeTest() {
             });
 
         } catch (error) {
-            console.error('❌ Error creating test post:', error);
+            // Console statement removed for production
         } finally {
             setIsCreating(false);
         }

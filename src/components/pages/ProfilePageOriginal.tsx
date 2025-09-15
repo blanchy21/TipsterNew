@@ -141,7 +141,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate, userId }) => {
           leaderboardPosition: Math.floor(Math.random() * 50 + 1) // Random position between 1-50
         });
       } catch (error) {
-        console.error('Error loading user stats:', error);
+        // Console statement removed for production
       } finally {
         setStatsLoading(false);
       }
@@ -175,13 +175,13 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate, userId }) => {
               leaderboardPosition: Math.floor(Math.random() * 50 + 1)
             });
           } catch (error) {
-            console.error('Error reloading user stats:', error);
+            // Console statement removed for production
           }
         };
         loadUserStats();
       },
       (error) => {
-        console.error('Error listening to verifications:', error);
+        // Console statement removed for production
       }
     );
 

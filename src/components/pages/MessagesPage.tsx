@@ -67,7 +67,7 @@ const MessagesPage: React.FC = () => {
     try {
       await sendMessage(selectedConversationId, user.uid, content);
     } catch (error) {
-      console.error('Error sending message:', error);
+      // Console statement removed for production
     }
   };
 

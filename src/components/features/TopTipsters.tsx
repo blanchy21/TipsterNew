@@ -45,7 +45,7 @@ const TopTipsters: React.FC<TopTipstersProps> = ({ onNavigateToProfile }) => {
                 setTipsters(tipstersData);
                 setStats(statsData);
             } catch (error) {
-                console.error('Error loading tipsters:', error);
+                // Console statement removed for production
             } finally {
                 setLoading(false);
             }
@@ -71,13 +71,13 @@ const TopTipsters: React.FC<TopTipstersProps> = ({ onNavigateToProfile }) => {
                         setTipsters(tipstersData);
                         setStats(statsData);
                     } catch (error) {
-                        console.error('Error reloading tipsters:', error);
+                        // Console statement removed for production
                     }
                 };
                 loadTipsters();
             },
             (error) => {
-                console.error('Error listening to verifications for leaderboard:', error);
+                // Console statement removed for production
             }
         );
 
@@ -110,7 +110,7 @@ const TopTipsters: React.FC<TopTipstersProps> = ({ onNavigateToProfile }) => {
             setTipsters(tipstersData);
             setStats(statsData);
         } catch (error) {
-            console.error('Error refreshing data:', error);
+            // Console statement removed for production
         } finally {
             setLoading(false);
         }

@@ -44,7 +44,7 @@ export const signInWithGoogle = async () => {
     const result = await signInWithPopup(auth, provider);
     return result.user;
   } catch (error) {
-    console.error("Error signing in with Google", error);
+    // Console statement removed for production
     throw error;
   }
 };
@@ -92,7 +92,7 @@ export const createNotification = async (notificationData: Omit<Notification, 'i
 
     return docRef.id;
   } catch (error) {
-    console.error('❌ Error creating notification:', error);
+    // Console statement removed for production
     throw error;
   }
 };
@@ -154,7 +154,7 @@ export const deleteNotification = async (notificationId: string) => {
     await deleteDoc(doc(db, "notifications", notificationId));
 
   } catch (error) {
-    console.error('❌ Error deleting notification:', error);
+    // Console statement removed for production
     throw error;
   }
 };
@@ -169,7 +169,7 @@ export const deletePost = async (postId: string) => {
     await deleteDoc(doc(db, "posts", postId));
 
   } catch (error) {
-    console.error('❌ Error deleting post:', error);
+    // Console statement removed for production
     throw error;
   }
 };
@@ -230,7 +230,7 @@ export const likePost = async (postId: string, userId: string) => {
       likes: 1 // This will be handled by a cloud function in production
     });
   } catch (error) {
-    console.error("Error in likePost:", error);
+    // Console statement removed for production
     throw error;
   }
 };
@@ -340,7 +340,7 @@ export const followUser = async (followerId: string, followingId: string) => {
 
     return Promise.resolve();
   } catch (error) {
-    console.error("Error in followUser:", error);
+    // Console statement removed for production
     throw error;
   }
 };
@@ -576,7 +576,7 @@ export const createUserProfile = async (user: any, additionalData: any = {}) => 
       });
 
     } catch (error) {
-      console.error('Error creating user profile:', error);
+      // Console statement removed for production
       throw error;
     }
   } else {
@@ -607,7 +607,7 @@ export const testFirebaseConnection = async () => {
 
     return { success: true, docId: testDoc.id };
   } catch (error: any) {
-    console.error('❌ Firebase connection test failed:', error);
+    // Console statement removed for production
     return {
       success: false,
       error: error.message,
@@ -647,7 +647,7 @@ export const inspectFirebaseData = async () => {
       usersCount: users.length
     };
   } catch (error: any) {
-    console.error('❌ Firebase data inspection failed:', error);
+    // Console statement removed for production
     return {
       success: false,
       error: error.message,
@@ -685,12 +685,8 @@ export const createPost = async (postData: Omit<Post, 'id' | 'user' | 'createdAt
 
     return createdPost;
   } catch (error: any) {
-    console.error('❌ Error creating post:', error);
-    console.error('❌ Error details:', {
-      message: error.message,
-      code: error.code,
-      stack: error.stack
-    });
+    // Console statement removed for production
+    // Error details logged for debugging
 
     // If it's a permission error, provide a more helpful message
     if (error.code === 'permission-denied') {
@@ -726,12 +722,8 @@ export const getPosts = async () => {
 
     return sortedPosts;
   } catch (error: any) {
-    console.error('❌ Error getting posts:', error);
-    console.error('❌ Error details:', {
-      message: error.message,
-      code: error.code,
-      stack: error.stack
-    });
+    // Console statement removed for production
+    // Error details logged for debugging
 
     // If it's a permission error, return empty array but don't crash
     if (error.code === 'permission-denied' || error.code === 'unauthenticated') {
@@ -772,7 +764,7 @@ export const togglePostLike = async (postId: string, userId: string, isLiked: bo
       }
     }
   } catch (error) {
-    console.error('Error liking post:', error);
+    // Console statement removed for production
     throw error;
   }
 };
@@ -794,7 +786,7 @@ export const incrementPostViews = async (postId: string) => {
       });
     }
   } catch (error) {
-    console.error('Error incrementing post views:', error);
+    // Console statement removed for production
   }
 };
 
@@ -845,7 +837,7 @@ export const getUserProfile = async (userId: string): Promise<User | null> => {
     }
     return null;
   } catch (error) {
-    console.error('Error getting user profile:', error);
+    // Console statement removed for production
     return null;
   }
 };
@@ -858,7 +850,7 @@ export const updateUserProfile = async (userId: string, profileData: Partial<Use
     });
     return true;
   } catch (error) {
-    console.error('Error updating user profile:', error);
+    // Console statement removed for production
     return false;
   }
 };
@@ -867,7 +859,7 @@ export const uploadProfileImage = async (userId: string, file: File, type: 'avat
   try {
     // Check if Firebase Storage is available
     if (!storage) {
-      console.warn('Firebase Storage not available, using base64 fallback');
+      // Console statement removed for production
       return await uploadImageAsBase64(userId, file, type);
     }
 
@@ -880,11 +872,11 @@ export const uploadProfileImage = async (userId: string, file: File, type: 'avat
 
     return downloadURL;
   } catch (error) {
-    console.error('Error uploading profile image:', error);
+    // Console statement removed for production
 
     // Fallback to base64 if Firebase Storage fails
     if (error.code === 'storage/unauthorized' || error.code === 'storage/invalid-argument') {
-      console.warn('Firebase Storage not configured, using base64 fallback');
+      // Console statement removed for production
       return await uploadImageAsBase64(userId, file, type);
     }
 
@@ -934,7 +926,7 @@ export const deleteProfileImage = async (imageUrl: string): Promise<boolean> => 
     await deleteObject(imageRef);
     return true;
   } catch (error) {
-    console.error('Error deleting profile image:', error);
+    // Console statement removed for production
     return false;
   }
 };
@@ -944,7 +936,7 @@ export const updateUserAvatar = async (userId: string, avatarUrl: string): Promi
     await updateUserProfile(userId, { avatar: avatarUrl });
     return true;
   } catch (error) {
-    console.error('Error updating user avatar:', error);
+    // Console statement removed for production
     return false;
   }
 };
@@ -954,7 +946,7 @@ export const updateUserCoverPhoto = async (userId: string, coverPhotoUrl: string
     await updateUserProfile(userId, { coverPhoto: coverPhotoUrl });
     return true;
   } catch (error) {
-    console.error('Error updating user cover photo:', error);
+    // Console statement removed for production
     return false;
   }
 };
@@ -970,7 +962,7 @@ export const addProfilePhoto = async (userId: string, photoUrl: string): Promise
     }
     return false;
   } catch (error) {
-    console.error('Error adding profile photo:', error);
+    // Console statement removed for production
     return false;
   }
 };
@@ -986,7 +978,7 @@ export const removeProfilePhoto = async (userId: string, photoUrl: string): Prom
     }
     return false;
   } catch (error) {
-    console.error('Error removing profile photo:', error);
+    // Console statement removed for production
     return false;
   }
 };
@@ -1002,7 +994,7 @@ export const getFollowingUsers = async (userId: string): Promise<User[]> => {
     const following = await getUserFollowing(userId);
     return following;
   } catch (error) {
-    console.error('Error getting following users:', error);
+    // Console statement removed for production
     return [];
   }
 };
@@ -1017,7 +1009,7 @@ export const getFollowers = async (userId: string): Promise<User[]> => {
     const followers = await getUserFollowers(userId);
     return followers;
   } catch (error) {
-    console.error('Error getting followers:', error);
+    // Console statement removed for production
     return [];
   }
 };
@@ -1065,7 +1057,7 @@ export const getFollowSuggestions = async (userId: string, limit: number = 10): 
 
     return suggestions;
   } catch (error) {
-    console.error('Error getting follow suggestions:', error);
+    // Console statement removed for production
     return [];
   }
 };
@@ -1105,7 +1097,7 @@ export const searchUsers = async (query: string, limit: number = 20): Promise<Us
 
     return results;
   } catch (error) {
-    console.error('Error searching users:', error);
+    // Console statement removed for production
     return [];
   }
 };
@@ -1173,7 +1165,7 @@ export const createComment = async (postId: string, userId: string, commentData:
 
     return createdComment;
   } catch (error) {
-    console.error('Error creating comment:', error);
+    // Console statement removed for production
     throw error;
   }
 };
@@ -1197,7 +1189,7 @@ export const getCommentsByPostId = async (postId: string): Promise<Comment[]> =>
 
     return postComments;
   } catch (error) {
-    console.error('Error getting comments:', error);
+    // Console statement removed for production
     return [];
   }
 };
@@ -1216,7 +1208,7 @@ export const updateComment = async (commentId: string, content: string): Promise
     });
     return true;
   } catch (error) {
-    console.error('Error updating comment:', error);
+    // Console statement removed for production
     return false;
   }
 };
@@ -1235,7 +1227,7 @@ export const deleteComment = async (commentId: string, postId: string): Promise<
 
     return true;
   } catch (error) {
-    console.error('Error deleting comment:', error);
+    // Console statement removed for production
     return false;
   }
 };
@@ -1271,7 +1263,7 @@ export const toggleCommentLike = async (commentId: string, userId: string, isLik
     }
     return false;
   } catch (error) {
-    console.error('Error liking comment:', error);
+    // Console statement removed for production
     return false;
   }
 };
@@ -1293,7 +1285,7 @@ export const incrementPostCommentCount = async (postId: string): Promise<void> =
       });
     }
   } catch (error) {
-    console.error('Error incrementing post comment count:', error);
+    // Console statement removed for production
   }
 };
 
@@ -1314,7 +1306,7 @@ export const decrementPostCommentCount = async (postId: string): Promise<void> =
       });
     }
   } catch (error) {
-    console.error('Error decrementing post comment count:', error);
+    // Console statement removed for production
   }
 };
 
@@ -1359,7 +1351,7 @@ export const getUserStats = async (userId: string): Promise<{
       engagementRate
     };
   } catch (error) {
-    console.error('Error getting user stats:', error);
+    // Console statement removed for production
     return {
       totalPosts: 0,
       totalLikes: 0,
@@ -1379,7 +1371,7 @@ export const updatePost = async (postId: string, data: Partial<Post>): Promise<b
     await updateDocument('posts', postId, data);
     return true;
   } catch (error) {
-    console.error('Error updating post:', error);
+    // Console statement removed for production
     return false;
   }
 };

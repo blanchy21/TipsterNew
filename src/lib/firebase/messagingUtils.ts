@@ -210,7 +210,7 @@ export const subscribeToMessages = (
     callback: (messages: Message[]) => void
 ): (() => void) => {
     if (!db) {
-        console.error('Firebase not initialized');
+        // Console statement removed for production
         return () => { };
     }
 
@@ -234,7 +234,7 @@ export const subscribeToMessages = (
 
         callback(messages);
     }, (error) => {
-        console.error('Error listening to messages:', error);
+        // Console statement removed for production
     });
 };
 
@@ -244,7 +244,7 @@ export const subscribeToConversations = (
     callback: (conversations: Conversation[]) => void
 ): (() => void) => {
     if (!db || !userId) {
-        console.error('Firebase not initialized or userId missing');
+        // Console statement removed for production
         return () => { };
     }
 
@@ -319,7 +319,7 @@ export const subscribeToConversations = (
 
                 callback(sortedConversations);
             } catch (error) {
-                console.error('Error processing conversations:', error);
+                // Console statement removed for production
                 callback([]); // Call callback with empty array on error
             }
         };
@@ -328,9 +328,9 @@ export const subscribeToConversations = (
     }, (error) => {
         // Only log permission errors, suppress other Firebase noise
         if (error.code === 'permission-denied') {
-            console.error('Permission denied for conversations. User may not be authenticated:', error);
+            // Console statement removed for production
         } else if (!error.message?.includes('heartbeats') && !error.message?.includes('undefined')) {
-            console.error('Error listening to conversations:', error);
+            // Console statement removed for production
         }
         callback([]); // Call callback with empty array on error
     });

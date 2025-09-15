@@ -63,7 +63,7 @@ export function NotificationsProvider({ children }: { children: ReactNode }) {
       try {
         setSettings(JSON.parse(savedSettings));
       } catch (error) {
-        console.error('Error loading notification settings:', error);
+        // Console statement removed for production
       }
     }
   }, []);
@@ -109,7 +109,7 @@ export function NotificationsProvider({ children }: { children: ReactNode }) {
 
       setNotifications(sortedData);
     }, (error) => {
-      console.error('Error listening to notifications:', error);
+      // Console statement removed for production
       // Clear notifications on error
       setNotifications([]);
     });
@@ -128,7 +128,7 @@ export function NotificationsProvider({ children }: { children: ReactNode }) {
         recipientId: user.uid
       });
     } catch (error) {
-      console.error('Error creating notification:', error);
+      // Console statement removed for production
     }
   };
 
@@ -136,7 +136,7 @@ export function NotificationsProvider({ children }: { children: ReactNode }) {
     try {
       await markNotificationAsRead(id);
     } catch (error) {
-      console.error('Error marking notification as read:', error);
+      // Console statement removed for production
       // Fallback to local state update
       setNotifications(prev =>
         prev.map(notification =>
@@ -152,7 +152,7 @@ export function NotificationsProvider({ children }: { children: ReactNode }) {
     try {
       await markAllAsReadFirebase(user.uid);
     } catch (error) {
-      console.error('Error marking all notifications as read:', error);
+      // Console statement removed for production
       // Fallback to local state update
       setNotifications(prev =>
         prev.map(notification => ({ ...notification, read: true }))
@@ -166,7 +166,7 @@ export function NotificationsProvider({ children }: { children: ReactNode }) {
       await deleteNotificationFirebase(id);
 
     } catch (error) {
-      console.error('❌ NotificationsContext: Error deleting notification:', error);
+      // Console statement removed for production
       // Fallback to local state update
 
       setNotifications(prev => prev.filter(notification => notification.id !== id));
@@ -193,7 +193,7 @@ export function NotificationsProvider({ children }: { children: ReactNode }) {
 
       await batch.commit();
     } catch (error) {
-      console.error('Error clearing all notifications:', error);
+      // Console statement removed for production
       // Fallback to local state update
       setNotifications([]);
     }

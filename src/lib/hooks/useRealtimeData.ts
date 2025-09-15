@@ -52,7 +52,7 @@ export function useRealtimeData<T>(
                 setLoading(false);
             },
             (error) => {
-                console.error(`❌ Real-time listener error for ${collectionName}:`, error);
+                // Console statement removed for production
                 setError(error);
                 setLoading(false);
             }

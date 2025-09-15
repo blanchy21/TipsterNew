@@ -48,7 +48,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
     });
 
     // Mark messages as read when conversation is opened
-    markMessagesAsRead(conversation.id, user.uid).catch(console.error);
+    markMessagesAsRead(conversation.id, user.uid).catch(() => { });
 
     return () => unsubscribe();
   }, [conversation, user]);
@@ -63,7 +63,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
     try {
       await sendMessage(conversation.id, user.uid, messageText);
     } catch (error) {
-      console.error('Error sending message:', error);
+      // Console statement removed for production
       // Restore message on error
       setNewMessage(messageText);
     }

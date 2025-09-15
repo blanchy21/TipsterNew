@@ -31,7 +31,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ output }, { status: 200 });
   } catch (error) {
-    console.error("Error from Replicate API:", error);
+    // Console statement removed for production
     return NextResponse.json({ error: (error as Error).message }, { status: 500 });
   }
 }

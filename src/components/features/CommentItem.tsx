@@ -52,7 +52,7 @@ export default function CommentItem({
       // Revert on error
       setIsLiked(!newIsLiked);
       setLikes(likes);
-      console.error('Error liking comment:', error);
+      // Console statement removed for production
     }
   };
 
@@ -64,7 +64,7 @@ export default function CommentItem({
       await deleteComment(comment.id, comment.postId);
       onDelete(comment.id);
     } catch (error) {
-      console.error('Error deleting comment:', error);
+      // Console statement removed for production
     } finally {
       setIsDeleting(false);
     }

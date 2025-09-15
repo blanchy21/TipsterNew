@@ -41,7 +41,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json(data);
   } catch (error) {
-    console.error("Error processing audio:", error);
+    // Console statement removed for production
     return NextResponse.error();
   }
 }

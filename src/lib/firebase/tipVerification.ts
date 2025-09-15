@@ -63,7 +63,7 @@ export const createTipVerification = async (verificationData: Omit<TipVerificati
 
         return { id: docRef.id, ...verification };
     } catch (error) {
-        console.error('Error creating tip verification:', error);
+        // Console statement removed for production
         throw error;
     }
 };
@@ -157,7 +157,7 @@ export const getUserVerificationStats = async (userId: string): Promise<Verifica
             topSports
         };
     } catch (error) {
-        console.error('Error getting user verification stats:', error);
+        // Console statement removed for production
         return {
             totalTips: 0,
             verifiedTips: 0,
@@ -191,7 +191,7 @@ export const getTipVerifications = (callback: (verifications: TipVerification[])
 
         callback(verifications);
     }, (error) => {
-        console.error('Error listening to tip verifications:', error);
+        // Console statement removed for production
         callback([]);
     });
 
@@ -217,7 +217,7 @@ export const getPostVerificationHistory = async (postId: string): Promise<TipVer
             ...doc.data()
         })) as TipVerification[];
     } catch (error) {
-        console.error('Error getting post verification history:', error);
+        // Console statement removed for production
         return [];
     }
 };
@@ -232,7 +232,7 @@ export const updateTipVerification = async (verificationId: string, updates: Par
         const { updateDoc, doc } = await import('firebase/firestore');
         await updateDoc(doc(db, 'tipVerifications', verificationId), updates);
     } catch (error) {
-        console.error('Error updating tip verification:', error);
+        // Console statement removed for production
         throw error;
     }
 };
@@ -247,7 +247,7 @@ export const deleteTipVerification = async (verificationId: string) => {
         const { deleteDoc, doc } = await import('firebase/firestore');
         await deleteDoc(doc(db, 'tipVerifications', verificationId));
     } catch (error) {
-        console.error('Error deleting tip verification:', error);
+        // Console statement removed for production
         throw error;
     }
 };

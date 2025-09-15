@@ -56,7 +56,7 @@ const FollowingPage: React.FC<FollowingPageProps> = ({ initialTab = 'following',
       const results = await searchUsers(query);
       setSearchResults(results);
     } catch (error) {
-      console.error('Search error:', error);
+      // Console statement removed for production
     } finally {
       setIsSearching(false);
     }

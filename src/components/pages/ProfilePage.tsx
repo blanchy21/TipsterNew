@@ -87,7 +87,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
       setUserPosts(sortedPosts);
       setPostsLoading(false);
     }, (error) => {
-      console.error('Error fetching user posts:', error);
+      // Console statement removed for production
       setPostsLoading(false);
     });
 

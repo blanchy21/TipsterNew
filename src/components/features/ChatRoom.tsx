@@ -93,7 +93,7 @@ export default function ChatRoom({ gameId, sport, title = "Live Chat", className
             setMessages(messagesData);
             setIsLoading(false);
         }, (error) => {
-            console.error('Error fetching messages:', error);
+            // Console statement removed for production
             setIsLoading(false);
         });
 
@@ -129,7 +129,7 @@ export default function ChatRoom({ gameId, sport, title = "Live Chat", className
 
             setNewMessage('');
         } catch (error) {
-            console.error('Error sending message:', error);
+            // Console statement removed for production
         }
     };
 

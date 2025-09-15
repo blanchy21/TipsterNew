@@ -18,7 +18,7 @@ export function useAsyncError(options: UseAsyncErrorOptions = {}) {
     const retryTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     const handleError = useCallback((error: Error) => {
-        console.error('Async error caught:', error);
+        // Console statement removed for production
 
         if (onError) {
             onError(error);
@@ -41,8 +41,6 @@ export function useAsyncError(options: UseAsyncErrorOptions = {}) {
 
             if (retryCountRef.current < maxRetries) {
                 retryCountRef.current += 1;
-
-                console.warn(`Retrying operation (attempt ${retryCountRef.current}/${maxRetries}):`, err.message);
 
                 if (onRetry) {
                     onRetry();

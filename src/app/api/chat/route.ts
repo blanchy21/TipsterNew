@@ -57,7 +57,7 @@ Format your responses with clear sections, bullet points, and relevant statistic
 
         return result.toDataStreamResponse();
     } catch (error) {
-        console.error("Chat API error:", error);
+        // Console statement removed for production
         return new Response("Internal server error", { status: 500 });
     }
 }

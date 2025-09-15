@@ -22,7 +22,7 @@ export default function TrendingCard({ limit = 5, onNavigateToProfile }: Trendin
         const topTipsters = await getTopTipsters(limit);
         setTipsters(topTipsters);
       } catch (error) {
-        console.error('Error loading top tipsters:', error);
+        // Console statement removed for production
       } finally {
         setLoading(false);
       }

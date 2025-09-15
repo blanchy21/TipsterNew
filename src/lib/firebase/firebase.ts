@@ -41,7 +41,9 @@ try {
     // Reduce Firebase console warnings in development
     if (process.env.NODE_ENV === 'development') {
       // Suppress Firebase heartbeats warnings and other noise
+      // eslint-disable-next-line no-console
       const originalConsoleWarn = console.warn;
+      // eslint-disable-next-line no-console
       console.warn = (...args) => {
         const message = args[0];
         if (typeof message === 'string' &&
@@ -55,7 +57,9 @@ try {
       };
 
       // Also suppress console.log for heartbeats and Firebase noise
+      // eslint-disable-next-line no-console
       const originalConsoleLog = console.log;
+      // eslint-disable-next-line no-console
       console.log = (...args) => {
         const message = args[0];
         if (typeof message === 'string' &&
@@ -69,7 +73,9 @@ try {
       };
 
       // Also suppress console.error for Firebase heartbeats
+      // eslint-disable-next-line no-console
       const originalConsoleError = console.error;
+      // eslint-disable-next-line no-console
       console.error = (...args) => {
         const message = args[0];
         if (typeof message === 'string' &&
@@ -89,7 +95,7 @@ try {
     storage = null;
   }
 } catch (error) {
-  console.error("Firebase initialization failed:", error);
+  // Console statement removed for production
   app = null;
   auth = null;
   db = null;

@@ -147,7 +147,7 @@ const AdminDashboard: React.FC = () => {
                     recentActivity
                 });
             } catch (error) {
-                console.error('Error loading admin stats:', error);
+                // Console statement removed for production
             }
         };
 
@@ -218,13 +218,13 @@ const AdminDashboard: React.FC = () => {
     return (
         <ErrorBoundary
             onError={(error, errorInfo) => {
-                console.error('AdminDashboard error:', error, errorInfo);
+                // Console statement removed for production
             }}
         >
             <AsyncErrorBoundary
                 fallback={<PageLoadingState />}
                 onError={(error) => {
-                    console.error('AdminDashboard async error:', error);
+                    // Console statement removed for production
                 }}
             >
                 <div className="w-full text-gray-100 font-[Inter] bg-slate-900 min-h-screen">

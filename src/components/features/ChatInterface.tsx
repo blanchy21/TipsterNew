@@ -75,7 +75,7 @@ export default function ChatInterface() {
                     setMessages(parsedHistory);
                 }
             } catch (error) {
-                console.error('Failed to load chat history:', error);
+                // Console statement removed for production
             }
         }
     }, []);

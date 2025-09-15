@@ -98,7 +98,7 @@ const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChan
       onPostDeleted?.(post.id);
       setShowMenu(false);
     } catch (error) {
-      console.error('Error deleting post:', error);
+      // Console statement removed for production
       alert('Failed to delete tip. Please try again.');
     } finally {
       setIsDeleting(false);
@@ -139,7 +139,7 @@ const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChan
       onPostUpdated?.(post.id, updatedPost);
       setShowEditModal(false);
     } catch (error) {
-      console.error('Error updating post:', error);
+      // Console statement removed for production
       alert('Failed to update tip. Please try again.');
     } finally {
       setIsUpdating(false);
@@ -209,7 +209,7 @@ const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChan
     <AsyncErrorBoundary
       fallback={<CardLoadingState />}
       onError={(error) => {
-        console.error('PostCard error:', error);
+        // Console statement removed for production
       }}
     >
       <article className="group rounded-xl bg-white/[0.03] hover:bg-white/[0.05] transition ring-1 ring-white/5 hover:ring-white/10 p-4 md:p-5">

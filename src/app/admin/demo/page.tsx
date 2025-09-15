@@ -32,7 +32,7 @@ export default function DemoAdmin() {
                 setMessage({ type: 'error', text: 'Failed to populate test data. Check console for details.' });
             }
         } catch (error) {
-            console.error('❌ Error populating data:', error);
+            // Console statement removed for production
             setMessage({ type: 'error', text: 'An error occurred while populating test data.' });
         } finally {
             setIsLoading(false);
@@ -53,7 +53,7 @@ export default function DemoAdmin() {
                 setMessage({ type: 'error', text: 'Failed to clear test data. Check console for details.' });
             }
         } catch (error) {
-            console.error('❌ Error clearing data:', error);
+            // Console statement removed for production
             setMessage({ type: 'error', text: 'An error occurred while clearing test data.' });
         } finally {
             setIsLoading(false);

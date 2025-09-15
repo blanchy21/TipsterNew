@@ -26,7 +26,7 @@ const AdminPage: React.FC = () => {
         const firestorePosts = await getPosts();
         setPosts(firestorePosts as Post[]);
       } catch (error) {
-        console.error('Error loading posts:', error);
+        // Console statement removed for production
       }
     };
 
@@ -81,7 +81,7 @@ const AdminPage: React.FC = () => {
 
       setMessage({ type: 'success', text: `Tip marked as ${status}!` });
     } catch (error) {
-      console.error('Error verifying tip:', error);
+      // Console statement removed for production
       setMessage({ type: 'error', text: 'Failed to verify tip. Please try again.' });
     } finally {
       setIsLoading(false);
@@ -170,7 +170,7 @@ const AdminPage: React.FC = () => {
       });
       setMessage({ type: 'success', text: 'Test notification sent! Check your notifications page.' });
     } catch (error) {
-      console.error('Error creating test notification:', error);
+      // Console statement removed for production
       setMessage({ type: 'error', text: 'Failed to create test notification' });
     } finally {
       setIsLoading(false);

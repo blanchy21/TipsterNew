@@ -385,7 +385,7 @@ function AppContent() {
       // Error creating post - handled by UI feedback
       // Could implement toast notification here if needed
       // eslint-disable-next-line no-console
-      console.error('Error creating post:', error);
+      // Console statement removed for production
     }
   };
 
@@ -477,14 +477,14 @@ function AppContent() {
   useEffect(() => {
     if (isClient) {
       // eslint-disable-next-line no-console
-      console.log("App: Auth state changed - loading:", loading, "user:", user, "showLandingPage:", showLandingPage);
+      // Console statement removed for production
     }
   }, [loading, user, showLandingPage, isClient]);
 
   // Show loading state while checking authentication (only on client side after hydration)
   if (isClient && loading) {
     // eslint-disable-next-line no-console
-    console.log("App: Showing loading state, loading:", loading, "user:", user);
+    // Console statement removed for production
     return (
       <div className="h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
         <div className="text-center">
@@ -705,7 +705,7 @@ export default function App() {
         if (process.env.NODE_ENV === 'development') {
           // Log errors in development for debugging
           // eslint-disable-next-line no-console
-          console.error('App Error:', error, errorInfo);
+          // Console statement removed for production
         }
       }}
     >
@@ -717,7 +717,7 @@ export default function App() {
                 onError={(error, errorInfo) => {
                   if (process.env.NODE_ENV === 'development') {
                     // eslint-disable-next-line no-console
-                    console.error('Async Error:', error, errorInfo);
+                    // Console statement removed for production
                   }
                 }}
                 maxRetries={2}
