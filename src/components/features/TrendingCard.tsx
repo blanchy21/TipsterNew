@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { Trophy, Crown, Medal, Award, TrendingUp, Target, Check } from 'lucide-react';
 import { LeaderboardEntry } from '@/lib/leaderboardUtils';
 import { getTopTipsters } from '@/lib/leaderboardUtils';
@@ -88,13 +89,18 @@ export default function TrendingCard({ limit = 5, onNavigateToProfile }: Trendin
 
               {/* Avatar */}
               <div className="relative">
-                <img
+                <Image
                   src={tipster.avatar}
                   alt={tipster.name}
+                  width={32}
+                  height={32}
                   className="w-8 h-8 rounded-full border border-white/20 group-hover:border-white/40 transition-all duration-300"
                   onError={(e) => {
                     e.currentTarget.src = '/default-avatar.png';
                   }}
+                  priority={false}
+                  placeholder="blur"
+                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
                 />
                 {tipster.isVerified && (
                   <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border border-slate-900 flex items-center justify-center">

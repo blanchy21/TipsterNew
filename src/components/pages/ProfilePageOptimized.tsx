@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { useProfile } from '@/lib/contexts/ProfileContext';
 import { useFollowing } from '@/lib/contexts/FollowingContext';
@@ -96,9 +97,11 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
                             <div className="grid gap-4">
                                 {followers.map((follower) => (
                                     <div key={follower.id} className="flex items-center gap-3 p-4 bg-slate-800/50 rounded-lg">
-                                        <img
+                                        <Image
                                             src={normalizeImageUrl(follower.avatar)}
                                             alt={follower.name}
+                                            width={40}
+                                            height={40}
                                             className="w-10 h-10 rounded-full"
                                         />
                                         <div className="flex-1">
@@ -130,9 +133,11 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
                             <div className="grid gap-4">
                                 {following.map((user) => (
                                     <div key={user.id} className="flex items-center gap-3 p-4 bg-slate-800/50 rounded-lg">
-                                        <img
+                                        <Image
                                             src={normalizeImageUrl(user.avatar)}
                                             alt={user.name}
+                                            width={40}
+                                            height={40}
                                             className="w-10 h-10 rounded-full"
                                         />
                                         <div className="flex-1">

@@ -95,11 +95,12 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
             0 -20px 60px -10px rgba(245, 158, 11, 0.1);
         }
       `}</style>
-      {/* Background Effects */}
+      {/* Background Effects - Optimized for performance */}
       <div className="fixed inset-0 -z-20">
         <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"></div>
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-amber-500/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-orange-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        {/* Reduced blur effects for better performance */}
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-amber-500/10 rounded-full blur-2xl"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-orange-500/10 rounded-full blur-2xl"></div>
       </div>
 
       {/* Navigation */}

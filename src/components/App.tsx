@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Post, FollowingUser } from '@/lib/types';
 import { sampleFollowing, sampleTrending } from '@/lib/utils';
 import { createPost, togglePostLike, incrementPostViews } from '@/lib/firebase/firebaseUtils';
-import { collection, query as firestoreQuery, orderBy as firestoreOrderBy, onSnapshot, where } from 'firebase/firestore';
+import { collection, query as firestoreQuery, orderBy as firestoreOrderBy, onSnapshot, where, limit } from 'firebase/firestore';
 import { db } from '@/lib/firebase/firebase';
 import Sidebar from './layout/Sidebar';
 import MobileHeader from './layout/MobileHeader';
@@ -161,7 +161,11 @@ function AppContent() {
     }
 
     const postsRef = collection(db, 'posts');
-    const q = firestoreQuery(postsRef, firestoreOrderBy('createdAt', 'desc'));
+    const q = firestoreQuery(
+      postsRef,
+      firestoreOrderBy('createdAt', 'desc'),
+      limit(50) // Limit initial load to 50 posts for better performance
+    );
 
     const unsubscribe = onSnapshot(q,
       (snapshot) => {
