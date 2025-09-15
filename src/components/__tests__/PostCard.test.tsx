@@ -31,11 +31,11 @@ const mockPost = {
 
 // Mock the LikeButton component
 jest.mock('../features/LikeButton', () => {
-    return function MockLikeButton({ post, onLike }: any) {
+    return function MockLikeButton({ post, onLikeChange }: any) {
         return (
             <button
                 data-testid="like-button"
-                onClick={() => onLike && onLike(post.id)}
+                onClick={() => onLikeChange && onLikeChange(post.id, post.likes + 1, [...post.likedBy, 'user1'])}
             >
                 Like ({post.likes})
             </button>
@@ -60,10 +60,10 @@ jest.mock('../CommentsList', () => {
 describe('PostCard', () => {
     const defaultProps = {
         post: mockPost,
-        onLike: jest.fn(),
-        onComment: jest.fn(),
-        onShare: jest.fn(),
-        onViewProfile: jest.fn(),
+        onLikeChange: jest.fn(),
+        onCommentCountChange: jest.fn(),
+        onNavigateToProfile: jest.fn(),
+        onPostDeleted: jest.fn(),
     }
 
     beforeEach(() => {
@@ -88,13 +88,13 @@ describe('PostCard', () => {
         expect(screen.getByText(`${mockPost.views} views`)).toBeInTheDocument()
     })
 
-    it('calls onLike when like button is clicked', () => {
+    it('calls onLikeChange when like button is clicked', () => {
         render(<PostCard {...defaultProps} />)
 
         const likeButton = screen.getByTestId('like-button')
         fireEvent.click(likeButton)
 
-        expect(defaultProps.onLike).toHaveBeenCalledWith(mockPost.id)
+        expect(defaultProps.onLikeChange).toHaveBeenCalledWith(mockPost.id, mockPost.likes + 1, [...mockPost.likedBy, 'user1'])
     })
 
     it('shows user avatar with fallback', () => {
@@ -158,7 +158,7 @@ describe('PostCard', () => {
         const userName = screen.getByText(mockPost.user.name)
         fireEvent.click(userName)
 
-        expect(defaultProps.onViewProfile).toHaveBeenCalledWith(mockPost.user.id)
+        expect(defaultProps.onNavigateToProfile).toHaveBeenCalledWith(mockPost.user.id)
     })
 
     it('handles long content with truncation', () => {

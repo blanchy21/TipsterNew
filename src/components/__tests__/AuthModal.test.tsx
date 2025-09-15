@@ -1,6 +1,6 @@
 import React from 'react'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
-import AuthModal from '../AuthModal'
+import AuthModal from '../modals/AuthModal'
 
 // Mock the SignInWithGoogle component
 jest.mock('../forms/SignInWithGoogle', () => {

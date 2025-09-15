@@ -1,1 +1,101 @@
-[]
+[
+  {
+    "name": "minScore",
+    "expected": 0.6,
+    "actual": 0.54,
+    "values": [
+      0.44,
+      0.54,
+      0.54
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditProperty": "performance",
+    "auditId": "categories",
+    "level": "warn",
+    "url": "http://localhost:3000/"
+  },
+  {
+    "name": "maxNumericValue",
+    "expected": 4000,
+    "actual": 27375.766499999998,
+    "values": [
+      27375.766499999998,
+      29466.97365,
+      29460.083949999993
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "largest-contentful-paint",
+    "level": "warn",
+    "url": "http://localhost:3000/",
+    "auditTitle": "Largest Contentful Paint",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/lighthouse-largest-contentful-paint/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.6,
+    "actual": 0.55,
+    "values": [
+      0.55,
+      0.55,
+      0.55
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditProperty": "performance",
+    "auditId": "categories",
+    "level": "warn",
+    "url": "http://localhost:3000/profile"
+  },
+  {
+    "name": "maxNumericValue",
+    "expected": 4000,
+    "actual": 8444.296,
+    "values": [
+      10549.268449999996,
+      12650.661949999998,
+      8444.296
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "largest-contentful-paint",
+    "level": "warn",
+    "url": "http://localhost:3000/profile",
+    "auditTitle": "Largest Contentful Paint",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/lighthouse-largest-contentful-paint/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.6,
+    "actual": 0.56,
+    "values": [
+      0.56,
+      0.56,
+      0.56
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditProperty": "performance",
+    "auditId": "categories",
+    "level": "warn",
+    "url": "http://localhost:3000/chat"
+  },
+  {
+    "name": "maxNumericValue",
+    "expected": 4000,
+    "actual": 7858.630350000001,
+    "values": [
+      7858.630350000001,
+      8445.131400000002,
+      11468.138
+    ],
+    "operator": "<=",
+    "passed": false,
+    "auditId": "largest-contentful-paint",
+    "level": "warn",
+    "url": "http://localhost:3000/chat",
+    "auditTitle": "Largest Contentful Paint",
+    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/lighthouse-largest-contentful-paint/"
+  }
+]

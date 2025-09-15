@@ -1,11 +1,51 @@
 // Mock NextRequest for testing
 global.Request = class MockRequest {
-    constructor(public url: string, public options: any = {}) { }
-    json() {
-        return Promise.resolve(JSON.parse(this.options.body || '{}'))
+    public url: string
+    public method: string
+    public headers: Headers
+    public body: any
+    public cache: RequestCache = 'default'
+    public credentials: RequestCredentials = 'same-origin'
+    public destination: RequestDestination = 'document'
+    public integrity: string = ''
+    public keepalive: boolean = false
+    public mode: RequestMode = 'cors'
+    public redirect: RequestRedirect = 'follow'
+    public referrer: string = ''
+    public referrerPolicy: ReferrerPolicy = 'strict-origin-when-cross-origin'
+    public signal: AbortSignal = new AbortController().signal
+
+    constructor(public input: RequestInfo | URL, public init: RequestInit = {}) {
+        this.url = typeof input === 'string' ? input : input.toString()
+        this.method = init.method || 'GET'
+        this.headers = new Headers(init.headers)
+        this.body = init.body
     }
-    headers = new Map()
-}
+
+    async json() {
+        return Promise.resolve(JSON.parse(this.body || '{}'))
+    }
+
+    async text() {
+        return Promise.resolve(this.body || '')
+    }
+
+    async arrayBuffer() {
+        return Promise.resolve(new ArrayBuffer(0))
+    }
+
+    async blob() {
+        return Promise.resolve(new Blob())
+    }
+
+    async formData() {
+        return Promise.resolve(new FormData())
+    }
+
+    clone() {
+        return new MockRequest(this.input, this.init)
+    }
+} as any
 
 import { POST } from '../../app/api/chat/route'
 

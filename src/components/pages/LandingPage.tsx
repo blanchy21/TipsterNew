@@ -211,7 +211,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
               </svg>
             </div>
 
-            <h1 className="max-w-5xl text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold tracking-tight">
+            <h1 className="max-w-5xl text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold tracking-tight" style={{ minHeight: '200px' }}>
               The world&apos;s premier platform for
               <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-400 bg-clip-text text-transparent"> sports tip sharing</span>
             </h1>
@@ -303,16 +303,17 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
           {/* Demo Video - Optimized for LCP */}
           <div className="relative max-w-6xl mx-auto">
             <div className="relative rounded-2xl overflow-hidden shadow-[0_30px_120px_-20px_rgba(245,158,11,0.45)]">
-              {/* Optimized poster image using Next.js Image */}
-              <div className="relative w-full aspect-video bg-slate-800">
-                <Image
-                  src="/hero-feed.png"
-                  alt="Tipster Arena Demo Preview"
-                  fill
-                  className="object-cover"
-                  priority={false}
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
-                />
+              {/* Simplified placeholder for better LCP */}
+              <div className="relative w-full aspect-video bg-slate-800 flex items-center justify-center">
+                <div className="text-center">
+                  <div className="mb-4">
+                    <svg className="mx-auto h-16 w-16 text-amber-500" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-semibold text-white mb-2">Demo Video</h3>
+                  <p className="text-white/70">Click to watch</p>
+                </div>
                 {/* Play button overlay */}
                 <div className="absolute inset-0 flex items-center justify-center">
                   <button
