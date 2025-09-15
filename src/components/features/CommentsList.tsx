@@ -72,7 +72,7 @@ export default function CommentsList({ postId, onCommentCountChange }: CommentsL
 
       unsubscribe();
     };
-  }, [postId]);
+  }, [postId, onCommentCountChange]);
 
   const handleCommentAdded = () => {
     // Comments will be updated automatically via real-time listener

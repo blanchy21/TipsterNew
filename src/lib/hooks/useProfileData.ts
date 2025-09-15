@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { User } from '@/lib/types';
 import { getUserVerificationStats } from '@/lib/firebase/tipVerification';
 import { collection, query, where, onSnapshot } from 'firebase/firestore';
@@ -38,7 +38,7 @@ export function useProfileData({ userId, followers, following }: UseProfileDataP
     });
     const [statsLoading, setStatsLoading] = useState(true);
 
-    const loadUserStats = async (profileUserId: string) => {
+    const loadUserStats = useCallback(async (profileUserId: string) => {
         setStatsLoading(true);
         try {
             const verificationStats = await getUserVerificationStats(profileUserId);
@@ -59,14 +59,14 @@ export function useProfileData({ userId, followers, following }: UseProfileDataP
         } finally {
             setStatsLoading(false);
         }
-    };
+    }, [followers.length, following.length]);
 
     // Load user stats when userId changes
     useEffect(() => {
         if (userId) {
             loadUserStats(userId);
         }
-    }, [userId, followers.length, following.length]);
+    }, [userId, followers.length, following.length, loadUserStats]);
 
     // Real-time listener for verification updates
     useEffect(() => {
@@ -86,7 +86,7 @@ export function useProfileData({ userId, followers, following }: UseProfileDataP
         return () => {
             unsubscribe();
         };
-    }, [userId]);
+    }, [userId, loadUserStats]);
 
     return {
         userStats,

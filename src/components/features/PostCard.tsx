@@ -66,6 +66,18 @@ const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChan
     };
   }, []);
 
+  const handleEditCancel = useCallback(() => {
+    setShowEditModal(false);
+    // Reset form to original values
+    setEditForm({
+      title: post.title,
+      content: post.content,
+      odds: post.odds || '',
+      tags: post.tags.join(', '),
+      sport: post.sport
+    });
+  }, [post.title, post.content, post.odds, post.tags, post.sport]);
+
   // Close edit modal with Escape key
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
@@ -80,7 +92,7 @@ const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChan
         document.removeEventListener('keydown', handleEscape);
       };
     }
-  }, [showEditModal]);
+  }, [showEditModal, handleEditCancel]);
 
   // Check if current user can edit/delete this post
   const canEdit = user && user.uid === post.user.id;
@@ -146,17 +158,6 @@ const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChan
     }
   };
 
-  const handleEditCancel = () => {
-    setShowEditModal(false);
-    // Reset form to original values
-    setEditForm({
-      title: post.title,
-      content: post.content,
-      odds: post.odds || '',
-      tags: post.tags.join(', '),
-      sport: post.sport
-    });
-  };
 
   const getTipStatusDisplay = (status: TipStatus | undefined) => {
     if (!status) return null;

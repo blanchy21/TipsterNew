@@ -62,7 +62,7 @@ export function useRealtimeData<T>(
 
             unsubscribe();
         };
-    }, [collectionName, enabled, JSON.stringify(queryConstraints)]);
+    }, [collectionName, enabled, queryConstraints, transform]);
 
     return { data, loading, error };
 }

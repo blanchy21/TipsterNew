@@ -78,7 +78,7 @@ export default function ChatInterface() {
                 // Console statement removed for production
             }
         }
-    }, []);
+    }, [setMessages]);
 
     // Save chat history to localStorage whenever messages change
     useEffect(() => {

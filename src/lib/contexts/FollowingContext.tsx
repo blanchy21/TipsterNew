@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 import { User } from '@/lib/types';
 import {
   getFollowingUsers,
@@ -84,7 +84,7 @@ export const FollowingProvider: React.FC<FollowingProviderProps> = ({ children }
     }
   };
 
-  const loadSuggestions = async () => {
+  const loadSuggestions = useCallback(async () => {
     if (!user?.uid) return;
 
     setLoading(true);
@@ -100,7 +100,7 @@ export const FollowingProvider: React.FC<FollowingProviderProps> = ({ children }
     } finally {
       setLoading(false);
     }
-  };
+  }, [user?.uid]);
 
   const refreshFollowing = async () => {
     await loadFollowing();
@@ -202,7 +202,7 @@ export const FollowingProvider: React.FC<FollowingProviderProps> = ({ children }
     return () => {
 
     };
-  }, [user?.uid]);
+  }, [user?.uid, loadSuggestions]);
 
   // Real-time user profile updates listener
   useEffect(() => {
