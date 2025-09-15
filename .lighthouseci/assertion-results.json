@@ -2,167 +2,34 @@
   {
     "name": "minScore",
     "expected": 0.8,
-    "actual": 0.55,
+    "actual": 0.66,
     "values": [
-      0.51,
-      0.54,
-      0.55
-    ],
-    "operator": ">=",
-    "passed": false,
-    "auditProperty": "performance",
-    "auditId": "categories",
-    "level": "error",
-    "url": "http://localhost:3000/"
-  },
-  {
-    "name": "minScore",
-    "expected": 0.9,
-    "actual": 0.8,
-    "values": [
-      0.8,
-      0.8,
-      0.8
+      0.66,
+      0.66,
+      0.66
     ],
     "operator": ">=",
     "passed": false,
     "auditProperty": "accessibility",
     "auditId": "categories",
-    "level": "error",
+    "level": "warn",
     "url": "http://localhost:3000/"
   },
   {
     "name": "maxNumericValue",
-    "expected": 2500,
-    "actual": 8340.912,
+    "expected": 4000,
+    "actual": 5147.3096000000005,
     "values": [
-      8340.912,
-      9986.838400000004,
-      10586.6441
+      5147.3096000000005,
+      5300.157999999999,
+      5287.9658
     ],
     "operator": "<=",
     "passed": false,
     "auditId": "largest-contentful-paint",
-    "level": "error",
+    "level": "warn",
     "url": "http://localhost:3000/",
     "auditTitle": "Largest Contentful Paint",
     "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/lighthouse-largest-contentful-paint/"
-  },
-  {
-    "name": "maxNumericValue",
-    "expected": 300,
-    "actual": 890.67795,
-    "values": [
-      1247.0220000000024,
-      900.9999999999982,
-      890.67795
-    ],
-    "operator": "<=",
-    "passed": false,
-    "auditId": "total-blocking-time",
-    "level": "error",
-    "url": "http://localhost:3000/",
-    "auditTitle": "Total Blocking Time",
-    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/lighthouse-total-blocking-time/"
-  },
-  {
-    "name": "minScore",
-    "expected": 0.8,
-    "actual": 0.68,
-    "values": [
-      0.68,
-      0.64,
-      0.66
-    ],
-    "operator": ">=",
-    "passed": false,
-    "auditProperty": "performance",
-    "auditId": "categories",
-    "level": "error",
-    "url": "http://localhost:3000/profile"
-  },
-  {
-    "name": "maxNumericValue",
-    "expected": 2500,
-    "actual": 3471.1749999999997,
-    "values": [
-      3471.1749999999997,
-      4061.435849999999,
-      3763.13295
-    ],
-    "operator": "<=",
-    "passed": false,
-    "auditId": "largest-contentful-paint",
-    "level": "error",
-    "url": "http://localhost:3000/profile",
-    "auditTitle": "Largest Contentful Paint",
-    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/lighthouse-largest-contentful-paint/"
-  },
-  {
-    "name": "maxNumericValue",
-    "expected": 300,
-    "actual": 1159.0940250000003,
-    "values": [
-      1176.8825000000015,
-      1159.0940250000003,
-      1160.811174999997
-    ],
-    "operator": "<=",
-    "passed": false,
-    "auditId": "total-blocking-time",
-    "level": "error",
-    "url": "http://localhost:3000/profile",
-    "auditTitle": "Total Blocking Time",
-    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/lighthouse-total-blocking-time/"
-  },
-  {
-    "name": "minScore",
-    "expected": 0.8,
-    "actual": 0.66,
-    "values": [
-      0.53,
-      0.62,
-      0.66
-    ],
-    "operator": ">=",
-    "passed": false,
-    "auditProperty": "performance",
-    "auditId": "categories",
-    "level": "error",
-    "url": "http://localhost:3000/chat"
-  },
-  {
-    "name": "maxNumericValue",
-    "expected": 2500,
-    "actual": 3618.3844999999997,
-    "values": [
-      6642.5504,
-      4365.80235,
-      3618.3844999999997
-    ],
-    "operator": "<=",
-    "passed": false,
-    "auditId": "largest-contentful-paint",
-    "level": "error",
-    "url": "http://localhost:3000/chat",
-    "auditTitle": "Largest Contentful Paint",
-    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/lighthouse-largest-contentful-paint/"
-  },
-  {
-    "name": "maxNumericValue",
-    "expected": 300,
-    "actual": 1159.3662750000003,
-    "values": [
-      1182.3405999999995,
-      1159.3662750000003,
-      1210.1615500000007
-    ],
-    "operator": "<=",
-    "passed": false,
-    "auditId": "total-blocking-time",
-    "level": "error",
-    "url": "http://localhost:3000/chat",
-    "auditTitle": "Total Blocking Time",
-    "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/lighthouse-total-blocking-time/"
   }
 ]
