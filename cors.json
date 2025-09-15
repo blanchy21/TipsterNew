@@ -1,0 +1,20 @@
+[
+  {
+    "origin": [
+      "http://localhost:3000",
+      "https://tipsternew-700ed.firebaseapp.com",
+      "https://tipsternew-700ed.web.app"
+    ],
+    "method": ["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS"],
+    "maxAgeSeconds": 3600,
+    "responseHeader": [
+      "Content-Type",
+      "Authorization",
+      "X-Requested-With",
+      "Accept",
+      "Origin",
+      "Access-Control-Request-Method",
+      "Access-Control-Request-Headers"
+    ]
+  }
+]

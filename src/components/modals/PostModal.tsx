@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { PlusCircle, X, ChevronDown, Send, Bold, Italic, Underline } from 'lucide-react';
+import { PlusCircle, X, ChevronDown, Send, Bold, Italic, Underline, Smile } from 'lucide-react';
 import { Post } from '@/lib/types';
 
 interface PostModalProps {
@@ -39,6 +39,14 @@ const sports = [
   'Volleyball'
 ];
 
+// Emoji categories for the picker
+const emojiCategories = {
+  sports: ['⚽', '🏀', '🏈', '⚾', '🎾', '🏐', '🏉', '🎱', '🏓', '🏸', '🏒', '🏑', '🏏', '🎯', '🏹', '🎣', '🤸', '🤾', '🏋️', '🚴', '🏇', '🏊', '🏄', '🏃', '🤺', '🥊', '🥋', '🎽', '🏅', '🥇', '🥈', '🥉', '🏆', '🏵️', '🎖️', '🏟️', '🏛️', '🏗️', '🏘️', '🏙️', '🏚️', '🏠', '🏡', '🏢', '🏣', '🏤', '🏥', '🏦', '🏧', '🏨', '🏩', '🏪', '🏫', '🏬', '🏭', '🏮', '🏯', '🏰', '💒', '🗼', '🗽', '⛪', '🕌', '🛕', '🕍', '⛩️', '🕋', '⛲', '⛺', '🌉', '🌁', '🚠', '🚡', '🚢', '⛵', '🛥️', '🚤', '⛴️', '🛳️', '🚁', '🚟', '🚠', '🚡', '🎠', '🎡', '🎢', '💈', '🎪', '🚂', '🚃', '🚄', '🚅', '🚆', '🚇', '🚈', '🚉', '🚊', '🚝', '🚞', '🚋', '🚌', '🚍', '🚎', '🚐', '🚑', '🚒', '🚓', '🚔', '🚕', '🚖', '🚗', '🚘', '🚙', '🚚', '🚛', '🚜', '🏎️', '🏍️', '🛵', '🚲', '🛴', '🛹', '🛼', '🛻', '🚁', '🚟', '🚠', '🚡', '🎠', '🎡', '🎢', '💈', '🎪'],
+  general: ['😀', '😃', '😄', '😁', '😆', '😅', '🤣', '😂', '🙂', '🙃', '😉', '😊', '😇', '🥰', '😍', '🤩', '😘', '😗', '😚', '😙', '😋', '😛', '😜', '🤪', '😝', '🤑', '🤗', '🤭', '🤫', '🤔', '🤐', '🤨', '😐', '😑', '😶', '😏', '😒', '🙄', '😬', '🤥', '😌', '😔', '😪', '🤤', '😴', '😷', '🤒', '🤕', '🤢', '🤮', '🤧', '🥵', '🥶', '🥴', '😵', '🤯', '🤠', '🥳', '😎', '🤓', '🧐', '😕', '😟', '🙁', '☹️', '😮', '😯', '😲', '😳', '🥺', '😦', '😧', '😨', '😰', '😥', '😢', '😭', '😱', '😖', '😣', '😞', '😓', '😩', '😫', '🥱', '😤', '😡', '😠', '🤬', '😈', '👿', '💀', '☠️', '💩', '🤡', '👹', '👺', '👻', '👽', '👾', '🤖', '😺', '😸', '😹', '😻', '😼', '😽', '🙀', '😿', '😾', '👶', '🧒', '👦', '👧', '🧑', '👨', '👩', '🧓', '👴', '👵', '👤', '👥', '🫂', '👋', '🤚', '🖐️', '✋', '🖖', '👌', '🤌', '🤏', '✌️', '🤞', '🤟', '🤘', '🤙', '👈', '👉', '👆', '🖕', '👇', '☝️', '👍', '👎', '✊', '👊', '🤛', '🤜', '👏', '🙌', '👐', '🤲', '🤝', '🙏', '✍️', '💅', '🤳', '💪', '🦾', '🦿', '🦵', '🦶', '👂', '🦻', '👃', '🧠', '🦷', '🦴', '👀', '👁️', '👅', '👄', '💋', '🩸', '🦠', '💊', '💉', '🩹', '🩺', '🧬', '🦠', '🧫', '🧪', '🌡️', '🧹', '🧺', '🧻', '🚽', '🚰', '🚿', '🛁', '🛀', '🧴', '🧷', '🧸', '🧵', '🧶', '🪡', '🪢', '🪣', '🧽', '🧯', '🛒', '🛍️', '🛎️', '🧾', '📋', '📌', '📍', '📎', '🖇️', '📏', '📐', '✂️', '🗃️', '🗄️', '🗑️', '🔒', '🔓', '🔏', '🔐', '🔑', '🗝️', '🔨', '🪓', '⛏️', '⚒️', '🛠️', '🗡️', '⚔️', '🔫', '🪃', '🏹', '🛡️', '🪚', '🔧', '🪛', '🔩', '⚙️', '🪤', '🧰', '🧲', '⚗️', '🧪', '🧫', '🧬', '🔬', '🔭', '📡', '💉', '🩸', '💊', '🩹', '🩺', '🩻', '🩼', '🦽', '🦼', '🦯', '🦮', '🦺', '🦿', '🦾', '🦵', '🦶', '🦴', '🦷', '🦻', '🦳', '🦲', '🦱', '🦰', '🦸', '🦹', '🦷', '🦴', '🦵', '🦶', '🦿', '🦾', '🦺', '🦮', '🦯', '🦼', '🦽', '🩼', '🩻', '🩺', '🩹', '💊', '🩸', '💉', '📡', '🔭', '🔬', '🧬', '🧫', '🧪', '⚗️', '🧲', '🧰', '🪤', '⚙️', '🔩', '🪛', '🔧', '🪚', '🛡️', '🏹', '🪃', '🔫', '⚔️', '🗡️', '🛠️', '⚒️', '⛏️', '🪓', '🔨', '🗝️', '🔑', '🔐', '🔏', '🔓', '🔒', '🗑️', '🗄️', '🗃️', '✂️', '📐', '📏', '🖇️', '📎', '📍', '📌', '📋', '🧾', '🛎️', '🛍️', '🛒', '🧯', '🧽', '🪣', '🪢', '🪡', '🧶', '🧵', '🧸', '🧷', '🧴', '🛀', '🛁', '🚿', '🚰', '🚽', '🧻', '🧺', '🧹', '🌡️', '🧪', '🧫', '🧬', '🦠', '🩸', '💊', '💉', '🩹', '🩺', '🩻', '🩼', '🦽', '🦼', '🦯', '🦮', '🦺', '🦿', '🦾', '🦵', '🦶', '🦴', '🦷', '🦻', '🦳', '🦲', '🦱', '🦰', '🦸', '🦹'],
+  symbols: ['❤️', '🧡', '💛', '💚', '💙', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '💕', '💞', '💓', '💗', '💖', '💘', '💝', '💟', '☮️', '✝️', '☪️', '🕉️', '☸️', '✡️', '🔯', '🕎', '☯️', '☦️', '🛐', '⛎', '♈', '♉', '♊', '♋', '♌', '♍', '♎', '♏', '♐', '♑', '♒', '♓', '🆔', '⚛️', '🉑', '☢️', '☣️', '📴', '📳', '🈶', '🈚', '🈸', '🈺', '🈷️', '✴️', '🆚', '💮', '🉐', '㊙️', '㊗️', '🈴', '🈵', '🈹', '🈲', '🅰️', '🅱️', '🆎', '🆑', '🅾️', '🆘', '❌', '⭕', '🛑', '⛔', '📛', '🚫', '💯', '💢', '♨️', '🚷', '🚯', '🚳', '🚱', '🔞', '📵', '🚭', '⭐', '🌟', '💫', '✨', '⚡', '🔥', '💥', '💢', '💨', '💦', '💧', '🌊', '🌪️', '🌩️', '⛈️', '🌦️', '🌧️', '🌤️', '⛅', '☀️', '🌞', '🌝', '🌛', '🌜', '🌚', '🌕', '🌖', '🌗', '🌘', '🌑', '🌒', '🌓', '🌔', '🌙', '🌍', '🌎', '🌏', '🌋', '🏔️', '⛰️', '🏕️', '🏖️', '🏜️', '🏝️', '🏞️', '🏟️', '🏛️', '🏗️', '🏘️', '🏙️', '🏚️', '🏠', '🏡', '🏢', '🏣', '🏤', '🏥', '🏦', '🏧', '🏨', '🏩', '🏪', '🏫', '🏬', '🏭', '🏮', '🏯', '🏰', '💒', '🗼', '🗽', '⛪', '🕌', '🛕', '🕍', '⛩️', '🕋', '⛲', '⛺', '🌉', '🌁', '🚠', '🚡', '🚢', '⛵', '🛥️', '🚤', '⛴️', '🛳️', '🚁', '🚟', '🚠', '🚡', '🎠', '🎡', '🎢', '💈', '🎪', '🚂', '🚃', '🚄', '🚅', '🚆', '🚇', '🚈', '🚉', '🚊', '🚝', '🚞', '🚋', '🚌', '🚍', '🚎', '🚐', '🚑', '🚒', '🚓', '🚔', '🚕', '🚖', '🚗', '🚘', '🚙', '🚚', '🚛', '🚜', '🏎️', '🏍️', '🛵', '🚲', '🛴', '🛹', '🛼', '🛻', '🚁', '🚟', '🚠', '🚡', '🎠', '🎡', '🎢', '💈', '🎪'],
+  flags: ['🏁', '🚩', '🎌', '🏴', '🏳️', '🏳️‍🌈', '🏳️‍⚧️', '🏴‍☠️', '🇦🇨', '🇦🇩', '🇦🇪', '🇦🇫', '🇦🇬', '🇦🇮', '🇦🇱', '🇦🇲', '🇦🇴', '🇦🇶', '🇦🇷', '🇦🇸', '🇦🇹', '🇦🇺', '🇦🇼', '🇦🇽', '🇦🇿', '🇧🇦', '🇧🇧', '🇧🇩', '🇧🇪', '🇧🇫', '🇧🇬', '🇧🇭', '🇧🇮', '🇧🇯', '🇧🇱', '🇧🇲', '🇧🇳', '🇧🇴', '🇧🇶', '🇧🇷', '🇧🇸', '🇧🇹', '🇧🇻', '🇧🇼', '🇧🇾', '🇧🇿', '🇨🇦', '🇨🇨', '🇨🇩', '🇨🇫', '🇨🇬', '🇨🇭', '🇨🇮', '🇨🇰', '🇨🇱', '🇨🇲', '🇨🇳', '🇨🇴', '🇨🇵', '🇨🇷', '🇨🇺', '🇨🇻', '🇨🇼', '🇨🇽', '🇨🇾', '🇨🇿', '🇩🇪', '🇩🇬', '🇩🇯', '🇩🇰', '🇩🇲', '🇩🇴', '🇩🇿', '🇪🇦', '🇪🇨', '🇪🇪', '🇪🇬', '🇪🇭', '🇪🇷', '🇪🇸', '🇪🇹', '🇪🇺', '🇫🇮', '🇫🇯', '🇫🇰', '🇫🇲', '🇫🇴', '🇫🇷', '🇬🇦', '🇬🇧', '🇬🇩', '🇬🇪', '🇬🇫', '🇬🇬', '🇬🇭', '🇬🇮', '🇬🇱', '🇬🇲', '🇬🇳', '🇬🇵', '🇬🇶', '🇬🇷', '🇬🇸', '🇬🇹', '🇬🇺', '🇬🇼', '🇬🇾', '🇭🇰', '🇭🇲', '🇭🇳', '🇭🇷', '🇭🇹', '🇭🇺', '🇮🇨', '🇮🇩', '🇮🇪', '🇮🇱', '🇮🇲', '🇮🇳', '🇮🇴', '🇮🇶', '🇮🇷', '🇮🇸', '🇮🇹', '🇯🇪', '🇯🇲', '🇯🇴', '🇯🇵', '🇰🇪', '🇰🇬', '🇰🇭', '🇰🇮', '🇰🇲', '🇰🇳', '🇰🇵', '🇰🇷', '🇰🇼', '🇰🇾', '🇰🇿', '🇱🇦', '🇱🇧', '🇱🇨', '🇱🇮', '🇱🇰', '🇱🇷', '🇱🇸', '🇱🇹', '🇱🇺', '🇱🇻', '🇱🇾', '🇲🇦', '🇲🇨', '🇲🇩', '🇲🇪', '🇲🇫', '🇲🇬', '🇲🇭', '🇲🇰', '🇲🇱', '🇲🇲', '🇲🇳', '🇲🇴', '🇲🇵', '🇲🇶', '🇲🇷', '🇲🇸', '🇲🇹', '🇲🇺', '🇲🇻', '🇲🇼', '🇲🇽', '🇲🇾', '🇲🇿', '🇳🇦', '🇳🇨', '🇳🇪', '🇳🇫', '🇳🇬', '🇳🇮', '🇳🇱', '🇳🇴', '🇳🇵', '🇳🇷', '🇳🇺', '🇳🇿', '🇴🇲', '🇵🇦', '🇵🇪', '🇵🇫', '🇵🇬', '🇵🇭', '🇵🇰', '🇵🇱', '🇵🇲', '🇵🇳', '🇵🇷', '🇵🇸', '🇵🇹', '🇵🇼', '🇵🇾', '🇶🇦', '🇷🇪', '🇷🇴', '🇷🇸', '🇷🇺', '🇷🇼', '🇸🇦', '🇸🇧', '🇸🇨', '🇸🇩', '🇸🇪', '🇸🇬', '🇸🇭', '🇸🇮', '🇸🇯', '🇸🇰', '🇸🇱', '🇸🇲', '🇸🇳', '🇸🇴', '🇸🇷', '🇸🇸', '🇸🇹', '🇸🇻', '🇸🇽', '🇸🇾', '🇸🇿', '🇹🇦', '🇹🇨', '🇹🇩', '🇹🇫', '🇹🇬', '🇹🇭', '🇹🇯', '🇹🇰', '🇹🇱', '🇹🇲', '🇹🇳', '🇹🇴', '🇹🇷', '🇹🇹', '🇹🇻', '🇹🇼', '🇹🇿', '🇺🇦', '🇺🇬', '🇺🇲', '🇺🇳', '🇺🇸', '🇺🇾', '🇺🇿', '🇻🇦', '🇻🇨', '🇻🇪', '🇻🇬', '🇻🇮', '🇻🇳', '🇻🇺', '🇼🇫', '🇼🇸', '🇽🇰', '🇾🇪', '🇾🇹', '🇿🇦', '🇿🇲', '🇿🇼']
+};
+
 export default function PostModal({ open, onClose, onSubmit, selectedSport }: PostModalProps) {
   const [sport, setSport] = useState('Football');
   const [title, setTitle] = useState('');
@@ -50,6 +58,7 @@ export default function PostModal({ open, onClose, onSubmit, selectedSport }: Po
   const [isBold, setIsBold] = useState(false);
   const [isItalic, setIsItalic] = useState(false);
   const [isUnderline, setIsUnderline] = useState(false);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -64,8 +73,30 @@ export default function PostModal({ open, onClose, onSubmit, selectedSport }: Po
       setIsBold(false);
       setIsItalic(false);
       setIsUnderline(false);
+      setShowEmojiPicker(false);
     }
   }, [open, selectedSport]);
+
+  // Close emoji picker when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (showEmojiPicker) {
+        const target = event.target as Node;
+        const emojiPicker = document.querySelector('[data-emoji-picker]');
+
+        // Only close if clicking outside both the content area and emoji picker
+        if (contentRef.current && !contentRef.current.contains(target) &&
+          (!emojiPicker || !emojiPicker.contains(target))) {
+          setShowEmojiPicker(false);
+        }
+      }
+    };
+
+    if (showEmojiPicker) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [showEmojiPicker]);
 
   const handleFormat = (command: string) => {
     document.execCommand(command, false);
@@ -79,14 +110,60 @@ export default function PostModal({ open, onClose, onSubmit, selectedSport }: Po
     setIsUnderline(document.queryCommandState('underline'));
   };
 
+  const insertEmoji = (emoji: string) => {
+    if (contentRef.current) {
+      // Focus the contentEditable div first
+      contentRef.current.focus();
+
+      // Try using execCommand first (more reliable for contentEditable)
+      const success = document.execCommand('insertText', false, emoji);
+
+      if (!success) {
+        // Fallback to manual insertion
+        const selection = window.getSelection();
+
+        if (selection && selection.rangeCount > 0) {
+          // If there's a selection, insert at the cursor position
+          const range = selection.getRangeAt(0);
+          range.deleteContents();
+
+          // Create a text node with the emoji
+          const textNode = document.createTextNode(emoji);
+          range.insertNode(textNode);
+
+          // Move cursor after the inserted emoji
+          range.setStartAfter(textNode);
+          range.setEndAfter(textNode);
+          selection.removeAllRanges();
+          selection.addRange(range);
+        } else {
+          // If no selection, append to the end
+          const range = document.createRange();
+          range.selectNodeContents(contentRef.current);
+          range.collapse(false);
+
+          const textNode = document.createTextNode(emoji);
+          range.insertNode(textNode);
+
+          // Move cursor after the inserted emoji
+          range.setStartAfter(textNode);
+          range.setEndAfter(textNode);
+          selection?.removeAllRanges();
+          selection?.addRange(range);
+        }
+      }
+
+      // Trigger the content change handler
+      handleContentChange();
+    }
+    setShowEmojiPicker(false);
+  };
+
   const handleContentChange = () => {
     if (contentRef.current) {
-      const htmlContent = contentRef.current.innerHTML;
-      // Convert HTML to plain text, removing HTML entities
-      const tempDiv = document.createElement('div');
-      tempDiv.innerHTML = htmlContent;
-      const plainText = tempDiv.textContent || tempDiv.innerText || '';
-      setContent(plainText);
+      // Get the text content directly, which preserves emojis better
+      const textContent = contentRef.current.textContent || contentRef.current.innerText || '';
+      setContent(textContent);
     }
   };
 
@@ -192,7 +269,7 @@ export default function PostModal({ open, onClose, onSubmit, selectedSport }: Po
               </label>
 
               {/* Formatting Toolbar */}
-              <div className="flex items-center gap-2 p-2 bg-white/5 border border-white/10 rounded-t-lg border-b-0">
+              <div className="relative flex items-center gap-2 p-2 bg-white/5 border border-white/10 rounded-t-lg border-b-0">
                 <button
                   type="button"
                   onClick={() => handleFormat('bold')}
@@ -220,7 +297,76 @@ export default function PostModal({ open, onClose, onSubmit, selectedSport }: Po
                 >
                   <Underline className="w-4 h-4" />
                 </button>
+                <button
+                  type="button"
+                  onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                  className={`p-2 rounded hover:bg-white/10 transition-colors ${showEmojiPicker ? 'bg-sky-500/20 text-sky-400' : 'text-slate-400'
+                    }`}
+                  title="Emoji"
+                >
+                  <Smile className="w-4 h-4" />
+                </button>
               </div>
+
+              {/* Emoji Picker */}
+              {showEmojiPicker && (
+                <div
+                  className="absolute z-20 mt-1 bg-slate-800 border border-white/20 rounded-lg shadow-xl p-4 max-w-sm max-h-80 overflow-y-auto"
+                  onClick={(e) => e.stopPropagation()}
+                  data-emoji-picker
+                >
+                  <div className="space-y-3">
+                    <div>
+                      <h4 className="text-sm font-medium text-slate-200 mb-2">Sports</h4>
+                      <div className="flex flex-wrap gap-1">
+                        {emojiCategories.sports.map((emoji, index) => (
+                          <button
+                            key={index}
+                            type="button"
+                            onClick={() => insertEmoji(emoji)}
+                            className="p-2 text-lg hover:bg-white/10 rounded transition-colors"
+                            title={emoji}
+                          >
+                            {emoji}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-medium text-slate-200 mb-2">General</h4>
+                      <div className="flex flex-wrap gap-1">
+                        {emojiCategories.general.map((emoji, index) => (
+                          <button
+                            key={index}
+                            type="button"
+                            onClick={() => insertEmoji(emoji)}
+                            className="p-2 text-lg hover:bg-white/10 rounded transition-colors"
+                            title={emoji}
+                          >
+                            {emoji}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-medium text-slate-200 mb-2">Symbols</h4>
+                      <div className="flex flex-wrap gap-1">
+                        {emojiCategories.symbols.map((emoji, index) => (
+                          <button
+                            key={index}
+                            type="button"
+                            onClick={() => insertEmoji(emoji)}
+                            className="p-2 text-lg hover:bg-white/10 rounded transition-colors"
+                            title={emoji}
+                          >
+                            {emoji}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {/* Rich Text Editor */}
               <div

@@ -16,6 +16,7 @@ const ProfileEditModal: React.FC<ProfileEditModalProps> = ({ isOpen, onClose, us
   const { profile, updateProfile, uploadAvatar, uploadCoverPhoto, addPhoto, removePhoto, loading } = useProfile();
   const [formData, setFormData] = useState<Partial<UserType>>({});
   const [activeTab, setActiveTab] = useState<'basic' | 'social' | 'photos' | 'privacy'>('basic');
+  const [uploadError, setUploadError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const coverPhotoInputRef = useRef<HTMLInputElement>(null);
   const galleryInputRef = useRef<HTMLInputElement>(null);
@@ -87,7 +88,17 @@ const ProfileEditModal: React.FC<ProfileEditModalProps> = ({ isOpen, onClose, us
   };
 
   const handleSave = async () => {
-    const success = await updateProfile(formData);
+    // Include the current profile's cover photo and avatar in the form data
+    const profileDataToSave = {
+      ...formData,
+      coverPhoto: profile?.coverPhoto || formData.coverPhoto,
+      avatar: profile?.avatar || formData.avatar,
+      profilePhotos: profile?.profilePhotos || formData.profilePhotos
+    };
+
+    // Console statement removed for production
+
+    const success = await updateProfile(profileDataToSave);
     if (success) {
       onClose();
     }
@@ -96,21 +107,66 @@ const ProfileEditModal: React.FC<ProfileEditModalProps> = ({ isOpen, onClose, us
   const handleAvatarUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      await uploadAvatar(file);
+      setUploadError(null);
+
+      // Validate file size (2MB max)
+      if (file.size > 2 * 1024 * 1024) {
+        setUploadError('Avatar image is too large. Please choose an image smaller than 2MB.');
+        return;
+      }
+
+      const success = await uploadAvatar(file);
+      if (success && profile?.avatar) {
+        // Update form data to include the new avatar URL
+        setFormData(prev => ({
+          ...prev,
+          avatar: profile.avatar
+        }));
+      }
     }
   };
 
   const handleCoverPhotoUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      await uploadCoverPhoto(file);
+      setUploadError(null);
+
+      // Validate file size (5MB max)
+      if (file.size > 5 * 1024 * 1024) {
+        setUploadError('Cover photo is too large. Please choose an image smaller than 5MB.');
+        return;
+      }
+
+      const success = await uploadCoverPhoto(file);
+      if (success && profile?.coverPhoto) {
+        // Update form data to include the new cover photo URL
+        setFormData(prev => ({
+          ...prev,
+          coverPhoto: profile.coverPhoto
+        }));
+      }
     }
   };
 
   const handleGalleryUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      await addPhoto(file);
+      setUploadError(null);
+
+      // Validate file size (3MB max)
+      if (file.size > 3 * 1024 * 1024) {
+        setUploadError('Gallery photo is too large. Please choose an image smaller than 3MB.');
+        return;
+      }
+
+      const success = await addPhoto(file);
+      if (success && profile?.profilePhotos) {
+        // Update form data to include the new profile photos
+        setFormData(prev => ({
+          ...prev,
+          profilePhotos: profile.profilePhotos
+        }));
+      }
     }
   };
 
@@ -302,9 +358,18 @@ const ProfileEditModal: React.FC<ProfileEditModalProps> = ({ isOpen, onClose, us
 
           {activeTab === 'photos' && (
             <div className="space-y-6">
+              {/* Upload Error Display */}
+              {uploadError && (
+                <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl">
+                  <p className="text-red-400 text-sm">{uploadError}</p>
+                </div>
+              )}
               {/* Avatar Upload */}
               <div>
-                <label className="block text-sm font-medium text-neutral-300 mb-4">Profile Picture</label>
+                <label className="block text-sm font-medium text-neutral-300 mb-2">Profile Picture</label>
+                <p className="text-xs text-neutral-400 mb-4">
+                  Recommended: 400×400px (1:1 ratio) • Max 2MB • JPG, PNG, or WebP
+                </p>
                 <div className="flex items-center gap-4">
                   <div className="w-20 h-20 rounded-full overflow-hidden bg-white/5 border border-white/10">
                     {profile?.avatar ? (
@@ -336,7 +401,10 @@ const ProfileEditModal: React.FC<ProfileEditModalProps> = ({ isOpen, onClose, us
 
               {/* Cover Photo Upload */}
               <div>
-                <label className="block text-sm font-medium text-neutral-300 mb-4">Cover Photo</label>
+                <label className="block text-sm font-medium text-neutral-300 mb-2">Cover Photo</label>
+                <p className="text-xs text-neutral-400 mb-4">
+                  Recommended: 1200×300px (4:1 ratio) • Max 5MB • JPG, PNG, or WebP
+                </p>
                 <div className="flex items-center gap-4">
                   <div className="w-32 h-20 rounded-xl overflow-hidden bg-white/5 border border-white/10">
                     {profile?.coverPhoto ? (
@@ -368,7 +436,10 @@ const ProfileEditModal: React.FC<ProfileEditModalProps> = ({ isOpen, onClose, us
 
               {/* Gallery Photos */}
               <div>
-                <label className="block text-sm font-medium text-neutral-300 mb-4">Gallery Photos</label>
+                <label className="block text-sm font-medium text-neutral-300 mb-2">Gallery Photos</label>
+                <p className="text-xs text-neutral-400 mb-4">
+                  Recommended: 800×600px (4:3 ratio) • Max 3MB each • JPG, PNG, or WebP
+                </p>
                 <div className="grid grid-cols-4 gap-4">
                   {profile?.profilePhotos?.map((photo, index) => (
                     <div key={index} className="relative group">

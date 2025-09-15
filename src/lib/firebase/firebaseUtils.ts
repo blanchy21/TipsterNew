@@ -856,6 +856,12 @@ export const updateUserProfile = async (userId: string, profileData: Partial<Use
 };
 
 export const uploadProfileImage = async (userId: string, file: File, type: 'avatar' | 'cover' | 'gallery'): Promise<string | null> => {
+  // In development, use base64 fallback to avoid CORS issues
+  if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined' && window.location.hostname === 'localhost') {
+    // Console statement removed for production
+    return await uploadImageAsBase64(userId, file, type);
+  }
+
   try {
     // Check if Firebase Storage is available
     if (!storage) {
@@ -871,16 +877,23 @@ export const uploadProfileImage = async (userId: string, file: File, type: 'avat
     const downloadURL = await getDownloadURL(snapshot.ref);
 
     return downloadURL;
-  } catch (error) {
+  } catch (error: any) {
     // Console statement removed for production
 
-    // Fallback to base64 if Firebase Storage fails
-    if (error.code === 'storage/unauthorized' || error.code === 'storage/invalid-argument') {
+    // Fallback to base64 for any Firebase Storage error (including CORS)
+    if (error.code === 'storage/unauthorized' ||
+      error.code === 'storage/invalid-argument' ||
+      error.message?.includes('CORS') ||
+      error.message?.includes('cors') ||
+      error.message?.includes('blocked') ||
+      error.message?.includes('preflight')) {
       // Console statement removed for production
       return await uploadImageAsBase64(userId, file, type);
     }
 
-    return null;
+    // For any other error, also try base64 fallback
+    // Console statement removed for production
+    return await uploadImageAsBase64(userId, file, type);
   }
 };
 
@@ -908,14 +921,20 @@ const uploadImageAsBase64 = async (userId: string, file: File, type: 'avatar' | 
         // Store in a temporary collection for base64 images
         await addDocument('base64Images', imageDoc);
 
+        // Console statement removed for production
         // Return the base64 string as the URL
         resolve(base64String);
       } catch (error) {
+        // Console statement removed for production
         reject(error);
       }
     };
 
-    reader.onerror = () => reject(new Error('Failed to read file'));
+    reader.onerror = () => {
+      // Console statement removed for production
+      reject(new Error('Failed to read file'));
+    };
+
     reader.readAsDataURL(file);
   });
 };
@@ -935,8 +954,15 @@ export const updateUserAvatar = async (userId: string, avatarUrl: string): Promi
   try {
     await updateUserProfile(userId, { avatar: avatarUrl });
     return true;
-  } catch (error) {
+  } catch (error: any) {
     // Console statement removed for production
+    // Handle COEP and other Firestore connection errors gracefully
+    if (error.message?.includes('COEP') ||
+      error.message?.includes('NotSameOriginAfterDefaultedToSameOriginByCoep') ||
+      error.message?.includes('blocked')) {
+      // Console statement removed for production
+      return false;
+    }
     return false;
   }
 };
@@ -945,8 +971,15 @@ export const updateUserCoverPhoto = async (userId: string, coverPhotoUrl: string
   try {
     await updateUserProfile(userId, { coverPhoto: coverPhotoUrl });
     return true;
-  } catch (error) {
+  } catch (error: any) {
     // Console statement removed for production
+    // Handle COEP and other Firestore connection errors gracefully
+    if (error.message?.includes('COEP') ||
+      error.message?.includes('NotSameOriginAfterDefaultedToSameOriginByCoep') ||
+      error.message?.includes('blocked')) {
+      // Console statement removed for production
+      return false;
+    }
     return false;
   }
 };

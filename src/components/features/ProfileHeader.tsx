@@ -35,8 +35,20 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
     return (
         <div className="relative">
             {/* Cover Photo */}
-            <div className="h-48 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 relative overflow-hidden">
-                <div className="absolute inset-0 bg-black/20"></div>
+            <div className="h-48 relative overflow-hidden">
+                {user.coverPhoto ? (
+                    <Image
+                        src={user.coverPhoto}
+                        alt="Cover photo"
+                        fill
+                        className="object-cover"
+                        priority
+                    />
+                ) : (
+                    <div className="h-full bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600">
+                        <div className="absolute inset-0 bg-black/20"></div>
+                    </div>
+                )}
                 {isOwnProfile && (
                     <button className="absolute top-4 right-4 p-2 bg-black/50 hover:bg-black/70 rounded-lg transition-colors">
                         <Camera className="w-5 h-5 text-white" />

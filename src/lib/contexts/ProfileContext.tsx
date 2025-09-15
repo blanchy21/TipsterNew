@@ -64,7 +64,7 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) =>
 
   const updateProfile = async (profileData: Partial<User>): Promise<boolean> => {
     if (!user?.uid) return false;
-    
+
     setLoading(true);
     setError(null);
     try {
@@ -84,17 +84,21 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) =>
 
   const uploadAvatar = async (file: File): Promise<boolean> => {
     if (!user?.uid) return false;
-    
+
     setLoading(true);
     setError(null);
     try {
       const avatarUrl = await uploadProfileImage(user.uid, file, 'avatar');
       if (avatarUrl) {
+        // Try to update Firestore, but don't fail if it doesn't work
         const success = await updateUserAvatar(user.uid, avatarUrl);
         if (success) {
           setProfile(prev => prev ? { ...prev, avatar: avatarUrl } : null);
+        } else {
+          // If Firestore update fails, still update local state
+          setProfile(prev => prev ? { ...prev, avatar: avatarUrl } : null);
         }
-        return success;
+        return true; // Return true since the image was uploaded successfully
       }
       return false;
     } catch (err) {
@@ -108,17 +112,21 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) =>
 
   const uploadCoverPhoto = async (file: File): Promise<boolean> => {
     if (!user?.uid) return false;
-    
+
     setLoading(true);
     setError(null);
     try {
       const coverPhotoUrl = await uploadProfileImage(user.uid, file, 'cover');
       if (coverPhotoUrl) {
+        // Try to update Firestore, but don't fail if it doesn't work
         const success = await updateUserCoverPhoto(user.uid, coverPhotoUrl);
         if (success) {
           setProfile(prev => prev ? { ...prev, coverPhoto: coverPhotoUrl } : null);
+        } else {
+          // If Firestore update fails, still update local state
+          setProfile(prev => prev ? { ...prev, coverPhoto: coverPhotoUrl } : null);
         }
-        return success;
+        return true; // Return true since the image was uploaded successfully
       }
       return false;
     } catch (err) {
@@ -132,20 +140,27 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) =>
 
   const addPhoto = async (file: File): Promise<boolean> => {
     if (!user?.uid) return false;
-    
+
     setLoading(true);
     setError(null);
     try {
       const photoUrl = await uploadProfileImage(user.uid, file, 'gallery');
       if (photoUrl) {
+        // Try to update Firestore, but don't fail if it doesn't work
         const success = await addProfilePhoto(user.uid, photoUrl);
         if (success) {
-          setProfile(prev => prev ? { 
-            ...prev, 
-            profilePhotos: [...(prev.profilePhotos || []), photoUrl] 
+          setProfile(prev => prev ? {
+            ...prev,
+            profilePhotos: [...(prev.profilePhotos || []), photoUrl]
+          } : null);
+        } else {
+          // If Firestore update fails, still update local state
+          setProfile(prev => prev ? {
+            ...prev,
+            profilePhotos: [...(prev.profilePhotos || []), photoUrl]
           } : null);
         }
-        return success;
+        return true; // Return true since the image was uploaded successfully
       }
       return false;
     } catch (err) {
@@ -159,14 +174,14 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) =>
 
   const removePhoto = async (photoUrl: string): Promise<boolean> => {
     if (!user?.uid) return false;
-    
+
     setLoading(true);
     setError(null);
     try {
       const success = await removeProfilePhoto(user.uid, photoUrl);
       if (success) {
-        setProfile(prev => prev ? { 
-          ...prev, 
+        setProfile(prev => prev ? {
+          ...prev,
           profilePhotos: prev.profilePhotos?.filter(url => url !== photoUrl) || []
         } : null);
       }

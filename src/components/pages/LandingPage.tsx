@@ -109,7 +109,8 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
           <div className="mt-4 rounded-full border border-white/10 bg-white/5 backdrop-blur supports-[backdrop-filter]:bg-white/5">
             <div className="flex items-center justify-between px-4 py-3">
               <div className="flex items-center gap-3">
-                <Image src="/tipster-logo2.svg" alt="Tipster Arena" width={120} height={30} className="h-8 w-auto" />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/tipster-logo2.svg" alt="Tipster Arena" width={120} height={30} className="h-8 w-auto" />
               </div>
 
               <div className="hidden md:flex items-center gap-8">

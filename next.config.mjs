@@ -77,6 +77,8 @@ const nextConfig = {
     ],
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    formats: ['image/webp', 'image/avif'],
+    minimumCacheTTL: 60,
   },
   async rewrites() {
     return [

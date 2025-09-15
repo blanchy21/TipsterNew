@@ -1,5 +1,4 @@
 import React from 'react';
-import Image from 'next/image';
 
 interface LogoProps {
   collapsed?: boolean;
@@ -9,7 +8,8 @@ export default function Logo({ collapsed = false }: LogoProps) {
   return (
     <div className="flex items-center gap-3">
       <div className="h-9 w-9 rounded-lg bg-white/5 ring-1 ring-white/10 flex items-center justify-center">
-        <Image
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
           src="/favicon.svg"
           alt="Tipster Arena Logo"
           width={34}
@@ -18,14 +18,16 @@ export default function Logo({ collapsed = false }: LogoProps) {
         />
       </div>
       {!collapsed && (
-        <Image
-          src="/tipster-logo2.svg"
-          alt="Tipster Arena"
-          width={180}
-          height={36}
-          className="h-9 w-auto"
-          style={{ width: 'auto', height: 'auto' }}
-        />
+        <>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/tipster-logo2.svg"
+            alt="Tipster Arena"
+            width={180}
+            height={36}
+            className="h-9 w-auto"
+          />
+        </>
       )}
     </div>
   );
