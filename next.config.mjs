@@ -4,6 +4,13 @@ import withBundleAnalyzer from '@next/bundle-analyzer';
 const nextConfig = {
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion'],
+    scrollRestoration: true,
+  },
+  compress: true,
+  poweredByHeader: false,
+  generateEtags: false,
+  httpAgentOptions: {
+    keepAlive: true,
   },
   webpack: (config, { isServer }) => {
     // Optimize bundle splitting

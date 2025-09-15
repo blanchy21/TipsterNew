@@ -15,9 +15,10 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
   const [activeFeature, setActiveFeature] = useState(0);
 
   useEffect(() => {
+    // Reduce delay for faster LCP
     const timer = setTimeout(() => {
       setIsLoaded(true);
-    }, 100);
+    }, 0);
     return () => clearTimeout(timer);
   }, []);
 
@@ -204,11 +205,11 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
               </svg>
             </div>
 
-            <h1 className={`max-w-5xl text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold tracking-tight transition-all duration-1000 delay-200 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <h1 className="max-w-5xl text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold tracking-tight">
               The world&apos;s premier platform for
               <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-400 bg-clip-text text-transparent"> sports tip sharing</span>
             </h1>
-            <p className={`mt-6 max-w-2xl text-lg sm:text-xl text-white/70 leading-relaxed transition-all duration-1000 delay-400 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <p className="mt-6 max-w-2xl text-lg sm:text-xl text-white/70 leading-relaxed">
               The ultimate platform for sports tipsters. Share tips, track performance, and connect with fellow sports fans. Built by sports fans for sports fans - completely free, with transparent statistics and no bookmaker bias.
             </p>
 

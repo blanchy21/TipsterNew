@@ -7,14 +7,15 @@ import { sampleFollowing, sampleTrending } from '@/lib/utils';
 import { createPost, togglePostLike, incrementPostViews } from '@/lib/firebase/firebaseUtils';
 import { collection, query as firestoreQuery, orderBy as firestoreOrderBy, onSnapshot, where, limit } from 'firebase/firestore';
 import { db } from '@/lib/firebase/firebase';
-import Sidebar from './layout/Sidebar';
-import MobileHeader from './layout/MobileHeader';
-import Feed from './features/Feed';
-import RightSidebar from './layout/RightSidebar';
-import PostModal from './modals/PostModal';
-import AdminAccessModal from './admin/AdminAccessModal';
-import ProfileAccessModal from './modals/ProfileAccessModal';
-import AuthModal from './modals/AuthModal';
+// Lazy load all components to reduce initial bundle size
+const Sidebar = lazy(() => import('./layout/Sidebar'));
+const MobileHeader = lazy(() => import('./layout/MobileHeader'));
+const Feed = lazy(() => import('./features/Feed'));
+const RightSidebar = lazy(() => import('./layout/RightSidebar'));
+const PostModal = lazy(() => import('./modals/PostModal'));
+const AdminAccessModal = lazy(() => import('./admin/AdminAccessModal'));
+const ProfileAccessModal = lazy(() => import('./modals/ProfileAccessModal'));
+const AuthModal = lazy(() => import('./modals/AuthModal'));
 
 // Dynamic imports for heavy components
 const TopTipsters = lazy(() => import('./features/TopTipsters'));
@@ -27,17 +28,20 @@ const ChatPage = lazy(() => import('./pages/ChatPage'));
 const NotificationsPage = lazy(() => import('./pages/NotificationsPage'));
 const FollowingPage = lazy(() => import('./pages/FollowingPage'));
 const LandingPage = lazy(() => import('./pages/LandingPage'));
-import { NotificationsProvider } from '@/lib/contexts/NotificationsContext';
-import { AuthProvider } from '@/lib/contexts/AuthContext';
-import { ProfileProvider } from '@/lib/contexts/ProfileContext';
-import { FollowingProvider } from '@/lib/contexts/FollowingContext';
-import QueryProvider from '@/lib/providers/QueryProvider';
+// Lazy load context providers and heavy components
+const NotificationsProvider = lazy(() => import('@/lib/contexts/NotificationsContext').then(m => ({ default: m.NotificationsProvider })));
+const AuthProvider = lazy(() => import('@/lib/contexts/AuthContext').then(m => ({ default: m.AuthProvider })));
+const ProfileProvider = lazy(() => import('@/lib/contexts/ProfileContext').then(m => ({ default: m.ProfileProvider })));
+const FollowingProvider = lazy(() => import('@/lib/contexts/FollowingContext').then(m => ({ default: m.FollowingProvider })));
+const QueryProvider = lazy(() => import('@/lib/providers/QueryProvider'));
+const NotificationToastManager = lazy(() => import('./features/NotificationToastManager'));
+const RealtimeIndicator = lazy(() => import('./ui/RealtimeIndicator'));
+const ErrorBoundary = lazy(() => import('./ui/ErrorBoundary'));
+const AsyncErrorBoundary = lazy(() => import('./ui/AsyncErrorBoundary'));
+const PageLoadingState = lazy(() => import('./ui/LoadingState').then(m => ({ default: m.PageLoadingState })));
+
+// Keep useAuth as regular import since it's used immediately
 import { useAuth } from '@/lib/hooks/useAuth';
-import NotificationToastManager from './features/NotificationToastManager';
-import RealtimeIndicator from './ui/RealtimeIndicator';
-import ErrorBoundary from './ui/ErrorBoundary';
-import AsyncErrorBoundary from './ui/AsyncErrorBoundary';
-import { PageLoadingState } from './ui/LoadingState';
 
 function AppContent() {
   const { user, loading } = useAuth();
@@ -574,22 +578,26 @@ function AppContent() {
   return (
     <NotificationsProvider>
       <div className="h-screen flex flex-col overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-        <MobileHeader
-          onOpenPost={() => setShowPost(true)}
-          onMenu={() => { }}
-          isLoaded={isLoaded}
-        />
-        <div className="flex-1 flex overflow-hidden">
-          <Sidebar
-            selected={selected}
-            onSelect={handleNavigation}
+        <Suspense fallback={<div className="h-16 bg-slate-800 animate-pulse" />}>
+          <MobileHeader
             onOpenPost={() => setShowPost(true)}
+            onMenu={() => { }}
             isLoaded={isLoaded}
-            selectedSport={selectedSport}
-            onSportSelect={handleSportSelect}
-            onShowLandingPage={handleShowLandingPage}
-            onShowAuthModal={handleShowAuthModal}
           />
+        </Suspense>
+        <div className="flex-1 flex overflow-hidden">
+          <Suspense fallback={<div className="w-64 bg-slate-800 animate-pulse" />}>
+            <Sidebar
+              selected={selected}
+              onSelect={handleNavigation}
+              onOpenPost={() => setShowPost(true)}
+              isLoaded={isLoaded}
+              selectedSport={selectedSport}
+              onSportSelect={handleSportSelect}
+              onShowLandingPage={handleShowLandingPage}
+              onShowAuthModal={handleShowAuthModal}
+            />
+          </Suspense>
 
           {selected === 'admin' && isAdminAuthenticated ? (
             <div className="flex-1 overflow-y-auto">
@@ -635,80 +643,100 @@ function AppContent() {
             </div>
           ) : selected === 'sports' ? (
             <div className="flex-1 flex flex-col overflow-hidden">
-              <Feed
-                posts={filteredPosts}
-                isLoaded={isLoaded}
-                query={query}
-                onQueryChange={setQuery}
-                selectedSport={selectedSport}
-                selected={selected}
-                onLikeChange={handleLikeChange}
-                onNavigateToProfile={handleNavigateToProfile}
-                onPostDeleted={handlePostDeleted}
-                onPostUpdated={handlePostUpdated}
-                onFiltersChange={setFilters}
-                currentFilters={filters}
-              />
-              <RightSidebar posts={posts} isLoaded={isLoaded} onNavigateToProfile={handleNavigateToProfile} />
+              <Suspense fallback={<div className="flex-1 bg-slate-800 animate-pulse" />}>
+                <Feed
+                  posts={filteredPosts}
+                  isLoaded={isLoaded}
+                  query={query}
+                  onQueryChange={setQuery}
+                  selectedSport={selectedSport}
+                  selected={selected}
+                  onLikeChange={handleLikeChange}
+                  onNavigateToProfile={handleNavigateToProfile}
+                  onPostDeleted={handlePostDeleted}
+                  onPostUpdated={handlePostUpdated}
+                  onFiltersChange={setFilters}
+                  currentFilters={filters}
+                />
+              </Suspense>
+              <Suspense fallback={<div className="w-80 bg-slate-800 animate-pulse" />}>
+                <RightSidebar posts={posts} isLoaded={isLoaded} onNavigateToProfile={handleNavigateToProfile} />
+              </Suspense>
             </div>
           ) : (
             <>
-              <Feed
-                posts={filteredPosts}
-                isLoaded={isLoaded}
-                query={query}
-                onQueryChange={setQuery}
-                selectedSport={selectedSport}
-                selected={selected}
-                onLikeChange={handleLikeChange}
-                onNavigateToProfile={handleNavigateToProfile}
-                onPostDeleted={handlePostDeleted}
-                onPostUpdated={handlePostUpdated}
-                onFiltersChange={setFilters}
-                currentFilters={filters}
-              />
+              <Suspense fallback={<div className="flex-1 bg-slate-800 animate-pulse" />}>
+                <Feed
+                  posts={filteredPosts}
+                  isLoaded={isLoaded}
+                  query={query}
+                  onQueryChange={setQuery}
+                  selectedSport={selectedSport}
+                  selected={selected}
+                  onLikeChange={handleLikeChange}
+                  onNavigateToProfile={handleNavigateToProfile}
+                  onPostDeleted={handlePostDeleted}
+                  onPostUpdated={handlePostUpdated}
+                  onFiltersChange={setFilters}
+                  currentFilters={filters}
+                />
+              </Suspense>
 
-              <RightSidebar
-                posts={posts}
-                isLoaded={isLoaded}
-                onNavigateToProfile={handleNavigateToProfile}
-              />
+              <Suspense fallback={<div className="w-80 bg-slate-800 animate-pulse" />}>
+                <RightSidebar
+                  posts={posts}
+                  isLoaded={isLoaded}
+                  onNavigateToProfile={handleNavigateToProfile}
+                />
+              </Suspense>
             </>
           )}
         </div>
 
-        <PostModal
-          open={showPost}
-          onClose={() => setShowPost(false)}
-          onSubmit={handleSubmitPost}
-          selectedSport={selectedSport}
-        />
+        <Suspense fallback={null}>
+          <PostModal
+            open={showPost}
+            onClose={() => setShowPost(false)}
+            onSubmit={handleSubmitPost}
+            selectedSport={selectedSport}
+          />
+        </Suspense>
 
-        <AuthModal
-          isOpen={showAuthModal}
-          onClose={handleCloseAuthModal}
-          initialMode={authModalMode}
-        />
+        <Suspense fallback={null}>
+          <AuthModal
+            isOpen={showAuthModal}
+            onClose={handleCloseAuthModal}
+            initialMode={authModalMode}
+          />
+        </Suspense>
 
         {showAdminAccessModal && (
-          <AdminAccessModal
-            isOpen={showAdminAccessModal}
-            onClose={() => setShowAdminAccessModal(false)}
-            onSuccess={handleAdminSuccess}
-          />
+          <Suspense fallback={null}>
+            <AdminAccessModal
+              isOpen={showAdminAccessModal}
+              onClose={() => setShowAdminAccessModal(false)}
+              onSuccess={handleAdminSuccess}
+            />
+          </Suspense>
         )}
 
         {showProfileAccessModal && (
-          <ProfileAccessModal
-            isOpen={showProfileAccessModal}
-            onClose={() => setShowProfileAccessModal(false)}
-            onLogin={() => handleShowAuthModal('login')}
-            onSignup={() => handleShowAuthModal('signup')}
-          />
+          <Suspense fallback={null}>
+            <ProfileAccessModal
+              isOpen={showProfileAccessModal}
+              onClose={() => setShowProfileAccessModal(false)}
+              onLogin={() => handleShowAuthModal('login')}
+              onSignup={() => handleShowAuthModal('signup')}
+            />
+          </Suspense>
         )}
 
-        <NotificationToastManager />
-        <RealtimeIndicator isConnected={!!user} />
+        <Suspense fallback={null}>
+          <NotificationToastManager />
+        </Suspense>
+        <Suspense fallback={null}>
+          <RealtimeIndicator isConnected={!!user} />
+        </Suspense>
 
       </div>
     </NotificationsProvider>
@@ -717,36 +745,48 @@ function AppContent() {
 
 export default function App() {
   return (
-    <ErrorBoundary
-      onError={(error, errorInfo) => {
-        // Log error to monitoring service in production
-        if (process.env.NODE_ENV === 'development') {
-          // Log errors in development for debugging
-          // eslint-disable-next-line no-console
-          // Console statement removed for production
-        }
-      }}
-    >
-      <QueryProvider>
-        <AuthProvider>
-          <ProfileProvider>
-            <FollowingProvider>
-              <AsyncErrorBoundary
-                onError={(error, errorInfo) => {
-                  if (process.env.NODE_ENV === 'development') {
-                    // eslint-disable-next-line no-console
-                    // Console statement removed for production
-                  }
-                }}
-                maxRetries={2}
-                retryDelay={1000}
-              >
-                <AppContent />
-              </AsyncErrorBoundary>
-            </FollowingProvider>
-          </ProfileProvider>
-        </AuthProvider>
-      </QueryProvider>
-    </ErrorBoundary>
+    <Suspense fallback={<div className="h-screen bg-slate-900 flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div></div>}>
+      <ErrorBoundary
+        onError={(error, errorInfo) => {
+          // Log error to monitoring service in production
+          if (process.env.NODE_ENV === 'development') {
+            // Log errors in development for debugging
+            // eslint-disable-next-line no-console
+            // Console statement removed for production
+          }
+        }}
+      >
+        <Suspense fallback={<div className="h-screen bg-slate-900 flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div></div>}>
+          <QueryProvider>
+            <Suspense fallback={<div className="h-screen bg-slate-900 flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div></div>}>
+              <AuthProvider>
+                <Suspense fallback={<div className="h-screen bg-slate-900 flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div></div>}>
+                  <ProfileProvider>
+                    <Suspense fallback={<div className="h-screen bg-slate-900 flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div></div>}>
+                      <FollowingProvider>
+                        <Suspense fallback={<div className="h-screen bg-slate-900 flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div></div>}>
+                          <AsyncErrorBoundary
+                            onError={(error, errorInfo) => {
+                              if (process.env.NODE_ENV === 'development') {
+                                // eslint-disable-next-line no-console
+                                // Console statement removed for production
+                              }
+                            }}
+                            maxRetries={2}
+                            retryDelay={1000}
+                          >
+                            <AppContent />
+                          </AsyncErrorBoundary>
+                        </Suspense>
+                      </FollowingProvider>
+                    </Suspense>
+                  </ProfileProvider>
+                </Suspense>
+              </AuthProvider>
+            </Suspense>
+          </QueryProvider>
+        </Suspense>
+      </ErrorBoundary>
+    </Suspense>
   );
 }

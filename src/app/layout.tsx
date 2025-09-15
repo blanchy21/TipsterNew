@@ -19,11 +19,23 @@ export default function RootLayout({
         <link rel="preconnect" href="https://firebase.googleapis.com" />
         <link rel="preconnect" href="https://firebasestorage.googleapis.com" />
 
-        {/* Preload critical fonts - removed non-existent font */}
+        {/* Preload critical assets */}
+        <link rel="preload" as="image" href="/tipster-logo2.svg" />
+        <link rel="preload" as="image" href="/hero-feed.png" />
 
         {/* DNS prefetch for external domains */}
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
         <link rel="dns-prefetch" href="https://lh3.googleusercontent.com" />
+
+        {/* Performance hints */}
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        <meta name="theme-color" content="#0f172a" />
+        <meta name="color-scheme" content="dark" />
+
+        {/* Resource hints for better performance */}
+        <link rel="prefetch" href="/profile" />
+        <link rel="prefetch" href="/chat" />
+        <link rel="prefetch" href="/following" />
       </head>
       <body>{children}</body>
     </html>
