@@ -379,7 +379,6 @@ function AppContent() {
         // Check if post already exists to prevent duplicates
         const exists = prev.some(post => post.id === formattedPost.id);
         if (exists) {
-          console.warn('Post already exists, not adding duplicate:', formattedPost.id);
           return prev;
         }
 
@@ -425,6 +424,9 @@ function AppContent() {
     if (!user) {
       setAuthModalMode('signup');
       setShowAuthModal(true);
+    } else {
+      // User is already authenticated, just continue to app
+      // The landing page will be hidden and main app will show
     }
   };
 

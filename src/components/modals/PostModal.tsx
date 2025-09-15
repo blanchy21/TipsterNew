@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { PlusCircle, X, ChevronDown, Send, Bold, Italic, Underline, Smile, Image, Upload } from 'lucide-react';
+import NextImage from 'next/image';
 import { Post } from '@/lib/types';
 
 interface PostModalProps {
@@ -194,7 +195,6 @@ export default function PostModal({ open, onClose, onSubmit, selectedSport }: Po
       const data = await response.json();
       setGifs(data.data || []);
     } catch (error) {
-      console.error('Error searching GIFs:', error);
       // Fallback to local GIF collection when API fails
       setGifs(getFallbackGifs(query));
     } finally {
@@ -433,8 +433,6 @@ export default function PostModal({ open, onClose, onSubmit, selectedSport }: Po
       ctx?.drawImage(img, 0, 0, width, height);
       const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.7); // 70% quality
 
-      console.log('Original size:', file.size, 'bytes');
-      console.log('Compressed size:', compressedDataUrl.length, 'bytes');
 
       insertImage(compressedDataUrl);
     };
@@ -510,14 +508,9 @@ export default function PostModal({ open, onClose, onSubmit, selectedSport }: Po
 
     const tagArray = tags.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
 
-    // Debug logging
-    console.log('Submitting tip with content length:', content.length);
-    console.log('Content preview:', content.substring(0, 200) + '...');
-    console.log('Contains images:', content.includes('<img'));
 
     // Check if content is too large (Firestore limit is 1MB)
     if (content.length > 1000000) {
-      console.error('Content too large for Firestore:', content.length, 'bytes');
       alert('Content is too large. Please reduce the image size or remove some images.');
       return;
     }
@@ -786,9 +779,11 @@ export default function PostModal({ open, onClose, onSubmit, selectedSport }: Po
                               onClick={() => insertGif(gif)}
                               className="relative group rounded-lg overflow-hidden hover:ring-2 hover:ring-sky-500/50 transition"
                             >
-                              <img
+                              <NextImage
                                 src={gif.images.fixed_height_small.url}
                                 alt={gif.title}
+                                width={gif.images.fixed_height_small.width}
+                                height={gif.images.fixed_height_small.height}
                                 className="w-full h-20 object-cover"
                               />
                               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
@@ -800,7 +795,7 @@ export default function PostModal({ open, onClose, onSubmit, selectedSport }: Po
 
                     {gifSearchTerm && gifs.length === 0 && !isLoadingGifs && (
                       <div className="text-center text-slate-400 text-sm py-4">
-                        No GIFs found for "{gifSearchTerm}"
+                        No GIFs found for &quot;{gifSearchTerm}&quot;
                       </div>
                     )}
                   </div>
