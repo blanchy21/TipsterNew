@@ -99,9 +99,9 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
       {/* Background Effects - Optimized for performance */}
       <div className="fixed inset-0 -z-20">
         <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"></div>
-        {/* Reduced blur effects for better performance */}
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-amber-500/10 rounded-full blur-2xl"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-orange-500/10 rounded-full blur-2xl"></div>
+        {/* Minimal blur effects for better performance */}
+        <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-amber-500/5 rounded-full blur-xl"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-32 h-32 bg-orange-500/5 rounded-full blur-xl"></div>
       </div>
 
       {/* Navigation */}
@@ -110,8 +110,14 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
           <div className="mt-4 rounded-full border border-white/10 bg-white/5 backdrop-blur supports-[backdrop-filter]:bg-white/5">
             <div className="flex items-center justify-between px-4 py-3">
               <div className="flex items-center gap-3">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/tipster-logo2.svg" alt="Tipster Arena" width={120} height={30} className="h-8 w-auto" />
+                <Image
+                  src="/tipster-logo2.svg"
+                  alt="Tipster Arena"
+                  width={120}
+                  height={30}
+                  className="h-8 w-auto"
+                  priority={true}
+                />
               </div>
 
               <div className="hidden md:flex items-center gap-8">
@@ -193,7 +199,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="relative flex flex-col sm:pt-16 lg:pt-20 text-center mr-auto ml-auto pt-12 items-center">
             {/* Badge */}
-            <div className={`mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2 text-sm text-emerald-300 transition-all duration-1000 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2 text-sm text-emerald-300">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -214,7 +220,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
             </p>
 
             {/* Stats */}
-            <div className={`mt-8 flex flex-col sm:flex-row items-center gap-6 text-sm text-white/60 transition-all duration-1000 delay-600 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} data-testid="stats-section">
+            <div className="mt-8 flex flex-col sm:flex-row items-center gap-6 text-sm text-white/60" data-testid="stats-section">
               <div className="flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 text-violet-400">
                   <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
@@ -243,7 +249,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
             </div>
 
             {/* CTA */}
-            <div className={`flex flex-col gap-4 sm:flex-row transition-all duration-1000 delay-800 mt-16 items-center ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <div className="flex flex-col gap-4 sm:flex-row mt-16 items-center">
               <a
                 href="#"
                 onClick={onGetStarted}
@@ -294,19 +300,78 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
             </p>
           </div>
 
-          {/* Demo Video */}
+          {/* Demo Video - Optimized for LCP */}
           <div className="relative max-w-6xl mx-auto">
             <div className="relative rounded-2xl overflow-hidden shadow-[0_30px_120px_-20px_rgba(245,158,11,0.45)]">
-              <video
-                className="w-full h-auto object-cover"
-                controls
-                poster="/hero-feed.png"
-                preload="metadata"
-              >
-                <source src="/demo.mov" type="video/quicktime" />
-                <source src="/demo.mov" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
+              {/* Optimized poster image using Next.js Image */}
+              <div className="relative w-full aspect-video bg-slate-800">
+                <Image
+                  src="/hero-feed.png"
+                  alt="Tipster Arena Demo Preview"
+                  fill
+                  className="object-cover"
+                  priority={false}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
+                />
+                {/* Play button overlay */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <button
+                    onClick={(e) => {
+                      const container = e.currentTarget.parentElement?.parentElement;
+                      const videoContainer = container?.querySelector('#video-container');
+                      const poster = e.currentTarget.parentElement;
+
+                      if (videoContainer && poster) {
+                        // Create video element dynamically
+                        const video = document.createElement('video');
+                        video.className = 'w-full h-auto object-cover';
+                        video.controls = true;
+                        video.playsInline = true;
+                        video.preload = 'none';
+
+                        // Add video sources
+                        const source1 = document.createElement('source');
+                        source1.src = '/demo.mov';
+                        source1.type = 'video/quicktime';
+
+                        const source2 = document.createElement('source');
+                        source2.src = '/demo.mov';
+                        source2.type = 'video/mp4';
+
+                        video.appendChild(source1);
+                        video.appendChild(source2);
+
+                        // Add fallback text
+                        video.textContent = 'Your browser does not support the video tag.';
+
+                        // Add video to container
+                        videoContainer.appendChild(video);
+
+                        // Show video container
+                        videoContainer.classList.remove('hidden');
+                        videoContainer.classList.add('block');
+
+                        // Hide poster
+                        poster.style.display = 'none';
+
+                        // Play video
+                        video.play();
+                      }
+                    }}
+                    className="group relative flex h-20 w-20 items-center justify-center rounded-full bg-white/90 backdrop-blur-sm transition-all duration-200 hover:bg-white hover:scale-110"
+                  >
+                    <svg
+                      className="ml-1 h-8 w-8 text-slate-900 transition-transform duration-200 group-hover:scale-110"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              {/* Video - Only loaded when user clicks play */}
+              <div id="video-container" className="hidden"></div>
               {/* Optional overlay for better text readability if needed */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none"></div>
             </div>
