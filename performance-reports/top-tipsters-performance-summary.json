@@ -1,0 +1,26 @@
+{
+  "timestamp": "2025-09-16T16:06:58.676Z",
+  "page": "Top Tipsters (Following Page)",
+  "url": "/following",
+  "performance_score": 0.57,
+  "performance_grade": "F",
+  "key_metrics": {
+    "first_contentful_paint": "2.8s",
+    "largest_contentful_paint": "6.3s", 
+    "speed_index": "2.8s",
+    "total_blocking_time": "660ms",
+    "cumulative_layout_shift": "0.001",
+    "time_to_interactive": "25.6s"
+  },
+  "optimization_notes": {
+    "animations_removed": true,
+    "staggered_delays_removed": true,
+    "hover_animations_kept": true
+  },
+  "recommendations": [
+    "Consider implementing virtual scrolling for large tipster lists",
+    "Optimize image loading with lazy loading",
+    "Reduce JavaScript bundle size",
+    "Implement code splitting for the following page"
+  ]
+}

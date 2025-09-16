@@ -12,8 +12,7 @@ import {
 } from 'lucide-react';
 import { normalizeImageUrl } from '@/lib/imageUtils';
 import { LeaderboardEntry, getAllUsersWithStats, sortLeaderboard, getLeaderboardStats } from '@/lib/leaderboardUtils';
-import { collection, query, onSnapshot } from 'firebase/firestore';
-import { db } from '@/lib/firebase/firebase';
+import { getFirebaseFirestore, getFirestoreFunctions } from '@/lib/firebase/firebase-optimized';
 
 interface TopTipstersProps {
     onNavigateToProfile?: (userId: string) => void;
@@ -56,34 +55,48 @@ const TopTipsters: React.FC<TopTipstersProps> = ({ onNavigateToProfile }) => {
 
     // Real-time listener for verification updates
     useEffect(() => {
+        let unsubscribe: (() => void) | undefined;
 
-        const unsubscribe = onSnapshot(
-            query(collection(db, 'tipVerifications')),
-            (snapshot) => {
+        const setupRealtimeListener = async () => {
+            try {
+                const db = await getFirebaseFirestore();
+                const { collection, query, onSnapshot } = await getFirestoreFunctions();
 
-                // Reload leaderboard when verifications change
-                const loadTipsters = async () => {
-                    try {
-                        const [tipstersData, statsData] = await Promise.all([
-                            getAllUsersWithStats(),
-                            getLeaderboardStats()
-                        ]);
-                        setTipsters(tipstersData);
-                        setStats(statsData);
-                    } catch (error) {
+                if (!db) return;
+
+                unsubscribe = onSnapshot(
+                    query(collection(db, 'tipVerifications')),
+                    (snapshot) => {
+                        // Reload leaderboard when verifications change
+                        const loadTipsters = async () => {
+                            try {
+                                const [tipstersData, statsData] = await Promise.all([
+                                    getAllUsersWithStats(),
+                                    getLeaderboardStats()
+                                ]);
+                                setTipsters(tipstersData);
+                                setStats(statsData);
+                            } catch (error) {
+                                // Console statement removed for production
+                            }
+                        };
+                        loadTipsters();
+                    },
+                    (error) => {
                         // Console statement removed for production
                     }
-                };
-                loadTipsters();
-            },
-            (error) => {
+                );
+            } catch (error) {
                 // Console statement removed for production
             }
-        );
+        };
+
+        setupRealtimeListener();
 
         return () => {
-
-            unsubscribe();
+            if (unsubscribe) {
+                unsubscribe();
+            }
         };
     }, []);
 
@@ -131,7 +144,7 @@ const TopTipsters: React.FC<TopTipstersProps> = ({ onNavigateToProfile }) => {
         <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-full">
             <div className="max-w-7xl mx-auto px-4 lg:px-8 py-12">
                 {/* Header */}
-                <div className="text-center mb-12 opacity-0 translate-y-8 blur-sm" style={{ animation: 'fadeInSlideUp 1.2s ease-out 0.3s forwards' }}>
+                <div className="text-center mb-12">
                     <div className="flex items-center justify-center gap-4 mb-6">
                         <div className="p-4 bg-gradient-to-r from-yellow-500 to-amber-500 rounded-2xl shadow-2xl">
                             <Trophy className="w-8 h-8 text-white" />
@@ -179,7 +192,7 @@ const TopTipsters: React.FC<TopTipstersProps> = ({ onNavigateToProfile }) => {
                 </div>
 
                 {/* Filters */}
-                <div className="flex flex-col sm:flex-row gap-4 mb-8 opacity-0 translate-y-8 blur-sm" style={{ animation: 'fadeInSlideUp 1s ease-out 0.6s forwards' }}>
+                <div className="flex flex-col sm:flex-row gap-4 mb-8">
                     <div className="flex gap-2 flex-wrap">
                         <button
                             onClick={() => sortTipsters('winRate')}
@@ -239,7 +252,7 @@ const TopTipsters: React.FC<TopTipstersProps> = ({ onNavigateToProfile }) => {
                 </div>
 
                 {/* Leaderboard */}
-                <div className="space-y-4 opacity-0 translate-y-8 blur-sm" style={{ animation: 'fadeInSlideUp 1s ease-out 0.9s forwards' }}>
+                <div className="space-y-4">
                     {tipsters.length === 0 ? (
                         <div className="text-center py-12">
                             <div className="text-slate-400 text-lg mb-2">No tipsters found</div>
@@ -252,7 +265,6 @@ const TopTipsters: React.FC<TopTipstersProps> = ({ onNavigateToProfile }) => {
                                 className={`p-6 rounded-2xl bg-white/5 backdrop-blur-3xl border border-white/10 hover:border-white/20 hover:scale-[1.02] transition-all duration-500 cursor-pointer group ${tipster.position <= 3 ? 'shadow-2xl' : 'shadow-xl'
                                     }`}
                                 onClick={() => onNavigateToProfile?.(tipster.id)}
-                                style={{ animation: `fadeInSlideUp 0.6s ease-out ${1.2 + index * 0.1}s forwards` }}
                             >
                                 <div className="flex items-center gap-6">
                                     {/* Position */}

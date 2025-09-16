@@ -1,5 +1,4 @@
-import { db } from './firebase/firebase';
-import { collection, query, getDocs, where, orderBy } from 'firebase/firestore';
+import { getFirebaseFirestore, getFirestoreFunctions } from './firebase/firebase-optimized';
 import { User } from './types';
 import { getUserVerificationStats } from './firebase/tipVerification';
 
@@ -34,12 +33,14 @@ export interface LeaderboardStats {
 
 // Get all users with their tip statistics
 export const getAllUsersWithStats = async (): Promise<LeaderboardEntry[]> => {
-    if (!db) {
-
-        return [];
-    }
-
     try {
+        const db = await getFirebaseFirestore();
+        const { collection, query, getDocs } = await getFirestoreFunctions();
+
+        if (!db) {
+            return [];
+        }
+
         // Get all users
         const usersQuery = query(collection(db, 'users'));
         const usersSnapshot = await getDocs(usersQuery);
@@ -104,18 +105,6 @@ export const getAllUsersWithStats = async (): Promise<LeaderboardEntry[]> => {
 
 // Get leaderboard statistics
 export const getLeaderboardStats = async (): Promise<LeaderboardStats> => {
-    if (!db) {
-        return {
-            totalUsers: 0,
-            totalTips: 0,
-            totalWins: 0,
-            totalLosses: 0,
-            totalPending: 0,
-            averageWinRate: 0,
-            averageOdds: 0
-        };
-    }
-
     try {
         const entries = await getAllUsersWithStats();
 

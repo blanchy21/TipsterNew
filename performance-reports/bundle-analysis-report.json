@@ -1,0 +1,81 @@
+{
+  "timestamp": "2025-09-16T17:11:00.000Z",
+  "analysis_type": "Bundle Size Analysis",
+  "total_first_load_js": "265 kB",
+  "following_page_js": "1.82 kB",
+  "largest_chunks": [
+    {
+      "name": "vendor-9b6e52f9-cafe9f5a3c4f6f99.js",
+      "size": "169 kB",
+      "type": "vendor",
+      "description": "General vendor dependencies"
+    },
+    {
+      "name": "firebase-c9fdbed0-4ab762022cc60a93.js", 
+      "size": "168 kB",
+      "type": "firebase",
+      "description": "Firebase SDK and related modules"
+    },
+    {
+      "name": "react-f51bf7cca7508ca6.js",
+      "size": "133 kB", 
+      "type": "react",
+      "description": "React and React DOM"
+    },
+    {
+      "name": "polyfills-42372ed130431b0a.js",
+      "size": "110 kB",
+      "type": "polyfills",
+      "description": "Browser polyfills"
+    },
+    {
+      "name": "firebase-074c20c4-8416bdfd5aea4250.js",
+      "size": "82 kB",
+      "type": "firebase",
+      "description": "Additional Firebase modules"
+    }
+  ],
+  "dependencies_analysis": {
+    "firebase": {
+      "total_size": "~250 kB",
+      "modules": ["auth", "firestore", "storage", "analytics"],
+      "optimization_potential": "high"
+    },
+    "react": {
+      "total_size": "~133 kB", 
+      "modules": ["react", "react-dom"],
+      "optimization_potential": "low"
+    },
+    "vendor": {
+      "total_size": "~169 kB",
+      "modules": ["lucide-react", "framer-motion", "date-fns", "recharts"],
+      "optimization_potential": "medium"
+    }
+  },
+  "optimization_recommendations": [
+    {
+      "priority": "high",
+      "action": "Firebase Tree Shaking",
+      "description": "Import only specific Firebase modules instead of entire SDK",
+      "potential_savings": "50-100 kB"
+    },
+    {
+      "priority": "high", 
+      "action": "Code Splitting",
+      "description": "Split following page into separate bundle",
+      "potential_savings": "30-50 kB"
+    },
+    {
+      "priority": "medium",
+      "action": "Icon Optimization", 
+      "description": "Use dynamic imports for Lucide React icons",
+      "potential_savings": "20-30 kB"
+    },
+    {
+      "priority": "medium",
+      "action": "Framer Motion Optimization",
+      "description": "Remove unused Framer Motion features",
+      "potential_savings": "10-20 kB"
+    }
+  ]
+}

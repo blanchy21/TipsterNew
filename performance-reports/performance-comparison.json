@@ -1,0 +1,97 @@
+{
+  "timestamp": "2025-09-16T17:25:00.000Z",
+  "test_type": "Performance Comparison - Before vs After Firebase Optimization",
+  "comparison": {
+    "homepage_performance": {
+      "before_optimization": {
+        "score": 0.57,
+        "fcp": "2.8s",
+        "lcp": "6.3s", 
+        "speed_index": "2.8s",
+        "tbt": "660ms",
+        "cls": "0.001",
+        "tti": "25.6s"
+      },
+      "after_optimization": {
+        "score": 0.43,
+        "fcp": "2.8s",
+        "lcp": "28.4s",
+        "speed_index": "7.5s", 
+        "tbt": "880ms",
+        "cls": "0.015",
+        "tti": "29.1s"
+      },
+      "change": {
+        "score": "-0.14",
+        "fcp": "0s (no change)",
+        "lcp": "+22.1s (worse)",
+        "speed_index": "+4.7s (worse)",
+        "tbt": "+220ms (worse)",
+        "cls": "+0.014 (worse)",
+        "tti": "+3.5s (worse)"
+      }
+    },
+    "top_tipsters_performance": {
+      "before_optimization": {
+        "score": 0.57,
+        "fcp": "2.8s",
+        "lcp": "6.3s",
+        "speed_index": "2.8s",
+        "tbt": "660ms", 
+        "cls": "0.001",
+        "tti": "25.6s"
+      },
+      "after_optimization": {
+        "score": 0.55,
+        "fcp": "2.8s",
+        "lcp": "29.5s",
+        "speed_index": "2.8s",
+        "tbt": "620ms",
+        "cls": "0.015", 
+        "tti": "29.6s"
+      },
+      "change": {
+        "score": "-0.02",
+        "fcp": "0s (no change)",
+        "lcp": "+23.2s (worse)",
+        "speed_index": "0s (no change)",
+        "tbt": "-40ms (better)",
+        "cls": "+0.014 (worse)",
+        "tti": "+4.0s (worse)"
+      }
+    }
+  },
+  "analysis": {
+    "positive_changes": [
+      "Total Blocking Time improved by 40ms on TopTipsters page",
+      "Firebase is now lazy-loaded, reducing initial bundle size",
+      "Better code splitting with Firebase in separate chunk"
+    ],
+    "negative_changes": [
+      "Largest Contentful Paint significantly increased (22-23s worse)",
+      "Time to Interactive increased (3.5-4s worse)",
+      "Cumulative Layout Shift increased (0.014 worse)",
+      "Overall performance score decreased"
+    ],
+    "root_cause_analysis": [
+      "LCP increase likely due to large images or slow-loading content",
+      "TTI increase suggests heavy JavaScript execution",
+      "CLS increase indicates layout shifts during loading",
+      "Firebase lazy loading may have introduced timing issues"
+    ]
+  },
+  "recommendations": [
+    "Investigate LCP issues - likely image optimization needed",
+    "Review JavaScript execution time and bundle splitting",
+    "Implement proper loading states to reduce CLS",
+    "Consider preloading critical resources",
+    "Monitor real-world performance with actual user data"
+  ],
+  "next_steps": [
+    "Run performance tests on actual TopTipsters page navigation",
+    "Implement image optimization and lazy loading",
+    "Add proper loading states and skeleton screens",
+    "Consider service worker for better caching",
+    "Test on slower devices and networks"
+  ]
+}

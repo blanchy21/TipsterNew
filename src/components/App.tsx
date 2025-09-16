@@ -18,7 +18,7 @@ const ProfileAccessModal = lazy(() => import('./modals/ProfileAccessModal'));
 const AuthModal = lazy(() => import('./modals/AuthModal'));
 
 // Dynamic imports for heavy components
-const TopTipsters = lazy(() => import('./features/TopTipsters'));
+const TopTipsters = lazy(() => import('./features/TopTipstersLazy'));
 
 // Lazy load heavy components
 const ProfilePage = lazy(() => import('./pages/ProfilePage'));
@@ -42,6 +42,7 @@ const PageLoadingState = lazy(() => import('./ui/LoadingState').then(m => ({ def
 
 // Keep useAuth as regular import since it's used immediately
 import { useAuth } from '@/lib/hooks/useAuth';
+import { initializeServiceWorker, setupOfflineHandlers } from '@/lib/serviceWorker';
 
 function AppContent() {
   const { user, loading } = useAuth();
@@ -86,6 +87,10 @@ function AppContent() {
   useEffect(() => {
     // Only run on client side to prevent hydration mismatch
     if (!isClient) return;
+
+    // Initialize service worker for PWA functionality
+    initializeServiceWorker();
+    setupOfflineHandlers();
 
     // In test environment or when no user is logged in, show landing page
     const isTestEnvironment = typeof window !== 'undefined' &&
@@ -493,7 +498,10 @@ function AppContent() {
   // Set client flag to prevent hydration mismatch
   useEffect(() => {
     setIsClient(true);
-  }, []);
+    if (!isClient) return;
+    initializeServiceWorker();
+    setupOfflineHandlers();
+  }, [isClient]);
 
   // Debug logging
   useEffect(() => {

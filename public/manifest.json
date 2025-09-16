@@ -1,0 +1,80 @@
+{
+  "name": "Tipster Arena",
+  "short_name": "Tipster Arena",
+  "description": "The ultimate platform for sports tipsters to share, verify, and track their predictions",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#f59e0b",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["sports", "entertainment", "social"],
+  "icons": [
+    {
+      "src": "/tipster-favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/tipster-logo.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/tipster-logo2.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Top Tipsters",
+      "short_name": "Leaderboard",
+      "description": "View the top performing tipsters",
+      "url": "/?tab=top-tipsters",
+      "icons": [
+        {
+          "src": "/tipster-favicon.svg",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "My Profile",
+      "short_name": "Profile",
+      "description": "View your tipster profile",
+      "url": "/profile",
+      "icons": [
+        {
+          "src": "/tipster-favicon.svg",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Following",
+      "short_name": "Following",
+      "description": "View tipsters you follow",
+      "url": "/following",
+      "icons": [
+        {
+          "src": "/tipster-favicon.svg",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/hero.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Tipster Arena Homepage"
+    }
+  ]
+}
