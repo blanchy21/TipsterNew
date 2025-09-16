@@ -110,13 +110,10 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
           <div className="mt-4 rounded-full border border-white/10 bg-white/5 backdrop-blur supports-[backdrop-filter]:bg-white/5">
             <div className="flex items-center justify-between px-4 py-3">
               <div className="flex items-center gap-3">
-                <Image
+                <img
                   src="/tipster-logo2.svg"
                   alt="Tipster Arena"
-                  width={120}
-                  height={30}
                   className="h-8 w-auto"
-                  priority={true}
                 />
               </div>
 
@@ -300,81 +297,27 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
             </p>
           </div>
 
-          {/* Demo Video - Optimized for LCP */}
+          {/* Demo Video - Simplified */}
           <div className="relative max-w-6xl mx-auto">
             <div className="relative rounded-2xl overflow-hidden shadow-[0_30px_120px_-20px_rgba(245,158,11,0.45)]">
-              {/* Simplified placeholder for better LCP */}
-              <div className="relative w-full aspect-video bg-slate-800 flex items-center justify-center">
-                <div className="text-center">
-                  <div className="mb-4">
-                    <svg className="mx-auto h-16 w-16 text-amber-500" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M8 5v14l11-7z" />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-semibold text-white mb-2">Demo Video</h3>
-                  <p className="text-white/70">Click to watch</p>
-                </div>
-                {/* Play button overlay */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <button
-                    onClick={(e) => {
-                      const container = e.currentTarget.parentElement?.parentElement;
-                      const videoContainer = container?.querySelector('#video-container');
-                      const poster = e.currentTarget.parentElement;
-
-                      if (videoContainer && poster) {
-                        // Create video element dynamically
-                        const video = document.createElement('video');
-                        video.className = 'w-full h-auto object-cover';
-                        video.controls = true;
-                        video.playsInline = true;
-                        video.preload = 'none';
-
-                        // Add video sources
-                        const source1 = document.createElement('source');
-                        source1.src = '/demo.mov';
-                        source1.type = 'video/quicktime';
-
-                        const source2 = document.createElement('source');
-                        source2.src = '/demo.mov';
-                        source2.type = 'video/mp4';
-
-                        video.appendChild(source1);
-                        video.appendChild(source2);
-
-                        // Add fallback text
-                        video.textContent = 'Your browser does not support the video tag.';
-
-                        // Add video to container
-                        videoContainer.appendChild(video);
-
-                        // Show video container
-                        videoContainer.classList.remove('hidden');
-                        videoContainer.classList.add('block');
-
-                        // Hide poster
-                        poster.style.display = 'none';
-
-                        // Play video
-                        video.play();
-                      }
-                    }}
-                    className="group relative flex h-20 w-20 items-center justify-center rounded-full bg-white/90 backdrop-blur-sm transition-all duration-200 hover:bg-white hover:scale-110"
-                  >
-                    <svg
-                      className="ml-1 h-8 w-8 text-slate-900 transition-transform duration-200 group-hover:scale-110"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M8 5v14l11-7z" />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              {/* Video - Only loaded when user clicks play */}
-              <div id="video-container" className="hidden"></div>
-              {/* Optional overlay for better text readability if needed */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none"></div>
+              <video
+                className="w-full h-auto object-cover"
+                controls
+                preload="metadata"
+                poster="/hero-feed.png"
+                onError={(e) => {
+                  console.error('Video error:', e);
+                }}
+                onLoadStart={() => {
+                  console.log('Video load started');
+                }}
+                onCanPlay={() => {
+                  console.log('Video can play');
+                }}
+              >
+                <source src="/demo.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
             </div>
           </div>
         </div>
