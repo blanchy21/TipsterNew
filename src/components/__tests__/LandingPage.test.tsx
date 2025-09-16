@@ -23,7 +23,7 @@ describe('LandingPage', () => {
     it('renders the main heading', () => {
         render(<LandingPage {...defaultProps} />)
 
-        expect(screen.getByText('Tipster Arena')).toBeInTheDocument()
+        expect(screen.getAllByText('Tipster Arena')[0]).toBeInTheDocument()
     })
 
     it('renders the tagline', () => {
@@ -36,7 +36,7 @@ describe('LandingPage', () => {
         render(<LandingPage {...defaultProps} />)
 
         expect(screen.getByText('Share Your Tips')).toBeInTheDocument()
-        expect(screen.getByText('Live Sports Chat')).toBeInTheDocument()
+        expect(screen.getAllByText('Live Sports Chat')[0]).toBeInTheDocument()
         expect(screen.getByText('Transparent Tracking')).toBeInTheDocument()
         expect(screen.getByText('Find Top Tipsters')).toBeInTheDocument()
         expect(screen.getByText('Community Driven')).toBeInTheDocument()
@@ -46,7 +46,7 @@ describe('LandingPage', () => {
     it('calls onGetStarted when Get Started button is clicked', () => {
         render(<LandingPage {...defaultProps} />)
 
-        const getStartedButton = screen.getByText('Get Started')
+        const getStartedButton = screen.getByText('Get started')
         fireEvent.click(getStartedButton)
 
         expect(defaultProps.onGetStarted).toHaveBeenCalled()
@@ -55,7 +55,7 @@ describe('LandingPage', () => {
     it('calls onShowAuthModal when Sign In button is clicked', () => {
         render(<LandingPage {...defaultProps} />)
 
-        const signInButton = screen.getByText('Sign In')
+        const signInButton = screen.getByText('Sign in')
         fireEvent.click(signInButton)
 
         expect(defaultProps.onShowAuthModal).toHaveBeenCalledWith('login')
@@ -65,7 +65,7 @@ describe('LandingPage', () => {
         render(<LandingPage {...defaultProps} />)
 
         expect(screen.getByText(/Post your sports predictions and tips/)).toBeInTheDocument()
-        expect(screen.getByText(/Join dedicated chat rooms for each sport/)).toBeInTheDocument()
+        expect(screen.getAllByText(/Join dedicated chat rooms for each sport/)[0]).toBeInTheDocument()
         expect(screen.getByText(/Automatic win\/loss tracking/)).toBeInTheDocument()
     })
 
@@ -73,8 +73,8 @@ describe('LandingPage', () => {
         render(<LandingPage {...defaultProps} />)
 
         expect(screen.getByText('Features')).toBeInTheDocument()
-        expect(screen.getByText('How It Works')).toBeInTheDocument()
-        expect(screen.getByText('Community')).toBeInTheDocument()
+        expect(screen.getByText('Sports')).toBeInTheDocument()
+        expect(screen.getAllByText('Community')[0]).toBeInTheDocument()
     })
 
     it('displays the logo', () => {
@@ -97,9 +97,9 @@ describe('LandingPage', () => {
     it('renders feature icons', () => {
         render(<LandingPage {...defaultProps} />)
 
-        // Check for emoji icons in feature cards
+        // Check for emoji icons in feature cards - use getAllByText for duplicates
         expect(screen.getByText('🎯')).toBeInTheDocument() // Share Your Tips
-        expect(screen.getByText('💬')).toBeInTheDocument() // Live Sports Chat
+        expect(screen.getAllByText('💬')[0]).toBeInTheDocument() // Live Sports Chat
         expect(screen.getByText('📊')).toBeInTheDocument() // Transparent Tracking
         expect(screen.getByText('🔍')).toBeInTheDocument() // Find Top Tipsters
         expect(screen.getByText('👥')).toBeInTheDocument() // Community Driven
@@ -109,9 +109,9 @@ describe('LandingPage', () => {
     it('displays statistics section', () => {
         render(<LandingPage {...defaultProps} />)
 
-        // Look for common statistics text
-        expect(screen.getByText(/tipsters/i)).toBeInTheDocument()
-        expect(screen.getByText(/tips/i)).toBeInTheDocument()
+        // Look for common statistics text - updated to match current content
+        expect(screen.getByText(/10K\+ active tipsters/i)).toBeInTheDocument()
+        expect(screen.getByText(/100% free forever/i)).toBeInTheDocument()
     })
 
     it('handles loading state', async () => {
@@ -119,14 +119,16 @@ describe('LandingPage', () => {
 
         // The component should handle loading state gracefully
         await waitFor(() => {
-            expect(screen.getByText('Tipster Arena')).toBeInTheDocument()
+            expect(screen.getAllByText('Tipster Arena')[0]).toBeInTheDocument()
         })
     })
 
     it('shows call-to-action section', () => {
         render(<LandingPage {...defaultProps} />)
 
-        const ctaSection = screen.getByText(/Ready to start sharing your tips?/i)
+        const ctaSection = screen.getAllByText((content, element) => {
+            return element?.textContent?.includes('Ready to Start Sharing Tips') || false
+        })[0]
         expect(ctaSection).toBeInTheDocument()
     })
 
@@ -141,8 +143,9 @@ describe('LandingPage', () => {
         render(<LandingPage {...defaultProps} />)
 
         // Check for responsive classes or mobile-friendly elements
-        const container = screen.getByRole('main')
-        expect(container).toBeInTheDocument()
+        // The current landing page doesn't have a main role, so check for navigation instead
+        const navigation = screen.getByRole('navigation')
+        expect(navigation).toBeInTheDocument()
     })
 
     it('handles feature card interactions', () => {
