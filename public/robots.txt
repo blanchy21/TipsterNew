@@ -1,4 +1,21 @@
+# *
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /admin/*
+Disallow: /debug
+Disallow: /debug/*
+Disallow: /mobile-debug
+Disallow: /mobile-debug/*
+Disallow: /test
+Disallow: /test/*
+Disallow: /api
+Disallow: /api/*
+Disallow: /_next
+Disallow: /_next/*
 
-Sitemap: https://tipsterarena.com/sitemap.xml
+# Host
+Host: https://tipster-arena.vercel.app
+
+# Sitemaps
+Sitemap: https://tipster-arena.vercel.app/sitemap.xml

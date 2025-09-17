@@ -2,6 +2,8 @@
 import withBundleAnalyzer from '@next/bundle-analyzer';
 import withPWA from 'next-pwa';
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 const nextConfig = {
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion'],
@@ -13,6 +15,20 @@ const nextConfig = {
   httpAgentOptions: {
     keepAlive: true,
   },
+  // Production optimizations
+  swcMinify: true,
+  reactStrictMode: true,
+  output: 'standalone',
+  // Disable x-powered-by header
+  poweredByHeader: false,
+  // Optimize for production
+  ...(isProduction && {
+    compiler: {
+      removeConsole: {
+        exclude: ['error', 'warn'],
+      },
+    },
+  }),
   webpack: (config, { isServer }) => {
     // Optimize bundle splitting
     if (!isServer) {
@@ -116,6 +132,8 @@ const pwaConfig = withPWA({
   register: true,
   skipWaiting: true,
   disable: process.env.NODE_ENV === 'development', // Disable PWA in development
+  buildExcludes: [/middleware-manifest\.json$/],
+  publicExcludes: ['!robots.txt', '!sitemap.xml'],
   runtimeCaching: [
     {
       urlPattern: /^https:\/\/firestore\.googleapis\.com\/.*/i,
