@@ -11,10 +11,31 @@ const mockUser = {
     photoURL: 'https://example.com/avatar.jpg',
 }
 
-const mockSignInWithPopup = jest.fn()
-const mockCreateUserWithEmailAndPassword = jest.fn()
-const mockSignInWithEmailAndPassword = jest.fn()
-const mockSignOut = jest.fn()
+const mockSignInWithPopup = jest.fn(() => Promise.resolve({
+    user: {
+        uid: 'test-uid',
+        email: 'test@example.com',
+        displayName: 'Test User',
+        photoURL: null,
+    }
+}))
+const mockCreateUserWithEmailAndPassword = jest.fn(() => Promise.resolve({
+    user: {
+        uid: 'test-uid',
+        email: 'test@example.com',
+        displayName: 'Test User',
+        photoURL: null,
+    }
+}))
+const mockSignInWithEmailAndPassword = jest.fn(() => Promise.resolve({
+    user: {
+        uid: 'test-uid',
+        email: 'test@example.com',
+        displayName: 'Test User',
+        photoURL: null,
+    }
+}))
+const mockSignOut = jest.fn(() => Promise.resolve())
 const mockOnAuthStateChanged = jest.fn()
 
 jest.mock('firebase/auth', () => ({
@@ -24,7 +45,7 @@ jest.mock('firebase/auth', () => ({
     createUserWithEmailAndPassword: jest.fn(() => mockCreateUserWithEmailAndPassword()),
     signInWithEmailAndPassword: jest.fn(() => mockSignInWithEmailAndPassword()),
     sendPasswordResetEmail: jest.fn(),
-    updateProfile: jest.fn(),
+    updateProfile: jest.fn(() => Promise.resolve()),
 }))
 
 jest.mock('@/lib/firebase/firebase', () => ({
@@ -96,6 +117,12 @@ describe('Authentication Flow', () => {
     })
 
     it('should show loading state initially', () => {
+        // Mock to not call callback immediately to show loading state
+        mockOnAuthStateChanged.mockImplementation((callback) => {
+            // Don't call callback immediately to simulate loading state
+            return jest.fn() // unsubscribe function
+        })
+
         render(
             <AuthTestWrapper>
                 <TestAuthComponent />

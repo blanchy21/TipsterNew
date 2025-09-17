@@ -1,5 +1,46 @@
 import '@testing-library/jest-dom'
 
+// Polyfill for TextEncoder/TextDecoder in Node.js environment
+if (!global.TextEncoder) {
+    const { TextEncoder, TextDecoder } = require('util')
+    global.TextEncoder = TextEncoder
+    global.TextDecoder = TextDecoder
+}
+
+// Polyfill for ReadableStream in Node.js environment
+if (!global.ReadableStream) {
+    const { ReadableStream } = require('stream/web')
+    global.ReadableStream = ReadableStream
+}
+
+// Polyfill for TransformStream in Node.js environment
+if (!global.TransformStream) {
+    const { TransformStream } = require('stream/web')
+    global.TransformStream = TransformStream
+}
+
+// Simple Response polyfill for Node.js environment
+if (!global.Response) {
+    global.Response = class Response {
+        constructor(body, init = {}) {
+            this.body = body
+            this.status = init.status || 200
+            this.statusText = init.statusText || 'OK'
+            this.headers = new Map(Object.entries(init.headers || {}))
+        }
+
+        static json(data, init = {}) {
+            return new Response(JSON.stringify(data), {
+                ...init,
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...init.headers
+                }
+            })
+        }
+    }
+}
+
 // Mock Next.js router
 jest.mock('next/navigation', () => ({
     useRouter() {
@@ -33,7 +74,23 @@ jest.mock('firebase/auth', () => ({
         signOut: jest.fn(),
     })),
     GoogleAuthProvider: jest.fn(),
-    signInWithPopup: jest.fn(),
+    signInWithPopup: jest.fn(() => Promise.resolve({
+        user: {
+            uid: 'test-uid',
+            email: 'test@example.com',
+            displayName: 'Test User',
+            photoURL: null,
+        }
+    })),
+    createUserWithEmailAndPassword: jest.fn(() => Promise.resolve({
+        user: {
+            uid: 'test-uid',
+            email: 'test@example.com',
+            displayName: 'Test User',
+            photoURL: null,
+        }
+    })),
+    updateProfile: jest.fn(() => Promise.resolve()),
     signOut: jest.fn(),
     onAuthStateChanged: jest.fn(),
 }))
@@ -60,6 +117,18 @@ jest.mock('firebase/storage', () => ({
     ref: jest.fn(),
     uploadBytes: jest.fn(),
     getDownloadURL: jest.fn(),
+}))
+
+// Mock Firebase utils
+jest.mock('@/lib/firebase/firebaseUtils', () => ({
+    createUserProfile: jest.fn(() => Promise.resolve()),
+    getUserProfile: jest.fn(() => Promise.resolve(null)),
+    updateUserProfile: jest.fn(() => Promise.resolve()),
+    createPost: jest.fn(() => Promise.resolve()),
+    likePost: jest.fn(() => Promise.resolve()),
+    unlikePost: jest.fn(() => Promise.resolve()),
+    incrementPostViews: jest.fn(() => Promise.resolve()),
+    togglePostLike: jest.fn(() => Promise.resolve()),
 }))
 
 // Mock framer-motion
