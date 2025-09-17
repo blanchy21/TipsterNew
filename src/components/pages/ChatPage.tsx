@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { MessageCircle, Users, Trophy, Zap, TrendingUp, CircleDot, Target } from 'lucide-react';
+import { MessageCircle, Users, Trophy, Zap, TrendingUp, CircleDot, Target, Menu, X, ArrowLeft } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import ChatRoom from '@/components/features/ChatRoom';
 
 interface ChatChannel {
@@ -72,17 +73,63 @@ const CHAT_CHANNELS: ChatChannel[] = [
 ];
 
 export default function ChatPage() {
+  const router = useRouter();
   const [selectedChannel, setSelectedChannel] = useState<string>('general');
+  const [showSidebar, setShowSidebar] = useState(false);
 
   const selectedChannelData = CHAT_CHANNELS.find(channel => channel.id === selectedChannel);
 
+  const handleChannelSelect = (channelId: string) => {
+    setSelectedChannel(channelId);
+    setShowSidebar(false); // Close sidebar on mobile after selection
+  };
+
   return (
     <div className="flex h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+      {/* Mobile Header */}
+      <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-slate-800/90 backdrop-blur-sm border-b border-white/10 p-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => router.push('/')}
+              className="p-2 rounded-lg hover:bg-white/5 transition-colors"
+            >
+              <ArrowLeft className="w-5 h-5 text-slate-300" />
+            </button>
+            <button
+              onClick={() => setShowSidebar(!showSidebar)}
+              className="p-2 rounded-lg hover:bg-white/5 transition-colors"
+            >
+              <Menu className="w-5 h-5 text-slate-300" />
+            </button>
+          </div>
+          <h1 className="text-lg font-bold text-white">Live Chat</h1>
+          <div className="w-9"></div> {/* Spacer for centering */}
+        </div>
+      </div>
+
+      {/* Mobile Sidebar Overlay */}
+      {showSidebar && (
+        <div
+          className="md:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+          onClick={() => setShowSidebar(false)}
+        />
+      )}
+
+
       {/* Sidebar */}
-      <div className="w-80 bg-slate-800/50 backdrop-blur-sm border-r border-white/10 flex flex-col">
+      <div className={`${showSidebar ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 fixed md:relative z-50 md:z-auto w-80 h-full bg-slate-800/50 backdrop-blur-sm border-r border-white/10 flex flex-col transition-transform duration-300 ease-in-out`}>
         {/* Header */}
         <div className="p-6 border-b border-white/10">
-          <h1 className="text-2xl font-bold text-white mb-2">Live Chat</h1>
+          <div className="flex items-center justify-between mb-2">
+            <h1 className="text-2xl font-bold text-white">Live Chat</h1>
+            <button
+              onClick={() => setShowSidebar(false)}
+              className="md:hidden p-2 rounded-lg hover:bg-white/5 transition-colors"
+            >
+              <X className="w-5 h-5 text-slate-300" />
+            </button>
+          </div>
           <p className="text-slate-400 text-sm">Join the conversation with fellow tipsters</p>
         </div>
 
@@ -91,7 +138,7 @@ export default function ChatPage() {
           {CHAT_CHANNELS.map((channel) => (
             <button
               key={channel.id}
-              onClick={() => setSelectedChannel(channel.id)}
+              onClick={() => handleChannelSelect(channel.id)}
               className={`w-full p-4 rounded-lg text-left transition-all ${selectedChannel === channel.id
                 ? 'bg-gradient-to-r ' + channel.color + ' text-white shadow-lg'
                 : 'bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white'
@@ -132,7 +179,7 @@ export default function ChatPage() {
       </div>
 
       {/* Main Chat Area */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col pt-16 md:pt-0">
         {selectedChannelData ? (
           <ChatRoom
             gameId={selectedChannelData.gameId}

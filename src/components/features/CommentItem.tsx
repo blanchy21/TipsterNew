@@ -99,17 +99,21 @@ export default function CommentItem({
           className="ring-1 ring-white/10 flex-shrink-0"
         />
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 min-w-0">
-            <span className="text-slate-100 font-medium text-sm truncate">
-              {comment.user.name}
-            </span>
-            <span className="text-slate-500 text-xs truncate">
-              {comment.user.handle}
-            </span>
-            <span className="text-slate-500 text-xs">•</span>
-            <span className="text-slate-500 text-xs">
-              {timeAgo(comment.createdAt)}
-            </span>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 min-w-0">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 min-w-0">
+              <span className="text-slate-100 font-medium text-sm truncate">
+                {comment.user.name}
+              </span>
+              <span className="text-slate-500 text-xs truncate">
+                {comment.user.handle}
+              </span>
+            </div>
+            <div className="flex items-center gap-1 sm:gap-2">
+              <span className="text-slate-500 text-xs">•</span>
+              <span className="text-slate-500 text-xs">
+                {timeAgo(comment.createdAt)}
+              </span>
+            </div>
             {comment.isEdited && (
               <span className="text-slate-500 text-xs">(edited)</span>
             )}

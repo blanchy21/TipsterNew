@@ -10,6 +10,7 @@ import { db } from '@/lib/firebase/firebase';
 // Lazy load all components to reduce initial bundle size
 const Sidebar = lazy(() => import('./layout/Sidebar'));
 const MobileHeader = lazy(() => import('./layout/MobileHeader'));
+const MobileMenu = lazy(() => import('./layout/MobileMenu'));
 const Feed = lazy(() => import('./features/Feed'));
 const RightSidebar = lazy(() => import('./layout/RightSidebar'));
 const PostModal = lazy(() => import('./modals/PostModal'));
@@ -72,6 +73,7 @@ function AppContent() {
   const [showAdminAccessModal, setShowAdminAccessModal] = useState(false);
   const [showProfileAccessModal, setShowProfileAccessModal] = useState(false);
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   // Handler functions
   const handlePostDeleted = (postId: string) => {
@@ -510,6 +512,10 @@ function AppContent() {
     setSelected('admin');
   };
 
+  const handleMobileMenuToggle = () => {
+    setShowMobileMenu(!showMobileMenu);
+  };
+
   // Set client flag to prevent hydration mismatch
   useEffect(() => {
     setIsClient(true);
@@ -609,10 +615,26 @@ function AppContent() {
         <Suspense fallback={<div className="h-16 bg-slate-800 animate-pulse" />}>
           <MobileHeader
             onOpenPost={() => setShowPost(true)}
-            onMenu={() => { }}
+            onMenu={handleMobileMenuToggle}
             isLoaded={isLoaded}
           />
         </Suspense>
+
+        {/* Mobile Menu */}
+        <Suspense fallback={null}>
+          <MobileMenu
+            isOpen={showMobileMenu}
+            onClose={() => setShowMobileMenu(false)}
+            selected={selected}
+            onSelect={handleNavigation}
+            onOpenPost={() => setShowPost(true)}
+            selectedSport={selectedSport}
+            onSportSelect={handleSportSelect}
+            onShowLandingPage={handleShowLandingPage}
+            onShowAuthModal={handleShowAuthModal}
+          />
+        </Suspense>
+
         <div className="flex-1 flex overflow-hidden">
           <Suspense fallback={<div className="w-64 bg-slate-800 animate-pulse" />}>
             <Sidebar

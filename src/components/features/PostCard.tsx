@@ -224,21 +224,25 @@ const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChan
           />
           <div className="flex-1 min-w-0">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2 min-w-0">
-                {onNavigateToProfile ? (
-                  <UserProfileLink
-                    user={post.user}
-                    onNavigateToProfile={onNavigateToProfile}
-                    className="text-slate-100 font-medium truncate hover:text-blue-400"
-                  >
-                    {post.user.name}
-                  </UserProfileLink>
-                ) : (
-                  <span className="text-slate-100 font-medium truncate">{post.user.name}</span>
-                )}
-                <span className="text-slate-500 text-sm truncate">{post.user.handle}</span>
-                <span className="text-slate-500 text-xs">•</span>
-                <span className="text-slate-500 text-xs">{timeAgo(post.createdAt)}</span>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 min-w-0">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 min-w-0">
+                  {onNavigateToProfile ? (
+                    <UserProfileLink
+                      user={post.user}
+                      onNavigateToProfile={onNavigateToProfile}
+                      className="text-slate-100 font-medium truncate hover:text-blue-400"
+                    >
+                      {post.user.name}
+                    </UserProfileLink>
+                  ) : (
+                    <span className="text-slate-100 font-medium truncate">{post.user.name}</span>
+                  )}
+                  <span className="text-slate-500 text-sm truncate">{post.user.handle}</span>
+                </div>
+                <div className="flex items-center gap-1 sm:gap-2">
+                  <span className="text-slate-500 text-xs">•</span>
+                  <span className="text-slate-500 text-xs">{timeAgo(post.createdAt)}</span>
+                </div>
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-xs text-sky-300/90 bg-sky-500/10 ring-1 ring-sky-500/20 px-2 py-1 rounded-md">
