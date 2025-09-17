@@ -111,6 +111,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
             <div className="flex items-center justify-between px-4 py-3">
               <div className="flex items-center gap-3">
                 {/* Using regular img tag instead of Next.js Image due to SVG with embedded JPEG causing optimization issues */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/tipster-logo2.svg"
                   alt="Tipster Arena"
