@@ -136,10 +136,6 @@ function AppContent() {
     // Use window.location to get URL parameters as a fallback
     const urlParams = new URLSearchParams(window.location.search);
     const tab = searchParams.get('tab') || urlParams.get('tab');
-    console.log('URL tab parameter (searchParams):', searchParams.get('tab'));
-    console.log('URL tab parameter (window.location):', urlParams.get('tab'));
-    console.log('Current selected state:', selected);
-    console.log('Current URL:', window.location.href);
 
     if (tab && ['home', 'messages', 'chat', 'notifications', 'following', 'top-tipsters', 'sports', 'admin', 'profile'].includes(tab)) {
       // Close landing page when navigating to any tab
@@ -155,7 +151,6 @@ function AppContent() {
           handleProfileAccess();
         }
       } else {
-        console.log('Setting selected to:', tab);
         setSelected(tab);
       }
     }

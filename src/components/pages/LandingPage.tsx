@@ -110,6 +110,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
           <div className="mt-4 rounded-full border border-white/10 bg-white/5 backdrop-blur supports-[backdrop-filter]:bg-white/5">
             <div className="flex items-center justify-between px-4 py-3">
               <div className="flex items-center gap-3">
+                {/* Using regular img tag instead of Next.js Image due to SVG with embedded JPEG causing optimization issues */}
                 <img
                   src="/tipster-logo2.svg"
                   alt="Tipster Arena"
@@ -306,13 +307,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
                 preload="metadata"
                 poster="/hero-feed.png"
                 onError={(e) => {
-                  console.error('Video error:', e);
-                }}
-                onLoadStart={() => {
-                  console.log('Video load started');
-                }}
-                onCanPlay={() => {
-                  console.log('Video can play');
+                  // Video error handling - could be logged to analytics in production
                 }}
               >
                 <source src="/demo.mp4" type="video/mp4" />
