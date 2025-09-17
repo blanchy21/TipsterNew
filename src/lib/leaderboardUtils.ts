@@ -1,6 +1,7 @@
-import { getFirebaseFirestore, getFirestoreFunctions } from './firebase/firebase-optimized';
+import { db } from './firebase/firebase';
 import { User } from './types';
 import { getUserVerificationStats } from './firebase/tipVerification';
+import { collection, query, getDocs, orderBy, limit } from 'firebase/firestore';
 
 export interface LeaderboardEntry {
     id: string;
@@ -34,9 +35,6 @@ export interface LeaderboardStats {
 // Get all users with their tip statistics
 export const getAllUsersWithStats = async (): Promise<LeaderboardEntry[]> => {
     try {
-        const db = await getFirebaseFirestore();
-        const { collection, query, getDocs } = await getFirestoreFunctions();
-
         if (!db) {
             return [];
         }

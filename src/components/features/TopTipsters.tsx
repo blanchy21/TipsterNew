@@ -12,7 +12,8 @@ import {
 } from 'lucide-react';
 import { normalizeImageUrl } from '@/lib/imageUtils';
 import { LeaderboardEntry, getAllUsersWithStats, sortLeaderboard, getLeaderboardStats } from '@/lib/leaderboardUtils';
-import { getFirebaseFirestore, getFirestoreFunctions } from '@/lib/firebase/firebase-optimized';
+import { db } from '@/lib/firebase/firebase';
+import { collection, query, onSnapshot, orderBy, limit } from 'firebase/firestore';
 
 interface TopTipstersProps {
     onNavigateToProfile?: (userId: string) => void;
@@ -59,9 +60,6 @@ const TopTipsters: React.FC<TopTipstersProps> = ({ onNavigateToProfile }) => {
 
         const setupRealtimeListener = async () => {
             try {
-                const db = await getFirebaseFirestore();
-                const { collection, query, onSnapshot } = await getFirestoreFunctions();
-
                 if (!db) return;
 
                 unsubscribe = onSnapshot(

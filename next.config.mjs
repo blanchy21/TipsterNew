@@ -88,6 +88,19 @@ const nextConfig = {
     formats: ['image/webp', 'image/avif'],
     minimumCacheTTL: 60,
   },
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'Content-Security-Policy',
+            value: "frame-src 'self' https://www.google.com https://accounts.google.com https://tipsternew-700ed.firebaseapp.com;"
+          }
+        ]
+      }
+    ];
+  },
   async rewrites() {
     return [
       {
@@ -102,7 +115,7 @@ const pwaConfig = withPWA({
   dest: 'public',
   register: true,
   skipWaiting: true,
-  disable: process.env.NODE_ENV === 'development',
+  disable: process.env.NODE_ENV === 'development', // Disable PWA in development
   runtimeCaching: [
     {
       urlPattern: /^https:\/\/firestore\.googleapis\.com\/.*/i,

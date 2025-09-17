@@ -18,7 +18,7 @@ const ProfileAccessModal = lazy(() => import('./modals/ProfileAccessModal'));
 const AuthModal = lazy(() => import('./modals/AuthModal'));
 
 // Dynamic imports for heavy components
-const TopTipsters = lazy(() => import('./features/TopTipstersLazy'));
+const TopTipsters = lazy(() => import('./features/TopTipsters'));
 
 // Lazy load heavy components
 const ProfilePage = lazy(() => import('./pages/ProfilePage'));
@@ -65,7 +65,7 @@ function AppContent() {
     oddsRange: 'all',
     selectedTags: [] as string[]
   });
-  const [showLandingPage, setShowLandingPage] = useState(true); // Default to true for server-side rendering
+  const [showLandingPage, setShowLandingPage] = useState(false); // Default to false, will be set based on conditions
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authModalMode, setAuthModalMode] = useState<'login' | 'signup'>('login');
   const [viewingUserId, setViewingUserId] = useState<string | null>(null);
@@ -88,19 +88,20 @@ function AppContent() {
     // Only run on client side to prevent hydration mismatch
     if (!isClient) return;
 
-    // Initialize service worker for PWA functionality
-    initializeServiceWorker();
-    setupOfflineHandlers();
+    // Initialize service worker for PWA functionality (production only)
+    if (process.env.NODE_ENV === 'production') {
+      initializeServiceWorker();
+      setupOfflineHandlers();
+    }
 
-    // In test environment or when no user is logged in, show landing page
-    const isTestEnvironment = typeof window !== 'undefined' &&
-      (window.location.hostname === 'localhost' || window.location.hostname.includes('test'));
-
-    // Check if user has seen landing page (only in production)
+    // Check if user has seen landing page
     const hasSeenLandingPage = localStorage.getItem('hasSeenLandingPage');
 
-    if (isTestEnvironment || (!hasSeenLandingPage && !user && !loading)) {
+    // Only show landing page for new users who haven't seen it
+    if (!hasSeenLandingPage && !user && !loading) {
       setShowLandingPage(true);
+    } else {
+      setShowLandingPage(false);
     }
 
     // Load entrance state
@@ -130,8 +131,18 @@ function AppContent() {
 
   // Handle URL parameters for direct navigation
   useEffect(() => {
-    const tab = searchParams.get('tab');
+    // Use window.location to get URL parameters as a fallback
+    const urlParams = new URLSearchParams(window.location.search);
+    const tab = searchParams.get('tab') || urlParams.get('tab');
+    console.log('URL tab parameter (searchParams):', searchParams.get('tab'));
+    console.log('URL tab parameter (window.location):', urlParams.get('tab'));
+    console.log('Current selected state:', selected);
+    console.log('Current URL:', window.location.href);
+
     if (tab && ['home', 'messages', 'chat', 'notifications', 'following', 'top-tipsters', 'sports', 'admin', 'profile'].includes(tab)) {
+      // Close landing page when navigating to any tab
+      setShowLandingPage(false);
+
       if (tab === 'admin') {
         handleAdminAccess();
       } else if (tab === 'profile') {
@@ -142,6 +153,7 @@ function AppContent() {
           handleProfileAccess();
         }
       } else {
+        console.log('Setting selected to:', tab);
         setSelected(tab);
       }
     }
@@ -470,6 +482,9 @@ function AppContent() {
   };
 
   const handleNavigation = useCallback((page: string) => {
+    // Close landing page when navigating to any page
+    setShowLandingPage(false);
+
     if (page === 'admin') {
       handleAdminAccess();
     } else if (page === 'profile') {
@@ -499,8 +514,12 @@ function AppContent() {
   useEffect(() => {
     setIsClient(true);
     if (!isClient) return;
-    initializeServiceWorker();
-    setupOfflineHandlers();
+
+    // Initialize service worker for PWA functionality (production only)
+    if (process.env.NODE_ENV === 'production') {
+      initializeServiceWorker();
+      setupOfflineHandlers();
+    }
   }, [isClient]);
 
   // Debug logging
@@ -541,8 +560,9 @@ function AppContent() {
     );
   }
 
-  // Require authentication for the main app
-  if (!user) {
+  // Require authentication for the main app, except for Top Tipsters page
+  const tab = searchParams.get('tab');
+  if (!user && selected !== 'top-tipsters' && tab !== 'top-tipsters') {
     return (
       <>
         <div className="h-screen flex items-center justify-center bg-slate-900">

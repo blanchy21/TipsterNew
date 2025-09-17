@@ -5,7 +5,8 @@ import Image from 'next/image';
 import { Check, Crown, Medal, Award } from 'lucide-react';
 import { normalizeImageUrl } from '@/lib/imageUtils';
 import { LeaderboardEntry, getAllUsersWithStats, getLeaderboardStats } from '@/lib/leaderboardUtils';
-import { getFirebaseFirestore, getFirestoreFunctions } from '@/lib/firebase/firebase-optimized';
+import { db } from '@/lib/firebase/firebase';
+import { collection, query, onSnapshot, orderBy, limit } from 'firebase/firestore';
 
 interface TopTipstersDataProps {
     onTipstersUpdate: (tipsters: LeaderboardEntry[]) => void;
@@ -49,9 +50,6 @@ const TopTipstersData: React.FC<TopTipstersDataProps> = ({
 
         const setupRealtimeListener = async () => {
             try {
-                const db = await getFirebaseFirestore();
-                const { collection, query, onSnapshot } = await getFirestoreFunctions();
-
                 if (!db) return;
 
                 unsubscribe = onSnapshot(

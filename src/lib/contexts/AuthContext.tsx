@@ -36,109 +36,25 @@ const AuthContext = createContext<AuthContextType>({
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(false); // Temporarily set to false for performance testing
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (process.env.NODE_ENV === 'development') {
-      // eslint-disable-next-line no-console
-      // Console statement removed for production
-    }
-
-    // Check if Firebase auth is available
     if (!auth) {
-      if (process.env.NODE_ENV === 'development') {
-        // eslint-disable-next-line no-console
-        // Console statement removed for production
-      }
       setLoading(false);
       return;
     }
 
-    // Check if auth object has the required methods
-    if (typeof auth.onAuthStateChanged !== 'function') {
-      if (process.env.NODE_ENV === 'development') {
-        // eslint-disable-next-line no-console
-        // Console statement removed for production
-      }
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      setUser(user);
       setLoading(false);
-      return;
-    }
+    });
 
-    try {
-      if (process.env.NODE_ENV === 'development') {
-        // eslint-disable-next-line no-console
-        // Console statement removed for production
-      }
-      const unsubscribe = auth.onAuthStateChanged((user: User | null) => {
-        if (process.env.NODE_ENV === 'development') {
-          // eslint-disable-next-line no-console
-          // Console statement removed for production
-        }
-        setUser(user);
-        setLoading(false);
-
-        // If user is signed in, close any open auth modals
-        if (user) {
-          if (process.env.NODE_ENV === 'development') {
-            // eslint-disable-next-line no-console
-            // Console statement removed for production
-          }
-        } else {
-          if (process.env.NODE_ENV === 'development') {
-            // eslint-disable-next-line no-console
-            // Console statement removed for production
-          }
-        }
-      });
-
-      // Check current user immediately in case the listener doesn't fire
-      const currentUser = auth.currentUser;
-
-      if (currentUser !== null) {
-
-        setUser(currentUser);
-        setLoading(false);
-      }
-
-      // Add a timeout to prevent infinite loading
-      const timeout = setTimeout(() => {
-        if (process.env.NODE_ENV === 'development') {
-          // eslint-disable-next-line no-console
-          // Console statement removed for production
-        }
-        setLoading(false);
-      }, 500); // Very short timeout for performance testing
-
-      return () => {
-
-        clearTimeout(timeout);
-        unsubscribe();
-      };
-    } catch (error) {
-      if (process.env.NODE_ENV === 'development') {
-        // eslint-disable-next-line no-console
-        // Console statement removed for production
-      }
-      setLoading(false);
-    }
-
-    // Additional fallback to ensure loading is always resolved
-    const fallbackTimeout = setTimeout(() => {
-      if (process.env.NODE_ENV === 'development') {
-        // eslint-disable-next-line no-console
-        // Console statement removed for production
-      }
-      setLoading(false);
-    }, 3000);
-
-    return () => {
-      clearTimeout(fallbackTimeout);
-    };
-  }, []);
+    return () => unsubscribe();
+  }, [auth]);
 
   const signInWithGoogle = async () => {
     if (!auth) {
-
+      console.error('Firebase auth not initialized');
       return;
     }
 
@@ -154,34 +70,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         following: []
       });
     } catch (error) {
-      if (process.env.NODE_ENV === 'development') {
-        // eslint-disable-next-line no-console
-        // Console statement removed for production
-      }
+      console.error('Google sign-in error:', error);
       throw error;
     }
   };
 
   const signInWithEmail = async (email: string, password: string) => {
     if (!auth) {
-
+      console.error('Firebase auth not initialized');
       return;
     }
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
-      if (process.env.NODE_ENV === 'development') {
-        // eslint-disable-next-line no-console
-        // Console statement removed for production
-      }
+      console.error('Email sign-in error:', error);
       throw error;
     }
   };
 
   const signUpWithEmail = async (email: string, password: string, displayName: string) => {
     if (!auth) {
-
+      console.error('Firebase auth not initialized');
       return;
     }
 
@@ -199,44 +109,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         following: []
       });
     } catch (error) {
-      if (process.env.NODE_ENV === 'development') {
-        // eslint-disable-next-line no-console
-        // Console statement removed for production
-      }
+      console.error('Email sign-up error:', error);
       throw error;
     }
   };
 
   const resetPassword = async (email: string) => {
     if (!auth) {
-
+      console.error('Firebase auth not initialized');
       return;
     }
 
     try {
       await sendPasswordResetEmail(auth, email);
     } catch (error) {
-      if (process.env.NODE_ENV === 'development') {
-        // eslint-disable-next-line no-console
-        // Console statement removed for production
-      }
+      console.error('Password reset error:', error);
       throw error;
     }
   };
 
   const signOutUser = async () => {
     if (!auth) {
-
+      console.error('Firebase auth not initialized');
       return;
     }
 
     try {
       await firebaseSignOut(auth);
     } catch (error) {
-      if (process.env.NODE_ENV === 'development') {
-        // eslint-disable-next-line no-console
-        // Console statement removed for production
-      }
+      console.error('Sign out error:', error);
       throw error;
     }
   };

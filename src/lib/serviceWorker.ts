@@ -5,7 +5,8 @@ let wb: Workbox | null = null;
 
 // Initialize service worker
 export const initializeServiceWorker = () => {
-    if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
+    // Only register service worker in production
+    if (typeof window !== 'undefined' && 'serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
         wb = new Workbox('/sw.js');
 
         // Register service worker

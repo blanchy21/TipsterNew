@@ -19,9 +19,8 @@ export default function RootLayout({
         <link rel="preconnect" href="https://firebase.googleapis.com" />
         <link rel="preconnect" href="https://firebasestorage.googleapis.com" />
 
-        {/* Preload critical assets */}
+        {/* Preload critical assets - only preload what's immediately visible */}
         <link rel="preload" as="image" href="/tipster-logo2.svg" />
-        <link rel="preload" as="image" href="/hero-feed.png" />
 
         {/* DNS prefetch for external domains */}
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
