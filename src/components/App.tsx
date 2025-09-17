@@ -66,7 +66,7 @@ function AppContent() {
     oddsRange: 'all',
     selectedTags: [] as string[]
   });
-  const [showLandingPage, setShowLandingPage] = useState(false); // Default to false, will be set based on conditions
+  const [showLandingPage, setShowLandingPage] = useState(true); // Default to true for new users
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authModalMode, setAuthModalMode] = useState<'login' | 'signup'>('login');
   const [viewingUserId, setViewingUserId] = useState<string | null>(null);

@@ -117,6 +117,7 @@ export default function LoginForm({ onSwitchToSignup, onClose }: LoginFormProps)
           <input
             id="password"
             type="password"
+            autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
