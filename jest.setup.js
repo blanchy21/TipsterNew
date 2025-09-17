@@ -326,8 +326,10 @@ Object.defineProperty(window, 'performance', {
 })
 
 // Suppress console errors in tests unless explicitly needed
+// eslint-disable-next-line no-console
 const originalError = console.error
 beforeAll(() => {
+    // eslint-disable-next-line no-console
     console.error = (...args) => {
         if (
             typeof args[0] === 'string' &&
@@ -340,5 +342,6 @@ beforeAll(() => {
 })
 
 afterAll(() => {
+    // eslint-disable-next-line no-console
     console.error = originalError
 })

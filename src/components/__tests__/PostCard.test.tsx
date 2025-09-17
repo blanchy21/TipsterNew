@@ -12,9 +12,10 @@ const mockUser = {
 
 const mockPost = {
     id: 'test-post-id',
+    title: 'Test Post Title',
     content: 'This is a test post',
     sport: 'football',
-    odds: 2.5,
+    odds: '2.5',
     result: 'pending',
     tags: ['football', 'betting'],
     user: {
@@ -23,7 +24,7 @@ const mockPost = {
         handle: '@testuser',
         avatar: 'https://example.com/avatar.jpg',
     },
-    createdAt: new Date('2024-01-01T00:00:00Z'),
+    createdAt: '2024-01-01T00:00:00Z',
     likes: 5,
     comments: 2,
     views: 100,

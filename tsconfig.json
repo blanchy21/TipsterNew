@@ -29,11 +29,5 @@
     "**/*.tsx",
     "src/types/**/*.d.ts"
   ],
-  "exclude": [
-    "node_modules",
-    "tests-disabled",
-    "**/*.test.tsx",
-    "**/*.test.ts",
-    "**/__tests__"
-  ]
+  "exclude": ["node_modules", "tests-disabled"]
 }
