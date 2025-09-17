@@ -29,6 +29,17 @@ if (!global.Response) {
             this.headers = new Map(Object.entries(init.headers || {}))
         }
 
+        async json() {
+            if (typeof this.body === 'string') {
+                return JSON.parse(this.body)
+            }
+            return this.body
+        }
+
+        async text() {
+            return this.body
+        }
+
         static json(data, init = {}) {
             return new Response(JSON.stringify(data), {
                 ...init,
@@ -36,6 +47,101 @@ if (!global.Response) {
                     'Content-Type': 'application/json',
                     ...init.headers
                 }
+            })
+        }
+    }
+}
+
+// Simple Headers polyfill for Node.js environment
+if (!global.Headers) {
+    global.Headers = class Headers {
+        constructor(init = {}) {
+            this.headers = new Map()
+            if (Array.isArray(init)) {
+                init.forEach(([key, value]) => this.headers.set(key, value))
+            } else if (init) {
+                Object.entries(init).forEach(([key, value]) => this.headers.set(key, value))
+            }
+        }
+
+        get(name) {
+            return this.headers.get(name.toLowerCase())
+        }
+
+        set(name, value) {
+            this.headers.set(name.toLowerCase(), value)
+        }
+
+        has(name) {
+            return this.headers.has(name.toLowerCase())
+        }
+
+        delete(name) {
+            this.headers.delete(name.toLowerCase())
+        }
+
+        entries() {
+            return this.headers.entries()
+        }
+
+        keys() {
+            return this.headers.keys()
+        }
+
+        values() {
+            return this.headers.values()
+        }
+
+        forEach(callback) {
+            this.headers.forEach(callback)
+        }
+    }
+}
+
+// Simple Request polyfill for Node.js environment
+if (!global.Request) {
+    global.Request = class Request {
+        constructor(input, init = {}) {
+            this.url = typeof input === 'string' ? input : input.toString()
+            this.method = init.method || 'GET'
+            this.headers = new Headers(init.headers || {})
+            this.body = init.body
+            this.cache = init.cache || 'default'
+            this.credentials = init.credentials || 'same-origin'
+            this.mode = init.mode || 'cors'
+            this.redirect = init.redirect || 'follow'
+            this.referrer = init.referrer || ''
+            this.signal = init.signal || new AbortController().signal
+        }
+
+        async json() {
+            if (typeof this.body === 'string') {
+                return JSON.parse(this.body)
+            }
+            return this.body
+        }
+
+        async text() {
+            return this.body
+        }
+
+        async arrayBuffer() {
+            return new ArrayBuffer(0)
+        }
+
+        async blob() {
+            return new Blob()
+        }
+
+        async formData() {
+            return new FormData()
+        }
+
+        clone() {
+            return new Request(this.url, {
+                method: this.method,
+                headers: this.headers,
+                body: this.body
             })
         }
     }
@@ -129,6 +235,22 @@ jest.mock('@/lib/firebase/firebaseUtils', () => ({
     unlikePost: jest.fn(() => Promise.resolve()),
     incrementPostViews: jest.fn(() => Promise.resolve()),
     togglePostLike: jest.fn(() => Promise.resolve()),
+}))
+
+// Mock AI SDK
+jest.mock('ai', () => ({
+    streamText: jest.fn(() => Promise.resolve({
+        toDataStreamResponse: jest.fn(() => new Response('streamed data'))
+    })),
+    convertToCoreMessages: jest.fn((messages) => messages),
+}))
+
+jest.mock('@ai-sdk/openai', () => ({
+    openai: jest.fn((model) => ({ model, provider: 'openai' })),
+}))
+
+jest.mock('@ai-sdk/anthropic', () => ({
+    anthropic: jest.fn((model) => ({ model, provider: 'anthropic' })),
 }))
 
 // Mock framer-motion
