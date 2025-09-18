@@ -333,19 +333,19 @@ const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChan
               <LikeButton post={post} onLikeChange={onLikeChange} />
               <button
                 onClick={toggleComments}
-                className="inline-flex items-center gap-2 text-slate-400 hover:text-slate-200 transition rounded-md px-2 py-1.5 hover:bg-white/5 ring-1 ring-transparent hover:ring-white/10"
+                className="inline-flex items-center gap-2 text-slate-400 hover:text-slate-200 transition rounded-md px-2 py-1.5 hover:bg-white/5 ring-1 ring-transparent hover:ring-white/10 min-w-[3rem]"
               >
                 <MessageCircle className="w-4 h-4" />
-                <span className="text-sm">{commentCount}</span>
+                <span className="text-sm tabular-nums min-w-[1.5rem] text-right">{commentCount}</span>
                 {showComments ? (
                   <ChevronUp className="w-3 h-3" />
                 ) : (
                   <ChevronDown className="w-3 h-3" />
                 )}
               </button>
-              <div className="inline-flex items-center gap-2 text-slate-400">
+              <div className="inline-flex items-center gap-2 text-slate-400 min-w-[3rem]">
                 <Eye className="w-4 h-4" />
-                <span className="text-sm">{post.views}</span>
+                <span className="text-sm tabular-nums min-w-[1.5rem] text-right">{post.views || 0}</span>
               </div>
               <div className="ml-auto inline-flex items-center gap-2 text-xs text-slate-500">
                 <span>Community Discussion</span>

@@ -57,7 +57,7 @@ export const getAllUsersWithStats = async (): Promise<LeaderboardEntry[]> => {
                         id: user.id,
                         name: user.displayName || user.name || 'Unknown User',
                         handle: user.handle || `@user${user.id.slice(0, 8)}`,
-                        avatar: user.photoURL || user.avatar || '/default-avatar.png',
+                        avatar: user.photoURL || user.avatar || 'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=96&h=96&fit=crop&crop=face',
                         totalTips: verificationStats.totalTips,
                         totalWins: verificationStats.totalWins,
                         totalLosses: verificationStats.totalLosses,

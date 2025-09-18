@@ -89,6 +89,8 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "images.unsplash.com",
+        port: "",
+        pathname: "/**",
       },
       {
         protocol: "https",
@@ -98,11 +100,18 @@ const nextConfig = {
         protocol: "https",
         hostname: "lh3.googleusercontent.com",
       },
+      {
+        protocol: "https",
+        hostname: "unsplash.com",
+        port: "",
+        pathname: "/**",
+      },
     ],
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     formats: ['image/webp', 'image/avif'],
     minimumCacheTTL: 60,
+    unoptimized: false,
   },
   async headers() {
     return [
@@ -123,7 +132,7 @@ const nextConfig = {
           },
           {
             key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=(), interest-cohort=(), speaker=(), vibrate=()'
+            value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()'
           }
         ]
       }
@@ -132,7 +141,7 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: "/api/:path*",
+        source: "/api/openai/:path*",
         destination: "https://api.openai.com/:path*",
       },
     ];
@@ -144,7 +153,7 @@ const pwaConfig = withPWA({
   register: true,
   skipWaiting: true,
   disable: process.env.NODE_ENV === 'development', // Disable PWA in development
-  buildExcludes: [/middleware-manifest\.json$/, /app-build-manifest\.json$/],
+  buildExcludes: [], // Remove all build exclusions
   publicExcludes: ['!robots.txt', '!sitemap.xml'],
   runtimeCaching: [
     {

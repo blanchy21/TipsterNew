@@ -37,57 +37,9 @@ try {
     auth = getAuth(app);
     db = getFirestore(app);
     storage = getStorage(app);
-
-    // Reduce Firebase console warnings in development
-    if (process.env.NODE_ENV === 'development') {
-      // Suppress Firebase heartbeats warnings and other noise
-      // eslint-disable-next-line no-console
-      const originalConsoleWarn = console.warn;
-      // eslint-disable-next-line no-console
-      console.warn = (...args) => {
-        const message = args[0];
-        if (typeof message === 'string' &&
-          (message.includes('heartbeats') ||
-            message.includes('undefined') ||
-            message.includes('WebChannelConnection') ||
-            message.includes('Firebase') && message.includes('heartbeat'))) {
-          return; // Suppress Firebase noise
-        }
-        originalConsoleWarn.apply(console, args);
-      };
-
-      // Also suppress console.log for heartbeats and Firebase noise
-      // eslint-disable-next-line no-console
-      const originalConsoleLog = console.log;
-      // eslint-disable-next-line no-console
-      console.log = (...args) => {
-        const message = args[0];
-        if (typeof message === 'string' &&
-          (message.includes('heartbeats') ||
-            message.includes('WebChannelConnection') ||
-            (message.includes('Firebase') && message.includes('heartbeat')) ||
-            message.includes('undefined'))) {
-          return; // Suppress Firebase noise and heartbeats
-        }
-        originalConsoleLog.apply(console, args);
-      };
-
-      // Also suppress console.error for Firebase heartbeats
-      // eslint-disable-next-line no-console
-      const originalConsoleError = console.error;
-      // eslint-disable-next-line no-console
-      console.error = (...args) => {
-        const message = args[0];
-        if (typeof message === 'string' &&
-          (message.includes('heartbeats') ||
-            message.includes('undefined'))) {
-          return; // Suppress Firebase heartbeats errors
-        }
-        originalConsoleError.apply(console, args);
-      };
-    }
+    console.log('Firebase initialized successfully');
   } else {
-
+    console.warn('Firebase config not available, using mock objects');
     // Create mock objects to prevent errors
     app = null;
     auth = null;
@@ -95,7 +47,7 @@ try {
     storage = null;
   }
 } catch (error) {
-  // Console statement removed for production
+  console.error('Firebase initialization failed:', error);
   app = null;
   auth = null;
   db = null;

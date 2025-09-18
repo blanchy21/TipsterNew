@@ -19,7 +19,7 @@ export function middleware(request: NextRequest) {
         'Referrer-Policy': 'strict-origin-when-cross-origin',
 
         // Permissions Policy - control browser features
-        'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=(), speaker=(), vibrate=(), fullscreen=(self), sync-xhr=()',
+        'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=(), fullscreen=(self), sync-xhr=()',
 
         // Content Security Policy - comprehensive CSP for Tipster Arena
         'Content-Security-Policy': [
@@ -91,8 +91,8 @@ export const config = {
          * - _next/static (static files)
          * - _next/image (image optimization files)
          * - favicon.ico (favicon file)
-         * - public folder files
+         * - api routes (handled separately)
          */
-        '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+        '/((?!_next/static|_next/image|favicon.ico|api/).*)',
     ],
 };

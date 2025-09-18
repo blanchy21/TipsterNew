@@ -33,13 +33,13 @@ This guide covers deploying Tipster Arena to production with all necessary confi
 
 ### Option 1: Vercel (Recommended)
 
-#### Prerequisites
+#### Vercel Prerequisites
 
 - Vercel account
 - GitHub repository connected
 - Environment variables configured
 
-#### Steps
+#### Vercel Deployment Steps
 
 1. **Connect Repository**
 
@@ -75,12 +75,12 @@ The `vercel.json` file is already configured with:
 
 ### Option 2: Docker Deployment
 
-#### Prerequisites
+#### Docker Prerequisites
 
 - Docker installed
 - Container registry access (Docker Hub, AWS ECR, etc.)
 
-#### Steps
+#### Docker Deployment Steps
 
 1. **Build Docker Image**
 
@@ -109,14 +109,14 @@ The `vercel.json` file is already configured with:
 
 ### Option 3: Traditional VPS/Server
 
-#### Prerequisites
+#### VPS Prerequisites
 
 - Ubuntu 20.04+ or similar
 - Node.js 18+
 - PM2 for process management
 - Nginx for reverse proxy
 
-#### Steps
+#### VPS Deployment Steps
 
 1. **Server Setup**
 

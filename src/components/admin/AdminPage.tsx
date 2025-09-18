@@ -2,13 +2,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Database, Trash2, Users, FileText, Loader2, CheckCircle, XCircle, Clock, AlertCircle, Trophy, Eye, ArrowLeft } from 'lucide-react';
+import { Database, Trash2, Users, FileText, Loader2, CheckCircle, XCircle, Clock, AlertCircle, Trophy, Eye, ArrowLeft, BarChart3, TrendingUp, Activity, Shield } from 'lucide-react';
 import { populateTestData, clearTestData } from '@/lib/populateTestData';
 import { Post, TipStatus } from '@/lib/types';
 import { getPosts, updatePost } from '@/lib/firebase/firebaseUtils';
 import { createTipVerification } from '@/lib/firebase/tipVerification';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { createNotification } from '@/lib/firebase/firebaseUtils';
+import UserManagement from './UserManagement';
 
 const AdminPage: React.FC = () => {
   const { user } = useAuth();
@@ -16,7 +17,7 @@ const AdminPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [posts, setPosts] = useState<Post[]>([]);
-  const [selectedTab, setSelectedTab] = useState<'data' | 'tips'>('data');
+  const [selectedTab, setSelectedTab] = useState<'overview' | 'data' | 'tips' | 'users'>('overview');
   const [filterStatus, setFilterStatus] = useState<TipStatus | 'all'>('all');
 
   // Load posts for tip verification
@@ -198,6 +199,16 @@ const AdminPage: React.FC = () => {
         {/* Tabs */}
         <div className="flex gap-2 mb-8">
           <button
+            onClick={() => setSelectedTab('overview')}
+            className={`px-4 py-2 rounded-lg font-medium transition-colors ${selectedTab === 'overview'
+              ? 'bg-blue-500 text-white'
+              : 'bg-white/5 text-slate-300 hover:bg-white/10'
+              }`}
+          >
+            <BarChart3 className="w-4 h-4 inline mr-2" />
+            Overview
+          </button>
+          <button
             onClick={() => setSelectedTab('data')}
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${selectedTab === 'data'
               ? 'bg-blue-500 text-white'
@@ -217,6 +228,16 @@ const AdminPage: React.FC = () => {
             <CheckCircle className="w-4 h-4 inline mr-2" />
             Tip Verification
           </button>
+          <button
+            onClick={() => setSelectedTab('users')}
+            className={`px-4 py-2 rounded-lg font-medium transition-colors ${selectedTab === 'users'
+              ? 'bg-blue-500 text-white'
+              : 'bg-white/5 text-slate-300 hover:bg-white/10'
+              }`}
+          >
+            <Users className="w-4 h-4 inline mr-2" />
+            User Management
+          </button>
         </div>
 
         {/* Message */}
@@ -226,6 +247,175 @@ const AdminPage: React.FC = () => {
             : 'bg-red-500/20 text-red-400 border border-red-500/30'
             }`}>
             {message.text}
+          </div>
+        )}
+
+        {selectedTab === 'overview' && (
+          <div className="space-y-6">
+            {/* Key Metrics */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-slate-400 text-sm">Total Users</p>
+                    <p className="text-3xl font-bold text-white">{posts.length > 0 ? 'Loading...' : '0'}</p>
+                  </div>
+                  <Users className="w-8 h-8 text-blue-400" />
+                </div>
+              </div>
+
+              <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-slate-400 text-sm">Total Tips</p>
+                    <p className="text-3xl font-bold text-white">{posts.length}</p>
+                  </div>
+                  <FileText className="w-8 h-8 text-green-400" />
+                </div>
+              </div>
+
+              <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-slate-400 text-sm">Pending Verification</p>
+                    <p className="text-3xl font-bold text-yellow-400">{posts.filter(p => p.tipStatus === 'pending').length}</p>
+                  </div>
+                  <Clock className="w-8 h-8 text-yellow-400" />
+                </div>
+              </div>
+
+              <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-slate-400 text-sm">Verified Tips</p>
+                    <p className="text-3xl font-bold text-green-400">{posts.filter(p => p.tipStatus && p.tipStatus !== 'pending').length}</p>
+                  </div>
+                  <CheckCircle className="w-8 h-8 text-green-400" />
+                </div>
+              </div>
+            </div>
+
+            {/* Platform Stats */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-white">Tip Status Breakdown</h3>
+                  <Activity className="w-5 h-5 text-slate-400" />
+                </div>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-300">Wins</span>
+                    <span className="text-green-400 font-medium">{posts.filter(p => p.tipStatus === 'win').length}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-300">Losses</span>
+                    <span className="text-red-400 font-medium">{posts.filter(p => p.tipStatus === 'loss').length}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-300">Void</span>
+                    <span className="text-gray-400 font-medium">{posts.filter(p => p.tipStatus === 'void').length}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-300">Place</span>
+                    <span className="text-blue-400 font-medium">{posts.filter(p => p.tipStatus === 'place').length}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-white">Sports Activity</h3>
+                  <Trophy className="w-5 h-5 text-slate-400" />
+                </div>
+                <div className="space-y-2">
+                  {(() => {
+                    const sportCounts: { [key: string]: number } = {};
+                    posts.forEach((p: Post) => {
+                      sportCounts[p.sport] = (sportCounts[p.sport] || 0) + 1;
+                    });
+                    const topSports = Object.entries(sportCounts)
+                      .map(([sport, count]) => ({ sport, count }))
+                      .sort((a, b) => b.count - a.count)
+                      .slice(0, 5);
+
+                    return topSports.map((sport, index) => (
+                      <div key={sport.sport} className="flex items-center justify-between">
+                        <span className="text-slate-300">{sport.sport}</span>
+                        <span className="text-blue-400 font-medium">{sport.count} tips</span>
+                      </div>
+                    ));
+                  })()}
+                </div>
+              </div>
+
+              <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-white">Quick Actions</h3>
+                  <Shield className="w-5 h-5 text-slate-400" />
+                </div>
+                <div className="space-y-3">
+                  <button
+                    onClick={() => setSelectedTab('users')}
+                    className="w-full text-left px-3 py-2 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/30 transition-colors"
+                  >
+                    View All Users
+                  </button>
+                  <button
+                    onClick={() => setSelectedTab('tips')}
+                    className="w-full text-left px-3 py-2 bg-yellow-500/20 text-yellow-400 rounded-lg hover:bg-yellow-500/30 transition-colors"
+                  >
+                    Verify Pending Tips
+                  </button>
+                  <button
+                    onClick={() => setSelectedTab('data')}
+                    className="w-full text-left px-3 py-2 bg-green-500/20 text-green-400 rounded-lg hover:bg-green-500/30 transition-colors"
+                  >
+                    Manage Test Data
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Recent Activity */}
+            <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-white">Recent Tips</h3>
+                <Clock className="w-5 h-5 text-slate-400" />
+              </div>
+              <div className="space-y-3">
+                {posts.slice(0, 5).map((post) => (
+                  <div key={post.id} className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
+                    <div>
+                      <p className="text-white font-medium">{post.title}</p>
+                      <p className="text-slate-400 text-sm">By {post.user.name} • {post.sport}</p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {post.tipStatus === 'pending' && (
+                        <span className="px-2 py-1 text-xs bg-yellow-500/20 text-yellow-400 rounded-md">
+                          Pending
+                        </span>
+                      )}
+                      {post.tipStatus === 'win' && (
+                        <span className="px-2 py-1 text-xs bg-green-500/20 text-green-400 rounded-md">
+                          Win
+                        </span>
+                      )}
+                      {post.tipStatus === 'loss' && (
+                        <span className="px-2 py-1 text-xs bg-red-500/20 text-red-400 rounded-md">
+                          Loss
+                        </span>
+                      )}
+                      <span className="text-slate-400 text-sm">
+                        {new Date(post.createdAt).toLocaleDateString()}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+                {posts.length === 0 && (
+                  <p className="text-slate-400 text-center py-4">No tips available</p>
+                )}
+              </div>
+            </div>
           </div>
         )}
 
@@ -394,7 +584,7 @@ const AdminPage: React.FC = () => {
                           {post.gameDate && (
                             <>
                               <span>•</span>
-                              <span>Game: {new Date(post.gameDate).toLocaleDateString()}</span>
+                              <span>Event: {new Date(post.gameDate).toLocaleDateString()}</span>
                             </>
                           )}
                           {post.odds && (
@@ -458,6 +648,10 @@ const AdminPage: React.FC = () => {
               )}
             </div>
           </div>
+        )}
+
+        {selectedTab === 'users' && (
+          <UserManagement />
         )}
       </div>
     </div>

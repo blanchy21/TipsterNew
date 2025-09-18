@@ -9,27 +9,25 @@
  */
 export const normalizeImageUrl = (url: string): string => {
   if (!url || url === '') return getDefaultAvatar();
-  
+
   // If it's an Unsplash URL, normalize it
   if (url.includes('images.unsplash.com')) {
     // Handle specific broken image IDs
     if (url.includes('photo-1494790108755-2616b612b786')) {
       // Replace broken Sarah Johnson image with working one
-      return 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop&crop=face';
+      return 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=96&h=96&fit=crop&crop=face';
     }
-    
-    // Handle any URLs with problematic query parameters
-    if (url.includes('w=320&q=80') || url.includes('q=80&w=320')) {
-      // Remove problematic parameters and add proper ones
-      const baseUrl = url.split('?')[0];
-      return `${baseUrl}?w=400&h=400&fit=crop&crop=face`;
+
+    // If URL already has proper dimensions, keep them
+    if (url.includes('?w=') && url.includes('&h=')) {
+      return url;
     }
-    
-    // Remove existing query parameters and add our own
+
+    // Add proper dimensions for Unsplash URLs
     const baseUrl = url.split('?')[0];
-    return `${baseUrl}?w=400&h=400&fit=crop&crop=face`;
+    return `${baseUrl}?w=96&h=96&fit=crop&crop=face`;
   }
-  
+
   return url;
 };
 
@@ -40,12 +38,12 @@ export const normalizeImageUrl = (url: string): string => {
  */
 export const isLikelyBrokenImage = (url: string): boolean => {
   if (!url) return true;
-  
+
   // Check for known broken image IDs
   const brokenImageIds = [
     'photo-1494790108755-2616b612b786', // Sarah Johnson's broken image
   ];
-  
+
   return brokenImageIds.some(id => url.includes(id));
 };
 
@@ -54,7 +52,7 @@ export const isLikelyBrokenImage = (url: string): boolean => {
  * @returns Default avatar URL
  */
 export const getDefaultAvatar = (): string => {
-  return 'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=400&h=400&fit=crop&crop=face';
+  return 'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=96&h=96&fit=crop&crop=face';
 };
 
 /**
@@ -70,5 +68,5 @@ export const getDefaultCoverPhoto = (): string => {
  * @returns Default gallery photo URL
  */
 export const getDefaultGalleryPhoto = (): string => {
-  return 'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&h=400&fit=crop';
+  return 'https://images.unsplash.com/photo-1551698618-1dfe5d97d256';
 };

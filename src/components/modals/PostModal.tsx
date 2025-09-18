@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { PlusCircle, X, ChevronDown, Send, Bold, Italic, Underline, Smile, Image, Upload } from 'lucide-react';
+import { PlusCircle, X, ChevronDown, Send, Bold, Italic, Underline, Smile, Image as ImageIcon, Upload } from 'lucide-react';
 import NextImage from 'next/image';
 import { Post } from '@/lib/types';
 
@@ -655,7 +655,7 @@ export default function PostModal({ open, onClose, onSubmit, selectedSport }: Po
                     }`}
                   title="GIF"
                 >
-                  <Image className="w-4 h-4" />
+                  <ImageIcon className="w-4 h-4" />
                 </button>
                 <button
                   type="button"
@@ -831,7 +831,7 @@ export default function PostModal({ open, onClose, onSubmit, selectedSport }: Po
 
             <div>
               <label className="block text-sm font-medium text-slate-200 mb-2">
-                Game Date & Time
+                Event Date & Time
               </label>
               <input
                 type="datetime-local"

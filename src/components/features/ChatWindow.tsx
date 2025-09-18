@@ -108,7 +108,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
           </button>
 
           <Image
-            src={otherParticipant?.avatar || '/default-avatar.png'}
+            src={otherParticipant?.avatar || 'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=96&h=96&fit=crop&crop=face'}
             alt={otherParticipant?.name || 'User'}
             width={40}
             height={40}
@@ -173,7 +173,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                     {showAvatar && (
                       <div className={`w-8 h-8 rounded-full flex-shrink-0 ${isCurrentUser ? 'order-1' : ''}`}>
                         <Image
-                          src={isCurrentUser ? (user?.photoURL || '/default-avatar.png') : (otherParticipant?.avatar || '/default-avatar.png')}
+                          src={isCurrentUser ? (user?.photoURL || 'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=96&h=96&fit=crop&crop=face') : (otherParticipant?.avatar || 'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=96&h=96&fit=crop&crop=face')}
                           alt={isCurrentUser ? 'You' : (otherParticipant?.name || 'User')}
                           width={32}
                           height={32}

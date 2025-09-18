@@ -37,12 +37,8 @@ export default function LikeButton({ post, onLikeChange }: LikeButtonProps) {
         onLikeChange(post.id, likeCount + 1, newLikedBy);
       }
 
-      // Then update the backend (only if user is authenticated)
-      if (user) {
-        await togglePostLike(post.id, user.uid, !isLiked);
-      } else {
-        // Demo mode: Like button clicked (not saved to backend)
-      }
+      // Update the backend (works in both authenticated and demo mode)
+      await togglePostLike(post.id, userId, !isLiked);
     } catch (error) {
       // Console statement removed for production
       // Revert the optimistic update on error
@@ -65,17 +61,17 @@ export default function LikeButton({ post, onLikeChange }: LikeButtonProps) {
       onClick={handleLike}
       disabled={isLiking}
       className={`
-        inline-flex items-center gap-2 transition rounded-md px-2 py-1.5 ring-1 ring-transparent hover:ring-white/10
+        inline-flex items-center gap-2 transition rounded-md px-2 py-1.5 ring-1 ring-transparent hover:ring-white/10 min-w-[3rem]
         ${isLiked
           ? 'text-red-400 hover:text-red-300 bg-red-500/10'
           : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
         }
-        ${!user ? 'opacity-75' : 'cursor-pointer'}
+        ${!user ? 'opacity-75 cursor-pointer' : 'cursor-pointer'}
         ${isLiking ? 'opacity-50 cursor-wait' : 'cursor-pointer'}
       `}
     >
       <ThumbsUp className={`w-4 h-4 ${isLiked ? 'fill-current' : ''}`} />
-      <span className="text-sm">{likeCount}</span>
+      <span className="text-sm tabular-nums min-w-[1.5rem] text-right">{likeCount}</span>
     </button>
   );
 }

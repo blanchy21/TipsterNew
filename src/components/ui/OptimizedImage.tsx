@@ -48,7 +48,7 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
     fill = false,
     onLoad,
     onError,
-    fallbackSrc = 'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=400&h=400&fit=crop&crop=face&fm=webp&q=85',
+    fallbackSrc = 'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=96&h=96&fit=crop&crop=face',
     lazy = true,
 }) => {
     const [isLoaded, setIsLoaded] = useState(false);

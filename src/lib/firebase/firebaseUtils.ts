@@ -360,31 +360,35 @@ export const followUser = async (followerId: string, followingId: string) => {
 
 export const unfollowUser = async (followerId: string, followingId: string) => {
   if (!db) {
-
     throw new Error("Firebase Firestore not available");
   }
 
-  // Ensure both user profiles exist before attempting unfollow operation
-  await ensureUserProfileExists(followerId);
-  await ensureUserProfileExists(followingId);
+  try {
+    // Ensure both user profiles exist before attempting unfollow operation
+    await ensureUserProfileExists(followerId);
+    await ensureUserProfileExists(followingId);
 
-  const batch = writeBatch(db);
+    const batch = writeBatch(db);
 
-  // Remove from follower's following list
-  const followerRef = doc(db, "users", followerId);
-  batch.update(followerRef, {
-    following: arrayRemove(followingId),
-    followingCount: -1 // This will be handled by a cloud function in production
-  });
+    // Remove from follower's following list
+    const followerRef = doc(db, "users", followerId);
+    batch.update(followerRef, {
+      following: arrayRemove(followingId),
+      followingCount: -1 // This will be handled by a cloud function in production
+    });
 
-  // Remove from following user's followers list
-  const followingRef = doc(db, "users", followingId);
-  batch.update(followingRef, {
-    followers: arrayRemove(followerId),
-    followersCount: -1 // This will be handled by a cloud function in production
-  });
+    // Remove from following user's followers list
+    const followingRef = doc(db, "users", followingId);
+    batch.update(followingRef, {
+      followers: arrayRemove(followerId),
+      followersCount: -1 // This will be handled by a cloud function in production
+    });
 
-  return batch.commit();
+    return batch.commit();
+  } catch (error) {
+    // Console statement removed for production
+    throw error;
+  }
 };
 
 export const checkIfFollowing = async (followerId: string, followingId: string): Promise<boolean> => {
@@ -750,8 +754,8 @@ export const getPosts = async () => {
 
 export const togglePostLike = async (postId: string, userId: string, isLiked: boolean) => {
   if (!db) {
-
-    throw new Error("Firebase Firestore not available");
+    console.warn('Firebase database not initialized, skipping like operation');
+    return;
   }
 
   try {
@@ -768,17 +772,21 @@ export const togglePostLike = async (postId: string, userId: string, isLiked: bo
           likes: increment(1),
           likedBy: arrayUnion(userId)
         });
+        console.log('Like added successfully for post:', postId);
       } else {
         // Remove like
         await updateDoc(postRef, {
           likes: increment(-1),
           likedBy: arrayRemove(userId)
         });
+        console.log('Like removed successfully for post:', postId);
       }
+    } else {
+      console.warn('Post not found for like operation:', postId);
     }
   } catch (error) {
-    // Console statement removed for production
-    throw error;
+    console.error('Like operation failed:', error);
+    throw error; // Re-throw the error so the UI can handle it
   }
 };
 

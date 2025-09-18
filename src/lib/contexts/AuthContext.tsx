@@ -50,11 +50,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
 
     return () => unsubscribe();
-  }, [auth]);
+  }, []);
 
   const signInWithGoogle = async () => {
     if (!auth) {
-      console.error('Firebase auth not initialized');
       return;
     }
 
@@ -70,28 +69,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         following: []
       });
     } catch (error) {
-      console.error('Google sign-in error:', error);
       throw error;
     }
   };
 
   const signInWithEmail = async (email: string, password: string) => {
     if (!auth) {
-      console.error('Firebase auth not initialized');
       return;
     }
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
-      console.error('Email sign-in error:', error);
       throw error;
     }
   };
 
   const signUpWithEmail = async (email: string, password: string, displayName: string) => {
     if (!auth) {
-      console.error('Firebase auth not initialized');
       return;
     }
 
@@ -109,35 +104,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         following: []
       });
     } catch (error) {
-      console.error('Email sign-up error:', error);
       throw error;
     }
   };
 
   const resetPassword = async (email: string) => {
     if (!auth) {
-      console.error('Firebase auth not initialized');
       return;
     }
 
     try {
       await sendPasswordResetEmail(auth, email);
     } catch (error) {
-      console.error('Password reset error:', error);
       throw error;
     }
   };
 
   const signOutUser = async () => {
     if (!auth) {
-      console.error('Firebase auth not initialized');
       return;
     }
 
     try {
       await firebaseSignOut(auth);
     } catch (error) {
-      console.error('Sign out error:', error);
       throw error;
     }
   };

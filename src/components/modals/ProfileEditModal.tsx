@@ -373,7 +373,7 @@ const ProfileEditModal: React.FC<ProfileEditModalProps> = ({ isOpen, onClose, us
                 <div className="flex items-center gap-4">
                   <div className="w-20 h-20 rounded-full overflow-hidden bg-white/5 border border-white/10">
                     {profile?.avatar ? (
-                      <Image src={profile.avatar} alt="Avatar" width={80} height={80} className="w-full h-full object-cover" />
+                      <Image src={profile.avatar} alt="Avatar" width={80} height={80} className="object-cover" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
                         <User className="w-8 h-8 text-neutral-400" />
@@ -408,7 +408,7 @@ const ProfileEditModal: React.FC<ProfileEditModalProps> = ({ isOpen, onClose, us
                 <div className="flex items-center gap-4">
                   <div className="w-32 h-20 rounded-xl overflow-hidden bg-white/5 border border-white/10">
                     {profile?.coverPhoto ? (
-                      <Image src={profile.coverPhoto} alt="Cover" width={128} height={80} className="w-full h-full object-cover" />
+                      <Image src={profile.coverPhoto} alt="Cover" width={128} height={80} className="object-cover" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
                         <Camera className="w-6 h-6 text-neutral-400" />
@@ -443,7 +443,7 @@ const ProfileEditModal: React.FC<ProfileEditModalProps> = ({ isOpen, onClose, us
                 <div className="grid grid-cols-4 gap-4">
                   {profile?.profilePhotos?.map((photo, index) => (
                     <div key={index} className="relative group">
-                      <Image src={photo} alt={`Gallery ${index + 1}`} width={80} height={80} className="w-full h-20 object-cover rounded-xl" />
+                      <Image src={photo} alt={`Gallery ${index + 1}`} width={80} height={80} className="object-cover rounded-xl" />
                       <button
                         onClick={() => handleRemovePhoto(photo)}
                         className="absolute top-2 right-2 p-1 bg-red-500/80 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"

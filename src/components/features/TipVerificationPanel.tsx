@@ -445,7 +445,7 @@ export default function TipVerificationPanel({ onTipVerified }: TipVerificationP
                                 className="flex-1 px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none"
                             >
                                 <option value="createdAt">Date Created</option>
-                                <option value="gameDate">Game Date</option>
+                                <option value="gameDate">Event Date</option>
                                 <option value="likes">Likes</option>
                                 <option value="views">Views</option>
                             </select>
@@ -516,7 +516,7 @@ export default function TipVerificationPanel({ onTipVerified }: TipVerificationP
                                         {post.gameDate && (
                                             <div className="flex items-center gap-2">
                                                 <ClockIcon className="w-4 h-4" />
-                                                <span>Game: {new Date(post.gameDate).toLocaleDateString()}</span>
+                                                <span>Event: {new Date(post.gameDate).toLocaleDateString()}</span>
                                             </div>
                                         )}
                                         <div className="flex items-center gap-2">
