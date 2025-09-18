@@ -153,8 +153,13 @@ const pwaConfig = withPWA({
   register: true,
   skipWaiting: true,
   disable: process.env.NODE_ENV === 'development', // Disable PWA in development
-  buildExcludes: [], // Remove all build exclusions
+  buildExcludes: [/app-build-manifest\.json$/, /_buildManifest\.js$/], // Exclude problematic manifest files
   publicExcludes: ['!robots.txt', '!sitemap.xml'],
+  scope: '/',
+  sw: 'sw.js',
+  fallbacks: {
+    document: '/offline', // fallback page for offline
+  },
   runtimeCaching: [
     {
       urlPattern: /^https:\/\/firestore\.googleapis\.com\/.*/i,
