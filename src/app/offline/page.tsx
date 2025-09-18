@@ -14,10 +14,10 @@ export default function OfflinePage() {
                 <div className="mb-8">
                     <WifiOff className="w-16 h-16 text-slate-400 mx-auto mb-4" />
                     <h1 className="text-2xl font-bold text-slate-100 mb-2">
-                        You're Offline
+                        You&apos;re Offline
                     </h1>
                     <p className="text-slate-400 mb-6">
-                        It looks like you're not connected to the internet. Check your connection and try again.
+                        It looks like you&apos;re not connected to the internet. Check your connection and try again.
                     </p>
                 </div>
 
