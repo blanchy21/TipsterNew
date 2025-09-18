@@ -22,7 +22,7 @@ import {
     RefreshCw
 } from 'lucide-react';
 import { Post, TipStatus, User as UserType } from '@/lib/types';
-import { getPosts, updatePost, getUserProfile } from '@/lib/firebase/firebaseUtils';
+import { getPosts, updatePost, getUserProfile, deleteDocument } from '@/lib/firebase/firebaseUtils';
 import { createTipVerification } from '@/lib/firebase/tipVerification';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { collection, query, orderBy, onSnapshot, where } from 'firebase/firestore';
@@ -53,6 +53,8 @@ export default function TipVerificationPanel({ onTipVerified }: TipVerificationP
     const [sortBy, setSortBy] = useState<'createdAt' | 'gameDate' | 'likes' | 'views'>('createdAt');
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
     const [verifying, setVerifying] = useState<string | null>(null);
+    const [deleting, setDeleting] = useState<string | null>(null);
+    const [changing, setChanging] = useState<string | null>(null);
     const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
     // Real-time posts listener
@@ -193,34 +195,35 @@ export default function TipVerificationPanel({ onTipVerified }: TipVerificationP
         setMessage(null);
 
         try {
-
             // Update the post status
             const updateResult = await updatePost(postId, {
                 tipStatus: status,
                 verifiedAt: new Date().toISOString(),
-                verifiedBy: 'admin',
+                verifiedBy: user?.uid || 'admin',
                 isGameFinished: true
             });
+
+            if (!updateResult) {
+                throw new Error('Failed to update post');
+            }
 
             // Create verification record for leaderboard tracking
             const post = posts.find(p => p.id === postId);
 
             if (post && user) {
-
-                const verificationResult = await createTipVerification({
-                    postId: postId,
-                    tipsterId: post.user.id,
-                    adminId: user.uid,
-                    status: status,
-                    notes: `Verified by admin as ${status}`,
-                    originalOdds: post.odds,
-                    finalOdds: post.odds
-                });
-
-            } else {
-
-                if (post) {
-
+                try {
+                    await createTipVerification({
+                        postId: postId,
+                        tipsterId: post.user.id,
+                        adminId: user.uid,
+                        status: status,
+                        notes: `Verified by admin as ${status}`,
+                        originalOdds: post.odds,
+                        finalOdds: post.odds
+                    });
+                } catch (verificationError) {
+                    // Verification record creation failed, but post was updated
+                    // Console statement removed for production
                 }
             }
 
@@ -228,9 +231,77 @@ export default function TipVerificationPanel({ onTipVerified }: TipVerificationP
             onTipVerified?.(postId, status);
         } catch (error) {
             // Console statement removed for production
-            setMessage({ type: 'error', text: 'Failed to verify tip. Please try again.' });
+            setMessage({ type: 'error', text: `Failed to verify tip: ${error instanceof Error ? error.message : 'Unknown error'}` });
         } finally {
             setVerifying(null);
+        }
+    };
+
+    const handleDeleteTip = async (postId: string) => {
+        setDeleting(postId);
+        setMessage(null);
+
+        try {
+            // Delete the post
+            await deleteDocument('posts', postId);
+
+            setMessage({ type: 'success', text: 'Test tip successfully deleted!' });
+            // Remove the post from the local state
+            setPosts(prevPosts => prevPosts.filter(p => p.id !== postId));
+        } catch (error) {
+            // Console statement removed for production
+            setMessage({ type: 'error', text: `Failed to delete tip: ${error instanceof Error ? error.message : 'Unknown error'}` });
+        } finally {
+            setDeleting(null);
+        }
+    };
+
+    const handleChangeTipResult = async (postId: string, newStatus: TipStatus) => {
+        setChanging(postId);
+        setMessage(null);
+
+        try {
+            // Update the post status
+            const updateResult = await updatePost(postId, {
+                tipStatus: newStatus,
+                verifiedAt: new Date().toISOString(),
+                verifiedBy: user?.uid || 'admin',
+                isGameFinished: true
+            });
+
+            if (!updateResult) {
+                throw new Error('Failed to update post');
+            }
+
+            // Update verification record for leaderboard tracking
+            const post = posts.find(p => p.id === postId);
+
+            if (post && user) {
+                try {
+                    // First, we need to find and update the existing verification record
+                    // For now, we'll create a new one with updated status
+                    await createTipVerification({
+                        postId: postId,
+                        tipsterId: post.user.id,
+                        adminId: user.uid,
+                        status: newStatus,
+                        notes: `Result changed by admin to ${newStatus}`,
+                        originalOdds: post.odds,
+                        finalOdds: post.odds
+                    });
+                } catch (verificationError) {
+                    // Verification record update failed, but post was updated
+                    // Console statement removed for production
+                }
+            }
+
+            setMessage({ type: 'success', text: `Tip result successfully changed to ${newStatus}!` });
+            onTipVerified?.(postId, newStatus);
+        } catch (error) {
+            // Console statement removed for production
+            setMessage({ type: 'error', text: `Failed to change tip result: ${error instanceof Error ? error.message : 'Unknown error'}` });
+        } finally {
+            setChanging(null);
         }
     };
 
@@ -416,12 +487,10 @@ export default function TipVerificationPanel({ onTipVerified }: TipVerificationP
                                         <span className="text-sm text-sky-300/90 bg-sky-500/10 ring-1 ring-sky-500/20 px-3 py-1 rounded-full">
                                             {post.sport}
                                         </span>
-                                        {post.tipStatus && (
-                                            <span className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium border ${getStatusColor(post.tipStatus)}`}>
-                                                {getStatusIcon(post.tipStatus)}
-                                                {post.tipStatus.charAt(0).toUpperCase() + post.tipStatus.slice(1)}
-                                            </span>
-                                        )}
+                                        <span className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium border ${getStatusColor(post.tipStatus || 'pending')}`}>
+                                            {getStatusIcon(post.tipStatus || 'pending')}
+                                            {(post.tipStatus || 'pending').charAt(0).toUpperCase() + (post.tipStatus || 'pending').slice(1)}
+                                        </span>
                                         {post.odds && (
                                             <span className="text-sm text-emerald-300 bg-emerald-500/10 ring-1 ring-emerald-500/20 px-3 py-1 rounded-full">
                                                 Odds: {post.odds}
@@ -477,7 +546,7 @@ export default function TipVerificationPanel({ onTipVerified }: TipVerificationP
 
                             {/* Verification Actions */}
                             <div className="flex flex-wrap gap-3">
-                                {post.tipStatus === 'pending' && (
+                                {(!post.tipStatus || post.tipStatus === 'pending') && (
                                     <>
                                         <button
                                             onClick={() => handleVerifyTip(post.id, 'win')}
@@ -529,12 +598,92 @@ export default function TipVerificationPanel({ onTipVerified }: TipVerificationP
                                                 Mark as Place
                                             </button>
                                         )}
+                                        {/* Delete button for test tips */}
+                                        <button
+                                            onClick={() => handleDeleteTip(post.id)}
+                                            disabled={deleting === post.id}
+                                            className="inline-flex items-center gap-2 px-4 py-2 bg-red-600/20 text-red-300 border border-red-600/30 rounded-lg hover:bg-red-600/30 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                                        >
+                                            {deleting === post.id ? (
+                                                <RefreshCw className="w-4 h-4 animate-spin" />
+                                            ) : (
+                                                <XCircle className="w-4 h-4" />
+                                            )}
+                                            Delete Test Tip
+                                        </button>
                                     </>
                                 )}
                                 {post.tipStatus && post.tipStatus !== 'pending' && (
-                                    <div className="text-sm text-slate-400 flex items-center gap-2">
-                                        <CheckCircle className="w-4 h-4" />
-                                        <span>Verified on {post.verifiedAt ? new Date(post.verifiedAt).toLocaleDateString() : 'Unknown date'}</span>
+                                    <div className="space-y-3">
+                                        <div className="text-sm text-slate-400 flex items-center gap-2">
+                                            <CheckCircle className="w-4 h-4" />
+                                            <span>Verified on {post.verifiedAt ? new Date(post.verifiedAt).toLocaleDateString() : 'Unknown date'}</span>
+                                        </div>
+
+                                        {/* Change Result Buttons */}
+                                        <div className="flex flex-wrap gap-2">
+                                            <span className="text-xs text-slate-500 font-medium">Change to:</span>
+
+                                            {post.tipStatus !== 'win' && (
+                                                <button
+                                                    onClick={() => handleChangeTipResult(post.id, 'win')}
+                                                    disabled={changing === post.id}
+                                                    className="inline-flex items-center gap-1 px-3 py-1.5 bg-green-500/20 text-green-300 border border-green-500/30 rounded-md hover:bg-green-500/30 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm"
+                                                >
+                                                    {changing === post.id ? (
+                                                        <RefreshCw className="w-3 h-3 animate-spin" />
+                                                    ) : (
+                                                        <CheckCircle className="w-3 h-3" />
+                                                    )}
+                                                    Win
+                                                </button>
+                                            )}
+
+                                            {post.tipStatus !== 'loss' && (
+                                                <button
+                                                    onClick={() => handleChangeTipResult(post.id, 'loss')}
+                                                    disabled={changing === post.id}
+                                                    className="inline-flex items-center gap-1 px-3 py-1.5 bg-red-500/20 text-red-300 border border-red-500/30 rounded-md hover:bg-red-500/30 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm"
+                                                >
+                                                    {changing === post.id ? (
+                                                        <RefreshCw className="w-3 h-3 animate-spin" />
+                                                    ) : (
+                                                        <XCircle className="w-3 h-3" />
+                                                    )}
+                                                    Loss
+                                                </button>
+                                            )}
+
+                                            {post.tipStatus !== 'void' && (
+                                                <button
+                                                    onClick={() => handleChangeTipResult(post.id, 'void')}
+                                                    disabled={changing === post.id}
+                                                    className="inline-flex items-center gap-1 px-3 py-1.5 bg-gray-500/20 text-gray-300 border border-gray-500/30 rounded-md hover:bg-gray-500/30 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm"
+                                                >
+                                                    {changing === post.id ? (
+                                                        <RefreshCw className="w-3 h-3 animate-spin" />
+                                                    ) : (
+                                                        <AlertCircle className="w-3 h-3" />
+                                                    )}
+                                                    Void
+                                                </button>
+                                            )}
+
+                                            {(post.sport === 'Horse Racing' || post.sport === 'Greyhound Racing' || post.sport === 'Golf') && post.tipStatus !== 'place' && (
+                                                <button
+                                                    onClick={() => handleChangeTipResult(post.id, 'place')}
+                                                    disabled={changing === post.id}
+                                                    className="inline-flex items-center gap-1 px-3 py-1.5 bg-blue-500/20 text-blue-300 border border-blue-500/30 rounded-md hover:bg-blue-500/30 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm"
+                                                >
+                                                    {changing === post.id ? (
+                                                        <RefreshCw className="w-3 h-3 animate-spin" />
+                                                    ) : (
+                                                        <Trophy className="w-3 h-3" />
+                                                    )}
+                                                    Place
+                                                </button>
+                                            )}
+                                        </div>
                                     </div>
                                 )}
                             </div>

@@ -31,6 +31,7 @@ import { Post, TipStatus, User } from '@/lib/types';
 import { getPosts, updatePost, getDocuments } from '@/lib/firebase/firebaseUtils';
 import { useAuth } from '@/lib/hooks/useAuth';
 import TipVerificationPanel from '@/components/features/TipVerificationPanel';
+// import UserManagementPanel from '@/components/admin/UserManagementPanel';
 import { db } from '@/lib/firebase/firebase';
 
 const AdminDashboardSimple: React.FC = () => {
@@ -55,6 +56,7 @@ const AdminDashboardSimple: React.FC = () => {
     // Load admin statistics
     useEffect(() => {
         const loadStats = async () => {
+            // Debug: Loading stats
             if (!user || !db) {
                 setStatsLoading(false);
                 return;
@@ -65,12 +67,11 @@ const AdminDashboardSimple: React.FC = () => {
 
                 // Load all data in parallel
                 const [posts, users, comments, notifications] = await Promise.all([
-                    getDocuments('posts'),
-                    getDocuments('users'),
-                    getDocuments('comments'),
-                    getDocuments('notifications')
+                    getDocuments('posts').catch(err => { return []; }),
+                    getDocuments('users').catch(err => { return []; }),
+                    getDocuments('comments').catch(err => { return []; }),
+                    getDocuments('notifications').catch(err => { return []; })
                 ]);
-
 
                 // Calculate statistics
                 const totalUsers = users.length;
@@ -138,8 +139,7 @@ const AdminDashboardSimple: React.FC = () => {
                 });
 
             } catch (error) {
-                // Console statement removed for production
-                setMessage({ type: 'error', text: 'Failed to load admin statistics. Please try again.' });
+                setMessage({ type: 'error', text: `Failed to load admin statistics: ${error instanceof Error ? error.message : 'Unknown error'}` });
             } finally {
                 setStatsLoading(false);
             }

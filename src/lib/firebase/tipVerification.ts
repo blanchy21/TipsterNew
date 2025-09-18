@@ -45,21 +45,25 @@ export const createTipVerification = async (verificationData: Omit<TipVerificati
         const adminData = adminDoc.data();
 
         // Create notification for the tipster
-
-        const notificationId = await createNotification({
-            type: 'tip',
-            title: 'Tip Verified',
-            message: `Your tip has been marked as ${verificationData.status}`,
-            user: adminData ? {
-                id: verificationData.adminId,
-                name: adminData.displayName || adminData.name || 'Admin',
-                handle: adminData.handle || '@admin',
-                avatar: adminData.photoURL || adminData.avatar || ''
-            } : undefined,
-            recipientId: verificationData.tipsterId,
-            postId: verificationData.postId,
-            actionUrl: `/post/${verificationData.postId}`
-        });
+        try {
+            const notificationId = await createNotification({
+                type: 'tip',
+                title: 'Tip Verified',
+                message: `Your tip has been marked as ${verificationData.status}`,
+                user: adminData ? {
+                    id: verificationData.adminId,
+                    name: adminData.displayName || adminData.name || 'Admin',
+                    handle: adminData.handle || '@admin',
+                    avatar: adminData.photoURL || adminData.avatar || ''
+                } : undefined,
+                recipientId: verificationData.tipsterId,
+                postId: verificationData.postId,
+                actionUrl: `/post/${verificationData.postId}`
+            });
+        } catch (notificationError) {
+            // Notification creation failed, but don't fail the verification
+            // Console statement removed for production
+        }
 
         return { id: docRef.id, ...verification };
     } catch (error) {

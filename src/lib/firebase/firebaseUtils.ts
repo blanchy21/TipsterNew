@@ -18,6 +18,7 @@ import {
   setDoc,
   query,
   where,
+  increment,
   orderBy,
 } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
@@ -179,16 +180,28 @@ export const updateDocument = (collectionName: string, id: string, data: any) =>
 
     throw new Error("Firebase Firestore not available");
   }
-  return updateDoc(doc(db, collectionName, id), data);
+
+  try {
+    return updateDoc(doc(db, collectionName, id), data);
+  } catch (error) {
+    // Console statement removed for production
+    throw error;
+  }
 };
 
 export const deleteDocument = (collectionName: string, id: string) => {
   if (!db) {
-
     throw new Error("Firebase Firestore not available");
   }
-  return deleteDoc(doc(db, collectionName, id));
+
+  try {
+    return deleteDoc(doc(db, collectionName, id));
+  } catch (error) {
+    // Console statement removed for production
+    throw error;
+  }
 };
+
 
 // Like functions
 export const likePost = async (postId: string, userId: string) => {
@@ -227,7 +240,7 @@ export const likePost = async (postId: string, userId: string) => {
     const postRef = doc(db, "posts", postId);
     return updateDoc(postRef, {
       likedBy: arrayUnion(userId),
-      likes: 1 // This will be handled by a cloud function in production
+      likes: increment(1) // Properly increment the likes count
     });
   } catch (error) {
     // Console statement removed for production
@@ -244,7 +257,7 @@ export const unlikePost = async (postId: string, userId: string) => {
   const postRef = doc(db, "posts", postId);
   return updateDoc(postRef, {
     likedBy: arrayRemove(userId),
-    likes: -1 // This will be handled by a cloud function in production
+    likes: increment(-1) // Properly decrement the likes count
   });
 };
 
@@ -752,13 +765,13 @@ export const togglePostLike = async (postId: string, userId: string, isLiked: bo
       if (isLiked) {
         // Add like
         await updateDoc(postRef, {
-          likes: postData.likes + 1,
+          likes: increment(1),
           likedBy: arrayUnion(userId)
         });
       } else {
         // Remove like
         await updateDoc(postRef, {
-          likes: Math.max(0, postData.likes - 1),
+          likes: increment(-1),
           likedBy: arrayRemove(userId)
         });
       }

@@ -37,9 +37,9 @@ export function middleware(request: NextRequest) {
             "upgrade-insecure-requests"
         ].join('; '),
 
-        // Cross-Origin Policies
-        'Cross-Origin-Embedder-Policy': 'require-corp',
-        'Cross-Origin-Opener-Policy': 'same-origin',
+        // Cross-Origin Policies - relaxed for Firebase compatibility
+        'Cross-Origin-Embedder-Policy': 'unsafe-none',
+        'Cross-Origin-Opener-Policy': 'same-origin-allow-popups',
         'Cross-Origin-Resource-Policy': 'cross-origin',
 
         // HSTS - Force HTTPS (only in production)
