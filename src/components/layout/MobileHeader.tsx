@@ -31,7 +31,7 @@ export default function MobileHeader({ onOpenPost, onMenu, isLoaded }: MobileHea
         >
           <Menu className="w-5 h-5 text-slate-300" />
         </button>
-        <Logo collapsed />
+        <Logo />
         <div className="flex items-center space-x-2">
           <NotificationsIcon className="text-slate-300" />
           <button
