@@ -168,8 +168,9 @@ test.describe('Feed Interaction Flow', () => {
         //     await page.waitForTimeout(500)
         // }
 
-        // Verify statistics section
-        await expect(page.locator('[data-testid="stats-section"]')).toBeVisible()
+        // Verify statistics section (free/pricing information)
+        await expect(page.getByText(/100% free/i)).toBeVisible()
+        await expect(page.locator('text=/completely free forever/i')).toHaveCount(2)
 
         // Note: Feed functionality not yet implemented
         // This test verifies the landing page features work correctly

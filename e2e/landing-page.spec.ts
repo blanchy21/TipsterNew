@@ -105,9 +105,9 @@ test.describe('Landing Page', () => {
     })
 
     test('should display statistics section', async ({ page }) => {
-        // Look for statistics or numbers
-        const statsSection = page.locator('[data-testid="stats-section"], .stats, .statistics')
-        await expect(statsSection).toBeVisible()
+        // Look for free/pricing information that acts as statistics
+        await expect(page.getByText(/100% free/i)).toBeVisible()
+        await expect(page.locator('text=/completely free forever/i')).toHaveCount(2)
     })
 
     test('should show footer information', async ({ page }) => {

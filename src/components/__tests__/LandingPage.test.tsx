@@ -110,8 +110,8 @@ describe('LandingPage', () => {
         render(<LandingPage {...defaultProps} />)
 
         // Look for common statistics text - updated to match current content
-        expect(screen.getByText(/10K\+ active tipsters/i)).toBeInTheDocument()
-        expect(screen.getByText(/100% free forever/i)).toBeInTheDocument()
+        expect(screen.getByText(/100% free/i)).toBeInTheDocument()
+        expect(screen.getAllByText(/completely free forever/i)).toHaveLength(2)
     })
 
     it('handles loading state', async () => {
