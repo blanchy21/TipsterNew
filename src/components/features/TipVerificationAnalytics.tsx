@@ -67,7 +67,9 @@ export default function TipVerificationAnalytics({
         totalWins: 0,
         totalLosses: 0,
         avgOdds: 0,
-        topSports: []
+        topSports: [],
+        currentWinStreak: 0,
+        longestWinStreak: 0
     });
     const [loading, setLoading] = useState(true);
 
