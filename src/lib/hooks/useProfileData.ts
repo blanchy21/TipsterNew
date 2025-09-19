@@ -13,7 +13,8 @@ interface ProfileStats {
     pendingTips: number;
     followers: number;
     following: number;
-    winningStreak: number;
+    currentWinStreak: number;
+    longestWinStreak: number;
     leaderboardPosition: number;
 }
 
@@ -33,7 +34,8 @@ export function useProfileData({ userId, followers, following }: UseProfileDataP
         pendingTips: 0,
         followers: 0,
         following: 0,
-        winningStreak: 0,
+        currentWinStreak: 0,
+        longestWinStreak: 0,
         leaderboardPosition: 0
     });
     const [statsLoading, setStatsLoading] = useState(true);
@@ -51,7 +53,8 @@ export function useProfileData({ userId, followers, following }: UseProfileDataP
                 pendingTips: verificationStats.pendingTips,
                 followers: followers.length,
                 following: following.length,
-                winningStreak: Math.floor(Math.random() * 8 + 3), // Random streak between 3-10
+                currentWinStreak: verificationStats.currentWinStreak,
+                longestWinStreak: verificationStats.longestWinStreak,
                 leaderboardPosition: Math.floor(Math.random() * 50 + 1) // Random position between 1-50
             });
         } catch (error) {

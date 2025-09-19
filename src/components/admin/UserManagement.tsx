@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Users, Search, Filter, Calendar, Shield, UserCheck, UserX, Mail, MapPin, Globe, Star, Clock, Eye, MoreVertical, RefreshCw } from 'lucide-react';
+import { Users, Search, Filter, Calendar, Shield, UserCheck, UserX, Mail, MapPin, Globe, Star, Clock, Eye, MoreVertical, RefreshCw, Trash2, AlertTriangle, Loader2 } from 'lucide-react';
 import { User } from '@/lib/types';
-import { getDocuments } from '@/lib/firebase/firebaseUtils';
+import { getDocuments, deleteUser, deleteTestUsers } from '@/lib/firebase/firebaseUtils';
 import { collection, getDocs, query, orderBy } from 'firebase/firestore';
 import { db } from '@/lib/firebase/firebase';
 
@@ -20,6 +20,11 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
     const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'name' | 'followers'>('newest');
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
     const [lastRefresh, setLastRefresh] = useState<Date>(new Date());
+    const [deleteConfirmUser, setDeleteConfirmUser] = useState<User | null>(null);
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [deleteMessage, setDeleteMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+    const [showBulkDelete, setShowBulkDelete] = useState(false);
+    const [isBulkDeleting, setIsBulkDeleting] = useState(false);
 
     // Load all users
     const loadUsers = async () => {
@@ -183,6 +188,81 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
         return new Date(user.memberSince || '') > oneWeekAgo;
     };
 
+    // Delete user functions
+    const handleDeleteUser = async (user: User) => {
+        setIsDeleting(true);
+        setDeleteMessage(null);
+
+        try {
+            const result = await deleteUser(user.id);
+            if (result.success) {
+                setDeleteMessage({ type: 'success', text: `User ${user.name} deleted successfully!` });
+                setDeleteConfirmUser(null);
+                // Refresh the users list
+                await loadUsers();
+            } else {
+                setDeleteMessage({ type: 'error', text: `Failed to delete user: ${result.error}` });
+            }
+        } catch (error: any) {
+            setDeleteMessage({ type: 'error', text: `Error deleting user: ${error.message}` });
+        } finally {
+            setIsDeleting(false);
+        }
+    };
+
+    const handleBulkDeleteTestUsers = async () => {
+        setIsBulkDeleting(true);
+        setDeleteMessage(null);
+
+        const testUserNames = [
+            'David Chen',
+            'Mike Rodriguez',
+            'Test User',
+            'Emma Wilson',
+            'Sarah Johnson',
+            'Alex Thompson',
+            'Lisa Martinez'
+        ];
+
+        try {
+            const result = await deleteTestUsers(testUserNames);
+            if (result.success) {
+                setDeleteMessage({
+                    type: 'success',
+                    text: `Successfully deleted ${result.deletedUsers.length} test users: ${result.deletedUsers.join(', ')}`
+                });
+                setShowBulkDelete(false);
+                // Refresh the users list
+                await loadUsers();
+            } else {
+                setDeleteMessage({
+                    type: 'error',
+                    text: `Bulk delete completed with errors. Deleted: ${result.deletedUsers.join(', ')}. Errors: ${result.errors.join(', ')}`
+                });
+            }
+        } catch (error: any) {
+            setDeleteMessage({ type: 'error', text: `Error during bulk delete: ${error.message}` });
+        } finally {
+            setIsBulkDeleting(false);
+        }
+    };
+
+    const isTestUser = (user: User) => {
+        const testUserNames = [
+            'David Chen',
+            'Mike Rodriguez',
+            'Test User',
+            'Emma Wilson',
+            'Sarah Johnson',
+            'Alex Thompson',
+            'Lisa Martinez'
+        ];
+        return testUserNames.some(testName =>
+            user.name.toLowerCase().includes(testName.toLowerCase()) ||
+            testName.toLowerCase().includes(user.name.toLowerCase())
+        );
+    };
+
     if (isLoading) {
         return (
             <div className="flex items-center justify-center py-12">
@@ -205,6 +285,13 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
                         Last updated: {lastRefresh.toLocaleTimeString()}
                     </div>
                     <button
+                        onClick={() => setShowBulkDelete(true)}
+                        className="flex items-center gap-2 px-4 py-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-colors"
+                    >
+                        <Trash2 className="w-4 h-4" />
+                        Delete Test Users
+                    </button>
+                    <button
                         onClick={handleRefresh}
                         disabled={isLoading}
                         className="flex items-center gap-2 px-4 py-2 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/30 disabled:opacity-50 transition-colors"
@@ -214,6 +301,16 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
                     </button>
                 </div>
             </div>
+
+            {/* Delete Message */}
+            {deleteMessage && (
+                <div className={`mb-6 p-4 rounded-xl ${deleteMessage.type === 'success'
+                    ? 'bg-green-500/20 text-green-400 border border-green-500/30'
+                    : 'bg-red-500/20 text-red-400 border border-red-500/30'
+                    }`}>
+                    {deleteMessage.text}
+                </div>
+            )}
 
             {/* Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -331,8 +428,7 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
                     filteredUsers.map((user) => (
                         <div
                             key={user.id}
-                            className={`bg-white/5 rounded-2xl p-6 border border-white/10 hover:bg-white/10 transition-colors cursor-pointer ${isNewUser(user) ? 'ring-2 ring-green-500/30' : ''
-                                }`}
+                            className={`bg-white/5 rounded-2xl p-6 border border-white/10 hover:bg-white/10 transition-colors cursor-pointer ${isNewUser(user) ? 'ring-2 ring-green-500/30' : ''} ${isTestUser(user) ? 'ring-2 ring-red-500/30' : ''}`}
                             onClick={() => {
                                 setSelectedUser(user);
                                 onUserSelect?.(user);
@@ -363,6 +459,11 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
                                         {isNewUser(user) && (
                                             <span className="px-2 py-1 text-xs font-medium bg-green-500/20 text-green-400 rounded-md">
                                                 New
+                                            </span>
+                                        )}
+                                        {isTestUser(user) && (
+                                            <span className="px-2 py-1 text-xs font-medium bg-red-500/20 text-red-400 rounded-md">
+                                                Test User
                                             </span>
                                         )}
                                     </div>
@@ -428,6 +529,16 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
 
                                 {/* Actions */}
                                 <div className="flex items-center gap-2">
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setDeleteConfirmUser(user);
+                                        }}
+                                        className="p-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors"
+                                        title="Delete user"
+                                    >
+                                        <Trash2 className="w-4 h-4" />
+                                    </button>
                                     <button
                                         onClick={(e) => {
                                             e.stopPropagation();
@@ -526,6 +637,108 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
                                     </div>
                                 </div>
                             )}
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Delete User Confirmation Modal */}
+            {deleteConfirmUser && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+                    <div className="bg-slate-800 rounded-2xl p-6 max-w-md w-full">
+                        <div className="flex items-center gap-3 mb-4">
+                            <div className="p-2 bg-red-500/20 rounded-lg">
+                                <AlertTriangle className="w-6 h-6 text-red-400" />
+                            </div>
+                            <h2 className="text-xl font-semibold text-white">Delete User</h2>
+                        </div>
+
+                        <p className="text-slate-300 mb-6">
+                            Are you sure you want to delete <strong className="text-white">{deleteConfirmUser.name}</strong>?
+                            This action will permanently remove the user and all their associated data including:
+                        </p>
+
+                        <ul className="text-sm text-slate-400 mb-6 space-y-1">
+                            <li>• All posts and comments</li>
+                            <li>• Profile and images</li>
+                            <li>• Following/follower relationships</li>
+                            <li>• Notifications and activity</li>
+                        </ul>
+
+                        <div className="flex gap-3">
+                            <button
+                                onClick={() => setDeleteConfirmUser(null)}
+                                className="flex-1 px-4 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={() => handleDeleteUser(deleteConfirmUser)}
+                                disabled={isDeleting}
+                                className="flex-1 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+                            >
+                                {isDeleting ? (
+                                    <Loader2 className="w-4 h-4 animate-spin" />
+                                ) : (
+                                    <Trash2 className="w-4 h-4" />
+                                )}
+                                {isDeleting ? 'Deleting...' : 'Delete User'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Bulk Delete Test Users Confirmation Modal */}
+            {showBulkDelete && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+                    <div className="bg-slate-800 rounded-2xl p-6 max-w-md w-full">
+                        <div className="flex items-center gap-3 mb-4">
+                            <div className="p-2 bg-red-500/20 rounded-lg">
+                                <AlertTriangle className="w-6 h-6 text-red-400" />
+                            </div>
+                            <h2 className="text-xl font-semibold text-white">Delete Test Users</h2>
+                        </div>
+
+                        <p className="text-slate-300 mb-4">
+                            This will delete all test users matching these names:
+                        </p>
+
+                        <div className="bg-slate-700/50 rounded-lg p-3 mb-6">
+                            <ul className="text-sm text-slate-300 space-y-1">
+                                <li>• David Chen</li>
+                                <li>• Mike Rodriguez</li>
+                                <li>• Test User</li>
+                                <li>• Emma Wilson</li>
+                                <li>• Sarah Johnson</li>
+                                <li>• Alex Thompson</li>
+                                <li>• Lisa Martinez</li>
+                            </ul>
+                        </div>
+
+                        <p className="text-red-400 text-sm mb-6">
+                            ⚠️ This action cannot be undone and will permanently delete all associated data.
+                        </p>
+
+                        <div className="flex gap-3">
+                            <button
+                                onClick={() => setShowBulkDelete(false)}
+                                className="flex-1 px-4 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={handleBulkDeleteTestUsers}
+                                disabled={isBulkDeleting}
+                                className="flex-1 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+                            >
+                                {isBulkDeleting ? (
+                                    <Loader2 className="w-4 h-4 animate-spin" />
+                                ) : (
+                                    <Trash2 className="w-4 h-4" />
+                                )}
+                                {isBulkDeleting ? 'Deleting...' : 'Delete All Test Users'}
+                            </button>
                         </div>
                     </div>
                 </div>

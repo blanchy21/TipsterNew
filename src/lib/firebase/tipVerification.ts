@@ -23,7 +23,42 @@ export interface VerificationStats {
     totalLosses: number;
     avgOdds: number;
     topSports: { sport: string; count: number; winRate: number }[];
+    currentWinStreak: number;
+    longestWinStreak: number;
 }
+
+// Calculate win streak for a user's tips
+export const calculateWinStreak = (tips: any[]): { currentStreak: number; longestStreak: number } => {
+    // Sort tips by creation date (most recent first)
+    const sortedTips = tips
+        .filter(tip => tip.tipStatus && tip.tipStatus !== 'pending')
+        .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
+    if (sortedTips.length === 0) {
+        return { currentStreak: 0, longestStreak: 0 };
+    }
+
+    let currentStreak = 0;
+    let longestStreak = 0;
+    let tempStreak = 0;
+
+    for (const tip of sortedTips) {
+        if (tip.tipStatus === 'win') {
+            currentStreak = currentStreak === 0 ? 1 : currentStreak + 1;
+            tempStreak++;
+            longestStreak = Math.max(longestStreak, tempStreak);
+        } else if (tip.tipStatus === 'loss' || tip.tipStatus === 'void') {
+            // Only reset current streak on loss, not on void
+            if (tip.tipStatus === 'loss') {
+                currentStreak = 0;
+            }
+            tempStreak = 0;
+        }
+        // For 'place' status, we don't count it as a win or loss for streak purposes
+    }
+
+    return { currentStreak, longestStreak };
+};
 
 // Create a tip verification record
 export const createTipVerification = async (verificationData: Omit<TipVerification, 'id' | 'verifiedAt'>) => {
@@ -83,7 +118,9 @@ export const getUserVerificationStats = async (userId: string): Promise<Verifica
             totalWins: 0,
             totalLosses: 0,
             avgOdds: 0,
-            topSports: []
+            topSports: [],
+            currentWinStreak: 0,
+            longestWinStreak: 0
         };
     }
 
@@ -150,6 +187,9 @@ export const getUserVerificationStats = async (userId: string): Promise<Verifica
             .sort((a, b) => b.count - a.count)
             .slice(0, 5);
 
+        // Calculate win streak
+        const { currentStreak, longestStreak } = calculateWinStreak(actualTips);
+
         return {
             totalTips,
             verifiedTips,
@@ -158,7 +198,9 @@ export const getUserVerificationStats = async (userId: string): Promise<Verifica
             totalWins: wins,
             totalLosses: losses,
             avgOdds,
-            topSports
+            topSports,
+            currentWinStreak: currentStreak,
+            longestWinStreak: longestStreak
         };
     } catch (error) {
         // Console statement removed for production
@@ -170,7 +212,9 @@ export const getUserVerificationStats = async (userId: string): Promise<Verifica
             totalWins: 0,
             totalLosses: 0,
             avgOdds: 0,
-            topSports: []
+            topSports: [],
+            currentWinStreak: 0,
+            longestWinStreak: 0
         };
     }
 };

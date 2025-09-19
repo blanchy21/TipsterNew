@@ -104,8 +104,8 @@ export default function FilterModal({ isOpen, onClose, onApplyFilters, currentFi
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-2 sm:p-4" onClick={onClose}>
-            <div className="bg-slate-800 rounded-xl border border-white/10 w-full max-w-4xl max-h-[90vh] sm:max-h-[85vh] overflow-hidden flex flex-col" onClick={(e) => e.stopPropagation()}>
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-start justify-center p-2 sm:p-4 pt-4 sm:pt-8 md:pt-16" onClick={onClose}>
+            <div className="bg-slate-800 rounded-xl border border-white/10 w-full max-w-4xl max-h-[95vh] sm:max-h-[90vh] md:max-h-[85vh] overflow-hidden flex flex-col mt-2 sm:mt-4" onClick={(e) => e.stopPropagation()}>
                 {/* Header */}
                 <div className="flex-shrink-0 flex items-center justify-between p-4 sm:p-6 border-b border-white/10 bg-slate-800">
                     <div className="flex items-center gap-3">
@@ -121,7 +121,7 @@ export default function FilterModal({ isOpen, onClose, onApplyFilters, currentFi
                 </div>
 
                 {/* Filter Content */}
-                <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 sm:space-y-8 scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent relative">
+                <div className="flex-1 overflow-y-auto p-4 sm:p-6 pt-6 sm:pt-8 space-y-6 sm:space-y-8 scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent relative">
                     {/* Time Range */}
                     <div>
                         <div className="flex items-center gap-2 mb-4">

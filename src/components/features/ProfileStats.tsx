@@ -23,7 +23,8 @@ interface ProfileStatsProps {
         pendingTips: number;
         followers: number;
         following: number;
-        winningStreak: number;
+        currentWinStreak: number;
+        longestWinStreak: number;
         leaderboardPosition: number;
     };
     loading: boolean;
@@ -101,12 +102,20 @@ const ProfileStats: React.FC<ProfileStatsProps> = ({ stats, loading }) => {
             borderColor: 'border-cyan-500/20'
         },
         {
-            label: 'Winning Streak',
-            value: stats.winningStreak,
+            label: 'Current Streak',
+            value: stats.currentWinStreak,
             icon: TrendingUp,
             color: 'text-pink-400',
             bgColor: 'bg-pink-500/10',
             borderColor: 'border-pink-500/20'
+        },
+        {
+            label: 'Best Streak',
+            value: stats.longestWinStreak,
+            icon: Trophy,
+            color: 'text-amber-400',
+            bgColor: 'bg-amber-500/10',
+            borderColor: 'border-amber-500/20'
         }
     ];
 

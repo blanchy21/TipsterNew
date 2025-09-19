@@ -1429,3 +1429,149 @@ export const updatePost = async (postId: string, data: Partial<Post>): Promise<b
     return false;
   }
 };
+
+// User Deletion Functions
+export const deleteUser = async (userId: string): Promise<{ success: boolean; error?: string }> => {
+  if (!db) {
+    return { success: false, error: "Firebase Firestore not available" };
+  }
+
+  try {
+    const batch = writeBatch(db);
+
+    // 1. Delete user's posts
+    const postsSnapshot = await getDocs(query(collection(db, 'posts'), where('userId', '==', userId)));
+    postsSnapshot.docs.forEach(doc => {
+      batch.delete(doc.ref);
+    });
+
+    // 2. Delete user's comments
+    const commentsSnapshot = await getDocs(query(collection(db, 'comments'), where('userId', '==', userId)));
+    commentsSnapshot.docs.forEach(doc => {
+      batch.delete(doc.ref);
+    });
+
+    // 3. Delete user's notifications
+    const notificationsSnapshot = await getDocs(query(collection(db, 'notifications'), where('recipientId', '==', userId)));
+    notificationsSnapshot.docs.forEach(doc => {
+      batch.delete(doc.ref);
+    });
+
+    // 4. Remove user from other users' followers/following lists
+    const allUsersSnapshot = await getDocs(collection(db, 'users'));
+    allUsersSnapshot.docs.forEach(doc => {
+      const userData = doc.data();
+      if (userData.followers?.includes(userId)) {
+        batch.update(doc.ref, {
+          followers: arrayRemove(userId),
+          followersCount: Math.max(0, (userData.followersCount || 0) - 1)
+        });
+      }
+      if (userData.following?.includes(userId)) {
+        batch.update(doc.ref, {
+          following: arrayRemove(userId),
+          followingCount: Math.max(0, (userData.followingCount || 0) - 1)
+        });
+      }
+    });
+
+    // 5. Remove user from posts' likedBy arrays and update like counts
+    const allPostsSnapshot = await getDocs(collection(db, 'posts'));
+    allPostsSnapshot.docs.forEach(doc => {
+      const postData = doc.data();
+      if (postData.likedBy?.includes(userId)) {
+        const newLikedBy = postData.likedBy.filter((id: string) => id !== userId);
+        batch.update(doc.ref, {
+          likedBy: newLikedBy,
+          likes: Math.max(0, (postData.likes || 0) - 1)
+        });
+      }
+    });
+
+    // 6. Remove user from comments' likedBy arrays and update like counts
+    const allCommentsSnapshot = await getDocs(collection(db, 'comments'));
+    allCommentsSnapshot.docs.forEach(doc => {
+      const commentData = doc.data();
+      if (commentData.likedBy?.includes(userId)) {
+        const newLikedBy = commentData.likedBy.filter((id: string) => id !== userId);
+        batch.update(doc.ref, {
+          likedBy: newLikedBy,
+          likes: Math.max(0, (commentData.likes || 0) - 1)
+        });
+      }
+    });
+
+    // 7. Delete user's base64 images
+    const base64ImagesSnapshot = await getDocs(query(collection(db, 'base64Images'), where('userId', '==', userId)));
+    base64ImagesSnapshot.docs.forEach(doc => {
+      batch.delete(doc.ref);
+    });
+
+    // 8. Finally, delete the user document
+    const userRef = doc(db, 'users', userId);
+    batch.delete(userRef);
+
+    // Commit all changes
+    await batch.commit();
+
+    return { success: true };
+  } catch (error: any) {
+    return {
+      success: false,
+      error: error.message || 'Failed to delete user'
+    };
+  }
+};
+
+export const deleteTestUsers = async (testUserNames: string[]): Promise<{ success: boolean; deletedUsers: string[]; errors: string[] }> => {
+  if (!db) {
+    return { success: false, deletedUsers: [], errors: ["Firebase Firestore not available"] };
+  }
+
+  try {
+    // Get all users
+    const usersSnapshot = await getDocs(collection(db, 'users'));
+    const users = usersSnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+
+    // Find users matching test names
+    const testUsers = users.filter((user: any) => {
+      const name = user.displayName || user.name || '';
+      return testUserNames.some(testName =>
+        name.toLowerCase().includes(testName.toLowerCase()) ||
+        testName.toLowerCase().includes(name.toLowerCase())
+      );
+    });
+
+    const deletedUsers: string[] = [];
+    const errors: string[] = [];
+
+    // Delete each test user
+    for (const testUser of testUsers) {
+      try {
+        const result = await deleteUser(testUser.id);
+        if (result.success) {
+          deletedUsers.push((testUser as any).displayName || (testUser as any).name || testUser.id);
+        } else {
+          errors.push(`Failed to delete ${(testUser as any).displayName || (testUser as any).name}: ${result.error}`);
+        }
+      } catch (error: any) {
+        errors.push(`Error deleting ${(testUser as any).displayName || (testUser as any).name}: ${error.message}`);
+      }
+    }
+
+    return {
+      success: errors.length === 0,
+      deletedUsers,
+      errors
+    };
+  } catch (error: any) {
+    return {
+      success: false,
+      deletedUsers: [],
+      errors: [error.message || 'Failed to delete test users']
+    };
+  }
+};

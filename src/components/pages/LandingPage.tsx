@@ -76,12 +76,6 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
     { name: 'Cricket', icon: '🏏', color: 'text-blue-400' }
   ];
 
-  const stats = [
-    { number: '10K+', label: 'Active Tipsters', color: 'text-emerald-400' },
-    { number: '50+', label: 'Sports Covered', color: 'text-violet-400' },
-    { number: '100%', label: 'Free Forever', color: 'text-orange-400' },
-    { number: '4.9★', label: 'User Rating', color: 'text-yellow-400' }
-  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white overflow-x-hidden">
@@ -218,34 +212,6 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
               The ultimate platform for sports tipsters. Share tips, track performance, and connect with fellow sports fans. Built by sports fans for sports fans - completely free, with transparent statistics and no bookmaker bias.
             </p>
 
-            {/* Stats */}
-            <div className="mt-8 flex flex-col sm:flex-row items-center gap-6 text-sm text-white/60" data-testid="stats-section">
-              <div className="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 text-violet-400">
-                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-                  <path d="M16 3.128a4 4 0 0 1 0 7.744"></path>
-                  <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
-                  <circle cx="9" cy="7" r="4"></circle>
-                </svg>
-                <span>10K+ active tipsters</span>
-              </div>
-              <div className="hidden sm:block w-1 h-1 rounded-full bg-white/30"></div>
-              <div className="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 text-fuchsia-400">
-                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                </svg>
-                <span>100% free forever</span>
-              </div>
-              <div className="hidden sm:block w-1 h-1 rounded-full bg-white/30"></div>
-              <div className="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 text-yellow-400">
-                  <path d="M9 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-4"></path>
-                  <path d="M9 11V9a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"></path>
-                  <path d="M9 7h6"></path>
-                </svg>
-                <span>Transparent tracking</span>
-              </div>
-            </div>
 
             {/* CTA */}
             <div className="flex flex-col gap-4 sm:flex-row mt-16 items-center">
@@ -403,12 +369,12 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              { name: 'General Chat', icon: '💬', description: 'Discuss anything sports-related', users: '127 online', color: 'from-blue-500 to-cyan-600' },
-              { name: 'Football', icon: '⚽', description: 'Premier League, Champions League & more', users: '89 online', color: 'from-green-500 to-emerald-600' },
-              { name: 'Horse Racing', icon: '🏇', description: 'Flat Racing, Jump Racing & Major Festivals', users: '38 online', color: 'from-amber-500 to-yellow-600' },
-              { name: 'Golf', icon: '⛳', description: 'Masters, PGA Championship & Ryder Cup', users: '31 online', color: 'from-emerald-500 to-teal-600' },
-              { name: 'Tennis', icon: '🎾', description: 'Grand Slams, ATP & WTA Tours', users: '42 online', color: 'from-purple-500 to-pink-600' },
-              { name: 'Basketball', icon: '🏀', description: 'NBA, EuroLeague & College Basketball', users: '64 online', color: 'from-orange-500 to-red-600' }
+              { name: 'General Chat', icon: '💬', description: 'Discuss anything sports-related', color: 'from-blue-500 to-cyan-600' },
+              { name: 'Football', icon: '⚽', description: 'Premier League, Champions League & more', color: 'from-green-500 to-emerald-600' },
+              { name: 'Horse Racing', icon: '🏇', description: 'Flat Racing, Jump Racing & Major Festivals', color: 'from-amber-500 to-yellow-600' },
+              { name: 'Golf', icon: '⛳', description: 'Masters, PGA Championship & Ryder Cup', color: 'from-emerald-500 to-teal-600' },
+              { name: 'Tennis', icon: '🎾', description: 'Grand Slams, ATP & WTA Tours', color: 'from-purple-500 to-pink-600' },
+              { name: 'Basketball', icon: '🏀', description: 'NBA, EuroLeague & College Basketball', color: 'from-orange-500 to-red-600' }
             ].map((room, index) => (
               <div
                 key={index}
@@ -418,11 +384,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
                   {room.icon}
                 </div>
                 <h3 className="text-xl font-semibold mb-2 text-white">{room.name}</h3>
-                <p className="text-white/70 text-sm mb-3 leading-relaxed">{room.description}</p>
-                <div className="flex items-center justify-between">
-                  <span className="text-green-400 text-sm font-medium">{room.users}</span>
-                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                </div>
+                <p className="text-white/70 text-sm leading-relaxed">{room.description}</p>
 
                 {/* Hover effect */}
                 <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-orange-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -464,7 +426,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-4">
-              Tips for <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-400 bg-clip-text text-transparent">50+ Sports</span>
+              Tips for <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-400 bg-clip-text text-transparent">All Sports</span>
             </h2>
             <p className="text-xl text-white/70 max-w-2xl mx-auto">
               From football to tennis, basketball to cricket - share your tips for any sport and help others discover winning strategies.
@@ -494,7 +456,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
             Ready to Start <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-400 bg-clip-text text-transparent">Sharing Tips</span>?
           </h2>
           <p className="text-xl text-white/70 mb-12 max-w-2xl mx-auto">
-            Join thousands of sports fans who are sharing tips, tracking performance, and building their reputation in a community focused purely on sports success.
+            Join sports fans who are sharing tips, tracking performance, and building their reputation in a community focused purely on sports success.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">

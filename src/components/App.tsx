@@ -174,15 +174,50 @@ function AppContent() {
 
   // Real-time posts listener
   useEffect(() => {
-    if (!user || !db) {
-      // Only log this message if we're not in loading state (to avoid console spam during auth initialization)
-      if (!loading) {
-
-      }
+    if (!db) {
       setPosts([]);
       return;
     }
 
+    // Load posts even without authentication for public viewing
+    if (!user) {
+      // Load public posts (no authentication required)
+      const postsRef = collection(db, 'posts');
+      const q = firestoreQuery(
+        postsRef,
+        firestoreOrderBy('createdAt', 'desc'),
+        limit(50)
+      );
+
+      const unsubscribe = onSnapshot(q,
+        (snapshot) => {
+          const postsData = snapshot.docs.map(doc => {
+            const data = doc.data();
+            return {
+              id: doc.id,
+              ...data,
+              createdAt: data.createdAt?.toDate ? data.createdAt.toDate().toISOString() : data.createdAt
+            } as Post;
+          });
+
+          // Sort posts by creation date (most recent first) as a fallback
+          const sortedPosts = postsData.sort((a, b) => {
+            const dateA = new Date(a.createdAt).getTime();
+            const dateB = new Date(b.createdAt).getTime();
+            return dateB - dateA; // Most recent first
+          });
+
+          setPosts(sortedPosts);
+        },
+        (error) => {
+          setPosts([]);
+        }
+      );
+
+      return () => unsubscribe();
+    }
+
+    // Load posts for authenticated users
     const postsRef = collection(db, 'posts');
     const q = firestoreQuery(
       postsRef,
@@ -192,7 +227,6 @@ function AppContent() {
 
     const unsubscribe = onSnapshot(q,
       (snapshot) => {
-
         const postsData = snapshot.docs.map(doc => {
           const data = doc.data();
           return {
@@ -202,18 +236,23 @@ function AppContent() {
           } as Post;
         });
 
-        setPosts(postsData);
+        // Sort posts by creation date (most recent first) as a fallback
+        const sortedPosts = postsData.sort((a, b) => {
+          const dateA = new Date(a.createdAt).getTime();
+          const dateB = new Date(b.createdAt).getTime();
+          return dateB - dateA; // Most recent first
+        });
+
+        setPosts(sortedPosts);
       },
       (error) => {
         // Handle real-time posts listener error silently
         // Fallback: Set empty posts array on error
-
         setPosts([]);
       }
     );
 
     return () => {
-
       unsubscribe();
     };
   }, [user, loading]);
