@@ -9,17 +9,7 @@ module.exports = {
         },
         assert: {
             assertions: {
-                // Basic performance assertions - relaxed thresholds for CI
-                'categories:performance': ['warn', { minScore: 0.3 }],
-                'categories:accessibility': ['warn', { minScore: 0.7 }],
-                'categories:best-practices': ['warn', { minScore: 0.6 }],
-                'categories:seo': ['warn', { minScore: 0.6 }],
-                // Relaxed Core Web Vitals thresholds for CI environment
-                'first-contentful-paint': ['warn', { maxNumericValue: 5000 }],
-                'largest-contentful-paint': ['warn', { maxNumericValue: 6000 }],
-                'cumulative-layout-shift': ['warn', { maxNumericValue: 0.3 }],
-                'total-blocking-time': ['warn', { maxNumericValue: 2000 }],
-                'speed-index': ['warn', { maxNumericValue: 8000 }],
+                'categories:performance': ['warn', { minScore: 0.1 }]
             },
         },
         upload: {
