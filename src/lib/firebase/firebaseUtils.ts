@@ -689,7 +689,8 @@ export const createPost = async (postData: Omit<Post, 'id' | 'user' | 'createdAt
       likes: 0,
       comments: 0,
       views: 0,
-      likedBy: []
+      likedBy: [],
+      tipStatus: 'pending' // Set default tip status as pending
     };
 
     const docRef = await addDocument('posts', newPost);
@@ -749,6 +750,30 @@ export const getPosts = async () => {
     }
 
     return [];
+  }
+};
+
+export const getPostById = async (postId: string): Promise<Post | null> => {
+  if (!db) {
+    return null;
+  }
+
+  try {
+    const postDoc = await getDoc(doc(db, 'posts', postId));
+
+    if (!postDoc.exists()) {
+      return null;
+    }
+
+    const postData = postDoc.data();
+    return {
+      ...postData,
+      id: postDoc.id,
+      createdAt: postData.createdAt?.toDate ? postData.createdAt.toDate().toISOString() : postData.createdAt
+    } as Post;
+  } catch (error) {
+    console.error('Error fetching post by ID:', error);
+    return null;
   }
 };
 

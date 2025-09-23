@@ -9,9 +9,9 @@ interface TopArticlesCardProps {
 }
 
 export default function TopArticlesCard({ articles }: TopArticlesCardProps) {
-  // Filter for pending tips only, then sort by engagement (likes + comments) in descending order and take top 3
+  // Filter for pending tips only (including posts without tipStatus field for backward compatibility), then sort by engagement (likes + comments) in descending order and take top 3
   const topArticles = articles
-    .filter(article => article.tipStatus === 'pending')
+    .filter(article => !article.tipStatus || article.tipStatus === 'pending')
     .sort((a, b) => (b.likes + b.comments) - (a.likes + a.comments))
     .slice(0, 3);
 
