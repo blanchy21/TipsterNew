@@ -78,7 +78,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
 
   return (
     <div className="min-h-screen bg-[#0A0A14] text-white overflow-x-hidden">
-      <style jsx>{`
+      <style>{`
         .glass-footer {
           background: rgba(10, 10, 20, 0.7);
           backdrop-filter: blur(32px);
