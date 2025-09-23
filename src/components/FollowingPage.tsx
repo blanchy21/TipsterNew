@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import {
   Search,
@@ -45,7 +45,7 @@ const FollowingPage: React.FC<FollowingPageProps> = ({ initialTab = 'following',
   const [isSearching, setIsSearching] = useState(false);
   const [filter, setFilter] = useState<'all' | 'verified' | 'sports'>('all');
 
-  const handleSearch = async (query: string) => {
+  const handleSearch = useCallback(async (query: string) => {
     if (!query.trim()) {
       setSearchResults([]);
       return;
@@ -56,11 +56,11 @@ const FollowingPage: React.FC<FollowingPageProps> = ({ initialTab = 'following',
       const results = await searchUsers(query);
       setSearchResults(results);
     } catch (error) {
-      console.error('Search error:', error);
+      // Search error
     } finally {
       setIsSearching(false);
     }
-  };
+  }, [searchUsers]);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -68,7 +68,7 @@ const FollowingPage: React.FC<FollowingPageProps> = ({ initialTab = 'following',
     }, 300);
 
     return () => clearTimeout(timeoutId);
-  }, [searchQuery]);
+  }, [searchQuery, handleSearch]);
 
   const getFilteredUsers = (users: User[]) => {
     if (filter === 'verified') {
@@ -317,7 +317,7 @@ const FollowingPage: React.FC<FollowingPageProps> = ({ initialTab = 'following',
                   onClick={async () => {
                     if (user?.uid) {
                       const exists = await checkUserProfileExists(user.uid);
-                      console.log(`Current user profile exists: ${exists}`);
+                      // Current user profile exists
                       alert(`Current user profile exists: ${exists}`);
                     }
                   }}
@@ -337,15 +337,15 @@ const FollowingPage: React.FC<FollowingPageProps> = ({ initialTab = 'following',
               key={tab.key}
               onClick={() => setActiveTab(tab.key as any)}
               className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-medium transition-all duration-200 ${activeTab === tab.key
-                  ? 'bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white shadow-lg'
-                  : 'text-neutral-400 hover:text-white hover:bg-white/10'
+                ? 'bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white shadow-lg'
+                : 'text-neutral-400 hover:text-white hover:bg-white/10'
                 }`}
             >
               <span>{tab.label}</span>
               {tab.count > 0 && (
                 <span className={`px-2 py-1 text-xs rounded-full ${activeTab === tab.key
-                    ? 'bg-white/20'
-                    : 'bg-neutral-600'
+                  ? 'bg-white/20'
+                  : 'bg-neutral-600'
                   }`}>
                   {tab.count}
                 </span>
@@ -368,8 +368,8 @@ const FollowingPage: React.FC<FollowingPageProps> = ({ initialTab = 'following',
                   key={filterOption.key}
                   onClick={() => setFilter(filterOption.key as any)}
                   className={`px-3 py-1.5 text-sm rounded-md transition-colors ${filter === filterOption.key
-                      ? 'bg-blue-500 text-white'
-                      : 'text-neutral-400 hover:text-white hover:bg-white/10'
+                    ? 'bg-blue-500 text-white'
+                    : 'text-neutral-400 hover:text-white hover:bg-white/10'
                     }`}
                 >
                   {filterOption.label}
