@@ -14,6 +14,7 @@ const MobileMenu = lazy(() => import('./layout/MobileMenu'));
 const Feed = lazy(() => import('./features/Feed'));
 const RightSidebar = lazy(() => import('./layout/RightSidebar'));
 const PostModal = lazy(() => import('./modals/PostModal'));
+const PostDetailModal = lazy(() => import('./PostDetailModal'));
 const AdminAccessModal = lazy(() => import('./admin/AdminAccessModal'));
 const ProfileAccessModal = lazy(() => import('./modals/ProfileAccessModal'));
 const AuthModal = lazy(() => import('./modals/AuthModal'));
@@ -53,6 +54,8 @@ function AppContent() {
   const [posts, setPosts] = useState<Post[]>([]);
   // Following data is now managed by FollowingContext
   const [showPost, setShowPost] = useState(false);
+  const [showPostDetail, setShowPostDetail] = useState(false);
+  const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const [query, setQuery] = useState('');
@@ -86,6 +89,16 @@ function AppContent() {
     ));
   };
 
+  const handleOpenPostDetail = (postId: string) => {
+    setSelectedPostId(postId);
+    setShowPostDetail(true);
+  };
+
+  const handleClosePostDetail = () => {
+    setShowPostDetail(false);
+    setSelectedPostId(null);
+  };
+
   useEffect(() => {
     // Only run on client side to prevent hydration mismatch
     if (!isClient) return;
@@ -111,7 +124,21 @@ function AppContent() {
       setIsLoaded(true);
       document.body.classList.add('loaded');
     }, 50);
-    return () => clearTimeout(timer);
+
+    // Listen for custom events to open post detail modal
+    const handleOpenPostDetailEvent = (event: CustomEvent) => {
+      const { postId } = event.detail;
+      if (postId) {
+        handleOpenPostDetail(postId);
+      }
+    };
+
+    window.addEventListener('openPostDetail', handleOpenPostDetailEvent as EventListener);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('openPostDetail', handleOpenPostDetailEvent as EventListener);
+    };
   }, [user, loading, isClient]);
 
   // Handler functions for navigation
@@ -783,6 +810,16 @@ function AppContent() {
             onClose={() => setShowPost(false)}
             onSubmit={handleSubmitPost}
             selectedSport={selectedSport}
+          />
+        </Suspense>
+
+        <Suspense fallback={null}>
+          <PostDetailModal
+            postId={selectedPostId}
+            isOpen={showPostDetail}
+            onClose={handleClosePostDetail}
+            onLikeChange={handleLikeChange}
+            onNavigateToProfile={handleNavigateToProfile}
           />
         </Suspense>
 
