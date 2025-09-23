@@ -9,16 +9,17 @@ module.exports = {
         },
         assert: {
             assertions: {
-                // Temporarily disable performance assertions due to server startup issues
-                // 'categories:performance': ['warn', { minScore: 0.6 }],
-                // 'categories:accessibility': ['warn', { minScore: 0.8 }],
-                // 'categories:best-practices': ['warn', { minScore: 0.7 }],
-                // 'categories:seo': ['warn', { minScore: 0.7 }],
-                // 'first-contentful-paint': ['warn', { maxNumericValue: 3000 }],
-                // 'largest-contentful-paint': ['warn', { maxNumericValue: 4000 }],
-                // 'cumulative-layout-shift': ['warn', { maxNumericValue: 0.2 }],
-                // 'total-blocking-time': ['warn', { maxNumericValue: 1000 }],
-                // 'speed-index': ['warn', { maxNumericValue: 5000 }],
+                // Basic performance assertions - relaxed thresholds for CI
+                'categories:performance': ['warn', { minScore: 0.3 }],
+                'categories:accessibility': ['warn', { minScore: 0.7 }],
+                'categories:best-practices': ['warn', { minScore: 0.6 }],
+                'categories:seo': ['warn', { minScore: 0.6 }],
+                // Relaxed Core Web Vitals thresholds for CI environment
+                'first-contentful-paint': ['warn', { maxNumericValue: 5000 }],
+                'largest-contentful-paint': ['warn', { maxNumericValue: 6000 }],
+                'cumulative-layout-shift': ['warn', { maxNumericValue: 0.3 }],
+                'total-blocking-time': ['warn', { maxNumericValue: 2000 }],
+                'speed-index': ['warn', { maxNumericValue: 8000 }],
             },
         },
         upload: {
