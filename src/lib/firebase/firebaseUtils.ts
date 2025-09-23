@@ -772,14 +772,14 @@ export const getPostById = async (postId: string): Promise<Post | null> => {
       createdAt: postData.createdAt?.toDate ? postData.createdAt.toDate().toISOString() : postData.createdAt
     } as Post;
   } catch (error) {
-    console.error('Error fetching post by ID:', error);
+    // Error fetching post by ID
     return null;
   }
 };
 
 export const togglePostLike = async (postId: string, userId: string, isLiked: boolean) => {
   if (!db) {
-    console.warn('Firebase database not initialized, skipping like operation');
+    // Firebase database not initialized, skipping like operation
     return;
   }
 
@@ -797,20 +797,20 @@ export const togglePostLike = async (postId: string, userId: string, isLiked: bo
           likes: increment(1),
           likedBy: arrayUnion(userId)
         });
-        console.log('Like added successfully for post:', postId);
+        // Like added successfully
       } else {
         // Remove like
         await updateDoc(postRef, {
           likes: increment(-1),
           likedBy: arrayRemove(userId)
         });
-        console.log('Like removed successfully for post:', postId);
+        // Like removed successfully
       }
     } else {
-      console.warn('Post not found for like operation:', postId);
+      // Post not found for like operation
     }
   } catch (error) {
-    console.error('Like operation failed:', error);
+    // Like operation failed
     throw error; // Re-throw the error so the UI can handle it
   }
 };
