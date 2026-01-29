@@ -141,8 +141,7 @@ export default function CommentForm({
 
     setIsLoadingGifs(true);
     try {
-      // Use environment variable for API key, fallback to demo key
-      const apiKey = process.env.NEXT_PUBLIC_GIPHY_API_KEY || 'dc6zaTOxFJmzC';
+      const apiKey = process.env.NEXT_PUBLIC_GIPHY_API_KEY || '';
       const response = await fetch(
         `https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&q=${encodeURIComponent(query)}&limit=20&rating=g`
       );
