@@ -1,10 +1,15 @@
 import { openai } from "@ai-sdk/openai";
 import { convertToCoreMessages, streamText } from "ai";
 import { verifyFirebaseToken } from "@/lib/api-auth";
+import { checkRateLimit, rateLimitResponse, getClientIp } from "@/lib/rate-limit";
 
 export const runtime = "edge";
 
 export async function POST(req: Request) {
+  const ip = getClientIp(req);
+  const rl = checkRateLimit(`openai-chat:${ip}`, 20, 60_000);
+  if (!rl.success) return rateLimitResponse(rl);
+
   const user = await verifyFirebaseToken(req);
   if (!user) {
     return new Response("Unauthorized", { status: 401 });

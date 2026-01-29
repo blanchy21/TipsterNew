@@ -1,12 +1,17 @@
 import { NextResponse } from "next/server";
 import Replicate from "replicate";
 import { verifyFirebaseToken } from "@/lib/api-auth";
+import { checkRateLimit, rateLimitResponse, getClientIp } from "@/lib/rate-limit";
 
 const replicate = new Replicate({
   auth: process.env.REPLICATE_API_TOKEN,
 });
 
 export async function POST(request: Request) {
+  const ip = getClientIp(request);
+  const rl = checkRateLimit(`replicate:${ip}`, 10, 60_000);
+  if (!rl.success) return rateLimitResponse(rl);
+
   const user = await verifyFirebaseToken(request);
   if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

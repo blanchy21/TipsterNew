@@ -5,6 +5,7 @@ import os from "os";
 import { randomUUID } from "crypto";
 import OpenAI from "openai";
 import { verifyFirebaseToken } from "@/lib/api-auth";
+import { checkRateLimit, rateLimitResponse, getClientIp } from "@/lib/rate-limit";
 
 const MAX_AUDIO_SIZE = 25 * 1024 * 1024; // 25MB limit
 
@@ -13,6 +14,10 @@ const openai = new OpenAI({
 });
 
 export async function POST(req: Request) {
+  const ip = getClientIp(req);
+  const rl = checkRateLimit(`transcribe:${ip}`, 10, 60_000);
+  if (!rl.success) return rateLimitResponse(rl);
+
   const user = await verifyFirebaseToken(req);
   if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

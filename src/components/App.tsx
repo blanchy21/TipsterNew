@@ -15,6 +15,7 @@ const RightSidebar = lazy(() => import('./layout/RightSidebar'));
 const PostModal = lazy(() => import('./modals/PostModal'));
 const PostDetailModal = lazy(() => import('./modals/PostDetailModal'));
 const AdminAccessModal = lazy(() => import('./admin/AdminAccessModal'));
+import { isAdminEmail } from './admin/AdminAccessModal';
 const ProfileAccessModal = lazy(() => import('./modals/ProfileAccessModal'));
 const AuthModal = lazy(() => import('./modals/AuthModal'));
 
@@ -143,10 +144,13 @@ function AppContent() {
   const handleAdminAccess = useCallback(() => {
     if (isAdminAuthenticated) {
       setSelected('admin');
+    } else if (user && isAdminEmail(user.email)) {
+      setIsAdminAuthenticated(true);
+      setSelected('admin');
     } else {
       setShowAdminAccessModal(true);
     }
-  }, [isAdminAuthenticated]);
+  }, [isAdminAuthenticated, user]);
 
   const handleProfileAccess = useCallback(() => {
     if (user) {
