@@ -214,39 +214,35 @@ const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChan
         // Console statement removed for production
       }}
     >
-      <article className="group rounded-xl bg-white/[0.03] hover:bg-white/[0.05] transition ring-1 ring-white/5 hover:ring-white/10 p-4 md:p-5">
+      <article className="border-b border-white/[0.04] px-4 md:px-6 py-4 md:py-5 hover:bg-white/[0.02] transition-colors duration-150">
         <div className="flex items-start gap-3">
           <AvatarWithFallback
             src={post.user.avatar}
             alt={post.user.name}
             name={post.user.name}
-            size={40}
-            className="ring-1 ring-white/10"
+            size={38}
+            className="ring-1 ring-white/[0.06]"
           />
           <div className="flex-1 min-w-0">
             <div className="flex items-center justify-between">
-              <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 min-w-0">
-                <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 min-w-0">
-                  {onNavigateToProfile ? (
-                    <UserProfileLink
-                      user={post.user}
-                      onNavigateToProfile={onNavigateToProfile}
-                      className="text-zinc-100 font-medium truncate hover:text-primary"
-                    >
-                      {post.user.name}
-                    </UserProfileLink>
-                  ) : (
-                    <span className="text-zinc-100 font-medium truncate">{post.user.name}</span>
-                  )}
-                  <span className="text-zinc-500 text-sm truncate">{post.user.handle}</span>
-                </div>
-                <div className="flex items-center gap-1 sm:gap-2">
-                  <span className="text-zinc-500 text-xs">•</span>
-                  <span className="text-zinc-500 text-xs">{timeAgo(post.createdAt)}</span>
-                </div>
+              <div className="flex items-center gap-2 min-w-0 flex-wrap">
+                {onNavigateToProfile ? (
+                  <UserProfileLink
+                    user={post.user}
+                    onNavigateToProfile={onNavigateToProfile}
+                    className="text-sm text-zinc-200 font-medium truncate hover:text-white transition-colors"
+                  >
+                    {post.user.name}
+                  </UserProfileLink>
+                ) : (
+                  <span className="text-sm text-zinc-200 font-medium truncate">{post.user.name}</span>
+                )}
+                <span className="text-zinc-600 text-xs truncate">{post.user.handle}</span>
+                <span className="text-zinc-600 text-xs">·</span>
+                <span className="text-zinc-600 text-xs">{timeAgo(post.createdAt)}</span>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-primary/90 bg-primary/10 ring-1 ring-primary/20 px-2 py-1 rounded-md">
+              <div className="flex items-center gap-1.5 shrink-0 ml-2">
+                <span className="text-[11px] text-zinc-500 bg-white/[0.04] px-2 py-0.5 rounded">
                   {post.sport}
                 </span>
                 <FollowButton targetUser={post.user} variant="minimal" />
@@ -254,34 +250,32 @@ const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChan
                   <div className="relative" ref={menuRef}>
                     <button
                       onClick={() => setShowMenu(!showMenu)}
-                      className="p-2 rounded-md hover:bg-white/5 transition ring-1 ring-transparent hover:ring-white/10"
+                      className="p-1.5 rounded-md text-zinc-600 hover:text-zinc-400 hover:bg-white/[0.04] transition-colors"
                     >
-                      <MoreHorizontal className="w-4 h-4 text-zinc-400" />
+                      <MoreHorizontal className="w-4 h-4" />
                     </button>
 
                     {showMenu && (
-                      <div className="absolute right-0 top-full mt-1 w-48 bg-surface-2 border border-surface-3 rounded-lg shadow-lg z-50">
-                        <div className="py-1">
-                          {canEdit && (
-                            <button
-                              onClick={handleEditPost}
-                              className="w-full px-4 py-2 text-left text-sm text-zinc-200 hover:bg-surface-3 flex items-center gap-2"
-                            >
-                              <Edit className="w-4 h-4" />
-                              Edit Tip
-                            </button>
-                          )}
-                          {canDelete && (
-                            <button
-                              onClick={handleDeletePost}
-                              disabled={isDeleting}
-                              className="w-full px-4 py-2 text-left text-sm text-red-400 hover:bg-surface-3 flex items-center gap-2 disabled:opacity-50"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                              {isDeleting ? 'Deleting...' : 'Delete Tip'}
-                            </button>
-                          )}
-                        </div>
+                      <div className="absolute right-0 top-full mt-1 w-44 bg-surface-2 border border-white/[0.06] rounded-lg shadow-xl z-50 py-1">
+                        {canEdit && (
+                          <button
+                            onClick={handleEditPost}
+                            className="w-full px-3 py-1.5 text-left text-sm text-zinc-300 hover:bg-white/[0.04] flex items-center gap-2 transition-colors"
+                          >
+                            <Edit className="w-3.5 h-3.5" />
+                            Edit Tip
+                          </button>
+                        )}
+                        {canDelete && (
+                          <button
+                            onClick={handleDeletePost}
+                            disabled={isDeleting}
+                            className="w-full px-3 py-1.5 text-left text-sm text-red-400/80 hover:bg-white/[0.04] flex items-center gap-2 transition-colors disabled:opacity-50"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                            {isDeleting ? 'Deleting...' : 'Delete Tip'}
+                          </button>
+                        )}
                       </div>
                     )}
                   </div>
@@ -289,22 +283,22 @@ const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChan
               </div>
             </div>
 
-            <div className="mt-3 space-y-3">
-              <h3 className="text-zinc-100 font-semibold text-lg leading-tight">
+            <div className="mt-2.5 space-y-2.5">
+              <h3 className="text-[15px] text-zinc-100 font-semibold leading-snug">
                 {post.title}
               </h3>
 
               <div
-                className="text-sm text-zinc-300/90 leading-relaxed"
+                className="text-sm text-zinc-400 leading-relaxed"
                 dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }}
               />
 
               <div className="flex flex-wrap items-center gap-2">
                 {post.odds && (
-                  <div className="inline-flex items-center gap-2 rounded-lg bg-emerald-500/10 ring-1 ring-emerald-500/20 px-3 py-2">
-                    <span className="text-emerald-300 text-sm font-medium">Odds:</span>
-                    <span className="text-emerald-200 text-sm font-semibold">{post.odds}</span>
-                  </div>
+                  <span className="inline-flex items-center gap-1.5 text-xs bg-white/[0.04] px-2.5 py-1 rounded">
+                    <span className="text-zinc-500">Odds:</span>
+                    <span className="text-zinc-300 font-medium">{post.odds}</span>
+                  </span>
                 )}
 
                 <TipVerificationStatus
@@ -316,40 +310,37 @@ const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChan
               </div>
 
               {post.tags.length > 0 && (
-                <div className="flex flex-wrap items-center gap-2">
+                <div className="flex flex-wrap items-center gap-1.5">
                   {post.tags.map((tag, index) => (
                     <span
                       key={index}
-                      className="inline-flex items-center gap-1 rounded-lg bg-white/5 ring-1 ring-white/10 px-2.5 py-1.5"
+                      className="inline-flex items-center gap-1 text-xs text-zinc-500 bg-white/[0.03] px-2 py-0.5 rounded"
                     >
-                      <Hash className="w-3 h-3 text-zinc-400" />
-                      <span className="text-zinc-300 text-sm">{tag}</span>
+                      <Hash className="w-2.5 h-2.5" />
+                      {tag}
                     </span>
                   ))}
                 </div>
               )}
             </div>
 
-            <div className="mt-4 flex items-center gap-4">
+            <div className="mt-3 flex items-center gap-1">
               <LikeButton post={post} onLikeChange={onLikeChange} />
               <button
                 onClick={toggleComments}
-                className="inline-flex items-center gap-2 text-zinc-400 hover:text-zinc-200 transition rounded-md px-2 py-1.5 hover:bg-white/5 ring-1 ring-transparent hover:ring-white/10 min-w-[3rem]"
+                className="inline-flex items-center gap-1.5 text-zinc-500 hover:text-zinc-300 transition-colors px-2 py-1.5 rounded-md hover:bg-white/[0.04] text-sm"
               >
-                <MessageCircle className="w-4 h-4" />
-                <span className="text-sm tabular-nums min-w-[1.5rem] text-right">{commentCount}</span>
+                <MessageCircle className="w-3.5 h-3.5" />
+                <span className="tabular-nums">{commentCount}</span>
                 {showComments ? (
                   <ChevronUp className="w-3 h-3" />
                 ) : (
                   <ChevronDown className="w-3 h-3" />
                 )}
               </button>
-              <div className="inline-flex items-center gap-2 text-zinc-400 min-w-[3rem]">
-                <Eye className="w-4 h-4" />
-                <span className="text-sm tabular-nums min-w-[1.5rem] text-right">{post.views || 0}</span>
-              </div>
-              <div className="ml-auto inline-flex items-center gap-2 text-xs text-zinc-500">
-                <span>Community Discussion</span>
+              <div className="inline-flex items-center gap-1.5 text-zinc-600 px-2 py-1.5 text-sm">
+                <Eye className="w-3.5 h-3.5" />
+                <span className="tabular-nums">{post.views || 0}</span>
               </div>
             </div>
           </div>
@@ -357,7 +348,7 @@ const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChan
 
         {/* Comments Section */}
         {showComments && (
-          <div className="mt-4 border-t border-surface-3/50 pt-4">
+          <div className="mt-4 pt-4 border-t border-white/[0.04] ml-[50px]">
             <CommentsList
               postId={post.id}
               onCommentCountChange={handleCommentCountChange}

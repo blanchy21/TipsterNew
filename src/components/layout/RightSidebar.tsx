@@ -28,7 +28,6 @@ export default function RightSidebar({
     <aside className={[
       "hidden lg:flex lg:flex-col shrink-0",
       "px-4 py-4",
-      "border-l border-white/5",
       "gap-6",
       "h-screen overflow-y-auto",
       "transition duration-700",

@@ -40,21 +40,21 @@ export default function FeedHeader({ isLoaded, query, onQueryChange, selected, o
   );
   return (
     <div className={[
-      "flex items-center justify-between px-4 md:px-6 py-4 md:py-6",
-      "border-b border-white/5 sticky top-0 z-20",
-      "bg-gradient-to-br from-surface-0 via-surface-1 to-surface-0/80 backdrop-blur"
+      "flex items-center justify-between px-4 md:px-6 py-3 md:py-4",
+      "border-b border-white/[0.04] sticky top-0 z-20",
+      "bg-surface-0/90 backdrop-blur-md"
     ].join(' ')}
     >
       <div className={[
-        "flex items-center gap-3",
+        "flex items-baseline gap-3",
         "transition duration-700",
         isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
       ].join(' ')}
       >
-        <h1 className="text-xl md:text-2xl lg:text-3xl font-semibold tracking-tight text-zinc-100">
+        <h1 className="text-lg font-semibold tracking-tight text-zinc-100">
           {selected === 'top-articles' ? 'Trending Tips' : 'Tip Feed'}
         </h1>
-        <span className="text-xs text-zinc-400 hidden sm:inline">
+        <span className="text-xs text-zinc-500 hidden sm:inline">
           {selected === 'top-articles'
             ? 'Most viewed tips on the platform'
             : 'Share your sports tips and analysis'
@@ -70,33 +70,33 @@ export default function FeedHeader({ isLoaded, query, onQueryChange, selected, o
         <div className="relative">
           <input
             type="text"
-            placeholder="Search sports discussions..."
+            placeholder="Search discussions..."
             aria-label="Search sports discussions"
             value={query}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => onQueryChange(e.target.value)}
-            className="w-64 bg-white/5 border border-white/10 focus:border-primary/40 outline-none rounded-lg px-9 py-2 pr-9 text-sm placeholder:text-zinc-500 focus:ring-4 focus:ring-primary/10 transition"
+            className="w-52 bg-white/[0.04] border border-white/[0.06] focus:border-white/15 outline-none rounded-lg px-8 py-1.5 text-sm text-zinc-300 placeholder:text-zinc-600 focus:ring-0 transition-colors"
           />
-          <Search className="w-4 h-4 absolute left-3 top-2.5 text-zinc-400" />
+          <Search className="w-3.5 h-3.5 absolute left-2.5 top-[7px] text-zinc-500" />
           {query && (
             <button
               onClick={() => onQueryChange('')}
-              className="w-4 h-4 absolute right-3 top-2.5 text-zinc-400 hover:text-zinc-300 transition-colors"
+              className="absolute right-2.5 top-[7px] text-zinc-500 hover:text-zinc-300 transition-colors"
               aria-label="Clear search"
             >
-              <X className="w-4 h-4" />
+              <X className="w-3.5 h-3.5" />
             </button>
           )}
         </div>
         <button
           onClick={() => setShowFilterModal(true)}
-          className={`inline-flex items-center gap-2 rounded-lg px-3 py-2 transition ring-1 ${hasActiveFilters
-            ? 'bg-primary/20 text-primary ring-primary/40 hover:bg-primary/30'
-            : 'bg-white/5 hover:bg-white/10 ring-white/10'
+          className={`inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-sm transition-colors ${hasActiveFilters
+            ? 'text-primary bg-primary/10 hover:bg-primary/15'
+            : 'text-zinc-500 hover:text-zinc-300 hover:bg-white/[0.04]'
             }`}
         >
-          <SlidersHorizontal className="w-4 h-4" />
-          <span className="text-sm font-medium">
-            Filters {hasActiveFilters && `(${Object.values(activeFilters).filter(v => Array.isArray(v) ? v.length > 0 : v !== 'all').length})`}
+          <SlidersHorizontal className="w-3.5 h-3.5" />
+          <span className="font-medium">
+            Filters{hasActiveFilters ? ` (${Object.values(activeFilters).filter(v => Array.isArray(v) ? v.length > 0 : v !== 'all').length})` : ''}
           </span>
         </button>
       </div>

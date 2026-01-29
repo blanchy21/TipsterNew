@@ -61,17 +61,16 @@ export default function LikeButton({ post, onLikeChange }: LikeButtonProps) {
       onClick={handleLike}
       disabled={isLiking}
       className={`
-        inline-flex items-center gap-2 transition rounded-md px-2 py-1.5 ring-1 ring-transparent hover:ring-white/10 min-w-[3rem]
+        inline-flex items-center gap-1.5 transition-colors rounded-md px-2 py-1.5 text-sm
         ${isLiked
-          ? 'text-red-400 hover:text-red-300 bg-red-500/10'
-          : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/5'
+          ? 'text-red-400 hover:text-red-300'
+          : 'text-zinc-500 hover:text-zinc-300 hover:bg-white/[0.04]'
         }
-        ${!user ? 'opacity-75 cursor-pointer' : 'cursor-pointer'}
         ${isLiking ? 'opacity-50 cursor-wait' : 'cursor-pointer'}
       `}
     >
-      <ThumbsUp className={`w-4 h-4 ${isLiked ? 'fill-current' : ''}`} />
-      <span className="text-sm tabular-nums min-w-[1.5rem] text-right">{likeCount}</span>
+      <ThumbsUp className={`w-3.5 h-3.5 ${isLiked ? 'fill-current' : ''}`} />
+      <span className="tabular-nums">{likeCount}</span>
     </button>
   );
 }

@@ -35,7 +35,7 @@ interface FeedProps {
 export default function Feed({ posts, isLoaded, query, onQueryChange, selectedSport, selected, onLikeChange, onNavigateToProfile, onPostDeleted, onPostUpdated, onFiltersChange, currentFilters }: FeedProps) {
 
   return (
-    <main className="flex-1 flex flex-col overflow-hidden">
+    <main className="flex-1 flex flex-col overflow-hidden min-w-0 border-r border-white/[0.04]">
       <FeedHeader
         isLoaded={isLoaded}
         query={query}
@@ -51,7 +51,7 @@ export default function Feed({ posts, isLoaded, query, onQueryChange, selectedSp
           </p>
         </div>
       )}
-      <div className="flex-1 overflow-y-auto px-4 md:px-6 py-4 space-y-4 md:space-y-5">
+      <div className="flex-1 overflow-y-auto">
         {!isLoaded ? (
           <FeedLoadingState />
         ) : (

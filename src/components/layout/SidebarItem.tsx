@@ -10,11 +10,11 @@ interface SidebarItemProps {
   badge?: number;
 }
 
-export default function SidebarItem({ 
-  icon: Icon, 
-  label, 
-  active, 
-  onClick, 
+export default function SidebarItem({
+  icon: Icon,
+  label,
+  active,
+  onClick,
   collapsed = false,
   badge
 }: SidebarItemProps) {
@@ -22,16 +22,16 @@ export default function SidebarItem({
     <button
       onClick={onClick}
       className={[
-        "group w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors relative",
-        active 
-          ? "bg-white/[0.06] text-zinc-100 ring-1 ring-white/10" 
-          : "text-zinc-300 hover:text-zinc-100 hover:bg-white/[0.04] ring-1 ring-transparent hover:ring-white/10"
+        "group w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors duration-150 relative",
+        active
+          ? "bg-white/[0.06] text-white"
+          : "text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.03]"
       ].join(' ')}
     >
-      <Icon className="w-5 h-5 text-zinc-300 group-hover:text-zinc-100" />
-      {!collapsed && <span className="text-sm font-medium">{label}</span>}
+      <Icon className={`w-[18px] h-[18px] ${active ? 'text-zinc-200' : 'text-zinc-500 group-hover:text-zinc-300'} transition-colors duration-150`} />
+      {!collapsed && <span className="text-[13px] font-medium">{label}</span>}
       {badge && badge > 0 && (
-        <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-semibold">
+        <span className="ml-auto bg-red-500/90 text-white text-[10px] rounded-full h-[18px] min-w-[18px] px-1 flex items-center justify-center font-semibold">
           {badge > 9 ? '9+' : badge}
         </span>
       )}

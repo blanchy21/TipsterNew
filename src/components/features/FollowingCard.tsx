@@ -17,50 +17,50 @@ interface FollowingCardProps {
 
 export default function FollowingCard({ list, onToggle, onNavigateToProfile, loading = false }: FollowingCardProps) {
   return (
-    <section className="rounded-xl bg-white/[0.03] ring-1 ring-white/5 overflow-hidden flex flex-col h-80">
+    <section className="rounded-xl bg-white/[0.03] ring-1 ring-white/5 overflow-hidden flex flex-col max-h-80">
       <div className="px-4 py-3 border-b border-white/5 flex items-center gap-2 flex-shrink-0">
-        <Users className="w-4 h-4 text-zinc-300" />
-        <h3 className="text-zinc-100 font-semibold tracking-tight">Following</h3>
+        <Users className="w-4 h-4 text-zinc-400" />
+        <h3 className="text-sm font-medium text-zinc-300 tracking-tight">Following</h3>
+        {list.length > 0 && (
+          <span className="text-xs text-zinc-500">{list.length}</span>
+        )}
       </div>
-      <div className="divide-y divide-white/5 overflow-y-auto flex-1 min-h-0">
+      <div className="divide-y divide-white/[0.04] overflow-y-auto flex-1 min-h-0">
         {loading ? (
           <div className="px-4 py-8 text-center text-zinc-500 text-sm">
-            Loading following...
+            Loading...
           </div>
         ) : list.length > 0 ? (
           list.slice(0, 8).map((user) => (
-            <div key={user.id} className="px-4 py-3 flex items-center gap-3">
+            <div key={user.id} className="group px-4 py-2.5 flex items-center gap-3 hover:bg-white/[0.04] transition-colors duration-150">
               <AvatarWithFallback
                 src={user.avatar}
                 alt={user.name || user.handle || 'User'}
                 name={user.name || user.handle || 'User'}
-                size={36}
+                size={32}
                 className="ring-1 ring-white/10 flex-shrink-0"
               />
               <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-2">
-                  {onNavigateToProfile ? (
-                    <UserProfileLink
-                      user={user}
-                      onNavigateToProfile={onNavigateToProfile}
-                      className="text-sm text-zinc-200 truncate hover:text-primary"
-                    >
-                      {user.name || user.handle || 'Anonymous User'}
-                    </UserProfileLink>
-                  ) : (
-                    <span className="text-sm text-zinc-200 truncate">
-                      {user.name || user.handle || 'Anonymous User'}
-                    </span>
-                  )}
-                  {user.handle && user.name !== user.handle && (
-                    <span className="text-xs text-zinc-500 truncate">{user.handle}</span>
-                  )}
-                </div>
-                <div className="text-xs text-emerald-300/90">{user.followersCount || 0} followers</div>
+                {onNavigateToProfile ? (
+                  <UserProfileLink
+                    user={user}
+                    onNavigateToProfile={onNavigateToProfile}
+                    className="text-sm text-zinc-200 truncate block hover:text-white transition-colors"
+                  >
+                    {user.name || user.handle || 'Anonymous User'}
+                  </UserProfileLink>
+                ) : (
+                  <span className="text-sm text-zinc-200 truncate block">
+                    {user.name || user.handle || 'Anonymous User'}
+                  </span>
+                )}
+                <span className="text-xs text-zinc-500">
+                  {user.handle && user.name !== user.handle ? `${user.handle} · ` : ''}{user.followersCount || 0} followers
+                </span>
               </div>
               <button
                 onClick={() => onToggle(user.id)}
-                className="text-xs rounded-md px-2.5 py-1.5 transition ring-1 flex-shrink-0 bg-red-500/20 text-red-300 ring-red-500/30 hover:bg-red-500/30 hover:text-red-200"
+                className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors opacity-0 group-hover:opacity-100 flex-shrink-0"
                 title="Unfollow user"
               >
                 Unfollow
@@ -69,11 +69,11 @@ export default function FollowingCard({ list, onToggle, onNavigateToProfile, loa
           ))
         ) : (
           <div className="px-4 py-8 text-center text-zinc-500 text-sm">
-            No users to follow yet
+            Not following anyone yet
           </div>
         )}
         {list.length > 8 && (
-          <div className="px-4 py-3 text-center text-zinc-400 text-xs border-t border-white/5">
+          <div className="px-4 py-2.5 text-center text-zinc-500 text-xs">
             +{list.length - 8} more
           </div>
         )}
