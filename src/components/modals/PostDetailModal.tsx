@@ -4,12 +4,12 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { X, MessageCircle, Eye, Hash, ChevronDown, ChevronUp, CheckCircle, XCircle, Clock, AlertCircle, Trophy } from 'lucide-react';
 import { Post, TipStatus } from '@/lib/types';
 import { timeAgo } from '@/lib/utils';
-import LikeButton from './LikeButton';
-import FollowButton from './FollowButton';
-import CommentsList from './CommentsList';
-import AvatarWithFallback from './AvatarWithFallback';
-import UserProfileLink from './UserProfileLink';
-import TipVerificationStatus from './TipVerificationStatus';
+import LikeButton from '@/components/features/LikeButton';
+import FollowButton from '@/components/features/FollowButton';
+import CommentsList from '@/components/features/CommentsList';
+import AvatarWithFallback from '@/components/ui/AvatarWithFallback';
+import UserProfileLink from '@/components/ui/UserProfileLink';
+import TipVerificationStatus from '@/components/features/TipVerificationStatus';
 import { getPostById } from '@/lib/firebase/firebaseUtils';
 
 interface PostDetailModalProps {

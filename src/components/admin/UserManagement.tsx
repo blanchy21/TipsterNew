@@ -30,8 +30,6 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
     const loadUsers = async () => {
         try {
             setIsLoading(true);
-            console.log('Fetching users from Firebase...');
-
             // Force fresh data by querying directly
             if (!db) {
                 throw new Error('Firebase not initialized');
@@ -43,8 +41,6 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
                 id: doc.id,
                 ...doc.data()
             }));
-
-            console.log('Raw Firebase data:', usersData);
 
             // Transform the data to match User interface
             const transformedUsers: User[] = usersData.map((userData: any) => ({
@@ -85,8 +81,6 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
                 }
             }));
 
-            console.log('Loaded users from Firebase:', transformedUsers.length, 'users');
-            console.log('User names:', transformedUsers.map(u => u.name));
             setUsers(transformedUsers);
             setLastRefresh(new Date());
         } catch (error) {

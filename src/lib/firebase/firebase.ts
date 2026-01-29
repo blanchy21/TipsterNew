@@ -37,7 +37,7 @@ try {
     auth = getAuth(app);
     db = getFirestore(app);
     storage = getStorage(app);
-    console.log('Firebase initialized successfully');
+    // Firebase initialized successfully
   } else {
     console.warn('Firebase config not available, using mock objects');
     // Create mock objects to prevent errors

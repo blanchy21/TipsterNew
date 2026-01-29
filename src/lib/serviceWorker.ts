@@ -11,7 +11,7 @@ export const initializeServiceWorker = () => {
 
         // Register service worker
         wb.register().then((registration) => {
-            console.log('Service Worker registered successfully:', registration);
+            // Service Worker registered successfully
         }).catch((error) => {
             console.error('Service Worker registration failed:', error);
         });
@@ -129,13 +129,13 @@ export const isOnline = () => {
 export const setupOfflineHandlers = () => {
     if (typeof window !== 'undefined') {
         window.addEventListener('online', () => {
-            console.log('App is back online');
+            // App is back online
             // Trigger background sync for pending tips
             registerBackgroundSync();
         });
 
         window.addEventListener('offline', () => {
-            console.log('App is offline');
+            // App is offline
         });
     }
 };

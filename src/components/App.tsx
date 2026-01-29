@@ -1,12 +1,11 @@
 'use client';
 
-import React, { useState, useEffect, useMemo, useCallback, lazy, Suspense } from 'react';
+import React, { useState, useEffect, useCallback, lazy, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Post, FollowingUser } from '@/lib/types';
-import { sampleFollowing, sampleTrending } from '@/lib/utils';
-import { createPost, togglePostLike, incrementPostViews } from '@/lib/firebase/firebaseUtils';
-import { collection, query as firestoreQuery, orderBy as firestoreOrderBy, onSnapshot, where, limit } from 'firebase/firestore';
-import { db } from '@/lib/firebase/firebase';
+import { Post } from '@/lib/types';
+import { createPost } from '@/lib/firebase/firebaseUtils';
+import { useRealtimePosts } from '@/lib/hooks/useRealtimePosts';
+import { useFilteredPosts } from '@/lib/hooks/useFilteredPosts';
 // Lazy load all components to reduce initial bundle size
 const Sidebar = lazy(() => import('./layout/Sidebar'));
 const MobileHeader = lazy(() => import('./layout/MobileHeader'));
@@ -14,7 +13,7 @@ const MobileMenu = lazy(() => import('./layout/MobileMenu'));
 const Feed = lazy(() => import('./features/Feed'));
 const RightSidebar = lazy(() => import('./layout/RightSidebar'));
 const PostModal = lazy(() => import('./modals/PostModal'));
-const PostDetailModal = lazy(() => import('./PostDetailModal'));
+const PostDetailModal = lazy(() => import('./modals/PostDetailModal'));
 const AdminAccessModal = lazy(() => import('./admin/AdminAccessModal'));
 const ProfileAccessModal = lazy(() => import('./modals/ProfileAccessModal'));
 const AuthModal = lazy(() => import('./modals/AuthModal'));
@@ -51,8 +50,7 @@ function AppContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [selected, setSelected] = useState('home');
-  const [posts, setPosts] = useState<Post[]>([]);
-  // Following data is now managed by FollowingContext
+  const { posts, setPosts } = useRealtimePosts(user, loading);
   const [showPost, setShowPost] = useState(false);
   const [showPostDetail, setShowPostDetail] = useState(false);
   const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
@@ -199,248 +197,7 @@ function AppContent() {
     }
   }, [user, showAuthModal]);
 
-  // Real-time posts listener
-  useEffect(() => {
-    if (!db) {
-      setPosts([]);
-      return;
-    }
-
-    // Load posts even without authentication for public viewing
-    if (!user) {
-      // Load public posts (no authentication required)
-      const postsRef = collection(db, 'posts');
-      const q = firestoreQuery(
-        postsRef,
-        firestoreOrderBy('createdAt', 'desc'),
-        limit(50)
-      );
-
-      const unsubscribe = onSnapshot(q,
-        (snapshot) => {
-          const postsData = snapshot.docs.map(doc => {
-            const data = doc.data();
-            return {
-              id: doc.id,
-              ...data,
-              createdAt: data.createdAt?.toDate ? data.createdAt.toDate().toISOString() : data.createdAt
-            } as Post;
-          });
-
-          // Sort posts by creation date (most recent first) as a fallback
-          const sortedPosts = postsData.sort((a, b) => {
-            const dateA = new Date(a.createdAt).getTime();
-            const dateB = new Date(b.createdAt).getTime();
-            return dateB - dateA; // Most recent first
-          });
-
-          setPosts(sortedPosts);
-        },
-        (error) => {
-          setPosts([]);
-        }
-      );
-
-      return () => unsubscribe();
-    }
-
-    // Load posts for authenticated users
-    const postsRef = collection(db, 'posts');
-    const q = firestoreQuery(
-      postsRef,
-      firestoreOrderBy('createdAt', 'desc'),
-      limit(50) // Limit initial load to 50 posts for better performance
-    );
-
-    const unsubscribe = onSnapshot(q,
-      (snapshot) => {
-        const postsData = snapshot.docs.map(doc => {
-          const data = doc.data();
-          return {
-            id: doc.id,
-            ...data,
-            createdAt: data.createdAt?.toDate ? data.createdAt.toDate().toISOString() : data.createdAt
-          } as Post;
-        });
-
-        // Sort posts by creation date (most recent first) as a fallback
-        const sortedPosts = postsData.sort((a, b) => {
-          const dateA = new Date(a.createdAt).getTime();
-          const dateB = new Date(b.createdAt).getTime();
-          return dateB - dateA; // Most recent first
-        });
-
-        setPosts(sortedPosts);
-      },
-      (error) => {
-        // Handle real-time posts listener error silently
-        // Fallback: Set empty posts array on error
-        setPosts([]);
-      }
-    );
-
-    return () => {
-      unsubscribe();
-    };
-  }, [user, loading]);
-
-  const filteredPosts = useMemo(() => {
-    // Debug: Filtering posts
-    // totalPosts: posts.length,
-    // selected,
-    // selectedSport,
-    // query: query.trim(),
-    // filters
-
-    let filtered = posts;
-
-    // Filter by selected tab
-    if (selected === 'top') {
-      filtered = filtered.filter(post => post.likes >= 20);
-
-    } else if (selected === 'top-articles') {
-      // Sort by engagement (likes + comments) in descending order for trending tips
-      filtered = filtered.sort((a, b) => (b.likes + b.comments) - (a.likes + a.comments));
-
-    }
-
-    // Filter by selected sport
-    if (selectedSport !== 'All Sports') {
-      filtered = filtered.filter((post: Post) => post.sport === selectedSport);
-
-    }
-
-    // Filter by search query
-    if (debouncedQuery.trim()) {
-      const searchQuery = debouncedQuery.toLowerCase();
-      filtered = filtered.filter((post: Post) =>
-        post.title.toLowerCase().includes(searchQuery) ||
-        post.content.toLowerCase().includes(searchQuery) ||
-        post.sport.toLowerCase().includes(searchQuery) ||
-        post.tags.some(tag => tag.toLowerCase().includes(searchQuery)) ||
-        post.user.name.toLowerCase().includes(searchQuery) ||
-        post.user.handle.toLowerCase().includes(searchQuery)
-      );
-
-    }
-
-    // Apply advanced filters
-    // Time range filter
-    if (filters.timeRange !== 'all') {
-      const now = new Date();
-      const postDate = (post: Post) => new Date(post.createdAt);
-
-      switch (filters.timeRange) {
-        case 'today':
-          filtered = filtered.filter(post => {
-            const postTime = postDate(post);
-            return postTime.toDateString() === now.toDateString();
-          });
-          break;
-        case 'week':
-          const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-          filtered = filtered.filter(post => postDate(post) >= weekAgo);
-          break;
-        case 'month':
-          const monthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
-          filtered = filtered.filter(post => postDate(post) >= monthAgo);
-          break;
-        case '30days':
-          const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
-          filtered = filtered.filter(post => postDate(post) >= thirtyDaysAgo);
-          break;
-      }
-
-    }
-
-    // Tip status filter
-    if (filters.tipStatus !== 'all') {
-      filtered = filtered.filter(post => {
-        if (filters.tipStatus === 'verified') {
-          return post.tipStatus && post.tipStatus !== 'pending';
-        }
-        return post.tipStatus === filters.tipStatus;
-      });
-
-    }
-
-    // User type filter
-    if (filters.userType !== 'all') {
-      filtered = filtered.filter(post => {
-        switch (filters.userType) {
-          case 'verified':
-            return post.user.isVerified === true;
-          case 'following':
-            // This would need to be implemented with following context
-            return true; // Placeholder
-          case 'highWinRate':
-            // This would need win rate calculation
-            return true; // Placeholder
-          case 'new':
-            const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
-            return post.user.memberSince && new Date(post.user.memberSince) >= thirtyDaysAgo;
-          default:
-            return true;
-        }
-      });
-
-    }
-
-    // Odds range filter
-    if (filters.oddsRange !== 'all') {
-      filtered = filtered.filter(post => {
-        if (!post.odds) return false;
-        const oddsValue = parseFloat(post.odds);
-        if (isNaN(oddsValue)) return false;
-
-        switch (filters.oddsRange) {
-          case 'low':
-            return oddsValue >= 1.1 && oddsValue <= 2.0;
-          case 'medium':
-            return oddsValue > 2.0 && oddsValue <= 5.0;
-          case 'high':
-            return oddsValue > 5.0;
-          default:
-            return true;
-        }
-      });
-
-    }
-
-    // Tags filter
-    if (filters.selectedTags.length > 0) {
-      filtered = filtered.filter(post =>
-        filters.selectedTags.some(tag =>
-          post.tags.some(postTag =>
-            postTag.toLowerCase().includes(tag.toLowerCase())
-          )
-        )
-      );
-
-    }
-
-    // Engagement sorting
-    if (filters.engagement !== 'all') {
-      switch (filters.engagement) {
-        case 'likes':
-          filtered = filtered.sort((a, b) => b.likes - a.likes);
-          break;
-        case 'comments':
-          filtered = filtered.sort((a, b) => b.comments - a.comments);
-          break;
-        case 'views':
-          filtered = filtered.sort((a, b) => b.views - a.views);
-          break;
-        case 'trending':
-          // Sort by recent high engagement (likes + comments in last 24h)
-          filtered = filtered.sort((a, b) => (b.likes + b.comments) - (a.likes + a.comments));
-          break;
-      }
-
-    }
-
-    return filtered;
-  }, [posts, selected, selectedSport, debouncedQuery, filters]);
+  const filteredPosts = useFilteredPosts(posts, selected, selectedSport, debouncedQuery, filters);
 
   const handleSubmitPost = async (postData: Omit<Post, 'id' | 'user' | 'createdAt' | 'likes' | 'comments' | 'views' | 'likedBy'>) => {
     if (!user) {
