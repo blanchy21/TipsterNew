@@ -112,7 +112,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
       <div className="fixed inset-0 -z-10 pointer-events-none">
         <div className="absolute inset-0 bg-gradient-to-b from-surface-0 via-surface-1 to-surface-0" />
         {/* Hero radial glow */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-[radial-gradient(ellipse_at_center,rgba(232,145,58,0.08)_0%,transparent_70%)]" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-[radial-gradient(ellipse_at_center,rgba(252,163,17,0.08)_0%,transparent_70%)]" />
         {/* Subtle grid pattern */}
         <div
           className="absolute inset-0 opacity-[0.02]"
@@ -564,7 +564,7 @@ export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPa
       <section className="py-24 sm:py-32 relative overflow-hidden">
         {/* Ambient glow */}
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-[radial-gradient(ellipse_at_center,rgba(232,145,58,0.1)_0%,transparent_70%)]" />
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-[radial-gradient(ellipse_at_center,rgba(252,163,17,0.1)_0%,transparent_70%)]" />
         </div>
 
         <div className="max-w-3xl mx-auto text-center px-4 sm:px-6 lg:px-8 relative">
