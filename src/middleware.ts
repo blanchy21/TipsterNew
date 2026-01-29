@@ -61,10 +61,8 @@ export function middleware(request: NextRequest) {
         response.headers.set('Cache-Control', 'no-store, max-age=0');
         response.headers.set('Pragma', 'no-cache');
 
-        // Rate limiting headers (basic implementation)
-        response.headers.set('X-RateLimit-Limit', '100');
-        response.headers.set('X-RateLimit-Remaining', '99');
-        response.headers.set('X-RateLimit-Reset', String(Math.floor(Date.now() / 1000) + 3600));
+        // Note: Real rate limiting should be implemented with a backing store
+        // (e.g., Upstash Redis) rather than cosmetic headers.
     }
 
     // Static asset caching

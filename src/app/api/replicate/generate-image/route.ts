@@ -1,18 +1,29 @@
 import { NextResponse } from "next/server";
 import Replicate from "replicate";
+import { verifyFirebaseToken } from "@/lib/api-auth";
 
 const replicate = new Replicate({
   auth: process.env.REPLICATE_API_TOKEN,
 });
 
 export async function POST(request: Request) {
+  const user = await verifyFirebaseToken(request);
+  if (!user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   if (!process.env.REPLICATE_API_TOKEN) {
-    throw new Error(
-      "The REPLICATE_API_TOKEN environment variable is not set. See README.md for instructions on how to set it."
+    return NextResponse.json(
+      { error: "Replicate API token not configured" },
+      { status: 500 }
     );
   }
 
   const { prompt } = await request.json();
+
+  if (!prompt || typeof prompt !== 'string' || prompt.length > 1000) {
+    return NextResponse.json({ error: "Invalid prompt" }, { status: 400 });
+  }
 
   try {
     const output = await replicate.run(
@@ -31,7 +42,6 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ output }, { status: 200 });
   } catch (error) {
-    // Console statement removed for production
     return NextResponse.json({ error: (error as Error).message }, { status: 500 });
   }
 }

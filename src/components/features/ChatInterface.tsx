@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useChat } from '@ai-sdk/react';
 import { Bot, Phone, Video, MoreVertical, Trash2, RotateCcw } from 'lucide-react';
 import MessageList from './MessageList';
 import InputField from '@/components/forms/InputField';
 import ModelSelector from './ModelSelector';
 import ErrorDisplay from '@/components/ui/ErrorDisplay';
+import { auth } from '@/lib/firebase/firebase';
 
 interface Message {
     id: string;
@@ -43,6 +44,13 @@ export default function ChatInterface() {
     const [error, setError] = useState<string | null>(null);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
+    const getAuthHeaders = useCallback(async () => {
+        const user = auth?.currentUser;
+        if (!user) return {};
+        const token = await user.getIdToken();
+        return { Authorization: `Bearer ${token}` };
+    }, []);
+
     const {
         messages,
         input,
@@ -54,6 +62,7 @@ export default function ChatInterface() {
         setMessages
     } = useChat({
         api: '/api/chat',
+        headers: auth?.currentUser ? undefined : {},
         body: {
             model: selectedModel,
         },
@@ -62,7 +71,14 @@ export default function ChatInterface() {
         },
         onFinish: () => {
             setError(null);
-        }
+        },
+        fetch: async (url, options) => {
+            const headers = await getAuthHeaders();
+            return fetch(url, {
+                ...options,
+                headers: { ...options?.headers, ...headers },
+            });
+        },
     });
 
     // Load chat history from localStorage on mount

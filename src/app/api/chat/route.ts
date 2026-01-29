@@ -1,18 +1,23 @@
 import { openai } from "@ai-sdk/openai";
 import { anthropic } from "@ai-sdk/anthropic";
 import { convertToCoreMessages, streamText } from "ai";
+import { verifyFirebaseToken } from "@/lib/api-auth";
 
 export const runtime = "edge";
 
 export async function POST(req: Request) {
+    const user = await verifyFirebaseToken(req);
+    if (!user) {
+        return new Response("Unauthorized", { status: 401 });
+    }
+
     try {
         const { messages, model = "gpt-4o" } = await req.json();
 
-        if (!messages || !Array.isArray(messages)) {
+        if (!messages || !Array.isArray(messages) || messages.length === 0 || messages.length > 50) {
             return new Response("Invalid messages format", { status: 400 });
         }
 
-        // Sports analysis system prompt
         const systemPrompt = `You are an expert sports analyst and tipster assistant for Tipster Arena. You provide:
 
 - Detailed match analysis and predictions
@@ -57,7 +62,6 @@ Format your responses with clear sections, bullet points, and relevant statistic
 
         return result.toDataStreamResponse();
     } catch (error) {
-        // Console statement removed for production
         return new Response("Internal server error", { status: 500 });
     }
 }

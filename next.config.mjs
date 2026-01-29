@@ -138,14 +138,6 @@ const nextConfig = {
       }
     ];
   },
-  async rewrites() {
-    return [
-      {
-        source: "/api/openai/:path*",
-        destination: "https://api.openai.com/:path*",
-      },
-    ];
-  },
 };
 
 const pwaConfig = withPWA({
