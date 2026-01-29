@@ -99,10 +99,14 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
     );
 
     const unsubscribe = onSnapshot(postsQuery, (snapshot) => {
-      const posts = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      })) as Post[];
+      const posts = snapshot.docs.map(doc => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          ...data,
+          createdAt: data.createdAt?.toDate ? data.createdAt.toDate().toISOString() : data.createdAt
+        };
+      }) as Post[];
 
       const sortedPosts = posts.sort((a, b) => {
         const aTime = new Date(a.createdAt).getTime();
