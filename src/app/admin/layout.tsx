@@ -6,6 +6,12 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { AuthProvider } from '@/lib/contexts/AuthContext';
 
+const ADMIN_EMAILS = ['paulblanche@gmail.com', 'admin@tipsterarena.com'];
+
+function isAdminUser(email: string | null | undefined): boolean {
+  return !!email && ADMIN_EMAILS.includes(email);
+}
+
 function AdminLayoutContent({
   children,
 }: {
@@ -15,13 +21,12 @@ function AdminLayoutContent({
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading && !user) {
+    if (!loading && (!user || !isAdminUser(user.email))) {
       router.push('/');
     }
   }, [user, loading, router]);
 
   if (loading) {
-
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 to-[#2c1376]/70 flex items-center justify-center">
         <div className="text-white text-lg">Loading...</div>
@@ -29,7 +34,7 @@ function AdminLayoutContent({
     );
   }
 
-  if (!user) {
+  if (!user || !isAdminUser(user.email)) {
     return null;
   }
 

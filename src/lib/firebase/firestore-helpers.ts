@@ -8,7 +8,7 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 
-export const addDocument = (collectionName: string, data: any) => {
+export const addDocument = (collectionName: string, data: Record<string, unknown>) => {
   if (!db) {
     throw new Error("Firebase Firestore not available");
   }
@@ -26,7 +26,7 @@ export const getDocuments = async (collectionName: string) => {
   }));
 };
 
-export const updateDocument = (collectionName: string, id: string, data: any) => {
+export const updateDocument = (collectionName: string, id: string, data: Record<string, unknown>) => {
   if (!db) {
     throw new Error("Firebase Firestore not available");
   }

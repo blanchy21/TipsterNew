@@ -24,7 +24,7 @@ export function middleware(request: NextRequest) {
         // Content Security Policy - comprehensive CSP for Tipster Arena
         'Content-Security-Policy': [
             "default-src 'self'",
-            "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.gstatic.com https://www.google.com https://apis.google.com",
+            "script-src 'self' 'unsafe-inline' https://www.gstatic.com https://www.google.com https://apis.google.com",
             "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
             "img-src 'self' data: https: blob: https://images.unsplash.com https://lh3.googleusercontent.com https://firebasestorage.googleapis.com https://placehold.co https://replicate.delivery https://media.giphy.com https://i.giphy.com",
             "font-src 'self' https://fonts.gstatic.com",
@@ -89,8 +89,7 @@ export const config = {
          * - _next/static (static files)
          * - _next/image (image optimization files)
          * - favicon.ico (favicon file)
-         * - api routes (handled separately)
          */
-        '/((?!_next/static|_next/image|favicon.ico|api/).*)',
+        '/((?!_next/static|_next/image|favicon.ico).*)',
     ],
 };

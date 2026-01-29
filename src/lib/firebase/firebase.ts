@@ -1,7 +1,7 @@
-import { initializeApp, getApps, getApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
+import { initializeApp, getApps, getApp, FirebaseApp } from "firebase/app";
+import { getAuth, Auth } from "firebase/auth";
+import { getFirestore, Firestore } from "firebase/firestore";
+import { getStorage, FirebaseStorage } from "firebase/storage";
 
 // Check if Firebase environment variables are available
 const hasFirebaseConfig = process.env.NEXT_PUBLIC_FIREBASE_API_KEY &&
@@ -16,7 +16,6 @@ const firebaseConfig = hasFirebaseConfig ? {
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 } : {
-  // Fallback configuration for development (will not work for auth but prevents errors)
   apiKey: "demo-api-key",
   authDomain: "demo-project.firebaseapp.com",
   projectId: "demo-project",
@@ -25,29 +24,19 @@ const firebaseConfig = hasFirebaseConfig ? {
   appId: "demo-app-id",
 };
 
-let app: any = null;
-let auth: any = null;
-let db: any = null;
-let storage: any = null;
+let app: FirebaseApp | null = null;
+let auth: Auth | null = null;
+let db: Firestore | null = null;
+let storage: FirebaseStorage | null = null;
 
 try {
-  // Initialize Firebase only if we have valid config
   if (hasFirebaseConfig) {
     app = getApps().length ? getApp() : initializeApp(firebaseConfig);
     auth = getAuth(app);
     db = getFirestore(app);
     storage = getStorage(app);
-    // Firebase initialized successfully
-  } else {
-    console.warn('Firebase config not available, using mock objects');
-    // Create mock objects to prevent errors
-    app = null;
-    auth = null;
-    db = null;
-    storage = null;
   }
-} catch (error) {
-  console.error('Firebase initialization failed:', error);
+} catch {
   app = null;
   auth = null;
   db = null;
