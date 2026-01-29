@@ -44,6 +44,7 @@ const PageLoadingState = lazy(() => import('./ui/LoadingState').then(m => ({ def
 
 // Keep useAuth as regular import since it's used immediately
 import { useAuth } from '@/lib/hooks/useAuth';
+import { normalizeImageUrl, getDefaultAvatar } from '@/lib/imageUtils';
 import { initializeServiceWorker, setupOfflineHandlers } from '@/lib/serviceWorker';
 
 function AppContent() {
@@ -217,7 +218,7 @@ function AppContent() {
           id: user.uid,
           name: user.displayName || 'Anonymous',
           handle: `@${user.displayName?.toLowerCase().replace(/\s+/g, '') || 'user'}`,
-          avatar: user.photoURL || 'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=96&h=96&fit=crop&crop=face'
+          avatar: normalizeImageUrl(user.photoURL || getDefaultAvatar())
         }
       };
 
@@ -457,7 +458,7 @@ function AppContent() {
           />
         </Suspense>
 
-        <div className="flex-1 flex overflow-hidden">
+        <div className="flex-1 flex overflow-hidden max-w-[1360px] mx-auto w-full">
           <Suspense fallback={<div className="w-64 bg-surface-2 animate-pulse" />}>
             <Sidebar
               selected={selected}

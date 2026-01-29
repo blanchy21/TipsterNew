@@ -6,6 +6,7 @@ import { User } from '@/lib/types';
 import { getDocuments, deleteUser, deleteTestUsers } from '@/lib/firebase/firebaseUtils';
 import { collection, getDocs, query, orderBy } from 'firebase/firestore';
 import { db } from '@/lib/firebase/firebase';
+import { normalizeImageUrl, getDefaultAvatar } from '@/lib/imageUtils';
 
 interface UserManagementProps {
     onUserSelect?: (user: User) => void;
@@ -48,7 +49,7 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
                 name: userData.displayName || userData.name || 'Anonymous User',
                 displayName: userData.displayName,
                 handle: userData.handle || `@user${userData.id.slice(0, 8)}`,
-                avatar: userData.photoURL || userData.avatar || 'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=96&h=96&fit=crop&crop=face',
+                avatar: normalizeImageUrl(userData.photoURL || userData.avatar || getDefaultAvatar()),
                 followers: userData.followers || [],
                 following: userData.following || [],
                 followersCount: userData.followersCount || 0,

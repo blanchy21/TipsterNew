@@ -1,6 +1,7 @@
 import { db } from './firebase';
 import { collection, addDoc, query, where, getDocs, orderBy, onSnapshot, getDoc, doc } from 'firebase/firestore';
 import { createNotification } from './firebaseUtils';
+import { normalizeImageUrl, getDefaultAvatar } from '@/lib/imageUtils';
 
 export interface TipVerification {
     id: string;
@@ -89,7 +90,7 @@ export const createTipVerification = async (verificationData: Omit<TipVerificati
                     id: verificationData.adminId,
                     name: adminData.displayName || adminData.name || 'Admin',
                     handle: adminData.handle || '@admin',
-                    avatar: adminData.photoURL || adminData.avatar || ''
+                    avatar: normalizeImageUrl(adminData.photoURL || adminData.avatar || getDefaultAvatar())
                 } : undefined,
                 recipientId: verificationData.tipsterId,
                 postId: verificationData.postId,

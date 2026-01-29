@@ -8,6 +8,7 @@ import {
 import { Comment, CommentFormData } from "@/lib/types";
 import { addDocument, getDocuments, updateDocument, deleteDocument } from "./firestore-helpers";
 import { getUserProfile } from "./profile-utils";
+import { getDefaultAvatar } from "@/lib/imageUtils";
 import { createNotification } from "./notification-utils";
 import { incrementPostCommentCount, decrementPostCommentCount } from "./post-utils";
 
@@ -29,7 +30,7 @@ export const createComment = async (postId: string, userId: string, commentData:
         id: userProfile.id,
         name: userProfile.name || 'Anonymous',
         handle: userProfile.handle || `@${(userProfile.name || 'user').toLowerCase().replace(/\s+/g, '')}`,
-        avatar: userProfile.avatar || 'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=96&h=96&fit=crop&crop=face'
+        avatar: userProfile.avatar || getDefaultAvatar()
       },
       content: commentData.content,
       createdAt: new Date().toISOString(),

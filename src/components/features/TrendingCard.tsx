@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Trophy, Crown, Medal, Award, TrendingUp, Target, Check } from 'lucide-react';
 import { LeaderboardEntry } from '@/lib/leaderboardUtils';
 import { getTopTipsters } from '@/lib/leaderboardUtils';
+import { getDefaultAvatar } from '@/lib/imageUtils';
 
 interface TrendingCardProps {
   limit?: number;
@@ -96,7 +97,7 @@ export default function TrendingCard({ limit = 5, onNavigateToProfile }: Trendin
                   height={32}
                   className="w-8 h-8 rounded-full border border-white/20 group-hover:border-white/40 transition-all duration-300"
                   onError={(e) => {
-                    e.currentTarget.src = 'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=96&h=96&fit=crop&crop=face';
+                    e.currentTarget.src = getDefaultAvatar();
                   }}
                   priority={false}
                   placeholder="blur"

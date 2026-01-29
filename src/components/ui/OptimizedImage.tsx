@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
+import { getDefaultAvatar } from '@/lib/imageUtils';
 
 // Simple className utility function
 const cn = (...classes: (string | undefined | null | false)[]): string => {
@@ -48,7 +49,7 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
     fill = false,
     onLoad,
     onError,
-    fallbackSrc = 'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=96&h=96&fit=crop&crop=face',
+    fallbackSrc = getDefaultAvatar(),
     lazy = true,
 }) => {
     const [isLoaded, setIsLoaded] = useState(false);
@@ -160,33 +161,6 @@ export const OptimizedImage: React.FC<OptimizedImageProps> = ({
         </div>
     );
 };
-
-/**
- * Avatar-specific optimized image component
- */
-export const OptimizedAvatar: React.FC<Omit<OptimizedImageProps, 'sizes' | 'quality'> & {
-    width?: number;
-    height?: number;
-    quality?: number;
-    sizes?: string;
-}> = ({
-    width = 40,
-    height = 40,
-    quality = 90,
-    sizes = '40px',
-    ...props
-}) => {
-        return (
-            <OptimizedImage
-                width={width}
-                height={height}
-                quality={quality}
-                sizes={sizes}
-                imageClassName="rounded-full object-cover"
-                {...props}
-            />
-        );
-    };
 
 /**
  * Cover photo optimized image component

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { normalizeImageUrl, isLikelyBrokenImage } from '@/lib/imageUtils';
 
@@ -11,6 +11,7 @@ interface AvatarWithFallbackProps {
   size?: number;
   className?: string;
   style?: React.CSSProperties;
+  lazy?: boolean;
 }
 
 const AvatarWithFallback: React.FC<AvatarWithFallbackProps> = ({
@@ -19,11 +20,33 @@ const AvatarWithFallback: React.FC<AvatarWithFallbackProps> = ({
   name,
   size = 40,
   className = '',
-  style = {}
+  style = {},
+  lazy = false,
 }) => {
   const [imageError, setImageError] = useState(false);
+  const [isInView, setIsInView] = useState(!lazy);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  // Generate initials from name
+  useEffect(() => {
+    if (!lazy || isInView) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '50px', threshold: 0.1 }
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [lazy, isInView]);
+
   const getInitials = (name: string): string => {
     return name
       .split(' ')
@@ -33,7 +56,6 @@ const AvatarWithFallback: React.FC<AvatarWithFallbackProps> = ({
       .slice(0, 2);
   };
 
-  // Generate background color based on name
   const getBackgroundColor = (name: string): string => {
     const colors = [
       'bg-red-500',
@@ -47,13 +69,12 @@ const AvatarWithFallback: React.FC<AvatarWithFallbackProps> = ({
       'bg-orange-500',
       'bg-cyan-500',
     ];
-    
-    // Use name to consistently pick a color
+
     const hash = name.split('').reduce((a, b) => {
       a = ((a << 5) - a) + b.charCodeAt(0);
       return a & a;
     }, 0);
-    
+
     return colors[Math.abs(hash) % colors.length];
   };
 
@@ -62,10 +83,10 @@ const AvatarWithFallback: React.FC<AvatarWithFallbackProps> = ({
   const bgColor = getBackgroundColor(name);
   const isBrokenImage = isLikelyBrokenImage(src);
 
-  // If image failed to load or is known to be broken, render initials
-  if (imageError || isBrokenImage) {
+  if (imageError || isBrokenImage || !isInView) {
     return (
       <div
+        ref={containerRef}
         className={`${bgColor} rounded-full flex items-center justify-center text-white font-semibold ${className}`}
         style={{
           width: size,

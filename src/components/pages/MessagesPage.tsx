@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Conversation, User, Message } from '@/lib/types';
 import MessagesList from '@/components/features/MessagesList';
 import ChatWindow from '@/components/features/ChatWindow';
-import { normalizeImageUrl } from '@/lib/imageUtils';
+import { normalizeImageUrl, getDefaultAvatar } from '@/lib/imageUtils';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { subscribeToConversations, getOrCreateConversation, sendMessage } from '@/lib/firebase/messagingUtils';
 
@@ -20,12 +20,12 @@ const MessagesPage: React.FC = () => {
     id: user.uid,
     name: user.displayName || 'You',
     handle: `@${user.displayName?.toLowerCase().replace(/\s+/g, '') || 'user'}`,
-    avatar: user.photoURL || 'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=96&h=96&fit=crop&crop=face'
+    avatar: normalizeImageUrl(user.photoURL || getDefaultAvatar())
   } : {
     id: 'anonymous',
     name: 'You',
     handle: '@you',
-    avatar: 'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=96&h=96&fit=crop&crop=face'
+    avatar: getDefaultAvatar()
   };
 
   // Set up real-time conversation listener

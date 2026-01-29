@@ -6,16 +6,14 @@ import {
 } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 import { User } from "@/lib/types";
-import { normalizeImageUrl } from "@/lib/imageUtils";
+import { normalizeImageUrl, getDefaultAvatar } from "@/lib/imageUtils";
 import { addDocument, updateDocument } from "./firestore-helpers";
-
-const DEFAULT_AVATAR = 'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=96&h=96&fit=crop&crop=face';
 
 const buildUserDefaults = (data: any, id: string): User => ({
   id,
   name: data.displayName || data.name || 'Anonymous User',
   handle: data.handle || `@user${id.slice(0, 8)}`,
-  avatar: normalizeImageUrl(data.photoURL || data.avatar || DEFAULT_AVATAR),
+  avatar: normalizeImageUrl(data.photoURL || data.avatar || getDefaultAvatar()),
   followers: data.followers || [],
   following: data.following || [],
   followersCount: data.followersCount || 0,

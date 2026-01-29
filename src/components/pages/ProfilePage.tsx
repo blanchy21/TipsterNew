@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { useProfile } from '@/lib/contexts/ProfileContext';
 import { useFollowing } from '@/lib/contexts/FollowingContext';
-import { normalizeImageUrl } from '@/lib/imageUtils';
+import { normalizeImageUrl, getDefaultAvatar } from '@/lib/imageUtils';
 import ProfileHeader from '@/components/features/ProfileHeader';
 import ProfileStats from '@/components/features/ProfileStats';
 import ProfileTabs from '@/components/features/ProfileTabs';
@@ -38,7 +38,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
       id: currentUser.uid,
       name: currentUser.displayName || 'User',
       handle: `@${currentUser.email?.split('@')[0] || 'user'}`,
-      avatar: normalizeImageUrl(currentUser.photoURL || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=96&h=96&fit=crop&crop=face'),
+      avatar: normalizeImageUrl(currentUser.photoURL || getDefaultAvatar()),
       followers: [],
       following: [],
       followersCount: 0,

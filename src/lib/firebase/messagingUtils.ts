@@ -18,6 +18,7 @@ import {
 } from 'firebase/firestore';
 import { db } from './firebase';
 import { Message, Conversation, User } from '@/lib/types';
+import { normalizeImageUrl, getDefaultAvatar } from '@/lib/imageUtils';
 
 // Create a new conversation between two users
 export const createConversation = async (participantIds: string[]): Promise<string> => {
@@ -155,7 +156,7 @@ export const getConversations = async (userId: string): Promise<Conversation[]> 
                         id: otherParticipantId,
                         name: userData.displayName || userData.name || 'Unknown',
                         handle: userData.handle || `@user${otherParticipantId.slice(0, 8)}`,
-                        avatar: userData.photoURL || userData.avatar || ''
+                        avatar: normalizeImageUrl(userData.photoURL || userData.avatar || getDefaultAvatar())
                     }
                 ],
                 lastMessage: data.lastMessage ? {
@@ -294,7 +295,7 @@ export const subscribeToConversations = (
                                     id: otherParticipantId,
                                     name: userData.displayName || userData.name || 'Unknown',
                                     handle: userData.handle || `@user${otherParticipantId.slice(0, 8)}`,
-                                    avatar: userData.photoURL || userData.avatar || ''
+                                    avatar: normalizeImageUrl(userData.photoURL || userData.avatar || getDefaultAvatar())
                                 }
                             ],
                             lastMessage: data.lastMessage ? {

@@ -6,6 +6,7 @@ import { Conversation, Message, User } from '@/lib/types';
 import { ArrowLeft, Phone, Video, MoreVertical, Send, Image as ImageIcon, Smile } from 'lucide-react';
 import { subscribeToMessages, sendMessage, markMessagesAsRead } from '@/lib/firebase/messagingUtils';
 import { useAuth } from '@/lib/hooks/useAuth';
+import { getDefaultAvatar } from '@/lib/imageUtils';
 
 interface ChatWindowProps {
   conversation: Conversation | null;
@@ -108,7 +109,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
           </button>
 
           <Image
-            src={otherParticipant?.avatar || 'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=96&h=96&fit=crop&crop=face'}
+            src={otherParticipant?.avatar || getDefaultAvatar()}
             alt={otherParticipant?.name || 'User'}
             width={40}
             height={40}
@@ -173,7 +174,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                     {showAvatar && (
                       <div className={`w-8 h-8 rounded-full flex-shrink-0 ${isCurrentUser ? 'order-1' : ''}`}>
                         <Image
-                          src={isCurrentUser ? (user?.photoURL || 'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=96&h=96&fit=crop&crop=face') : (otherParticipant?.avatar || 'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=96&h=96&fit=crop&crop=face')}
+                          src={isCurrentUser ? (user?.photoURL || getDefaultAvatar()) : (otherParticipant?.avatar || getDefaultAvatar())}
                           alt={isCurrentUser ? 'You' : (otherParticipant?.name || 'User')}
                           width={32}
                           height={32}

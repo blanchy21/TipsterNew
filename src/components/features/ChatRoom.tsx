@@ -6,6 +6,7 @@ import { db } from '@/lib/firebase/firebase';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { Send, Users, MessageCircle, Clock } from 'lucide-react';
 import Image from 'next/image';
+import { getDefaultAvatar } from '@/lib/imageUtils';
 
 interface ChatMessage {
     id: string;
@@ -121,7 +122,7 @@ export default function ChatRoom({ gameId, sport, title = "Live Chat", className
                     id: user.uid,
                     name: user.displayName || 'Anonymous',
                     handle: `@${user.displayName?.toLowerCase().replace(/\s+/g, '') || 'user'}`,
-                    avatar: user.photoURL || 'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=96&h=96&fit=crop&crop=face'
+                    avatar: user.photoURL || getDefaultAvatar()
                 },
                 gameId: gameId || null,
                 sport: sport || null
