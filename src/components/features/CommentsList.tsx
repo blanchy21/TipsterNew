@@ -119,7 +119,7 @@ export default function CommentsList({ postId, onCommentCountChange }: CommentsL
   if (loading) {
     return (
       <div className="flex items-center justify-center py-8">
-        <Loader2 className="w-6 h-6 animate-spin text-slate-400" />
+        <Loader2 className="w-6 h-6 animate-spin text-zinc-400" />
       </div>
     );
   }
@@ -127,7 +127,7 @@ export default function CommentsList({ postId, onCommentCountChange }: CommentsL
   return (
     <div className="space-y-4">
       {/* Comment Form */}
-      <div className="border-t border-slate-700/50 pt-4">
+      <div className="border-t border-zinc-700/50 pt-4">
         <CommentForm
           postId={postId}
           onCommentAdded={handleCommentAdded}
@@ -137,13 +137,13 @@ export default function CommentsList({ postId, onCommentCountChange }: CommentsL
 
       {/* Comments List */}
       {comments.length === 0 ? (
-        <div className="text-center py-8 text-slate-400">
+        <div className="text-center py-8 text-zinc-400">
           <MessageCircle className="w-8 h-8 mx-auto mb-2 opacity-50" />
           <p className="text-sm">No comments yet. Be the first to share your thoughts!</p>
         </div>
       ) : (
         <div className="space-y-4">
-          <div className="flex items-center gap-2 text-slate-400 text-sm">
+          <div className="flex items-center gap-2 text-zinc-400 text-sm">
             <MessageCircle className="w-4 h-4" />
             <span>{comments.length} {comments.length === 1 ? 'comment' : 'comments'}</span>
           </div>
@@ -160,7 +160,7 @@ export default function CommentsList({ postId, onCommentCountChange }: CommentsL
 
                 {/* Reply Form */}
                 {replyingTo === comment.id && (
-                  <div className="mt-3 ml-8 border-l border-slate-700/50 pl-4">
+                  <div className="mt-3 ml-8 border-l border-zinc-700/50 pl-4">
                     <CommentForm
                       postId={postId}
                       parentId={comment.id}

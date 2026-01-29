@@ -91,15 +91,15 @@ export default function NotificationsPage() {
   };
 
   return (
-    <div className="h-full flex flex-col bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+    <div className="h-full flex flex-col bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900">
       {/* Header */}
       <div className="border-b border-white/10 px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <Bell className="w-6 h-6 text-slate-300" />
+            <Bell className="w-6 h-6 text-zinc-300" />
             <div>
-              <h1 className="text-xl font-semibold text-slate-100">Notifications</h1>
-              <p className="text-sm text-slate-400">
+              <h1 className="text-xl font-semibold text-zinc-100">Notifications</h1>
+              <p className="text-sm text-zinc-400">
                 {unreadCount} unread notification{unreadCount !== 1 ? 's' : ''}
               </p>
             </div>
@@ -107,14 +107,14 @@ export default function NotificationsPage() {
           <div className="flex items-center space-x-2">
             <button
               onClick={() => setShowSettings(!showSettings)}
-              className="p-2 text-slate-400 hover:text-slate-200 hover:bg-white/5 rounded-lg transition-colors"
+              className="p-2 text-zinc-400 hover:text-zinc-200 hover:bg-white/5 rounded-lg transition-colors"
             >
               <Settings className="w-5 h-5" />
             </button>
             {notifications.length > 0 && (
               <button
                 onClick={clearAllNotifications}
-                className="p-2 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
+                className="p-2 text-zinc-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
               >
                 <Trash2 className="w-5 h-5" />
               </button>
@@ -126,16 +126,16 @@ export default function NotificationsPage() {
       {/* Settings Panel */}
       {showSettings && (
         <div className="border-b border-white/10 px-6 py-4 bg-white/5">
-          <h3 className="font-medium text-slate-100 mb-3">Notification Settings</h3>
+          <h3 className="font-medium text-zinc-100 mb-3">Notification Settings</h3>
           <div className="grid grid-cols-2 gap-4">
             {Object.entries(settings).map(([key, value]) => (
               <label key={key} className="flex items-center justify-between">
-                <span className="text-sm text-slate-300 capitalize">
+                <span className="text-sm text-zinc-300 capitalize">
                   {key === 'matchResults' ? 'Match Results' : key}
                 </span>
                 <button
                   onClick={() => updateSettings({ [key]: !value })}
-                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${value ? 'bg-blue-600' : 'bg-slate-600'
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${value ? 'bg-primary-hover' : 'bg-zinc-600'
                     }`}
                 >
                   <span
@@ -153,8 +153,8 @@ export default function NotificationsPage() {
       <div className="border-b border-white/10 px-6 py-3">
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-2">
-            <Filter className="w-4 h-4 text-slate-400" />
-            <span className="text-sm text-slate-300">Filter:</span>
+            <Filter className="w-4 h-4 text-zinc-400" />
+            <span className="text-sm text-zinc-300">Filter:</span>
           </div>
 
           <div className="flex space-x-2">
@@ -163,8 +163,8 @@ export default function NotificationsPage() {
                 key={filterType}
                 onClick={() => setFilter(filterType)}
                 className={`px-3 py-1 text-sm rounded-full transition-colors ${filter === filterType
-                  ? 'bg-blue-500/20 text-blue-300'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
+                  ? 'bg-primary/20 text-primary'
+                  : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/5'
                   }`}
               >
                 {filterType === 'all' ? 'All' : filterType}
@@ -173,11 +173,11 @@ export default function NotificationsPage() {
           </div>
 
           <div className="flex items-center space-x-2 ml-4">
-            <span className="text-sm text-slate-300">Type:</span>
+            <span className="text-sm text-zinc-300">Type:</span>
             <select
               value={typeFilter}
               onChange={(e) => setTypeFilter(e.target.value as Notification['type'] | 'all')}
-              className="text-sm bg-slate-700 border border-slate-600 text-slate-200 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="text-sm bg-zinc-700 border border-zinc-600 text-zinc-200 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-primary"
             >
               <option value="all">All Types</option>
               {(['like', 'comment', 'follow', 'tip', 'match_result', 'system'] as const).map((type) => (
@@ -192,10 +192,10 @@ export default function NotificationsPage() {
 
       {/* Actions */}
       {unreadCount > 0 && (
-        <div className="px-6 py-3 bg-blue-500/10 border-b border-blue-500/20">
+        <div className="px-6 py-3 bg-primary/10 border-b border-primary/20">
           <button
             onClick={markAllAsRead}
-            className="flex items-center space-x-2 text-sm text-blue-400 hover:text-blue-300"
+            className="flex items-center space-x-2 text-sm text-primary hover:text-primary"
           >
             <Check className="w-4 h-4" />
             <span>Mark all as read</span>
@@ -206,10 +206,10 @@ export default function NotificationsPage() {
       {/* Notifications List */}
       <div className="flex-1 overflow-y-auto">
         {filteredNotifications.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-full text-slate-400">
-            <Bell className="w-12 h-12 text-slate-500 mb-4" />
-            <h3 className="text-lg font-medium text-slate-100 mb-2">No notifications</h3>
-            <p className="text-sm text-slate-400 text-center max-w-sm">
+          <div className="flex flex-col items-center justify-center h-full text-zinc-400">
+            <Bell className="w-12 h-12 text-zinc-500 mb-4" />
+            <h3 className="text-lg font-medium text-zinc-100 mb-2">No notifications</h3>
+            <p className="text-sm text-zinc-400 text-center max-w-sm">
               {filter === 'unread'
                 ? "You're all caught up! No unread notifications."
                 : filter === 'read'
@@ -224,7 +224,7 @@ export default function NotificationsPage() {
               <div
                 key={notification.id}
                 onClick={() => handleNotificationClick(notification)}
-                className={`p-6 hover:bg-white/5 cursor-pointer transition-all duration-300 ${!notification.read ? 'bg-blue-500/10 border-l-4 border-l-blue-500' : ''
+                className={`p-6 hover:bg-white/5 cursor-pointer transition-all duration-300 ${!notification.read ? 'bg-primary/10 border-l-4 border-l-primary' : ''
                   }`}
               >
                 <div className="flex items-start space-x-4">
@@ -232,15 +232,15 @@ export default function NotificationsPage() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
-                        <h4 className="text-sm font-medium text-slate-100">
+                        <h4 className="text-sm font-medium text-zinc-100">
                           {notification.title}
                         </h4>
                         {!notification.read && (
-                          <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                          <div className="w-2 h-2 bg-primary rounded-full"></div>
                         )}
                       </div>
                       <div className="flex items-center space-x-2">
-                        <span className="text-xs text-slate-400">
+                        <span className="text-xs text-zinc-400">
                           {formatTimeAgo(notification.createdAt)}
                         </span>
                         <button
@@ -249,22 +249,22 @@ export default function NotificationsPage() {
 
                             deleteNotification(notification.id);
                           }}
-                          className="p-1 text-slate-500 hover:text-red-400 rounded"
+                          className="p-1 text-zinc-500 hover:text-red-400 rounded"
                         >
                           <X className="w-4 h-4" />
                         </button>
                       </div>
                     </div>
-                    <p className="text-sm text-slate-300 mt-1">
+                    <p className="text-sm text-zinc-300 mt-1">
                       {notification.message}
                     </p>
                     {notification.user && (
-                      <p className="text-xs text-slate-400 mt-2">
+                      <p className="text-xs text-zinc-400 mt-2">
                         from {notification.user.name} (@{notification.user.handle})
                       </p>
                     )}
                     <div className="flex items-center space-x-2 mt-2">
-                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-slate-700 text-slate-200">
+                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-zinc-700 text-zinc-200">
                         {getTypeLabel(notification.type)}
                       </span>
                     </div>

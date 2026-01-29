@@ -96,7 +96,7 @@ const AdminPage: React.FC = () => {
       win: { icon: CheckCircle, className: 'text-green-400' },
       loss: { icon: XCircle, className: 'text-red-400' },
       void: { icon: AlertCircle, className: 'text-gray-400' },
-      place: { icon: Trophy, className: 'text-blue-400' }
+      place: { icon: Trophy, className: 'text-primary' }
     };
     const config = iconConfig[status];
     const Icon = config.icon;
@@ -110,7 +110,7 @@ const AdminPage: React.FC = () => {
       win: "bg-green-500/20 text-green-300 hover:bg-green-500/30",
       loss: "bg-red-500/20 text-red-300 hover:bg-red-500/30",
       void: "bg-gray-500/20 text-gray-300 hover:bg-gray-500/30",
-      place: "bg-blue-500/20 text-blue-300 hover:bg-blue-500/30"
+      place: "bg-primary/20 text-primary hover:bg-primary/30"
     };
     return `${baseClass} ${statusClasses[status]}`;
   };
@@ -180,14 +180,14 @@ const AdminPage: React.FC = () => {
   };
 
   return (
-    <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-slate-900 to-[#2c1376]/70 min-h-screen">
+    <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-zinc-900 to-[#2c1376]/70 min-h-screen">
       <div className="max-w-6xl mx-auto px-4 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center gap-4 mb-4">
             <button
               onClick={() => router.push('/')}
-              className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white transition-colors"
+              className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 text-zinc-300 hover:bg-white/10 hover:text-white transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
               Back to App
@@ -202,8 +202,8 @@ const AdminPage: React.FC = () => {
           <button
             onClick={() => setSelectedTab('overview')}
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${selectedTab === 'overview'
-              ? 'bg-blue-500 text-white'
-              : 'bg-white/5 text-slate-300 hover:bg-white/10'
+              ? 'bg-primary text-white'
+              : 'bg-white/5 text-zinc-300 hover:bg-white/10'
               }`}
           >
             <BarChart3 className="w-4 h-4 inline mr-2" />
@@ -212,8 +212,8 @@ const AdminPage: React.FC = () => {
           <button
             onClick={() => setSelectedTab('data')}
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${selectedTab === 'data'
-              ? 'bg-blue-500 text-white'
-              : 'bg-white/5 text-slate-300 hover:bg-white/10'
+              ? 'bg-primary text-white'
+              : 'bg-white/5 text-zinc-300 hover:bg-white/10'
               }`}
           >
             <Database className="w-4 h-4 inline mr-2" />
@@ -222,8 +222,8 @@ const AdminPage: React.FC = () => {
           <button
             onClick={() => setSelectedTab('tips')}
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${selectedTab === 'tips'
-              ? 'bg-blue-500 text-white'
-              : 'bg-white/5 text-slate-300 hover:bg-white/10'
+              ? 'bg-primary text-white'
+              : 'bg-white/5 text-zinc-300 hover:bg-white/10'
               }`}
           >
             <CheckCircle className="w-4 h-4 inline mr-2" />
@@ -232,8 +232,8 @@ const AdminPage: React.FC = () => {
           <button
             onClick={() => setSelectedTab('users')}
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${selectedTab === 'users'
-              ? 'bg-blue-500 text-white'
-              : 'bg-white/5 text-slate-300 hover:bg-white/10'
+              ? 'bg-primary text-white'
+              : 'bg-white/5 text-zinc-300 hover:bg-white/10'
               }`}
           >
             <Users className="w-4 h-4 inline mr-2" />
@@ -258,17 +258,17 @@ const AdminPage: React.FC = () => {
               <div className="bg-white/5 rounded-xl p-6 border border-white/10">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-slate-400 text-sm">Total Users</p>
+                    <p className="text-zinc-400 text-sm">Total Users</p>
                     <p className="text-3xl font-bold text-white">{posts.length > 0 ? 'Loading...' : '0'}</p>
                   </div>
-                  <Users className="w-8 h-8 text-blue-400" />
+                  <Users className="w-8 h-8 text-primary" />
                 </div>
               </div>
 
               <div className="bg-white/5 rounded-xl p-6 border border-white/10">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-slate-400 text-sm">Total Tips</p>
+                    <p className="text-zinc-400 text-sm">Total Tips</p>
                     <p className="text-3xl font-bold text-white">{posts.length}</p>
                   </div>
                   <FileText className="w-8 h-8 text-green-400" />
@@ -278,7 +278,7 @@ const AdminPage: React.FC = () => {
               <div className="bg-white/5 rounded-xl p-6 border border-white/10">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-slate-400 text-sm">Pending Verification</p>
+                    <p className="text-zinc-400 text-sm">Pending Verification</p>
                     <p className="text-3xl font-bold text-yellow-400">{posts.filter(p => p.tipStatus === 'pending').length}</p>
                   </div>
                   <Clock className="w-8 h-8 text-yellow-400" />
@@ -288,7 +288,7 @@ const AdminPage: React.FC = () => {
               <div className="bg-white/5 rounded-xl p-6 border border-white/10">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-slate-400 text-sm">Verified Tips</p>
+                    <p className="text-zinc-400 text-sm">Verified Tips</p>
                     <p className="text-3xl font-bold text-green-400">{posts.filter(p => p.tipStatus && p.tipStatus !== 'pending').length}</p>
                   </div>
                   <CheckCircle className="w-8 h-8 text-green-400" />
@@ -301,24 +301,24 @@ const AdminPage: React.FC = () => {
               <div className="bg-white/5 rounded-xl p-6 border border-white/10">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold text-white">Tip Status Breakdown</h3>
-                  <Activity className="w-5 h-5 text-slate-400" />
+                  <Activity className="w-5 h-5 text-zinc-400" />
                 </div>
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-slate-300">Wins</span>
+                    <span className="text-zinc-300">Wins</span>
                     <span className="text-green-400 font-medium">{posts.filter(p => p.tipStatus === 'win').length}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-slate-300">Losses</span>
+                    <span className="text-zinc-300">Losses</span>
                     <span className="text-red-400 font-medium">{posts.filter(p => p.tipStatus === 'loss').length}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-slate-300">Void</span>
+                    <span className="text-zinc-300">Void</span>
                     <span className="text-gray-400 font-medium">{posts.filter(p => p.tipStatus === 'void').length}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-slate-300">Place</span>
-                    <span className="text-blue-400 font-medium">{posts.filter(p => p.tipStatus === 'place').length}</span>
+                    <span className="text-zinc-300">Place</span>
+                    <span className="text-primary font-medium">{posts.filter(p => p.tipStatus === 'place').length}</span>
                   </div>
                 </div>
               </div>
@@ -326,7 +326,7 @@ const AdminPage: React.FC = () => {
               <div className="bg-white/5 rounded-xl p-6 border border-white/10">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold text-white">Sports Activity</h3>
-                  <Trophy className="w-5 h-5 text-slate-400" />
+                  <Trophy className="w-5 h-5 text-zinc-400" />
                 </div>
                 <div className="space-y-2">
                   {(() => {
@@ -341,8 +341,8 @@ const AdminPage: React.FC = () => {
 
                     return topSports.map((sport, index) => (
                       <div key={sport.sport} className="flex items-center justify-between">
-                        <span className="text-slate-300">{sport.sport}</span>
-                        <span className="text-blue-400 font-medium">{sport.count} tips</span>
+                        <span className="text-zinc-300">{sport.sport}</span>
+                        <span className="text-primary font-medium">{sport.count} tips</span>
                       </div>
                     ));
                   })()}
@@ -352,12 +352,12 @@ const AdminPage: React.FC = () => {
               <div className="bg-white/5 rounded-xl p-6 border border-white/10">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold text-white">Quick Actions</h3>
-                  <Shield className="w-5 h-5 text-slate-400" />
+                  <Shield className="w-5 h-5 text-zinc-400" />
                 </div>
                 <div className="space-y-3">
                   <button
                     onClick={() => setSelectedTab('users')}
-                    className="w-full text-left px-3 py-2 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/30 transition-colors"
+                    className="w-full text-left px-3 py-2 bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors"
                   >
                     View All Users
                   </button>
@@ -381,14 +381,14 @@ const AdminPage: React.FC = () => {
             <div className="bg-white/5 rounded-xl p-6 border border-white/10">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-white">Recent Tips</h3>
-                <Clock className="w-5 h-5 text-slate-400" />
+                <Clock className="w-5 h-5 text-zinc-400" />
               </div>
               <div className="space-y-3">
                 {posts.slice(0, 5).map((post) => (
                   <div key={post.id} className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
                     <div>
                       <p className="text-white font-medium">{post.title}</p>
-                      <p className="text-slate-400 text-sm">By {post.user.name} • {post.sport}</p>
+                      <p className="text-zinc-400 text-sm">By {post.user.name} • {post.sport}</p>
                     </div>
                     <div className="flex items-center gap-2">
                       {post.tipStatus === 'pending' && (
@@ -406,14 +406,14 @@ const AdminPage: React.FC = () => {
                           Loss
                         </span>
                       )}
-                      <span className="text-slate-400 text-sm">
+                      <span className="text-zinc-400 text-sm">
                         {new Date(post.createdAt).toLocaleDateString()}
                       </span>
                     </div>
                   </div>
                 ))}
                 {posts.length === 0 && (
-                  <p className="text-slate-400 text-center py-4">No tips available</p>
+                  <p className="text-zinc-400 text-center py-4">No tips available</p>
                 )}
               </div>
             </div>
@@ -427,8 +427,8 @@ const AdminPage: React.FC = () => {
               {/* Populate Data */}
               <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="p-2 bg-blue-500/20 rounded-xl">
-                    <Database className="w-6 h-6 text-blue-400" />
+                  <div className="p-2 bg-primary/20 rounded-xl">
+                    <Database className="w-6 h-6 text-primary" />
                   </div>
                   <h2 className="text-xl font-semibold text-white">Populate Test Data</h2>
                 </div>
@@ -438,7 +438,7 @@ const AdminPage: React.FC = () => {
                 <button
                   onClick={handlePopulateData}
                   disabled={isLoading}
-                  className="w-full bg-blue-500 text-white py-3 px-6 rounded-xl hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+                  className="w-full bg-primary text-white py-3 px-6 rounded-xl hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
                 >
                   {isLoading ? (
                     <Loader2 className="w-5 h-5 animate-spin" />
@@ -527,8 +527,8 @@ const AdminPage: React.FC = () => {
                 <button
                   onClick={() => setFilterStatus('all')}
                   className={`px-4 py-2 rounded-lg font-medium transition-colors ${filterStatus === 'all'
-                    ? 'bg-blue-500 text-white'
-                    : 'bg-white/5 text-slate-300 hover:bg-white/10'
+                    ? 'bg-primary text-white'
+                    : 'bg-white/5 text-zinc-300 hover:bg-white/10'
                     }`}
                 >
                   All Tips ({posts.length})
@@ -538,8 +538,8 @@ const AdminPage: React.FC = () => {
                     key={status}
                     onClick={() => setFilterStatus(status)}
                     className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${filterStatus === status
-                      ? 'bg-blue-500 text-white'
-                      : 'bg-white/5 text-slate-300 hover:bg-white/10'
+                      ? 'bg-primary text-white'
+                      : 'bg-white/5 text-zinc-300 hover:bg-white/10'
                       }`}
                   >
                     {getStatusIcon(status)}
@@ -553,9 +553,9 @@ const AdminPage: React.FC = () => {
             <div className="space-y-4">
               {filteredPosts.length === 0 ? (
                 <div className="bg-white/5 rounded-2xl p-8 border border-white/10 text-center">
-                  <Eye className="w-12 h-12 text-slate-400 mx-auto mb-4" />
+                  <Eye className="w-12 h-12 text-zinc-400 mx-auto mb-4" />
                   <h3 className="text-lg font-semibold text-white mb-2">No Tips Found</h3>
-                  <p className="text-slate-400">No tips match the current filter criteria.</p>
+                  <p className="text-zinc-400">No tips match the current filter criteria.</p>
                 </div>
               ) : (
                 filteredPosts.map((post) => (
@@ -563,7 +563,7 @@ const AdminPage: React.FC = () => {
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
-                          <span className="text-sm text-sky-300/90 bg-sky-500/10 ring-1 ring-sky-500/20 px-2 py-1 rounded-md">
+                          <span className="text-sm text-primary/90 bg-primary/10 ring-1 ring-primary/20 px-2 py-1 rounded-md">
                             {post.sport}
                           </span>
                           {post.tipStatus && (
@@ -575,10 +575,10 @@ const AdminPage: React.FC = () => {
                         </div>
                         <h3 className="text-lg font-semibold text-white mb-2">{post.title}</h3>
                         <div
-                          className="text-slate-300 text-sm mb-3 line-clamp-2"
+                          className="text-zinc-300 text-sm mb-3 line-clamp-2"
                           dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }}
                         />
-                        <div className="flex items-center gap-4 text-sm text-slate-400">
+                        <div className="flex items-center gap-4 text-sm text-zinc-400">
                           <span>By {post.user.name}</span>
                           <span>•</span>
                           <span>{new Date(post.createdAt).toLocaleDateString()}</span>
@@ -639,7 +639,7 @@ const AdminPage: React.FC = () => {
                         </>
                       )}
                       {post.tipStatus && post.tipStatus !== 'pending' && (
-                        <div className="text-sm text-slate-400">
+                        <div className="text-sm text-zinc-400">
                           Verified on {post.verifiedAt ? new Date(post.verifiedAt).toLocaleDateString() : 'Unknown date'}
                         </div>
                       )}

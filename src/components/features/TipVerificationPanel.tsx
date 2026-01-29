@@ -312,7 +312,7 @@ export default function TipVerificationPanel({ onTipVerified }: TipVerificationP
             win: { icon: CheckCircle, className: 'text-green-400' },
             loss: { icon: XCircle, className: 'text-red-400' },
             void: { icon: AlertCircle, className: 'text-gray-400' },
-            place: { icon: Trophy, className: 'text-blue-400' }
+            place: { icon: Trophy, className: 'text-primary' }
         };
         const config = iconConfig[status];
         const Icon = config.icon;
@@ -325,7 +325,7 @@ export default function TipVerificationPanel({ onTipVerified }: TipVerificationP
             win: 'bg-green-500/20 text-green-300 border-green-500/30',
             loss: 'bg-red-500/20 text-red-300 border-red-500/30',
             void: 'bg-gray-500/20 text-gray-300 border-gray-500/30',
-            place: 'bg-blue-500/20 text-blue-300 border-blue-500/30'
+            place: 'bg-primary/20 text-primary border-primary/30'
         };
         return colors[status];
     };
@@ -334,8 +334,8 @@ export default function TipVerificationPanel({ onTipVerified }: TipVerificationP
         return (
             <div className="flex items-center justify-center py-12">
                 <div className="text-center">
-                    <RefreshCw className="w-8 h-8 animate-spin text-blue-400 mx-auto mb-4" />
-                    <p className="text-slate-300">Loading tips for verification...</p>
+                    <RefreshCw className="w-8 h-8 animate-spin text-primary mx-auto mb-4" />
+                    <p className="text-zinc-300">Loading tips for verification...</p>
                 </div>
             </div>
         );
@@ -348,17 +348,17 @@ export default function TipVerificationPanel({ onTipVerified }: TipVerificationP
                 <div className="bg-white/5 rounded-xl p-4 border border-white/10">
                     <div className="flex items-center justify-between">
                         <div>
-                            <p className="text-slate-400 text-sm">Total Tips</p>
+                            <p className="text-zinc-400 text-sm">Total Tips</p>
                             <p className="text-2xl font-bold text-white">{stats.total}</p>
                         </div>
-                        <BarChart3 className="w-8 h-8 text-blue-400" />
+                        <BarChart3 className="w-8 h-8 text-primary" />
                     </div>
                 </div>
 
                 <div className="bg-white/5 rounded-xl p-4 border border-white/10">
                     <div className="flex items-center justify-between">
                         <div>
-                            <p className="text-slate-400 text-sm">Pending</p>
+                            <p className="text-zinc-400 text-sm">Pending</p>
                             <p className="text-2xl font-bold text-yellow-400">{stats.pending}</p>
                         </div>
                         <Clock className="w-8 h-8 text-yellow-400" />
@@ -368,7 +368,7 @@ export default function TipVerificationPanel({ onTipVerified }: TipVerificationP
                 <div className="bg-white/5 rounded-xl p-4 border border-white/10">
                     <div className="flex items-center justify-between">
                         <div>
-                            <p className="text-slate-400 text-sm">Win Rate</p>
+                            <p className="text-zinc-400 text-sm">Win Rate</p>
                             <p className="text-2xl font-bold text-green-400">{stats.winRate}%</p>
                         </div>
                         <TrendingUp className="w-8 h-8 text-green-400" />
@@ -378,7 +378,7 @@ export default function TipVerificationPanel({ onTipVerified }: TipVerificationP
                 <div className="bg-white/5 rounded-xl p-4 border border-white/10">
                     <div className="flex items-center justify-between">
                         <div>
-                            <p className="text-slate-400 text-sm">Avg Odds</p>
+                            <p className="text-zinc-400 text-sm">Avg Odds</p>
                             <p className="text-2xl font-bold text-purple-400">{stats.avgOdds}</p>
                         </div>
                         <Target className="w-8 h-8 text-purple-400" />
@@ -391,26 +391,26 @@ export default function TipVerificationPanel({ onTipVerified }: TipVerificationP
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     {/* Search */}
                     <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-2">Search</label>
+                        <label className="block text-sm font-medium text-zinc-300 mb-2">Search</label>
                         <div className="relative">
-                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
+                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" />
                             <input
                                 type="text"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 placeholder="Search tips..."
-                                className="w-full pl-10 pr-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none"
+                                className="w-full pl-10 pr-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-zinc-400 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
                             />
                         </div>
                     </div>
 
                     {/* Status Filter */}
                     <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-2">Status</label>
+                        <label className="block text-sm font-medium text-zinc-300 mb-2">Status</label>
                         <select
                             value={filterStatus}
                             onChange={(e) => setFilterStatus(e.target.value as TipStatus | 'all')}
-                            className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none"
+                            className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
                         >
                             <option value="all">All Status</option>
                             <option value="pending">Pending</option>
@@ -423,11 +423,11 @@ export default function TipVerificationPanel({ onTipVerified }: TipVerificationP
 
                     {/* Sport Filter */}
                     <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-2">Sport</label>
+                        <label className="block text-sm font-medium text-zinc-300 mb-2">Sport</label>
                         <select
                             value={filterSport}
                             onChange={(e) => setFilterSport(e.target.value)}
-                            className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none"
+                            className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
                         >
                             <option value="all">All Sports</option>
                             {sports.map(sport => (
@@ -438,12 +438,12 @@ export default function TipVerificationPanel({ onTipVerified }: TipVerificationP
 
                     {/* Sort */}
                     <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-2">Sort By</label>
+                        <label className="block text-sm font-medium text-zinc-300 mb-2">Sort By</label>
                         <div className="flex gap-2">
                             <select
                                 value={sortBy}
                                 onChange={(e) => setSortBy(e.target.value as any)}
-                                className="flex-1 px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none"
+                                className="flex-1 px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
                             >
                                 <option value="createdAt">Date Created</option>
                                 <option value="gameDate">Event Date</option>
@@ -475,9 +475,9 @@ export default function TipVerificationPanel({ onTipVerified }: TipVerificationP
             <div className="space-y-4">
                 {filteredPosts.length === 0 ? (
                     <div className="bg-white/5 rounded-xl p-8 border border-white/10 text-center">
-                        <Eye className="w-12 h-12 text-slate-400 mx-auto mb-4" />
+                        <Eye className="w-12 h-12 text-zinc-400 mx-auto mb-4" />
                         <h3 className="text-lg font-semibold text-white mb-2">No Tips Found</h3>
-                        <p className="text-slate-400">No tips match the current filter criteria.</p>
+                        <p className="text-zinc-400">No tips match the current filter criteria.</p>
                     </div>
                 ) : (
                     filteredPosts.map((post) => (
@@ -485,7 +485,7 @@ export default function TipVerificationPanel({ onTipVerified }: TipVerificationP
                             <div className="flex items-start justify-between mb-4">
                                 <div className="flex-1">
                                     <div className="flex items-center gap-3 mb-3">
-                                        <span className="text-sm text-sky-300/90 bg-sky-500/10 ring-1 ring-sky-500/20 px-3 py-1 rounded-full">
+                                        <span className="text-sm text-primary/90 bg-primary/10 ring-1 ring-primary/20 px-3 py-1 rounded-full">
                                             {post.sport}
                                         </span>
                                         <span className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium border ${getStatusColor(post.tipStatus || 'pending')}`}>
@@ -501,11 +501,11 @@ export default function TipVerificationPanel({ onTipVerified }: TipVerificationP
 
                                     <h3 className="text-xl font-semibold text-white mb-3">{post.title}</h3>
                                     <div
-                                        className="text-slate-300 mb-4 line-clamp-3"
+                                        className="text-zinc-300 mb-4 line-clamp-3"
                                         dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }}
                                     />
 
-                                    <div className="flex items-center gap-6 text-sm text-slate-400 mb-4">
+                                    <div className="flex items-center gap-6 text-sm text-zinc-400 mb-4">
                                         <div className="flex items-center gap-2">
                                             <User className="w-4 h-4" />
                                             <span>{post.user.name}</span>
@@ -535,7 +535,7 @@ export default function TipVerificationPanel({ onTipVerified }: TipVerificationP
                                             {post.tags.map((tag, index) => (
                                                 <span
                                                     key={index}
-                                                    className="text-xs text-slate-400 bg-white/5 px-2 py-1 rounded-full"
+                                                    className="text-xs text-zinc-400 bg-white/5 px-2 py-1 rounded-full"
                                                 >
                                                     #{tag}
                                                 </span>
@@ -589,7 +589,7 @@ export default function TipVerificationPanel({ onTipVerified }: TipVerificationP
                                             <button
                                                 onClick={() => handleVerifyTip(post.id, 'place')}
                                                 disabled={verifying === post.id}
-                                                className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/20 text-blue-300 border border-blue-500/30 rounded-lg hover:bg-blue-500/30 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                                                className="inline-flex items-center gap-2 px-4 py-2 bg-primary/20 text-primary border border-primary/30 rounded-lg hover:bg-primary/30 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                                             >
                                                 {verifying === post.id ? (
                                                     <RefreshCw className="w-4 h-4 animate-spin" />
@@ -616,14 +616,14 @@ export default function TipVerificationPanel({ onTipVerified }: TipVerificationP
                                 )}
                                 {post.tipStatus && post.tipStatus !== 'pending' && (
                                     <div className="space-y-3">
-                                        <div className="text-sm text-slate-400 flex items-center gap-2">
+                                        <div className="text-sm text-zinc-400 flex items-center gap-2">
                                             <CheckCircle className="w-4 h-4" />
                                             <span>Verified on {post.verifiedAt ? new Date(post.verifiedAt).toLocaleDateString() : 'Unknown date'}</span>
                                         </div>
 
                                         {/* Change Result Buttons */}
                                         <div className="flex flex-wrap gap-2">
-                                            <span className="text-xs text-slate-500 font-medium">Change to:</span>
+                                            <span className="text-xs text-zinc-500 font-medium">Change to:</span>
 
                                             {post.tipStatus !== 'win' && (
                                                 <button
@@ -674,7 +674,7 @@ export default function TipVerificationPanel({ onTipVerified }: TipVerificationP
                                                 <button
                                                     onClick={() => handleChangeTipResult(post.id, 'place')}
                                                     disabled={changing === post.id}
-                                                    className="inline-flex items-center gap-1 px-3 py-1.5 bg-blue-500/20 text-blue-300 border border-blue-500/30 rounded-md hover:bg-blue-500/30 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm"
+                                                    className="inline-flex items-center gap-1 px-3 py-1.5 bg-primary/20 text-primary border border-primary/30 rounded-md hover:bg-primary/30 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm"
                                                 >
                                                     {changing === post.id ? (
                                                         <RefreshCw className="w-3 h-3 animate-spin" />

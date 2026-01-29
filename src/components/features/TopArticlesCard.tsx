@@ -18,8 +18,8 @@ export default function TopArticlesCard({ articles }: TopArticlesCardProps) {
   return (
     <section className="rounded-xl bg-white/[0.03] ring-1 ring-white/5 overflow-hidden flex flex-col max-h-60">
       <div className="px-4 py-3 border-b border-white/5 flex items-center gap-2 flex-shrink-0">
-        <TrendingUp className="w-4 h-4 text-slate-300" />
-        <h3 className="text-slate-100 font-semibold tracking-tight">Trending Tips</h3>
+        <TrendingUp className="w-4 h-4 text-zinc-300" />
+        <h3 className="text-zinc-100 font-semibold tracking-tight">Trending Tips</h3>
       </div>
       <div className="divide-y divide-white/5 overflow-y-auto flex-1">
         {topArticles.map((article, index) => (
@@ -28,10 +28,10 @@ export default function TopArticlesCard({ articles }: TopArticlesCardProps) {
               {index + 1}
             </div>
             <div className="flex-1 min-w-0">
-              <div className="text-sm text-slate-200 font-medium line-clamp-2 mb-1">
+              <div className="text-sm text-zinc-200 font-medium line-clamp-2 mb-1">
                 {article.title}
               </div>
-              <div className="flex items-center gap-2 text-xs text-slate-500">
+              <div className="flex items-center gap-2 text-xs text-zinc-500">
                 <div className="flex items-center gap-1">
                   <Heart className="w-3 h-3" />
                   <span>{article.likes.toLocaleString()}</span>
@@ -50,7 +50,7 @@ export default function TopArticlesCard({ articles }: TopArticlesCardProps) {
           </div>
         ))}
         {topArticles.length === 0 && (
-          <div className="px-4 py-8 text-center text-slate-500 text-sm">
+          <div className="px-4 py-8 text-center text-zinc-500 text-sm">
             No tips available yet
           </div>
         )}

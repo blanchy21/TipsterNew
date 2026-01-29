@@ -85,22 +85,22 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="flex h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+    <div className="flex h-screen bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900">
       {/* Mobile Header */}
-      <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-slate-800/90 backdrop-blur-sm border-b border-white/10 p-4">
+      <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-zinc-800/90 backdrop-blur-sm border-b border-white/10 p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <button
               onClick={() => router.push('/')}
               className="p-2 rounded-lg hover:bg-white/5 transition-colors"
             >
-              <ArrowLeft className="w-5 h-5 text-slate-300" />
+              <ArrowLeft className="w-5 h-5 text-zinc-300" />
             </button>
             <button
               onClick={() => setShowSidebar(!showSidebar)}
               className="p-2 rounded-lg hover:bg-white/5 transition-colors"
             >
-              <Menu className="w-5 h-5 text-slate-300" />
+              <Menu className="w-5 h-5 text-zinc-300" />
             </button>
           </div>
           <h1 className="text-lg font-bold text-white">Live Chat</h1>
@@ -118,7 +118,7 @@ export default function ChatPage() {
 
 
       {/* Sidebar */}
-      <div className={`${showSidebar ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 fixed md:relative z-50 md:z-auto w-80 h-full bg-slate-800/50 backdrop-blur-sm border-r border-white/10 flex flex-col transition-transform duration-300 ease-in-out`}>
+      <div className={`${showSidebar ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 fixed md:relative z-50 md:z-auto w-80 h-full bg-zinc-800/50 backdrop-blur-sm border-r border-white/10 flex flex-col transition-transform duration-300 ease-in-out`}>
         {/* Header */}
         <div className="p-6 border-b border-white/10">
           <div className="flex items-center justify-between mb-2">
@@ -127,10 +127,10 @@ export default function ChatPage() {
               onClick={() => setShowSidebar(false)}
               className="md:hidden p-2 rounded-lg hover:bg-white/5 transition-colors"
             >
-              <X className="w-5 h-5 text-slate-300" />
+              <X className="w-5 h-5 text-zinc-300" />
             </button>
           </div>
-          <p className="text-slate-400 text-sm">Join the conversation with fellow tipsters</p>
+          <p className="text-zinc-400 text-sm">Join the conversation with fellow tipsters</p>
         </div>
 
         {/* Channels */}
@@ -141,7 +141,7 @@ export default function ChatPage() {
               onClick={() => handleChannelSelect(channel.id)}
               className={`w-full p-4 rounded-lg text-left transition-all ${selectedChannel === channel.id
                 ? 'bg-gradient-to-r ' + channel.color + ' text-white shadow-lg'
-                : 'bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white'
+                : 'bg-white/5 hover:bg-white/10 text-zinc-300 hover:text-white'
                 }`}
             >
               <div className="flex items-center gap-3">
@@ -166,9 +166,9 @@ export default function ChatPage() {
 
         {/* Footer */}
         <div className="p-4 border-t border-white/10">
-          <div className="bg-slate-700/50 rounded-lg p-3">
+          <div className="bg-zinc-700/50 rounded-lg p-3">
             <h4 className="text-sm font-semibold text-white mb-1">Chat Rules</h4>
-            <ul className="text-xs text-slate-400 space-y-1">
+            <ul className="text-xs text-zinc-400 space-y-1">
               <li>• Be respectful to other users</li>
               <li>• Keep discussions sports-related</li>
               <li>• No spam or self-promotion</li>
@@ -190,9 +190,9 @@ export default function ChatPage() {
         ) : (
           <div className="flex-1 flex items-center justify-center">
             <div className="text-center">
-              <MessageCircle className="w-16 h-16 text-slate-400 mx-auto mb-4" />
+              <MessageCircle className="w-16 h-16 text-zinc-400 mx-auto mb-4" />
               <h3 className="text-lg font-semibold text-white mb-2">Select a Channel</h3>
-              <p className="text-slate-400">Choose a chat channel to start the conversation</p>
+              <p className="text-zinc-400">Choose a chat channel to start the conversation</p>
             </div>
           </div>
         )}

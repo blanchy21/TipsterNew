@@ -141,7 +141,7 @@ export default function LoginForm({ onSwitchToSignup, onClose }: LoginFormProps)
             <div className="w-full border-t border-white/10" />
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-[#0A0A14] text-white/70">Or continue with</span>
+            <span className="px-2 bg-surface-0 text-white/70">Or continue with</span>
           </div>
         </div>
 

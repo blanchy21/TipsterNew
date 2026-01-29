@@ -46,7 +46,7 @@ export default function Feed({ posts, isLoaded, query, onQueryChange, selectedSp
       />
       {query.trim() && (
         <div className="px-4 md:px-6 py-2 border-b border-white/10">
-          <p className="text-sm text-slate-400">
+          <p className="text-sm text-zinc-400">
             {posts.length === 0 ? 'No results found' : `${posts.length} result${posts.length === 1 ? '' : 's'} found`} for &quot;{query}&quot;
           </p>
         </div>
@@ -90,22 +90,22 @@ export default function Feed({ posts, isLoaded, query, onQueryChange, selectedSp
               <div className="h-64 grid place-items-center">
                 <div className="text-center">
                   <div className="mx-auto w-12 h-12 rounded-full bg-white/5 ring-1 ring-white/10 grid place-items-center mb-3">
-                    <Inbox className="w-5 h-5 text-slate-400" />
+                    <Inbox className="w-5 h-5 text-zinc-400" />
                   </div>
                   {query.trim() ? (
                     <>
-                      <p className="text-slate-300 font-medium">No results found for &quot;{query}&quot;</p>
-                      <p className="text-slate-500 text-sm">Try different keywords or check your spelling.</p>
+                      <p className="text-zinc-300 font-medium">No results found for &quot;{query}&quot;</p>
+                      <p className="text-zinc-500 text-sm">Try different keywords or check your spelling.</p>
                     </>
                   ) : selectedSport && selectedSport !== 'All Sports' ? (
                     <>
-                      <p className="text-slate-300 font-medium">No {selectedSport} tips found</p>
-                      <p className="text-slate-500 text-sm">Try selecting a different sport or be the first to share a {selectedSport} tip.</p>
+                      <p className="text-zinc-300 font-medium">No {selectedSport} tips found</p>
+                      <p className="text-zinc-500 text-sm">Try selecting a different sport or be the first to share a {selectedSport} tip.</p>
                     </>
                   ) : (
                     <>
-                      <p className="text-slate-300 font-medium">No tips yet</p>
-                      <p className="text-slate-500 text-sm">Be the first to share a tip.</p>
+                      <p className="text-zinc-300 font-medium">No tips yet</p>
+                      <p className="text-zinc-500 text-sm">Be the first to share a tip.</p>
                     </>
                   )}
                 </div>

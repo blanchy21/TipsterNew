@@ -15,7 +15,7 @@ export default function Following() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
+            <div className="min-h-screen bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 flex items-center justify-center">
                 <div className="text-center">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-500 mx-auto mb-4"></div>
                     <p className="text-white">Loading following...</p>
@@ -26,10 +26,10 @@ export default function Following() {
 
     if (error || !user) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
+            <div className="min-h-screen bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 flex items-center justify-center">
                 <div className="text-center">
                     <h1 className="text-2xl font-bold text-white mb-4">Following Access Required</h1>
-                    <p className="text-slate-400 mb-6">{error || 'Please sign in to view following users'}</p>
+                    <p className="text-zinc-400 mb-6">{error || 'Please sign in to view following users'}</p>
                     <button
                         onClick={() => window.location.href = '/'}
                         className="bg-gradient-to-r from-amber-600 to-orange-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-amber-700 hover:to-orange-700 transition-all"
@@ -42,12 +42,12 @@ export default function Following() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+        <div className="min-h-screen bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900">
             <div className="max-w-4xl mx-auto px-4 py-8">
                 <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
                     <div className="text-center mb-8">
                         <h1 className="text-3xl font-bold text-white mb-2">Following</h1>
-                        <p className="text-slate-400">Users you&apos;re following</p>
+                        <p className="text-zinc-400">Users you&apos;re following</p>
                     </div>
 
                     <div className="text-center py-12">
@@ -57,7 +57,7 @@ export default function Following() {
                             </svg>
                         </div>
                         <h2 className="text-xl font-semibold text-white mb-2">No Users Followed Yet</h2>
-                        <p className="text-slate-400 mb-6">Start following other tipsters to see their content here</p>
+                        <p className="text-zinc-400 mb-6">Start following other tipsters to see their content here</p>
                         <button
                             onClick={() => window.location.href = '/'}
                             className="bg-gradient-to-r from-amber-600 to-orange-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-amber-700 hover:to-orange-700 transition-all"

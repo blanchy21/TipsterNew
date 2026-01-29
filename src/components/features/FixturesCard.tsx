@@ -49,7 +49,7 @@ export default function FixturesCard({ }: FixturesCardProps) {
       icon: '🏒',
       url: 'https://www.nhl.com/scores',
       description: 'NHL live scores',
-      color: 'from-slate-500 to-gray-600'
+      color: 'from-zinc-500 to-gray-600'
     }
   ];
 
@@ -61,13 +61,13 @@ export default function FixturesCard({ }: FixturesCardProps) {
     <section className="rounded-xl bg-white/[0.03] ring-1 ring-white/5 overflow-hidden flex flex-col max-h-80">
       <div className="px-4 py-3 border-b border-white/5 flex items-center justify-between flex-shrink-0">
         <div className="flex items-center gap-2">
-          <Trophy className="w-4 h-4 text-slate-300" />
-          <h3 className="text-slate-100 font-semibold tracking-tight">Fixtures</h3>
+          <Trophy className="w-4 h-4 text-zinc-300" />
+          <h3 className="text-zinc-100 font-semibold tracking-tight">Fixtures</h3>
         </div>
       </div>
 
       <div className="p-4 space-y-3 overflow-y-auto flex-1">
-        <p className="text-sm text-slate-300 mb-4">
+        <p className="text-sm text-zinc-300 mb-4">
           Get live scores, fixtures, and results from official sports websites
         </p>
 
@@ -84,7 +84,7 @@ export default function FixturesCard({ }: FixturesCardProps) {
                   <div className="text-sm font-bold text-white">
                     {sport.name}
                   </div>
-                  <div className="text-xs text-slate-100">
+                  <div className="text-xs text-zinc-100">
                     {sport.description}
                   </div>
                 </div>
@@ -104,7 +104,7 @@ export default function FixturesCard({ }: FixturesCardProps) {
         </div>
 
         <div className="pt-2 border-t border-white/5">
-          <div className="flex items-center gap-2 text-xs text-slate-400">
+          <div className="flex items-center gap-2 text-xs text-zinc-400">
             <Globe className="w-3 h-3" />
             <span>Powered by official sports websites</span>
           </div>

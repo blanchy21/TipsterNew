@@ -10,13 +10,13 @@ interface EmojiPickerProps {
 export default function EmojiPicker({ onSelect }: EmojiPickerProps) {
   return (
     <div
-      className="absolute z-20 mt-1 bg-slate-800 border border-white/20 rounded-lg shadow-xl p-4 max-w-sm max-h-80 overflow-y-auto"
+      className="absolute z-20 mt-1 bg-zinc-800 border border-white/20 rounded-lg shadow-xl p-4 max-w-sm max-h-80 overflow-y-auto"
       onClick={(e) => e.stopPropagation()}
       data-emoji-picker
     >
       <div className="space-y-3">
         <div>
-          <h4 className="text-sm font-medium text-slate-200 mb-2">Sports</h4>
+          <h4 className="text-sm font-medium text-zinc-200 mb-2">Sports</h4>
           <div className="flex flex-wrap gap-1">
             {emojiCategories.sports.map((emoji, index) => (
               <button
@@ -32,7 +32,7 @@ export default function EmojiPicker({ onSelect }: EmojiPickerProps) {
           </div>
         </div>
         <div>
-          <h4 className="text-sm font-medium text-slate-200 mb-2">General</h4>
+          <h4 className="text-sm font-medium text-zinc-200 mb-2">General</h4>
           <div className="flex flex-wrap gap-1">
             {emojiCategories.general.map((emoji, index) => (
               <button
@@ -48,7 +48,7 @@ export default function EmojiPicker({ onSelect }: EmojiPickerProps) {
           </div>
         </div>
         <div>
-          <h4 className="text-sm font-medium text-slate-200 mb-2">Symbols</h4>
+          <h4 className="text-sm font-medium text-zinc-200 mb-2">Symbols</h4>
           <div className="flex flex-wrap gap-1">
             {emojiCategories.symbols.map((emoji, index) => (
               <button

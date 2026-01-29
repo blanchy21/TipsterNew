@@ -64,7 +64,7 @@ export default function LikeButton({ post, onLikeChange }: LikeButtonProps) {
         inline-flex items-center gap-2 transition rounded-md px-2 py-1.5 ring-1 ring-transparent hover:ring-white/10 min-w-[3rem]
         ${isLiked
           ? 'text-red-400 hover:text-red-300 bg-red-500/10'
-          : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
+          : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/5'
         }
         ${!user ? 'opacity-75 cursor-pointer' : 'cursor-pointer'}
         ${isLiking ? 'opacity-50 cursor-wait' : 'cursor-pointer'}

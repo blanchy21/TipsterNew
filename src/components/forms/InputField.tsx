@@ -56,14 +56,14 @@ export default function InputField({
     }, [value]);
 
     return (
-        <div className={`p-4 border-t border-white/10 bg-slate-800/50 backdrop-blur-sm ${className}`}>
+        <div className={`p-4 border-t border-white/10 bg-zinc-800/50 backdrop-blur-sm ${className}`}>
             <form onSubmit={handleSubmit} className="flex items-end gap-3">
                 <button
                     type="button"
                     className="p-2 rounded-lg hover:bg-white/10 transition-colors flex-shrink-0"
                     disabled={disabled}
                 >
-                    <Paperclip className="w-5 h-5 text-slate-400" />
+                    <Paperclip className="w-5 h-5 text-zinc-400" />
                 </button>
 
                 <div className="flex-1 relative">
@@ -78,10 +78,10 @@ export default function InputField({
                         disabled={disabled}
                         rows={1}
                         className={`
-              w-full bg-white/10 border rounded-2xl px-4 py-3 pr-12 text-white placeholder-slate-400 
+              w-full bg-white/10 border rounded-2xl px-4 py-3 pr-12 text-white placeholder-zinc-400 
               focus:outline-none transition-all resize-none overflow-hidden
               ${isFocused
-                                ? 'border-sky-500/50 ring-2 ring-sky-500/50'
+                                ? 'border-primary/50 ring-2 ring-primary/50'
                                 : 'border-white/20 hover:border-white/30'
                             }
               ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
@@ -94,7 +94,7 @@ export default function InputField({
                         className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-lg hover:bg-white/10 transition-colors"
                         disabled={disabled}
                     >
-                        <Smile className="w-5 h-5 text-slate-400" />
+                        <Smile className="w-5 h-5 text-zinc-400" />
                     </button>
                 </div>
 
@@ -118,7 +118,7 @@ export default function InputField({
                 )}
             </form>
 
-            <div className="mt-2 text-xs text-slate-400 text-center">
+            <div className="mt-2 text-xs text-zinc-400 text-center">
                 Press Enter to send, Shift+Enter for new line
             </div>
         </div>

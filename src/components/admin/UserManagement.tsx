@@ -260,8 +260,8 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
     if (isLoading) {
         return (
             <div className="flex items-center justify-center py-12">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                <span className="ml-3 text-slate-300">Loading users...</span>
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                <span className="ml-3 text-zinc-300">Loading users...</span>
             </div>
         );
     }
@@ -272,10 +272,10 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
             <div className="flex items-center justify-between mb-6">
                 <div>
                     <h2 className="text-2xl font-bold text-white">User Management</h2>
-                    <p className="text-slate-400">Manage all platform users and view analytics</p>
+                    <p className="text-zinc-400">Manage all platform users and view analytics</p>
                 </div>
                 <div className="flex items-center gap-4">
-                    <div className="text-sm text-slate-400">
+                    <div className="text-sm text-zinc-400">
                         Last updated: {lastRefresh.toLocaleTimeString()}
                     </div>
                     <button
@@ -288,7 +288,7 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
                     <button
                         onClick={handleRefresh}
                         disabled={isLoading}
-                        className="flex items-center gap-2 px-4 py-2 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/30 disabled:opacity-50 transition-colors"
+                        className="flex items-center gap-2 px-4 py-2 bg-primary/20 text-primary rounded-lg hover:bg-primary/30 disabled:opacity-50 transition-colors"
                     >
                         <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
                         Refresh
@@ -310,11 +310,11 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div className="bg-white/5 rounded-xl p-4 border border-white/10">
                     <div className="flex items-center gap-3">
-                        <div className="p-2 bg-blue-500/20 rounded-lg">
-                            <Users className="w-5 h-5 text-blue-400" />
+                        <div className="p-2 bg-primary/20 rounded-lg">
+                            <Users className="w-5 h-5 text-primary" />
                         </div>
                         <div>
-                            <p className="text-sm text-slate-400">Total Users</p>
+                            <p className="text-sm text-zinc-400">Total Users</p>
                             <p className="text-xl font-semibold text-white">{users.length}</p>
                         </div>
                     </div>
@@ -326,7 +326,7 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
                             <Clock className="w-5 h-5 text-green-400" />
                         </div>
                         <div>
-                            <p className="text-sm text-slate-400">New This Week</p>
+                            <p className="text-sm text-zinc-400">New This Week</p>
                             <p className="text-xl font-semibold text-white">{getNewUserCount()}</p>
                         </div>
                     </div>
@@ -338,7 +338,7 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
                             <Shield className="w-5 h-5 text-purple-400" />
                         </div>
                         <div>
-                            <p className="text-sm text-slate-400">Verified</p>
+                            <p className="text-sm text-zinc-400">Verified</p>
                             <p className="text-xl font-semibold text-white">{getVerifiedUserCount()}</p>
                         </div>
                     </div>
@@ -350,7 +350,7 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
                             <UserX className="w-5 h-5 text-orange-400" />
                         </div>
                         <div>
-                            <p className="text-sm text-slate-400">Unverified</p>
+                            <p className="text-sm text-zinc-400">Unverified</p>
                             <p className="text-xl font-semibold text-white">{users.length - getVerifiedUserCount()}</p>
                         </div>
                     </div>
@@ -363,13 +363,13 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
                     {/* Search */}
                     <div className="flex-1">
                         <div className="relative">
-                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
+                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400" />
                             <input
                                 type="text"
                                 placeholder="Search users by name, handle, or bio..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className="w-full pl-10 pr-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent"
+                                className="w-full pl-10 pr-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-transparent"
                             />
                         </div>
                     </div>
@@ -386,8 +386,8 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
                                 key={filter.key}
                                 onClick={() => setFilterType(filter.key as any)}
                                 className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${filterType === filter.key
-                                    ? 'bg-blue-500 text-white'
-                                    : 'bg-white/5 text-slate-300 hover:bg-white/10'
+                                    ? 'bg-primary text-white'
+                                    : 'bg-white/5 text-zinc-300 hover:bg-white/10'
                                     }`}
                             >
                                 <Filter className="w-4 h-4" />
@@ -400,7 +400,7 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
                     <select
                         value={sortBy}
                         onChange={(e) => setSortBy(e.target.value as any)}
-                        className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                        className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary/50"
                     >
                         <option value="newest">Newest First</option>
                         <option value="oldest">Oldest First</option>
@@ -414,9 +414,9 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
             <div className="space-y-4">
                 {filteredUsers.length === 0 ? (
                     <div className="bg-white/5 rounded-2xl p-8 border border-white/10 text-center">
-                        <Users className="w-12 h-12 text-slate-400 mx-auto mb-4" />
+                        <Users className="w-12 h-12 text-zinc-400 mx-auto mb-4" />
                         <h3 className="text-lg font-semibold text-white mb-2">No Users Found</h3>
-                        <p className="text-slate-400">No users match the current filter criteria.</p>
+                        <p className="text-zinc-400">No users match the current filter criteria.</p>
                     </div>
                 ) : (
                     filteredUsers.map((user) => (
@@ -448,7 +448,7 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
                                     <div className="flex items-center gap-2 mb-1">
                                         <h3 className="text-lg font-semibold text-white truncate">{user.name}</h3>
                                         {user.isVerified && (
-                                            <Shield className="w-4 h-4 text-blue-400" />
+                                            <Shield className="w-4 h-4 text-primary" />
                                         )}
                                         {isNewUser(user) && (
                                             <span className="px-2 py-1 text-xs font-medium bg-green-500/20 text-green-400 rounded-md">
@@ -462,14 +462,14 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
                                         )}
                                     </div>
 
-                                    <p className="text-slate-400 text-sm mb-2">{user.handle}</p>
+                                    <p className="text-zinc-400 text-sm mb-2">{user.handle}</p>
 
                                     {user.bio && (
-                                        <p className="text-slate-300 text-sm mb-3 line-clamp-2">{user.bio}</p>
+                                        <p className="text-zinc-300 text-sm mb-3 line-clamp-2">{user.bio}</p>
                                     )}
 
                                     {/* User Stats */}
-                                    <div className="flex items-center gap-4 text-sm text-slate-400 mb-3">
+                                    <div className="flex items-center gap-4 text-sm text-zinc-400 mb-3">
                                         <span className="flex items-center gap-1">
                                             <Users className="w-4 h-4" />
                                             {user.followersCount || 0} followers
@@ -490,7 +490,7 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
                                             {user.specializations.map((spec, index) => (
                                                 <span
                                                     key={index}
-                                                    className="px-2 py-1 text-xs bg-blue-500/20 text-blue-300 rounded-md"
+                                                    className="px-2 py-1 text-xs bg-primary/20 text-primary rounded-md"
                                                 >
                                                     {spec}
                                                 </span>
@@ -499,7 +499,7 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
                                     )}
 
                                     {/* Location and Social */}
-                                    <div className="flex items-center gap-4 text-sm text-slate-400">
+                                    <div className="flex items-center gap-4 text-sm text-zinc-400">
                                         {user.location && (
                                             <span className="flex items-center gap-1">
                                                 <MapPin className="w-4 h-4" />
@@ -538,7 +538,7 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
                                             e.stopPropagation();
                                             // Handle user actions
                                         }}
-                                        className="p-2 text-slate-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+                                        className="p-2 text-zinc-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
                                     >
                                         <MoreVertical className="w-4 h-4" />
                                     </button>
@@ -552,12 +552,12 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
             {/* User Detail Modal */}
             {selectedUser && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-                    <div className="bg-slate-800 rounded-2xl p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+                    <div className="bg-zinc-800 rounded-2xl p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto">
                         <div className="flex items-center justify-between mb-6">
                             <h2 className="text-2xl font-bold text-white">User Details</h2>
                             <button
                                 onClick={() => setSelectedUser(null)}
-                                className="text-slate-400 hover:text-white"
+                                className="text-zinc-400 hover:text-white"
                             >
                                 ×
                             </button>
@@ -573,10 +573,10 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
                                 />
                                 <div>
                                     <h3 className="text-xl font-semibold text-white">{selectedUser.name}</h3>
-                                    <p className="text-slate-400">{selectedUser.handle}</p>
+                                    <p className="text-zinc-400">{selectedUser.handle}</p>
                                     <div className="flex items-center gap-2 mt-1">
                                         {selectedUser.isVerified && (
-                                            <span className="px-2 py-1 text-xs bg-blue-500/20 text-blue-400 rounded-md">
+                                            <span className="px-2 py-1 text-xs bg-primary/20 text-primary rounded-md">
                                                 Verified
                                             </span>
                                         )}
@@ -592,38 +592,38 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
                             {/* User Details */}
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <p className="text-sm text-slate-400">Followers</p>
+                                    <p className="text-sm text-zinc-400">Followers</p>
                                     <p className="text-lg font-semibold text-white">{selectedUser.followersCount || 0}</p>
                                 </div>
                                 <div>
-                                    <p className="text-sm text-slate-400">Following</p>
+                                    <p className="text-sm text-zinc-400">Following</p>
                                     <p className="text-lg font-semibold text-white">{selectedUser.followingCount || 0}</p>
                                 </div>
                                 <div>
-                                    <p className="text-sm text-slate-400">Member Since</p>
+                                    <p className="text-sm text-zinc-400">Member Since</p>
                                     <p className="text-lg font-semibold text-white">{formatDate(selectedUser.memberSince || '')}</p>
                                 </div>
                                 <div>
-                                    <p className="text-sm text-slate-400">Location</p>
+                                    <p className="text-sm text-zinc-400">Location</p>
                                     <p className="text-lg font-semibold text-white">{selectedUser.location || 'Not specified'}</p>
                                 </div>
                             </div>
 
                             {selectedUser.bio && (
                                 <div>
-                                    <p className="text-sm text-slate-400 mb-2">Bio</p>
+                                    <p className="text-sm text-zinc-400 mb-2">Bio</p>
                                     <p className="text-white">{selectedUser.bio}</p>
                                 </div>
                             )}
 
                             {selectedUser.specializations && selectedUser.specializations.length > 0 && (
                                 <div>
-                                    <p className="text-sm text-slate-400 mb-2">Specializations</p>
+                                    <p className="text-sm text-zinc-400 mb-2">Specializations</p>
                                     <div className="flex flex-wrap gap-2">
                                         {selectedUser.specializations.map((spec, index) => (
                                             <span
                                                 key={index}
-                                                className="px-3 py-1 text-sm bg-blue-500/20 text-blue-300 rounded-lg"
+                                                className="px-3 py-1 text-sm bg-primary/20 text-primary rounded-lg"
                                             >
                                                 {spec}
                                             </span>
@@ -639,7 +639,7 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
             {/* Delete User Confirmation Modal */}
             {deleteConfirmUser && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-                    <div className="bg-slate-800 rounded-2xl p-6 max-w-md w-full">
+                    <div className="bg-zinc-800 rounded-2xl p-6 max-w-md w-full">
                         <div className="flex items-center gap-3 mb-4">
                             <div className="p-2 bg-red-500/20 rounded-lg">
                                 <AlertTriangle className="w-6 h-6 text-red-400" />
@@ -647,12 +647,12 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
                             <h2 className="text-xl font-semibold text-white">Delete User</h2>
                         </div>
 
-                        <p className="text-slate-300 mb-6">
+                        <p className="text-zinc-300 mb-6">
                             Are you sure you want to delete <strong className="text-white">{deleteConfirmUser.name}</strong>?
                             This action will permanently remove the user and all their associated data including:
                         </p>
 
-                        <ul className="text-sm text-slate-400 mb-6 space-y-1">
+                        <ul className="text-sm text-zinc-400 mb-6 space-y-1">
                             <li>• All posts and comments</li>
                             <li>• Profile and images</li>
                             <li>• Following/follower relationships</li>
@@ -662,7 +662,7 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
                         <div className="flex gap-3">
                             <button
                                 onClick={() => setDeleteConfirmUser(null)}
-                                className="flex-1 px-4 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors"
+                                className="flex-1 px-4 py-2 bg-zinc-600 text-white rounded-lg hover:bg-zinc-700 transition-colors"
                             >
                                 Cancel
                             </button>
@@ -686,7 +686,7 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
             {/* Bulk Delete Test Users Confirmation Modal */}
             {showBulkDelete && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-                    <div className="bg-slate-800 rounded-2xl p-6 max-w-md w-full">
+                    <div className="bg-zinc-800 rounded-2xl p-6 max-w-md w-full">
                         <div className="flex items-center gap-3 mb-4">
                             <div className="p-2 bg-red-500/20 rounded-lg">
                                 <AlertTriangle className="w-6 h-6 text-red-400" />
@@ -694,12 +694,12 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
                             <h2 className="text-xl font-semibold text-white">Delete Test Users</h2>
                         </div>
 
-                        <p className="text-slate-300 mb-4">
+                        <p className="text-zinc-300 mb-4">
                             This will delete all test users matching these names:
                         </p>
 
-                        <div className="bg-slate-700/50 rounded-lg p-3 mb-6">
-                            <ul className="text-sm text-slate-300 space-y-1">
+                        <div className="bg-zinc-700/50 rounded-lg p-3 mb-6">
+                            <ul className="text-sm text-zinc-300 space-y-1">
                                 <li>• David Chen</li>
                                 <li>• Mike Rodriguez</li>
                                 <li>• Test User</li>
@@ -717,7 +717,7 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
                         <div className="flex gap-3">
                             <button
                                 onClick={() => setShowBulkDelete(false)}
-                                className="flex-1 px-4 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors"
+                                className="flex-1 px-4 py-2 bg-zinc-600 text-white rounded-lg hover:bg-zinc-700 transition-colors"
                             >
                                 Cancel
                             </button>

@@ -60,7 +60,7 @@ const LoadingState: React.FC<LoadingStateProps> = ({
         <div className={`flex flex-col items-center justify-center space-y-3 ${className}`}>
             {renderLoader()}
             {message && (
-                <p className="text-slate-300 text-sm font-medium">
+                <p className="text-zinc-300 text-sm font-medium">
                     {message}
                 </p>
             )}
@@ -72,16 +72,16 @@ const LoadingState: React.FC<LoadingStateProps> = ({
 export const FeedLoadingState: React.FC = () => (
     <div className="space-y-4">
         {[1, 2, 3].map((i) => (
-            <div key={i} className="bg-slate-800/50 rounded-xl p-6 animate-pulse">
+            <div key={i} className="bg-zinc-800/50 rounded-xl p-6 animate-pulse">
                 <div className="flex items-start space-x-4">
-                    <div className="w-10 h-10 bg-slate-700 rounded-full" />
+                    <div className="w-10 h-10 bg-zinc-700 rounded-full" />
                     <div className="flex-1 space-y-2">
-                        <div className="h-4 bg-slate-700 rounded w-1/4" />
-                        <div className="h-4 bg-slate-700 rounded w-1/2" />
-                        <div className="h-20 bg-slate-700 rounded" />
+                        <div className="h-4 bg-zinc-700 rounded w-1/4" />
+                        <div className="h-4 bg-zinc-700 rounded w-1/2" />
+                        <div className="h-20 bg-zinc-700 rounded" />
                         <div className="flex space-x-4">
-                            <div className="h-4 bg-slate-700 rounded w-16" />
-                            <div className="h-4 bg-slate-700 rounded w-20" />
+                            <div className="h-4 bg-zinc-700 rounded w-16" />
+                            <div className="h-4 bg-zinc-700 rounded w-20" />
                         </div>
                     </div>
                 </div>
@@ -91,14 +91,14 @@ export const FeedLoadingState: React.FC = () => (
 );
 
 export const CardLoadingState: React.FC = () => (
-    <div className="bg-slate-800/50 rounded-xl p-6 animate-pulse">
+    <div className="bg-zinc-800/50 rounded-xl p-6 animate-pulse">
         <div className="space-y-4">
-            <div className="h-4 bg-slate-700 rounded w-3/4" />
-            <div className="h-4 bg-slate-700 rounded w-1/2" />
-            <div className="h-32 bg-slate-700 rounded" />
+            <div className="h-4 bg-zinc-700 rounded w-3/4" />
+            <div className="h-4 bg-zinc-700 rounded w-1/2" />
+            <div className="h-32 bg-zinc-700 rounded" />
             <div className="flex justify-between">
-                <div className="h-4 bg-slate-700 rounded w-20" />
-                <div className="h-4 bg-slate-700 rounded w-16" />
+                <div className="h-4 bg-zinc-700 rounded w-20" />
+                <div className="h-4 bg-zinc-700 rounded w-16" />
             </div>
         </div>
     </div>
@@ -112,7 +112,7 @@ export const ButtonLoadingState: React.FC<{ text?: string }> = ({ text = 'Loadin
 );
 
 export const PageLoadingState: React.FC = () => (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900">
         <div className="text-center">
             <div className="w-12 h-12 border-4 border-amber-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
             <p className="text-white/70 text-lg">Loading Tipster Arena...</p>

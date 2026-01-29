@@ -68,29 +68,29 @@ export default function PostModal({ open, onClose, onSubmit, selectedSport }: Po
         className="fixed inset-0 bg-black/60 backdrop-blur-sm"
         onClick={onClose}
       />
-      <div className="relative w-full max-w-4xl bg-slate-900/95 border border-white/20 rounded-2xl shadow-2xl">
+      <div className="relative w-full max-w-4xl bg-zinc-900/95 border border-white/20 rounded-2xl shadow-2xl">
         <div className="flex items-center justify-between p-6 border-b border-white/10">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-sky-500/20 flex items-center justify-center">
-              <PlusCircle className="w-5 h-5 text-sky-400" />
+            <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+              <PlusCircle className="w-5 h-5 text-primary" />
             </div>
             <div>
-              <h2 className="text-xl font-semibold text-slate-100">Share Tip</h2>
-              <p className="text-sm text-slate-400">Share your sports tip with the community</p>
+              <h2 className="text-xl font-semibold text-zinc-100">Share Tip</h2>
+              <p className="text-sm text-zinc-400">Share your sports tip with the community</p>
             </div>
           </div>
           <button
             onClick={onClose}
             className="p-2 rounded-lg hover:bg-white/10 transition-colors"
           >
-            <X className="w-5 h-5 text-slate-400" />
+            <X className="w-5 h-5 text-zinc-400" />
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-6 max-h-[80vh] overflow-y-auto">
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-slate-200 mb-2">
+              <label className="block text-sm font-medium text-zinc-200 mb-2">
                 Sport
               </label>
               <div className="relative">
@@ -99,11 +99,11 @@ export default function PostModal({ open, onClose, onSubmit, selectedSport }: Po
                   onClick={() => setShowSportDropdown(!showSportDropdown)}
                   className="w-full flex items-center justify-between px-4 py-3 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 transition-colors"
                 >
-                  <span className="text-slate-200">{sport}</span>
-                  <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${showSportDropdown ? 'rotate-180' : ''}`} />
+                  <span className="text-zinc-200">{sport}</span>
+                  <ChevronDown className={`w-4 h-4 text-zinc-400 transition-transform ${showSportDropdown ? 'rotate-180' : ''}`} />
                 </button>
                 {showSportDropdown && (
-                  <div className="absolute top-full left-0 right-0 mt-1 bg-slate-800 border border-white/20 rounded-lg shadow-xl z-10 max-h-48 overflow-y-auto">
+                  <div className="absolute top-full left-0 right-0 mt-1 bg-zinc-800 border border-white/20 rounded-lg shadow-xl z-10 max-h-48 overflow-y-auto">
                     {sports.map((sportOption) => (
                       <button
                         key={sportOption}
@@ -112,7 +112,7 @@ export default function PostModal({ open, onClose, onSubmit, selectedSport }: Po
                           setSport(sportOption);
                           setShowSportDropdown(false);
                         }}
-                        className="w-full text-left px-4 py-3 hover:bg-white/10 transition-colors text-slate-200"
+                        className="w-full text-left px-4 py-3 hover:bg-white/10 transition-colors text-zinc-200"
                       >
                         {sportOption}
                       </button>
@@ -123,7 +123,7 @@ export default function PostModal({ open, onClose, onSubmit, selectedSport }: Po
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-200 mb-2">
+              <label className="block text-sm font-medium text-zinc-200 mb-2">
                 Title
               </label>
               <input
@@ -131,7 +131,7 @@ export default function PostModal({ open, onClose, onSubmit, selectedSport }: Po
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="What's your tip about?"
-                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:border-sky-500/50 focus:ring-2 focus:ring-sky-500/20 outline-none text-slate-200 placeholder:text-slate-500"
+                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:border-primary/50 focus:ring-2 focus:ring-primary/20 outline-none text-zinc-200 placeholder:text-zinc-500"
                 required
               />
             </div>
@@ -142,7 +142,7 @@ export default function PostModal({ open, onClose, onSubmit, selectedSport }: Po
             />
 
             <div>
-              <label className="block text-sm font-medium text-slate-200 mb-2">
+              <label className="block text-sm font-medium text-zinc-200 mb-2">
                 Odds (Fractional or Decimal)
               </label>
               <input
@@ -150,25 +150,25 @@ export default function PostModal({ open, onClose, onSubmit, selectedSport }: Po
                 value={odds}
                 onChange={(e) => setOdds(e.target.value)}
                 placeholder="e.g., 2/1 or 3.0"
-                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:border-sky-500/50 focus:ring-2 focus:ring-sky-500/20 outline-none text-slate-200 placeholder:text-slate-500"
+                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:border-primary/50 focus:ring-2 focus:ring-primary/20 outline-none text-zinc-200 placeholder:text-zinc-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-200 mb-2">
+              <label className="block text-sm font-medium text-zinc-200 mb-2">
                 Event Date & Time
               </label>
               <input
                 type="datetime-local"
                 value={gameDate}
                 onChange={(e) => setGameDate(e.target.value)}
-                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:border-sky-500/50 focus:ring-2 focus:ring-sky-500/20 outline-none text-slate-200"
+                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:border-primary/50 focus:ring-2 focus:ring-primary/20 outline-none text-zinc-200"
               />
-              <p className="text-xs text-slate-500 mt-1">When does the game/event take place?</p>
+              <p className="text-xs text-zinc-500 mt-1">When does the game/event take place?</p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-200 mb-2">
+              <label className="block text-sm font-medium text-zinc-200 mb-2">
                 Tags (comma-separated)
               </label>
               <input
@@ -176,7 +176,7 @@ export default function PostModal({ open, onClose, onSubmit, selectedSport }: Po
                 value={tags}
                 onChange={(e) => setTags(e.target.value)}
                 placeholder="e.g., football, analysis, premier-league"
-                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:border-sky-500/50 focus:ring-2 focus:ring-sky-500/20 outline-none text-slate-200 placeholder:text-slate-500"
+                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:border-primary/50 focus:ring-2 focus:ring-primary/20 outline-none text-zinc-200 placeholder:text-zinc-500"
               />
             </div>
           </div>
@@ -185,14 +185,14 @@ export default function PostModal({ open, onClose, onSubmit, selectedSport }: Po
             <button
               type="button"
               onClick={onClose}
-              className="px-6 py-2.5 text-slate-400 hover:text-slate-200 transition-colors"
+              className="px-6 py-2.5 text-zinc-400 hover:text-zinc-200 transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={!title.trim() || !content.trim()}
-              className="inline-flex items-center gap-2 px-6 py-2.5 bg-sky-500 hover:bg-sky-600 disabled:bg-slate-600 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-2.5 bg-primary hover:bg-primary disabled:bg-zinc-600 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors"
             >
               <Send className="w-4 h-4" />
               Share Tip

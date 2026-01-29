@@ -90,7 +90,7 @@ export default function CommentItem({
   };
 
   return (
-    <div className={`group ${isReply ? 'ml-8 border-l border-slate-700/50 pl-4' : ''}`}>
+    <div className={`group ${isReply ? 'ml-8 border-l border-zinc-700/50 pl-4' : ''}`}>
       <div className="flex items-start gap-3">
         <AvatarWithFallback
           src={comment.user.avatar}
@@ -102,21 +102,21 @@ export default function CommentItem({
         <div className="flex-1 min-w-0">
           <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 min-w-0">
             <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 min-w-0">
-              <span className="text-slate-100 font-medium text-sm truncate">
+              <span className="text-zinc-100 font-medium text-sm truncate">
                 {comment.user.name}
               </span>
-              <span className="text-slate-500 text-xs truncate">
+              <span className="text-zinc-500 text-xs truncate">
                 {comment.user.handle}
               </span>
             </div>
             <div className="flex items-center gap-1 sm:gap-2">
-              <span className="text-slate-500 text-xs">•</span>
-              <span className="text-slate-500 text-xs">
+              <span className="text-zinc-500 text-xs">•</span>
+              <span className="text-zinc-500 text-xs">
                 {timeAgo(comment.createdAt)}
               </span>
             </div>
             {comment.isEdited && (
-              <span className="text-slate-500 text-xs">(edited)</span>
+              <span className="text-zinc-500 text-xs">(edited)</span>
             )}
           </div>
 
@@ -126,20 +126,20 @@ export default function CommentItem({
                 <textarea
                   value={editContent}
                   onChange={(e) => setEditContent(e.target.value)}
-                  className="w-full bg-slate-800/50 border border-slate-600 rounded-lg px-3 py-2 text-slate-100 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-sky-500/50"
+                  className="w-full bg-zinc-800/50 border border-zinc-600 rounded-lg px-3 py-2 text-zinc-100 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary/50"
                   rows={3}
                   placeholder="Edit your comment..."
                 />
                 <div className="flex items-center gap-2">
                   <button
                     onClick={handleSaveEdit}
-                    className="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white text-xs rounded-md transition"
+                    className="px-3 py-1.5 bg-primary hover:bg-primary-hover text-white text-xs rounded-md transition"
                   >
                     Save
                   </button>
                   <button
                     onClick={handleCancelEdit}
-                    className="px-3 py-1.5 bg-slate-600 hover:bg-slate-700 text-slate-200 text-xs rounded-md transition"
+                    className="px-3 py-1.5 bg-zinc-600 hover:bg-zinc-700 text-zinc-200 text-xs rounded-md transition"
                   >
                     Cancel
                   </button>
@@ -147,7 +147,7 @@ export default function CommentItem({
               </div>
             ) : (
               <div
-                className="text-slate-300 text-sm leading-relaxed mt-1"
+                className="text-zinc-300 text-sm leading-relaxed mt-1"
                 dangerouslySetInnerHTML={{ __html: sanitizeHtml(comment.content) }}
               />
             )}
@@ -159,7 +159,7 @@ export default function CommentItem({
               disabled={!user}
               className={`inline-flex items-center gap-1 text-xs transition ${isLiked
                 ? 'text-red-400 hover:text-red-300'
-                : 'text-slate-400 hover:text-slate-200'
+                : 'text-zinc-400 hover:text-zinc-200'
                 } ${!user ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
               <Heart className={`w-3 h-3 ${isLiked ? 'fill-current' : ''}`} />
@@ -170,7 +170,7 @@ export default function CommentItem({
               <button
                 onClick={() => onReply(comment.id)}
                 disabled={!user}
-                className={`inline-flex items-center gap-1 text-xs text-slate-400 hover:text-slate-200 transition ${!user ? 'opacity-50 cursor-not-allowed' : ''
+                className={`inline-flex items-center gap-1 text-xs text-zinc-400 hover:text-zinc-200 transition ${!user ? 'opacity-50 cursor-not-allowed' : ''
                   }`}
               >
                 <Reply className="w-3 h-3" />
@@ -184,15 +184,15 @@ export default function CommentItem({
                   onClick={() => setShowActions(!showActions)}
                   className="p-1 rounded hover:bg-white/5 transition"
                 >
-                  <MoreHorizontal className="w-3 h-3 text-slate-400" />
+                  <MoreHorizontal className="w-3 h-3 text-zinc-400" />
                 </button>
 
                 {showActions && (
-                  <div className="absolute right-0 top-6 bg-slate-800 border border-slate-700 rounded-lg shadow-lg z-10 min-w-[120px]">
+                  <div className="absolute right-0 top-6 bg-zinc-800 border border-zinc-700 rounded-lg shadow-lg z-10 min-w-[120px]">
                     {canEdit && (
                       <button
                         onClick={handleEdit}
-                        className="w-full flex items-center gap-2 px-3 py-2 text-xs text-slate-300 hover:bg-slate-700 transition"
+                        className="w-full flex items-center gap-2 px-3 py-2 text-xs text-zinc-300 hover:bg-zinc-700 transition"
                       >
                         <Edit2 className="w-3 h-3" />
                         Edit

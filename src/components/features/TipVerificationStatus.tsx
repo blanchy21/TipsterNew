@@ -56,10 +56,10 @@ export default function TipVerificationStatus({
             place: {
                 icon: Trophy,
                 label: 'Place',
-                color: 'text-blue-400',
-                bgColor: 'bg-blue-500/20',
-                borderColor: 'border-blue-500/30',
-                iconColor: 'text-blue-400'
+                color: 'text-primary',
+                bgColor: 'bg-primary/20',
+                borderColor: 'border-primary/30',
+                iconColor: 'text-primary'
             }
         };
 
@@ -75,12 +75,12 @@ export default function TipVerificationStatus({
                 <Icon className={`w-4 h-4 ${config.iconColor}`} />
                 <span>{config.label}</span>
                 {status !== 'pending' && (
-                    <Shield className="w-3 h-3 text-slate-400" />
+                    <Shield className="w-3 h-3 text-zinc-400" />
                 )}
             </div>
 
             {showDetails && verifiedAt && (
-                <div className="text-xs text-slate-400">
+                <div className="text-xs text-zinc-400">
                     <div className="flex items-center gap-1">
                         <Award className="w-3 h-3" />
                         <span>Verified {new Date(verifiedAt).toLocaleDateString()}</span>

@@ -10,17 +10,27 @@ const config: Config = {
       },
       colors: {
         surface: {
-          0: '#06090D',
-          1: '#0B1017',
-          2: '#111820',
-          3: '#18212C',
-          4: '#1F2A38',
+          0: '#141518',
+          1: '#1A1B1F',
+          2: '#212226',
+          3: '#2A2B30',
+          4: '#333439',
         },
         accent: {
           DEFAULT: '#E8913A',
-          light: '#F5B06B',
+          light: '#F2B872',
           dark: '#C47428',
-          glow: 'rgba(232, 145, 58, 0.15)',
+          glow: 'rgba(232, 145, 58, 0.12)',
+        },
+        primary: {
+          DEFAULT: '#3B82F6',
+          hover: '#2563EB',
+          soft: 'rgba(59, 130, 246, 0.15)',
+        },
+        muted: {
+          DEFAULT: '#A0A1A8',
+          strong: '#CDCED3',
+          subtle: '#6B6C73',
         },
       },
       backgroundImage: {

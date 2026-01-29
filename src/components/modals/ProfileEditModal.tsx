@@ -180,7 +180,7 @@ const ProfileEditModal: React.FC<ProfileEditModalProps> = ({ isOpen, onClose, us
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-slate-900 rounded-3xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
+      <div className="bg-zinc-900 rounded-3xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-white/10">
           <h2 className="text-2xl font-bold text-white">Edit Profile</h2>
@@ -204,7 +204,7 @@ const ProfileEditModal: React.FC<ProfileEditModalProps> = ({ isOpen, onClose, us
               key={key}
               onClick={() => setActiveTab(key as any)}
               className={`flex items-center gap-2 px-6 py-4 text-sm font-medium transition-colors ${activeTab === key
-                ? 'text-blue-400 border-b-2 border-blue-400 bg-blue-500/10'
+                ? 'text-primary border-b-2 border-primary bg-primary/10'
                 : 'text-neutral-400 hover:text-white hover:bg-white/5'
                 }`}
             >
@@ -225,7 +225,7 @@ const ProfileEditModal: React.FC<ProfileEditModalProps> = ({ isOpen, onClose, us
                     type="text"
                     value={formData.name || ''}
                     onChange={(e) => handleInputChange('name', e.target.value)}
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-neutral-400 focus:outline-none focus:border-blue-500"
+                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-neutral-400 focus:outline-none focus:border-primary"
                     placeholder="Enter your name"
                   />
                 </div>
@@ -235,7 +235,7 @@ const ProfileEditModal: React.FC<ProfileEditModalProps> = ({ isOpen, onClose, us
                     type="text"
                     value={formData.handle || ''}
                     onChange={(e) => handleInputChange('handle', e.target.value)}
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-neutral-400 focus:outline-none focus:border-blue-500"
+                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-neutral-400 focus:outline-none focus:border-primary"
                     placeholder="@yourhandle"
                   />
                 </div>
@@ -247,7 +247,7 @@ const ProfileEditModal: React.FC<ProfileEditModalProps> = ({ isOpen, onClose, us
                   value={formData.bio || ''}
                   onChange={(e) => handleInputChange('bio', e.target.value)}
                   rows={4}
-                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-neutral-400 focus:outline-none focus:border-blue-500 resize-none"
+                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-neutral-400 focus:outline-none focus:border-primary resize-none"
                   placeholder="Tell us about yourself..."
                 />
               </div>
@@ -259,7 +259,7 @@ const ProfileEditModal: React.FC<ProfileEditModalProps> = ({ isOpen, onClose, us
                     type="text"
                     value={formData.location || ''}
                     onChange={(e) => handleInputChange('location', e.target.value)}
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-neutral-400 focus:outline-none focus:border-blue-500"
+                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-neutral-400 focus:outline-none focus:border-primary"
                     placeholder="City, Country"
                   />
                 </div>
@@ -269,7 +269,7 @@ const ProfileEditModal: React.FC<ProfileEditModalProps> = ({ isOpen, onClose, us
                     type="url"
                     value={formData.website || ''}
                     onChange={(e) => handleInputChange('website', e.target.value)}
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-neutral-400 focus:outline-none focus:border-blue-500"
+                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-neutral-400 focus:outline-none focus:border-primary"
                     placeholder="https://yourwebsite.com"
                   />
                 </div>
@@ -284,7 +284,7 @@ const ProfileEditModal: React.FC<ProfileEditModalProps> = ({ isOpen, onClose, us
                         type="checkbox"
                         checked={formData.specializations?.includes(sport) || false}
                         onChange={() => handleSpecializationToggle(sport)}
-                        className="w-4 h-4 text-blue-500 bg-white/5 border-white/20 rounded focus:ring-blue-500"
+                        className="w-4 h-4 text-primary bg-white/5 border-white/20 rounded focus:ring-primary"
                       />
                       <span className="text-white text-sm">{sport}</span>
                     </label>
@@ -299,14 +299,14 @@ const ProfileEditModal: React.FC<ProfileEditModalProps> = ({ isOpen, onClose, us
               <div className="grid grid-cols-2 gap-6">
                 <div>
                   <label className="text-sm font-medium text-neutral-300 mb-2 flex items-center gap-2">
-                    <Twitter className="w-4 h-4 text-blue-400" />
+                    <Twitter className="w-4 h-4 text-primary" />
                     Twitter
                   </label>
                   <input
                     type="text"
                     value={formData.socialMedia?.twitter || ''}
                     onChange={(e) => handleSocialMediaChange('twitter', e.target.value)}
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-neutral-400 focus:outline-none focus:border-blue-500"
+                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-neutral-400 focus:outline-none focus:border-primary"
                     placeholder="@username"
                   />
                 </div>
@@ -319,7 +319,7 @@ const ProfileEditModal: React.FC<ProfileEditModalProps> = ({ isOpen, onClose, us
                     type="text"
                     value={formData.socialMedia?.instagram || ''}
                     onChange={(e) => handleSocialMediaChange('instagram', e.target.value)}
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-neutral-400 focus:outline-none focus:border-blue-500"
+                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-neutral-400 focus:outline-none focus:border-primary"
                     placeholder="@username"
                   />
                 </div>
@@ -335,7 +335,7 @@ const ProfileEditModal: React.FC<ProfileEditModalProps> = ({ isOpen, onClose, us
                     type="text"
                     value={formData.socialMedia?.facebook || ''}
                     onChange={(e) => handleSocialMediaChange('facebook', e.target.value)}
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-neutral-400 focus:outline-none focus:border-blue-500"
+                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-neutral-400 focus:outline-none focus:border-primary"
                     placeholder="username"
                   />
                 </div>
@@ -348,7 +348,7 @@ const ProfileEditModal: React.FC<ProfileEditModalProps> = ({ isOpen, onClose, us
                     type="text"
                     value={formData.socialMedia?.linkedin || ''}
                     onChange={(e) => handleSocialMediaChange('linkedin', e.target.value)}
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-neutral-400 focus:outline-none focus:border-blue-500"
+                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-neutral-400 focus:outline-none focus:border-primary"
                     placeholder="username"
                   />
                 </div>
@@ -390,7 +390,7 @@ const ProfileEditModal: React.FC<ProfileEditModalProps> = ({ isOpen, onClose, us
                     />
                     <button
                       onClick={() => fileInputRef.current?.click()}
-                      className="flex items-center gap-2 px-4 py-2 bg-blue-500/20 text-blue-400 rounded-xl hover:bg-blue-500/30 transition-colors"
+                      className="flex items-center gap-2 px-4 py-2 bg-primary/20 text-primary rounded-xl hover:bg-primary/30 transition-colors"
                     >
                       <Upload className="w-4 h-4" />
                       Upload Avatar
@@ -425,7 +425,7 @@ const ProfileEditModal: React.FC<ProfileEditModalProps> = ({ isOpen, onClose, us
                     />
                     <button
                       onClick={() => coverPhotoInputRef.current?.click()}
-                      className="flex items-center gap-2 px-4 py-2 bg-blue-500/20 text-blue-400 rounded-xl hover:bg-blue-500/30 transition-colors"
+                      className="flex items-center gap-2 px-4 py-2 bg-primary/20 text-primary rounded-xl hover:bg-primary/30 transition-colors"
                     >
                       <Upload className="w-4 h-4" />
                       Upload Cover
@@ -495,7 +495,7 @@ const ProfileEditModal: React.FC<ProfileEditModalProps> = ({ isOpen, onClose, us
                         onChange={(e) => handlePrivacyChange(key, e.target.checked)}
                         className="sr-only peer"
                       />
-                      <div className="w-11 h-6 bg-white/20 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
+                      <div className="w-11 h-6 bg-white/20 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
                     </label>
                   </div>
                 ))}
@@ -515,7 +515,7 @@ const ProfileEditModal: React.FC<ProfileEditModalProps> = ({ isOpen, onClose, us
           <button
             onClick={handleSave}
             disabled={loading}
-            className="flex items-center gap-2 px-6 py-3 bg-blue-500 text-white rounded-xl hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             <Save className="w-4 h-4" />
             {loading ? 'Saving...' : 'Save Changes'}

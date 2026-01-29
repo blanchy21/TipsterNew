@@ -44,7 +44,7 @@ export default function SportsSubmenu({ isOpen, selectedSport, onSportSelect, on
 
   return (
     <div
-      className="absolute left-0 top-full mt-1 w-64 border border-white/40 rounded-lg shadow-2xl bg-slate-800"
+      className="absolute left-0 top-full mt-1 w-64 border border-white/40 rounded-lg shadow-2xl bg-zinc-800"
       style={{
         opacity: 1,
         backdropFilter: 'none',
@@ -57,23 +57,23 @@ export default function SportsSubmenu({ isOpen, selectedSport, onSportSelect, on
       }}
     >
       <div
-        className="p-3 rounded-lg bg-slate-800"
+        className="p-3 rounded-lg bg-zinc-800"
         style={{
           position: 'relative',
           zIndex: 1
         }}
       >
         <div className="flex items-center justify-between px-3 py-2 border-b border-white/30 mb-2">
-          <h3 className="text-sm font-semibold text-slate-100">Select Sport</h3>
+          <h3 className="text-sm font-semibold text-zinc-100">Select Sport</h3>
           <button
             onClick={onClose}
             className="p-1.5 rounded-md hover:bg-white/20 transition-colors"
           >
-            <ChevronDown className="w-4 h-4 text-slate-400" />
+            <ChevronDown className="w-4 h-4 text-zinc-400" />
           </button>
         </div>
         <div
-          className="max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent bg-slate-800"
+          className="max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent bg-zinc-800"
           style={{
             position: 'relative',
             zIndex: 1
@@ -90,8 +90,8 @@ export default function SportsSubmenu({ isOpen, selectedSport, onSportSelect, on
                 "w-full text-left px-3 py-2.5 rounded-md text-sm transition-colors",
                 "hover:bg-white/20",
                 selectedSport === sport
-                  ? "bg-sky-500/50 text-sky-100 ring-1 ring-sky-500/60 font-medium"
-                  : "text-slate-300 hover:text-slate-100"
+                  ? "bg-primary/50 text-sky-100 ring-1 ring-primary/60 font-medium"
+                  : "text-zinc-300 hover:text-zinc-100"
               ].join(' ')}
               style={{
                 backgroundColor: selectedSport === sport ? 'rgba(14, 165, 233, 0.8)' : 'transparent'

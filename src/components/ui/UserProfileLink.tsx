@@ -25,7 +25,7 @@ export default function UserProfileLink({
   return (
     <button
       onClick={handleClick}
-      className={`hover:text-blue-400 transition-colors duration-200 ${className}`}
+      className={`hover:text-primary transition-colors duration-200 ${className}`}
       title={`View ${user.name}'s profile`}
     >
       {children}

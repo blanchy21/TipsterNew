@@ -363,7 +363,7 @@ function AppContent() {
     // eslint-disable-next-line no-console
     // Console statement removed for production
     return (
-      <div className="h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+      <div className="h-screen flex items-center justify-center bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900">
         <div className="text-center">
           <div className="w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-white/70">Loading...</p>
@@ -393,7 +393,7 @@ function AppContent() {
   if (!user && selected !== 'top-tipsters' && tab !== 'top-tipsters') {
     return (
       <>
-        <div className="h-screen flex items-center justify-center bg-slate-900">
+        <div className="h-screen flex items-center justify-center bg-zinc-900">
           <div className="text-center max-w-md mx-auto p-8">
             <div className="w-16 h-16 bg-gradient-to-br from-amber-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6">
               <span className="text-white font-bold text-2xl">TA</span>
@@ -433,8 +433,8 @@ function AppContent() {
 
   return (
     <NotificationsProvider>
-      <div className="h-screen flex flex-col overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-        <Suspense fallback={<div className="h-16 bg-slate-800 animate-pulse" />}>
+      <div className="h-screen flex flex-col overflow-hidden bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900">
+        <Suspense fallback={<div className="h-16 bg-zinc-800 animate-pulse" />}>
           <MobileHeader
             onOpenPost={() => setShowPost(true)}
             onMenu={handleMobileMenuToggle}
@@ -458,7 +458,7 @@ function AppContent() {
         </Suspense>
 
         <div className="flex-1 flex overflow-hidden">
-          <Suspense fallback={<div className="w-64 bg-slate-800 animate-pulse" />}>
+          <Suspense fallback={<div className="w-64 bg-zinc-800 animate-pulse" />}>
             <Sidebar
               selected={selected}
               onSelect={handleNavigation}
@@ -515,7 +515,7 @@ function AppContent() {
             </div>
           ) : selected === 'sports' ? (
             <div className="flex-1 flex flex-col overflow-hidden">
-              <Suspense fallback={<div className="flex-1 bg-slate-800 animate-pulse" />}>
+              <Suspense fallback={<div className="flex-1 bg-zinc-800 animate-pulse" />}>
                 <Feed
                   posts={filteredPosts}
                   isLoaded={isLoaded}
@@ -531,13 +531,13 @@ function AppContent() {
                   currentFilters={filters}
                 />
               </Suspense>
-              <Suspense fallback={<div className="w-80 bg-slate-800 animate-pulse" />}>
+              <Suspense fallback={<div className="w-80 bg-zinc-800 animate-pulse" />}>
                 <RightSidebar posts={posts} isLoaded={isLoaded} onNavigateToProfile={handleNavigateToProfile} />
               </Suspense>
             </div>
           ) : (
             <>
-              <Suspense fallback={<div className="flex-1 bg-slate-800 animate-pulse" />}>
+              <Suspense fallback={<div className="flex-1 bg-zinc-800 animate-pulse" />}>
                 <Feed
                   posts={filteredPosts}
                   isLoaded={isLoaded}
@@ -554,7 +554,7 @@ function AppContent() {
                 />
               </Suspense>
 
-              <Suspense fallback={<div className="w-80 bg-slate-800 animate-pulse" />}>
+              <Suspense fallback={<div className="w-80 bg-zinc-800 animate-pulse" />}>
                 <RightSidebar
                   posts={posts}
                   isLoaded={isLoaded}
@@ -627,7 +627,7 @@ function AppContent() {
 
 export default function App() {
   return (
-    <Suspense fallback={<div className="h-screen bg-slate-900 flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div></div>}>
+    <Suspense fallback={<div className="h-screen bg-zinc-900 flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div></div>}>
       <ErrorBoundary
         onError={(error, errorInfo) => {
           // Log error to monitoring service in production
@@ -638,15 +638,15 @@ export default function App() {
           }
         }}
       >
-        <Suspense fallback={<div className="h-screen bg-slate-900 flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div></div>}>
+        <Suspense fallback={<div className="h-screen bg-zinc-900 flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div></div>}>
           <QueryProvider>
-            <Suspense fallback={<div className="h-screen bg-slate-900 flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div></div>}>
+            <Suspense fallback={<div className="h-screen bg-zinc-900 flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div></div>}>
               <AuthProvider>
-                <Suspense fallback={<div className="h-screen bg-slate-900 flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div></div>}>
+                <Suspense fallback={<div className="h-screen bg-zinc-900 flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div></div>}>
                   <ProfileProvider>
-                    <Suspense fallback={<div className="h-screen bg-slate-900 flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div></div>}>
+                    <Suspense fallback={<div className="h-screen bg-zinc-900 flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div></div>}>
                       <FollowingProvider>
-                        <Suspense fallback={<div className="h-screen bg-slate-900 flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div></div>}>
+                        <Suspense fallback={<div className="h-screen bg-zinc-900 flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div></div>}>
                           <AsyncErrorBoundary
                             onError={(error, errorInfo) => {
                               if (process.env.NODE_ENV === 'development') {

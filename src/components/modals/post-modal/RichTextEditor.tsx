@@ -200,7 +200,7 @@ export default function RichTextEditor({ onContentChange, resetKey }: RichTextEd
 
   return (
     <div>
-      <label className="block text-sm font-medium text-slate-200 mb-2">
+      <label className="block text-sm font-medium text-zinc-200 mb-2">
         Sports Tip Details
       </label>
 
@@ -209,7 +209,7 @@ export default function RichTextEditor({ onContentChange, resetKey }: RichTextEd
         <button
           type="button"
           onClick={() => handleFormat('bold')}
-          className={`p-2 rounded hover:bg-white/10 transition-colors ${isBold ? 'bg-sky-500/20 text-sky-400' : 'text-slate-400'}`}
+          className={`p-2 rounded hover:bg-white/10 transition-colors ${isBold ? 'bg-primary/20 text-primary' : 'text-zinc-400'}`}
           title="Bold"
         >
           <Bold className="w-4 h-4" />
@@ -217,7 +217,7 @@ export default function RichTextEditor({ onContentChange, resetKey }: RichTextEd
         <button
           type="button"
           onClick={() => handleFormat('italic')}
-          className={`p-2 rounded hover:bg-white/10 transition-colors ${isItalic ? 'bg-sky-500/20 text-sky-400' : 'text-slate-400'}`}
+          className={`p-2 rounded hover:bg-white/10 transition-colors ${isItalic ? 'bg-primary/20 text-primary' : 'text-zinc-400'}`}
           title="Italic"
         >
           <Italic className="w-4 h-4" />
@@ -225,7 +225,7 @@ export default function RichTextEditor({ onContentChange, resetKey }: RichTextEd
         <button
           type="button"
           onClick={() => handleFormat('underline')}
-          className={`p-2 rounded hover:bg-white/10 transition-colors ${isUnderline ? 'bg-sky-500/20 text-sky-400' : 'text-slate-400'}`}
+          className={`p-2 rounded hover:bg-white/10 transition-colors ${isUnderline ? 'bg-primary/20 text-primary' : 'text-zinc-400'}`}
           title="Underline"
         >
           <Underline className="w-4 h-4" />
@@ -233,7 +233,7 @@ export default function RichTextEditor({ onContentChange, resetKey }: RichTextEd
         <button
           type="button"
           onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-          className={`p-2 rounded hover:bg-white/10 transition-colors ${showEmojiPicker ? 'bg-sky-500/20 text-sky-400' : 'text-slate-400'}`}
+          className={`p-2 rounded hover:bg-white/10 transition-colors ${showEmojiPicker ? 'bg-primary/20 text-primary' : 'text-zinc-400'}`}
           title="Emoji"
         >
           <Smile className="w-4 h-4" />
@@ -241,7 +241,7 @@ export default function RichTextEditor({ onContentChange, resetKey }: RichTextEd
         <button
           type="button"
           onClick={() => setShowGifPicker(!showGifPicker)}
-          className={`p-2 rounded hover:bg-white/10 transition-colors ${showGifPicker ? 'bg-sky-500/20 text-sky-400' : 'text-slate-400'}`}
+          className={`p-2 rounded hover:bg-white/10 transition-colors ${showGifPicker ? 'bg-primary/20 text-primary' : 'text-zinc-400'}`}
           title="GIF"
         >
           <ImageIcon className="w-4 h-4" />
@@ -249,7 +249,7 @@ export default function RichTextEditor({ onContentChange, resetKey }: RichTextEd
         <button
           type="button"
           onClick={() => fileInputRef.current?.click()}
-          className="p-2 rounded hover:bg-white/10 transition-colors text-slate-400"
+          className="p-2 rounded hover:bg-white/10 transition-colors text-zinc-400"
           title="Upload Image"
         >
           <Upload className="w-4 h-4" />
@@ -276,7 +276,7 @@ export default function RichTextEditor({ onContentChange, resetKey }: RichTextEd
         onInput={triggerContentChange}
         onKeyUp={updateFormattingState}
         onMouseUp={updateFormattingState}
-        className="w-full min-h-[300px] px-4 py-3 bg-white/5 border border-white/10 rounded-b-lg focus:border-sky-500/50 focus:ring-2 focus:ring-sky-500/20 outline-none text-slate-200 resize-none overflow-y-auto empty:before:content-[attr(data-placeholder)] empty:before:text-slate-500 empty:before:pointer-events-none"
+        className="w-full min-h-[300px] px-4 py-3 bg-white/5 border border-white/10 rounded-b-lg focus:border-primary/50 focus:ring-2 focus:ring-primary/20 outline-none text-zinc-200 resize-none overflow-y-auto empty:before:content-[attr(data-placeholder)] empty:before:text-zinc-500 empty:before:pointer-events-none"
         style={{ minHeight: '300px' }}
         data-placeholder="Share your sports tip details, analysis, or reasoning..."
         suppressContentEditableWarning={true}

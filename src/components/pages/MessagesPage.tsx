@@ -77,10 +77,10 @@ const MessagesPage: React.FC = () => {
 
   if (!user) {
     return (
-      <div className="flex items-center justify-center h-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+      <div className="flex items-center justify-center h-full bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-white mb-4">Please Sign In</h1>
-          <p className="text-slate-400 mb-6">You need to be signed in to access messages</p>
+          <p className="text-zinc-400 mb-6">You need to be signed in to access messages</p>
         </div>
       </div>
     );
@@ -88,17 +88,17 @@ const MessagesPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+      <div className="flex items-center justify-center h-full bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-500 mx-auto mb-4"></div>
-          <p className="text-slate-400">Loading messages...</p>
+          <p className="text-zinc-400">Loading messages...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex h-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+    <div className="flex h-full bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900">
       {/* Desktop Layout */}
       <div className="hidden md:flex flex-1">
         <div className="w-80 flex-shrink-0">

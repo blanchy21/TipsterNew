@@ -95,7 +95,7 @@ const FollowingPage: React.FC<FollowingPageProps> = ({ initialTab = 'following',
             className="rounded-full object-cover"
           />
           {user.isVerified && (
-            <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
+            <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-primary rounded-full flex items-center justify-center">
               <Check className="w-2.5 h-2.5 text-white" />
             </div>
           )}
@@ -106,7 +106,7 @@ const FollowingPage: React.FC<FollowingPageProps> = ({ initialTab = 'following',
               <UserProfileLink
                 user={user}
                 onNavigateToProfile={onNavigateToProfile}
-                className="font-semibold text-white truncate hover:text-blue-400"
+                className="font-semibold text-white truncate hover:text-primary"
               >
                 {user.name}
               </UserProfileLink>
@@ -114,7 +114,7 @@ const FollowingPage: React.FC<FollowingPageProps> = ({ initialTab = 'following',
               <h3 className="font-semibold text-white truncate">{user.name}</h3>
             )}
             {user.isVerified && (
-              <Check className="w-4 h-4 text-blue-400 flex-shrink-0" />
+              <Check className="w-4 h-4 text-primary flex-shrink-0" />
             )}
           </div>
           <p className="text-sm text-neutral-400 truncate">{user.handle}</p>
@@ -126,7 +126,7 @@ const FollowingPage: React.FC<FollowingPageProps> = ({ initialTab = 'following',
               {user.specializations.slice(0, 2).map((sport) => (
                 <span
                   key={sport}
-                  className="text-xs px-2 py-1 bg-blue-500/20 text-blue-400 rounded-full"
+                  className="text-xs px-2 py-1 bg-primary/20 text-primary rounded-full"
                 >
                   {sport}
                 </span>
@@ -288,7 +288,7 @@ const FollowingPage: React.FC<FollowingPageProps> = ({ initialTab = 'following',
   };
 
   return (
-    <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-screen">
+    <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 min-h-screen">
       <div className="max-w-4xl mx-auto px-4 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
@@ -334,7 +334,7 @@ const FollowingPage: React.FC<FollowingPageProps> = ({ initialTab = 'following',
                   key={filterOption.key}
                   onClick={() => setFilter(filterOption.key as any)}
                   className={`px-3 py-1.5 text-sm rounded-md transition-colors ${filter === filterOption.key
-                    ? 'bg-blue-500 text-white'
+                    ? 'bg-primary text-white'
                     : 'text-neutral-400 hover:text-white hover:bg-white/10'
                     }`}
                 >
@@ -348,7 +348,7 @@ const FollowingPage: React.FC<FollowingPageProps> = ({ initialTab = 'following',
         {/* Content */}
         {loading ? (
           <div className="flex items-center justify-center py-12">
-            <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
+            <Loader2 className="w-8 h-8 animate-spin text-primary" />
           </div>
         ) : (
           renderContent()

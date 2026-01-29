@@ -23,7 +23,7 @@ export default function LiveGameChat({
     const [onlineCount] = useState(Math.floor(Math.random() * 50) + 10);
 
     return (
-        <div className={`bg-slate-800/30 rounded-lg border border-white/10 ${className}`}>
+        <div className={`bg-zinc-800/30 rounded-lg border border-white/10 ${className}`}>
             {/* Header */}
             <div
                 className="flex items-center justify-between p-4 cursor-pointer hover:bg-white/5 transition-colors"
@@ -35,7 +35,7 @@ export default function LiveGameChat({
                     </div>
                     <div>
                         <h3 className="text-sm font-semibold text-white">{gameTitle}</h3>
-                        <p className="text-xs text-slate-400 flex items-center gap-1">
+                        <p className="text-xs text-zinc-400 flex items-center gap-1">
                             <Users className="w-3 h-3" />
                             {onlineCount} chatting
                         </p>
@@ -43,13 +43,13 @@ export default function LiveGameChat({
                 </div>
 
                 <div className="flex items-center gap-2">
-                    <div className="px-2 py-1 bg-sky-500/20 text-sky-400 rounded text-xs font-medium">
+                    <div className="px-2 py-1 bg-primary/20 text-primary rounded text-xs font-medium">
                         {sport}
                     </div>
                     {expanded ? (
-                        <ChevronUp className="w-4 h-4 text-slate-400" />
+                        <ChevronUp className="w-4 h-4 text-zinc-400" />
                     ) : (
-                        <ChevronDown className="w-4 h-4 text-slate-400" />
+                        <ChevronDown className="w-4 h-4 text-zinc-400" />
                     )}
                 </div>
             </div>

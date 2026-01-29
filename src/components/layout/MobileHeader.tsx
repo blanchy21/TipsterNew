@@ -15,7 +15,7 @@ export default function MobileHeader({ onOpenPost, onMenu, isLoaded }: MobileHea
   return (
     <header className={[
       "md:hidden sticky top-0 z-30",
-      "bg-[#0B0F14]/80 backdrop-blur supports-[backdrop-filter]:bg-[#0B0F14]/60",
+      "bg-surface-1/80 backdrop-blur supports-[backdrop-filter]:bg-surface-1/60",
       "border-b border-white/5"
     ].join(' ')}
     >
@@ -29,14 +29,14 @@ export default function MobileHeader({ onOpenPost, onMenu, isLoaded }: MobileHea
           onClick={onMenu}
           className="p-2 rounded-lg hover:bg-white/5 ring-1 ring-transparent hover:ring-white/10"
         >
-          <Menu className="w-5 h-5 text-slate-300" />
+          <Menu className="w-5 h-5 text-zinc-300" />
         </button>
         <Logo />
         <div className="flex items-center space-x-2">
-          <NotificationsIcon className="text-slate-300" />
+          <NotificationsIcon className="text-zinc-300" />
           <button
             onClick={onOpenPost}
-            className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-sky-500/20 text-sky-300 hover:bg-sky-500/30 hover:text-sky-200 transition ring-1 ring-inset ring-sky-500/30 hover:ring-sky-500/40"
+            className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-primary/20 text-primary hover:bg-primary/30 hover:text-primary transition ring-1 ring-inset ring-primary/30 hover:ring-primary/40"
           >
             <Plus className="w-5 h-5" />
             <span className="text-sm font-medium">Post</span>

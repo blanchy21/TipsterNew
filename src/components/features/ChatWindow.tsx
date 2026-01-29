@@ -163,7 +163,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                 <div key={message.id}>
                   {showDate && (
                     <div className="flex items-center justify-center my-4">
-                      <div className="bg-slate-700/50 px-3 py-1 rounded-full text-xs text-slate-400">
+                      <div className="bg-zinc-700/50 px-3 py-1 rounded-full text-xs text-zinc-400">
                         {new Date(message.timestamp).toLocaleDateString()}
                       </div>
                     </div>
@@ -184,7 +184,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 
                     <div className={`flex-1 ${isCurrentUser ? 'text-right' : 'text-left'}`}>
                       {showAvatar && (
-                        <div className={`text-xs text-slate-400 mb-1 ${isCurrentUser ? 'text-right' : 'text-left'}`}>
+                        <div className={`text-xs text-zinc-400 mb-1 ${isCurrentUser ? 'text-right' : 'text-left'}`}>
                           {isCurrentUser ? 'You' : otherParticipant?.name}
                         </div>
                       )}
@@ -192,13 +192,13 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                       <div
                         className={`inline-block max-w-[70%] rounded-2xl px-4 py-2 ${isCurrentUser
                           ? 'bg-indigo-500 text-white'
-                          : 'bg-white/10 text-slate-100'
+                          : 'bg-white/10 text-zinc-100'
                           }`}
                       >
                         <p className="text-sm leading-relaxed">{message.content}</p>
                       </div>
 
-                      <div className={`text-xs text-slate-400 mt-1 flex items-center gap-1 ${isCurrentUser ? 'justify-end' : 'justify-start'}`}>
+                      <div className={`text-xs text-zinc-400 mt-1 flex items-center gap-1 ${isCurrentUser ? 'justify-end' : 'justify-start'}`}>
                         {formatMessageTime(message.timestamp)}
                         {isCurrentUser && message.read && (
                           <span className="text-indigo-300">✓</span>

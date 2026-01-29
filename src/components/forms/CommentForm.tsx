@@ -502,7 +502,7 @@ export default function CommentForm({
 
   if (!user) {
     return (
-      <div className="p-4 text-center text-slate-400 text-sm">
+      <div className="p-4 text-center text-zinc-400 text-sm">
         Please sign in to comment
       </div>
     );
@@ -513,11 +513,11 @@ export default function CommentForm({
       <div className="flex items-start gap-3">
         <div className="flex-1">
           {/* Formatting Toolbar */}
-          <div className="relative flex items-center gap-2 p-2 bg-slate-800/30 border border-slate-600 rounded-t-lg border-b-0">
+          <div className="relative flex items-center gap-2 p-2 bg-zinc-800/30 border border-zinc-600 rounded-t-lg border-b-0">
             <button
               type="button"
               onClick={() => handleFormat('bold')}
-              className={`p-2 rounded hover:bg-white/10 transition-colors ${isBold ? 'bg-sky-500/20 text-sky-400' : 'text-slate-400'
+              className={`p-2 rounded hover:bg-white/10 transition-colors ${isBold ? 'bg-primary/20 text-primary' : 'text-zinc-400'
                 }`}
               title="Bold"
             >
@@ -526,7 +526,7 @@ export default function CommentForm({
             <button
               type="button"
               onClick={() => handleFormat('italic')}
-              className={`p-2 rounded hover:bg-white/10 transition-colors ${isItalic ? 'bg-sky-500/20 text-sky-400' : 'text-slate-400'
+              className={`p-2 rounded hover:bg-white/10 transition-colors ${isItalic ? 'bg-primary/20 text-primary' : 'text-zinc-400'
                 }`}
               title="Italic"
             >
@@ -535,7 +535,7 @@ export default function CommentForm({
             <button
               type="button"
               onClick={() => handleFormat('underline')}
-              className={`p-2 rounded hover:bg-white/10 transition-colors ${isUnderline ? 'bg-sky-500/20 text-sky-400' : 'text-slate-400'
+              className={`p-2 rounded hover:bg-white/10 transition-colors ${isUnderline ? 'bg-primary/20 text-primary' : 'text-zinc-400'
                 }`}
               title="Underline"
             >
@@ -544,7 +544,7 @@ export default function CommentForm({
             <button
               type="button"
               onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-              className={`p-2 rounded hover:bg-white/10 transition-colors ${showEmojiPicker ? 'bg-sky-500/20 text-sky-400' : 'text-slate-400'
+              className={`p-2 rounded hover:bg-white/10 transition-colors ${showEmojiPicker ? 'bg-primary/20 text-primary' : 'text-zinc-400'
                 }`}
               title="Emoji"
             >
@@ -553,7 +553,7 @@ export default function CommentForm({
             <button
               type="button"
               onClick={() => setShowGifPicker(!showGifPicker)}
-              className={`p-2 rounded hover:bg-white/10 transition-colors ${showGifPicker ? 'bg-sky-500/20 text-sky-400' : 'text-slate-400'
+              className={`p-2 rounded hover:bg-white/10 transition-colors ${showGifPicker ? 'bg-primary/20 text-primary' : 'text-zinc-400'
                 }`}
               title="GIF"
             >
@@ -562,7 +562,7 @@ export default function CommentForm({
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="p-2 rounded hover:bg-white/10 transition-colors text-slate-400"
+              className="p-2 rounded hover:bg-white/10 transition-colors text-zinc-400"
               title="Upload Image"
             >
               <Upload className="w-4 h-4" />
@@ -579,13 +579,13 @@ export default function CommentForm({
           {/* Emoji Picker */}
           {showEmojiPicker && (
             <div
-              className="absolute z-20 mt-1 bg-slate-800 border border-white/20 rounded-lg shadow-xl p-4 max-w-sm max-h-80 overflow-y-auto"
+              className="absolute z-20 mt-1 bg-zinc-800 border border-white/20 rounded-lg shadow-xl p-4 max-w-sm max-h-80 overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
               data-emoji-picker
             >
               <div className="space-y-3">
                 <div>
-                  <h4 className="text-sm font-medium text-slate-200 mb-2">Sports</h4>
+                  <h4 className="text-sm font-medium text-zinc-200 mb-2">Sports</h4>
                   <div className="flex flex-wrap gap-1">
                     {emojiCategories.sports.map((emoji, index) => (
                       <button
@@ -601,7 +601,7 @@ export default function CommentForm({
                   </div>
                 </div>
                 <div>
-                  <h4 className="text-sm font-medium text-slate-200 mb-2">General</h4>
+                  <h4 className="text-sm font-medium text-zinc-200 mb-2">General</h4>
                   <div className="flex flex-wrap gap-1">
                     {emojiCategories.general.map((emoji, index) => (
                       <button
@@ -617,7 +617,7 @@ export default function CommentForm({
                   </div>
                 </div>
                 <div>
-                  <h4 className="text-sm font-medium text-slate-200 mb-2">Symbols</h4>
+                  <h4 className="text-sm font-medium text-zinc-200 mb-2">Symbols</h4>
                   <div className="flex flex-wrap gap-1">
                     {emojiCategories.symbols.map((emoji, index) => (
                       <button
@@ -639,20 +639,20 @@ export default function CommentForm({
           {/* GIF Picker */}
           {showGifPicker && (
             <div
-              className="absolute z-20 mt-1 bg-slate-800 border border-white/20 rounded-lg shadow-xl p-4 max-w-md max-h-80 overflow-y-auto"
+              className="absolute z-20 mt-1 bg-zinc-800 border border-white/20 rounded-lg shadow-xl p-4 max-w-md max-h-80 overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
               data-gif-picker
             >
               <div className="space-y-3">
                 <div>
-                  <h4 className="text-sm font-medium text-slate-200 mb-2">Search GIFs</h4>
+                  <h4 className="text-sm font-medium text-zinc-200 mb-2">Search GIFs</h4>
                   <div className="flex gap-2">
                     <input
                       type="text"
                       value={gifSearchTerm}
                       onChange={(e) => setGifSearchTerm(e.target.value)}
                       placeholder="Search for GIFs..."
-                      className="flex-1 px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/50 placeholder-slate-400"
+                      className="flex-1 px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-zinc-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 placeholder-zinc-400"
                       onKeyDown={(e) => {
                         if (e.key === 'Enter') {
                           searchGifs(gifSearchTerm);
@@ -663,7 +663,7 @@ export default function CommentForm({
                       type="button"
                       onClick={() => searchGifs(gifSearchTerm)}
                       disabled={isLoadingGifs || !gifSearchTerm.trim()}
-                      className="px-4 py-2 bg-sky-600 hover:bg-sky-700 disabled:bg-slate-600 disabled:cursor-not-allowed text-white text-sm rounded-lg transition"
+                      className="px-4 py-2 bg-primary hover:bg-primary-hover disabled:bg-zinc-600 disabled:cursor-not-allowed text-white text-sm rounded-lg transition"
                     >
                       {isLoadingGifs ? '...' : 'Search'}
                     </button>
@@ -672,14 +672,14 @@ export default function CommentForm({
 
                 {gifs.length > 0 && (
                   <div>
-                    <h4 className="text-sm font-medium text-slate-200 mb-2">Results</h4>
+                    <h4 className="text-sm font-medium text-zinc-200 mb-2">Results</h4>
                     <div className="grid grid-cols-2 gap-2">
                       {gifs.map((gif) => (
                         <button
                           key={gif.id}
                           type="button"
                           onClick={() => insertGif(gif)}
-                          className="relative group rounded-lg overflow-hidden hover:ring-2 hover:ring-sky-500/50 transition"
+                          className="relative group rounded-lg overflow-hidden hover:ring-2 hover:ring-primary/50 transition"
                         >
                           <NextImage
                             src={gif.images.fixed_height_small.url}
@@ -696,7 +696,7 @@ export default function CommentForm({
                 )}
 
                 {gifSearchTerm && gifs.length === 0 && !isLoadingGifs && (
-                  <div className="text-center text-slate-400 text-sm py-4">
+                  <div className="text-center text-zinc-400 text-sm py-4">
                     No GIFs found for &quot;{gifSearchTerm}&quot;
                   </div>
                 )}
@@ -712,7 +712,7 @@ export default function CommentForm({
             onKeyUp={updateFormattingState}
             onMouseUp={updateFormattingState}
             onKeyDown={handleKeyDown}
-            className="w-full bg-slate-800/50 border border-slate-600 rounded-b-lg px-3 py-2 text-slate-100 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-sky-500/50 placeholder-slate-400 empty:before:content-[attr(data-placeholder)] empty:before:text-slate-500 empty:before:pointer-events-none"
+            className="w-full bg-zinc-800/50 border border-zinc-600 rounded-b-lg px-3 py-2 text-zinc-100 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary/50 placeholder-zinc-400 empty:before:content-[attr(data-placeholder)] empty:before:text-zinc-500 empty:before:pointer-events-none"
             style={{ minHeight: isReply ? '48px' : '72px' }}
             data-placeholder={placeholder}
             suppressContentEditableWarning={true}
@@ -721,7 +721,7 @@ export default function CommentForm({
       </div>
 
       <div className="flex items-center justify-between">
-        <div className="text-xs text-slate-500">
+        <div className="text-xs text-zinc-500">
           Press Cmd+Enter to submit
         </div>
 
@@ -731,7 +731,7 @@ export default function CommentForm({
               type="button"
               onClick={onCancel}
               disabled={isSubmitting}
-              className="p-2 rounded-md hover:bg-white/5 transition text-slate-400 hover:text-slate-200 disabled:opacity-50"
+              className="p-2 rounded-md hover:bg-white/5 transition text-zinc-400 hover:text-zinc-200 disabled:opacity-50"
             >
               <X className="w-4 h-4" />
             </button>
@@ -740,7 +740,7 @@ export default function CommentForm({
           <button
             type="submit"
             disabled={!content.trim() || isSubmitting}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-sky-600 hover:bg-sky-700 disabled:bg-slate-600 disabled:cursor-not-allowed text-white text-sm rounded-lg transition"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-hover disabled:bg-zinc-600 disabled:cursor-not-allowed text-white text-sm rounded-lg transition"
           >
             <Send className="w-4 h-4" />
             {isSubmitting ? 'Posting...' : (isReply ? 'Reply' : 'Comment')}

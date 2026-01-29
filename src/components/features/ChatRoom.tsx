@@ -156,17 +156,17 @@ export default function ChatRoom({ gameId, sport, title = "Live Chat", className
 
     if (!user) {
         return (
-            <div className={`flex items-center justify-center h-64 bg-slate-800/50 rounded-lg ${className}`}>
+            <div className={`flex items-center justify-center h-64 bg-zinc-800/50 rounded-lg ${className}`}>
                 <div className="text-center">
-                    <MessageCircle className="w-12 h-12 text-slate-400 mx-auto mb-4" />
-                    <p className="text-slate-400">Please sign in to join the chat</p>
+                    <MessageCircle className="w-12 h-12 text-zinc-400 mx-auto mb-4" />
+                    <p className="text-zinc-400">Please sign in to join the chat</p>
                 </div>
             </div>
         );
     }
 
     return (
-        <div className={`flex flex-col h-full bg-slate-800/30 rounded-lg border border-white/10 ${className}`}>
+        <div className={`flex flex-col h-full bg-zinc-800/30 rounded-lg border border-white/10 ${className}`}>
             {/* Header */}
             <div className="flex items-center justify-between p-3 sm:p-4 border-b border-white/10">
                 <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
@@ -175,14 +175,14 @@ export default function ChatRoom({ gameId, sport, title = "Live Chat", className
                     </div>
                     <div className="min-w-0 flex-1">
                         <h3 className="text-base sm:text-lg font-semibold text-white truncate">{title}</h3>
-                        <p className="text-xs sm:text-sm text-slate-400 flex items-center gap-1">
+                        <p className="text-xs sm:text-sm text-zinc-400 flex items-center gap-1">
                             <Users className="w-3 h-3" />
                             {onlineUsers} online
                         </p>
                     </div>
                 </div>
                 {sport && (
-                    <div className="px-2 py-1 bg-sky-500/20 text-sky-400 rounded-full text-xs sm:text-sm font-medium flex-shrink-0">
+                    <div className="px-2 py-1 bg-primary/20 text-primary rounded-full text-xs sm:text-sm font-medium flex-shrink-0">
                         {sport}
                     </div>
                 )}
@@ -192,10 +192,10 @@ export default function ChatRoom({ gameId, sport, title = "Live Chat", className
             <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3 sm:space-y-4">
                 {isLoading ? (
                     <div className="flex items-center justify-center h-32">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-sky-500"></div>
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
                     </div>
                 ) : messages.length === 0 ? (
-                    <div className="text-center text-slate-400 py-8">
+                    <div className="text-center text-zinc-400 py-8">
                         <MessageCircle className="w-12 h-12 mx-auto mb-4 opacity-50" />
                         <p>No messages yet. Start the conversation!</p>
                     </div>
@@ -211,7 +211,7 @@ export default function ChatRoom({ gameId, sport, title = "Live Chat", className
                             <div key={message.id}>
                                 {showDate && (
                                     <div className="flex items-center justify-center my-4">
-                                        <div className="bg-slate-700/50 px-3 py-1 rounded-full text-xs text-slate-400">
+                                        <div className="bg-zinc-700/50 px-3 py-1 rounded-full text-xs text-zinc-400">
                                             {formatDate(message.createdAt)}
                                         </div>
                                     </div>
@@ -232,7 +232,7 @@ export default function ChatRoom({ gameId, sport, title = "Live Chat", className
 
                                     <div className={`flex-1 ${isCurrentUser ? 'text-right' : 'text-left'}`}>
                                         {showAvatar && (
-                                            <div className={`text-xs text-slate-400 mb-1 ${isCurrentUser ? 'text-right' : 'text-left'}`}>
+                                            <div className={`text-xs text-zinc-400 mb-1 ${isCurrentUser ? 'text-right' : 'text-left'}`}>
                                                 <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
                                                     <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
                                                         <span>{message.user.name}</span>
@@ -245,13 +245,13 @@ export default function ChatRoom({ gameId, sport, title = "Live Chat", className
                                         <div
                                             className={`inline-block max-w-[85%] sm:max-w-[70%] rounded-2xl px-3 py-2 sm:px-4 ${isCurrentUser
                                                 ? 'bg-gradient-to-r from-sky-500 to-blue-600 text-white'
-                                                : 'bg-white/10 text-slate-100'
+                                                : 'bg-white/10 text-zinc-100'
                                                 }`}
                                         >
                                             <p className="text-sm leading-relaxed">{message.text}</p>
                                         </div>
 
-                                        <div className={`text-xs text-slate-400 mt-1 flex items-center gap-1 ${isCurrentUser ? 'justify-end' : 'justify-start'}`}>
+                                        <div className={`text-xs text-zinc-400 mt-1 flex items-center gap-1 ${isCurrentUser ? 'justify-end' : 'justify-start'}`}>
                                             <Clock className="w-3 h-3" />
                                             {formatTime(message.createdAt)}
                                         </div>
@@ -273,7 +273,7 @@ export default function ChatRoom({ gameId, sport, title = "Live Chat", className
                         value={newMessage}
                         onChange={(e) => setNewMessage(e.target.value)}
                         placeholder="Type your message..."
-                        className="flex-1 bg-white/10 border border-white/20 rounded-2xl px-3 py-2 sm:px-4 sm:py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500/50 focus:border-sky-500/50 text-sm sm:text-base"
+                        className="flex-1 bg-white/10 border border-white/20 rounded-2xl px-3 py-2 sm:px-4 sm:py-3 text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 text-sm sm:text-base"
                         maxLength={500}
                     />
                     <button
@@ -284,7 +284,7 @@ export default function ChatRoom({ gameId, sport, title = "Live Chat", className
                         <Send className="w-4 h-4 sm:w-5 sm:h-5" />
                     </button>
                 </form>
-                <div className="text-xs text-slate-400 mt-2 text-center">
+                <div className="text-xs text-zinc-400 mt-2 text-center">
                     Press Enter to send • {newMessage.length}/500 characters
                 </div>
             </div>

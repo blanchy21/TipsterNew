@@ -128,7 +128,7 @@ export default function MobileMenu({
             />
 
             {/* Mobile Menu */}
-            <div className="fixed inset-y-0 left-0 w-80 max-w-[90vw] sm:max-w-[85vw] bg-slate-900/95 backdrop-blur-xl border-r border-white/10 z-50 md:hidden transform transition-transform duration-300 ease-in-out">
+            <div className="fixed inset-y-0 left-0 w-80 max-w-[90vw] sm:max-w-[85vw] bg-zinc-900/95 backdrop-blur-xl border-r border-white/10 z-50 md:hidden transform transition-transform duration-300 ease-in-out">
                 <div className="flex flex-col h-full">
                     {/* Header */}
                     <div className="flex items-center justify-between p-3 sm:p-4 border-b border-white/10">
@@ -137,7 +137,7 @@ export default function MobileMenu({
                             onClick={onClose}
                             className="p-2 rounded-lg hover:bg-white/5 transition-colors"
                         >
-                            <X className="w-5 h-5 text-slate-300" />
+                            <X className="w-5 h-5 text-zinc-300" />
                         </button>
                     </div>
 
@@ -177,7 +177,7 @@ export default function MobileMenu({
                     <div className="p-3 sm:p-4 border-t border-white/10 space-y-2">
                         <button
                             onClick={handleOpenPost}
-                            className="w-full inline-flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg bg-sky-500/20 text-sky-300 hover:bg-sky-500/30 hover:text-sky-200 transition ring-1 ring-inset ring-sky-500/30 hover:ring-sky-500/40"
+                            className="w-full inline-flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg bg-primary/20 text-primary hover:bg-primary/30 hover:text-primary transition ring-1 ring-inset ring-primary/30 hover:ring-primary/40"
                             title="Share a Tip"
                         >
                             <PlusCircle className="w-5 h-5" />

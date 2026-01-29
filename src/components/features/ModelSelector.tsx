@@ -44,7 +44,7 @@ export default function ModelSelector({ selectedModel, onModelChange, disabled =
               flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 flex-1
               ${isSelected
                                 ? `bg-gradient-to-r ${model.color} text-white shadow-lg`
-                                : 'text-slate-300 hover:text-white hover:bg-white/10'
+                                : 'text-zinc-300 hover:text-white hover:bg-white/10'
                             }
               ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
             `}

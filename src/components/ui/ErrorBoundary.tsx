@@ -104,8 +104,8 @@ class ErrorBoundary extends Component<Props, State> {
 
             // Default error UI
             return (
-                <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-4">
-                    <div className="max-w-md w-full bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-8 text-center">
+                <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 p-4">
+                    <div className="max-w-md w-full bg-zinc-800/50 backdrop-blur-sm rounded-2xl border border-zinc-700/50 p-8 text-center">
                         <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
                             <AlertTriangle className="w-8 h-8 text-red-400" />
                         </div>
@@ -114,16 +114,16 @@ class ErrorBoundary extends Component<Props, State> {
                             Oops! Something went wrong
                         </h1>
 
-                        <p className="text-slate-300 mb-6">
+                        <p className="text-zinc-300 mb-6">
                             We encountered an unexpected error. Don&apos;t worry, your data is safe.
                         </p>
 
                         {process.env.NODE_ENV === 'development' && this.state.error && (
                             <details className="mb-6 text-left">
-                                <summary className="text-slate-400 cursor-pointer hover:text-white transition-colors">
+                                <summary className="text-zinc-400 cursor-pointer hover:text-white transition-colors">
                                     Error Details (Development)
                                 </summary>
-                                <div className="mt-2 p-4 bg-slate-900/50 rounded-lg border border-slate-700/50">
+                                <div className="mt-2 p-4 bg-zinc-900/50 rounded-lg border border-zinc-700/50">
                                     <pre className="text-xs text-red-400 whitespace-pre-wrap overflow-auto max-h-32">
                                         {this.state.error.toString()}
                                         {this.state.errorInfo?.componentStack}
@@ -143,7 +143,7 @@ class ErrorBoundary extends Component<Props, State> {
 
                             <button
                                 onClick={this.handleGoHome}
-                                className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-medium transition-colors"
+                                className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-zinc-700 hover:bg-zinc-600 text-white rounded-lg font-medium transition-colors"
                             >
                                 <Home className="w-4 h-4" />
                                 Go Home

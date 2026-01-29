@@ -31,7 +31,7 @@ export default function NotificationToast({
       case 'like':
         return <Heart className="w-5 h-5 text-red-400" />;
       case 'comment':
-        return <MessageCircle className="w-5 h-5 text-blue-400" />;
+        return <MessageCircle className="w-5 h-5 text-primary" />;
       case 'follow':
         return <UserPlus className="w-5 h-5 text-green-400" />;
       case 'tip':
@@ -52,7 +52,7 @@ export default function NotificationToast({
 
   return (
     <div
-      className={`fixed top-4 right-4 z-50 max-w-sm w-full bg-[#0B0F14] border border-white/10 rounded-lg shadow-lg transform transition-all duration-300 ${isVisible
+      className={`fixed top-4 right-4 z-50 max-w-sm w-full bg-surface-1 border border-white/10 rounded-lg shadow-lg transform transition-all duration-300 ${isVisible
         ? 'translate-x-0 opacity-100 scale-100'
         : 'translate-x-full opacity-0 scale-95'
         }`}
@@ -64,21 +64,21 @@ export default function NotificationToast({
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center justify-between">
-              <h4 className="text-sm font-medium text-slate-100">
+              <h4 className="text-sm font-medium text-zinc-100">
                 {notification.title}
               </h4>
               <button
                 onClick={handleClose}
-                className="text-slate-400 hover:text-slate-200 transition-colors"
+                className="text-zinc-400 hover:text-zinc-200 transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
-            <p className="text-sm text-slate-300 mt-1">
+            <p className="text-sm text-zinc-300 mt-1">
               {notification.message}
             </p>
             {notification.user && (
-              <p className="text-xs text-slate-400 mt-1">
+              <p className="text-xs text-zinc-400 mt-1">
                 from {notification.user.name}
               </p>
             )}
@@ -87,9 +87,9 @@ export default function NotificationToast({
       </div>
 
       {/* Progress bar */}
-      <div className="h-1 bg-slate-700 rounded-b-lg overflow-hidden">
+      <div className="h-1 bg-zinc-700 rounded-b-lg overflow-hidden">
         <div
-          className="h-full bg-blue-500 transition-all duration-100 ease-linear"
+          className="h-full bg-primary transition-all duration-100 ease-linear"
           style={{
             width: '100%',
             animation: `shrink ${duration}ms linear forwards`

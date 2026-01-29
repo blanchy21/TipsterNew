@@ -73,11 +73,11 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
                     <div className="space-y-4">
                         <h3 className="text-lg font-semibold text-white mb-4">Recent Tips</h3>
                         <div className="text-center py-12">
-                            <div className="w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <div className="w-16 h-16 bg-zinc-800 rounded-full flex items-center justify-center mx-auto mb-4">
                                 <span className="text-2xl">📝</span>
                             </div>
-                            <p className="text-slate-400">No tips yet</p>
-                            <p className="text-slate-500 text-sm">Start sharing your predictions!</p>
+                            <p className="text-zinc-400">No tips yet</p>
+                            <p className="text-zinc-500 text-sm">Start sharing your predictions!</p>
                         </div>
                     </div>
                 );
@@ -87,16 +87,16 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
                         <h3 className="text-lg font-semibold text-white mb-4">Followers ({followers.length})</h3>
                         {followers.length === 0 ? (
                             <div className="text-center py-12">
-                                <div className="w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <div className="w-16 h-16 bg-zinc-800 rounded-full flex items-center justify-center mx-auto mb-4">
                                     <span className="text-2xl">👥</span>
                                 </div>
-                                <p className="text-slate-400">No followers yet</p>
-                                <p className="text-slate-500 text-sm">Share great tips to gain followers!</p>
+                                <p className="text-zinc-400">No followers yet</p>
+                                <p className="text-zinc-500 text-sm">Share great tips to gain followers!</p>
                             </div>
                         ) : (
                             <div className="grid gap-4">
                                 {followers.map((follower) => (
-                                    <div key={follower.id} className="flex items-center gap-3 p-4 bg-slate-800/50 rounded-lg">
+                                    <div key={follower.id} className="flex items-center gap-3 p-4 bg-zinc-800/50 rounded-lg">
                                         <Image
                                             src={normalizeImageUrl(follower.avatar)}
                                             alt={follower.name}
@@ -106,7 +106,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
                                         />
                                         <div className="flex-1">
                                             <h4 className="text-white font-medium">{follower.name}</h4>
-                                            <p className="text-slate-400 text-sm">{follower.handle}</p>
+                                            <p className="text-zinc-400 text-sm">{follower.handle}</p>
                                         </div>
                                         <button className="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-lg text-sm font-medium transition-colors">
                                             Follow
@@ -123,16 +123,16 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
                         <h3 className="text-lg font-semibold text-white mb-4">Following ({following.length})</h3>
                         {following.length === 0 ? (
                             <div className="text-center py-12">
-                                <div className="w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <div className="w-16 h-16 bg-zinc-800 rounded-full flex items-center justify-center mx-auto mb-4">
                                     <span className="text-2xl">👥</span>
                                 </div>
-                                <p className="text-slate-400">Not following anyone yet</p>
-                                <p className="text-slate-500 text-sm">Discover great tipsters to follow!</p>
+                                <p className="text-zinc-400">Not following anyone yet</p>
+                                <p className="text-zinc-500 text-sm">Discover great tipsters to follow!</p>
                             </div>
                         ) : (
                             <div className="grid gap-4">
                                 {following.map((user) => (
-                                    <div key={user.id} className="flex items-center gap-3 p-4 bg-slate-800/50 rounded-lg">
+                                    <div key={user.id} className="flex items-center gap-3 p-4 bg-zinc-800/50 rounded-lg">
                                         <Image
                                             src={normalizeImageUrl(user.avatar)}
                                             alt={user.name}
@@ -142,9 +142,9 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
                                         />
                                         <div className="flex-1">
                                             <h4 className="text-white font-medium">{user.name}</h4>
-                                            <p className="text-slate-400 text-sm">{user.handle}</p>
+                                            <p className="text-zinc-400 text-sm">{user.handle}</p>
                                         </div>
-                                        <button className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-sm font-medium transition-colors">
+                                        <button className="px-4 py-2 bg-zinc-700 hover:bg-zinc-600 text-white rounded-lg text-sm font-medium transition-colors">
                                             Following
                                         </button>
                                     </div>
@@ -166,7 +166,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
     };
 
     return (
-        <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-screen">
+        <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 min-h-screen">
             <div className="max-w-4xl mx-auto">
                 {/* Profile Header */}
                 <ProfileHeader

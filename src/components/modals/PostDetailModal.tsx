@@ -94,8 +94,8 @@ export default function PostDetailModal({
             place: {
                 icon: Trophy,
                 text: 'Place',
-                className: 'bg-blue-500/20 text-blue-300 ring-blue-500/30',
-                iconClassName: 'text-blue-300'
+                className: 'bg-primary/20 text-primary ring-primary/30',
+                iconClassName: 'text-primary'
             }
         };
 
@@ -118,23 +118,23 @@ export default function PostDetailModal({
                 className="fixed inset-0 bg-black/60 backdrop-blur-sm"
                 onClick={onClose}
             />
-            <div className="relative w-full max-w-4xl max-h-[90vh] bg-[#0B0F14] border border-white/10 rounded-2xl shadow-2xl overflow-hidden">
+            <div className="relative w-full max-w-4xl max-h-[90vh] bg-surface-1 border border-white/10 rounded-2xl shadow-2xl overflow-hidden">
                 {/* Header */}
                 <div className="flex items-center justify-between p-6 border-b border-white/10">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-sky-500/20 flex items-center justify-center">
-                            <MessageCircle className="w-5 h-5 text-sky-400" />
+                        <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+                            <MessageCircle className="w-5 h-5 text-primary" />
                         </div>
                         <div>
-                            <h2 className="text-xl font-semibold text-slate-100">Tip Details</h2>
-                            <p className="text-sm text-slate-400">View tip information and discussion</p>
+                            <h2 className="text-xl font-semibold text-zinc-100">Tip Details</h2>
+                            <p className="text-sm text-zinc-400">View tip information and discussion</p>
                         </div>
                     </div>
                     <button
                         onClick={onClose}
                         className="p-2 rounded-lg hover:bg-white/10 transition-colors"
                     >
-                        <X className="w-5 h-5 text-slate-400" />
+                        <X className="w-5 h-5 text-zinc-400" />
                     </button>
                 </div>
 
@@ -142,7 +142,7 @@ export default function PostDetailModal({
                 <div className="overflow-y-auto max-h-[calc(90vh-120px)]">
                     {loading ? (
                         <div className="flex items-center justify-center p-8">
-                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-sky-500"></div>
+                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
                         </div>
                     ) : post ? (
                         <div className="p-6">
@@ -162,19 +162,19 @@ export default function PostDetailModal({
                                                     <UserProfileLink
                                                         user={post.user}
                                                         onNavigateToProfile={onNavigateToProfile}
-                                                        className="text-slate-100 font-medium truncate hover:text-blue-400"
+                                                        className="text-zinc-100 font-medium truncate hover:text-primary"
                                                     >
                                                         {post.user.name}
                                                     </UserProfileLink>
                                                 ) : (
-                                                    <span className="text-slate-100 font-medium truncate">{post.user.name}</span>
+                                                    <span className="text-zinc-100 font-medium truncate">{post.user.name}</span>
                                                 )}
-                                                <span className="text-slate-500 text-sm truncate">{post.user.handle}</span>
-                                                <span className="text-slate-500 text-xs">•</span>
-                                                <span className="text-slate-500 text-xs">{timeAgo(post.createdAt)}</span>
+                                                <span className="text-zinc-500 text-sm truncate">{post.user.handle}</span>
+                                                <span className="text-zinc-500 text-xs">•</span>
+                                                <span className="text-zinc-500 text-xs">{timeAgo(post.createdAt)}</span>
                                             </div>
                                             <div className="flex items-center gap-2">
-                                                <span className="text-xs text-sky-300/90 bg-sky-500/10 ring-1 ring-sky-500/20 px-2 py-1 rounded-md">
+                                                <span className="text-xs text-primary/90 bg-primary/10 ring-1 ring-primary/20 px-2 py-1 rounded-md">
                                                     {post.sport}
                                                 </span>
                                                 <FollowButton targetUser={post.user} variant="minimal" />
@@ -182,11 +182,11 @@ export default function PostDetailModal({
                                         </div>
 
                                         <div className="mt-3 space-y-3">
-                                            <h3 className="text-slate-100 font-semibold text-lg leading-tight">
+                                            <h3 className="text-zinc-100 font-semibold text-lg leading-tight">
                                                 {post.title}
                                             </h3>
 
-                                            <p className="text-sm text-slate-300/90 leading-relaxed">
+                                            <p className="text-sm text-zinc-300/90 leading-relaxed">
                                                 {post.content}
                                             </p>
 
@@ -213,8 +213,8 @@ export default function PostDetailModal({
                                                             key={index}
                                                             className="inline-flex items-center gap-1 rounded-lg bg-white/5 ring-1 ring-white/10 px-2.5 py-1.5"
                                                         >
-                                                            <Hash className="w-3 h-3 text-slate-400" />
-                                                            <span className="text-slate-300 text-sm">{tag}</span>
+                                                            <Hash className="w-3 h-3 text-zinc-400" />
+                                                            <span className="text-zinc-300 text-sm">{tag}</span>
                                                         </span>
                                                     ))}
                                                 </div>
@@ -225,7 +225,7 @@ export default function PostDetailModal({
                                             <LikeButton post={post} onLikeChange={onLikeChange} />
                                             <button
                                                 onClick={toggleComments}
-                                                className="inline-flex items-center gap-2 text-slate-400 hover:text-slate-200 transition rounded-md px-2 py-1.5 hover:bg-white/5 ring-1 ring-transparent hover:ring-white/10"
+                                                className="inline-flex items-center gap-2 text-zinc-400 hover:text-zinc-200 transition rounded-md px-2 py-1.5 hover:bg-white/5 ring-1 ring-transparent hover:ring-white/10"
                                             >
                                                 <MessageCircle className="w-4 h-4" />
                                                 <span className="text-sm">{commentCount}</span>
@@ -235,11 +235,11 @@ export default function PostDetailModal({
                                                     <ChevronDown className="w-3 h-3" />
                                                 )}
                                             </button>
-                                            <div className="inline-flex items-center gap-2 text-slate-400">
+                                            <div className="inline-flex items-center gap-2 text-zinc-400">
                                                 <Eye className="w-4 h-4" />
                                                 <span className="text-sm">{post.views}</span>
                                             </div>
-                                            <div className="ml-auto inline-flex items-center gap-2 text-xs text-slate-500">
+                                            <div className="ml-auto inline-flex items-center gap-2 text-xs text-zinc-500">
                                                 <span>Community Discussion</span>
                                             </div>
                                         </div>
@@ -248,7 +248,7 @@ export default function PostDetailModal({
 
                                 {/* Comments Section */}
                                 {showComments && (
-                                    <div className="mt-4 border-t border-slate-700/50 pt-4">
+                                    <div className="mt-4 border-t border-zinc-700/50 pt-4">
                                         <CommentsList
                                             postId={post.id}
                                             onCommentCountChange={handleCommentCountChange}
@@ -261,10 +261,10 @@ export default function PostDetailModal({
                         <div className="flex items-center justify-center p-8">
                             <div className="text-center">
                                 <div className="mx-auto w-12 h-12 rounded-full bg-white/5 ring-1 ring-white/10 grid place-items-center mb-3">
-                                    <X className="w-5 h-5 text-slate-400" />
+                                    <X className="w-5 h-5 text-zinc-400" />
                                 </div>
-                                <p className="text-slate-300 font-medium">Post not found</p>
-                                <p className="text-slate-500 text-sm">The tip you&apos;re looking for doesn&apos;t exist or has been removed.</p>
+                                <p className="text-zinc-300 font-medium">Post not found</p>
+                                <p className="text-zinc-500 text-sm">The tip you&apos;re looking for doesn&apos;t exist or has been removed.</p>
                             </div>
                         </div>
                     )}

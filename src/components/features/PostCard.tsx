@@ -191,8 +191,8 @@ const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChan
       place: {
         icon: Trophy,
         text: 'Place',
-        className: 'bg-blue-500/20 text-blue-300 ring-blue-500/30',
-        iconClassName: 'text-blue-300'
+        className: 'bg-primary/20 text-primary ring-primary/30',
+        iconClassName: 'text-primary'
       }
     };
 
@@ -231,22 +231,22 @@ const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChan
                     <UserProfileLink
                       user={post.user}
                       onNavigateToProfile={onNavigateToProfile}
-                      className="text-slate-100 font-medium truncate hover:text-blue-400"
+                      className="text-zinc-100 font-medium truncate hover:text-primary"
                     >
                       {post.user.name}
                     </UserProfileLink>
                   ) : (
-                    <span className="text-slate-100 font-medium truncate">{post.user.name}</span>
+                    <span className="text-zinc-100 font-medium truncate">{post.user.name}</span>
                   )}
-                  <span className="text-slate-500 text-sm truncate">{post.user.handle}</span>
+                  <span className="text-zinc-500 text-sm truncate">{post.user.handle}</span>
                 </div>
                 <div className="flex items-center gap-1 sm:gap-2">
-                  <span className="text-slate-500 text-xs">•</span>
-                  <span className="text-slate-500 text-xs">{timeAgo(post.createdAt)}</span>
+                  <span className="text-zinc-500 text-xs">•</span>
+                  <span className="text-zinc-500 text-xs">{timeAgo(post.createdAt)}</span>
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-xs text-sky-300/90 bg-sky-500/10 ring-1 ring-sky-500/20 px-2 py-1 rounded-md">
+                <span className="text-xs text-primary/90 bg-primary/10 ring-1 ring-primary/20 px-2 py-1 rounded-md">
                   {post.sport}
                 </span>
                 <FollowButton targetUser={post.user} variant="minimal" />
@@ -256,16 +256,16 @@ const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChan
                       onClick={() => setShowMenu(!showMenu)}
                       className="p-2 rounded-md hover:bg-white/5 transition ring-1 ring-transparent hover:ring-white/10"
                     >
-                      <MoreHorizontal className="w-4 h-4 text-slate-400" />
+                      <MoreHorizontal className="w-4 h-4 text-zinc-400" />
                     </button>
 
                     {showMenu && (
-                      <div className="absolute right-0 top-full mt-1 w-48 bg-slate-800 border border-slate-700 rounded-lg shadow-lg z-50">
+                      <div className="absolute right-0 top-full mt-1 w-48 bg-zinc-800 border border-zinc-700 rounded-lg shadow-lg z-50">
                         <div className="py-1">
                           {canEdit && (
                             <button
                               onClick={handleEditPost}
-                              className="w-full px-4 py-2 text-left text-sm text-slate-200 hover:bg-slate-700 flex items-center gap-2"
+                              className="w-full px-4 py-2 text-left text-sm text-zinc-200 hover:bg-zinc-700 flex items-center gap-2"
                             >
                               <Edit className="w-4 h-4" />
                               Edit Tip
@@ -275,7 +275,7 @@ const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChan
                             <button
                               onClick={handleDeletePost}
                               disabled={isDeleting}
-                              className="w-full px-4 py-2 text-left text-sm text-red-400 hover:bg-slate-700 flex items-center gap-2 disabled:opacity-50"
+                              className="w-full px-4 py-2 text-left text-sm text-red-400 hover:bg-zinc-700 flex items-center gap-2 disabled:opacity-50"
                             >
                               <Trash2 className="w-4 h-4" />
                               {isDeleting ? 'Deleting...' : 'Delete Tip'}
@@ -290,12 +290,12 @@ const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChan
             </div>
 
             <div className="mt-3 space-y-3">
-              <h3 className="text-slate-100 font-semibold text-lg leading-tight">
+              <h3 className="text-zinc-100 font-semibold text-lg leading-tight">
                 {post.title}
               </h3>
 
               <div
-                className="text-sm text-slate-300/90 leading-relaxed"
+                className="text-sm text-zinc-300/90 leading-relaxed"
                 dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }}
               />
 
@@ -322,8 +322,8 @@ const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChan
                       key={index}
                       className="inline-flex items-center gap-1 rounded-lg bg-white/5 ring-1 ring-white/10 px-2.5 py-1.5"
                     >
-                      <Hash className="w-3 h-3 text-slate-400" />
-                      <span className="text-slate-300 text-sm">{tag}</span>
+                      <Hash className="w-3 h-3 text-zinc-400" />
+                      <span className="text-zinc-300 text-sm">{tag}</span>
                     </span>
                   ))}
                 </div>
@@ -334,7 +334,7 @@ const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChan
               <LikeButton post={post} onLikeChange={onLikeChange} />
               <button
                 onClick={toggleComments}
-                className="inline-flex items-center gap-2 text-slate-400 hover:text-slate-200 transition rounded-md px-2 py-1.5 hover:bg-white/5 ring-1 ring-transparent hover:ring-white/10 min-w-[3rem]"
+                className="inline-flex items-center gap-2 text-zinc-400 hover:text-zinc-200 transition rounded-md px-2 py-1.5 hover:bg-white/5 ring-1 ring-transparent hover:ring-white/10 min-w-[3rem]"
               >
                 <MessageCircle className="w-4 h-4" />
                 <span className="text-sm tabular-nums min-w-[1.5rem] text-right">{commentCount}</span>
@@ -344,11 +344,11 @@ const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChan
                   <ChevronDown className="w-3 h-3" />
                 )}
               </button>
-              <div className="inline-flex items-center gap-2 text-slate-400 min-w-[3rem]">
+              <div className="inline-flex items-center gap-2 text-zinc-400 min-w-[3rem]">
                 <Eye className="w-4 h-4" />
                 <span className="text-sm tabular-nums min-w-[1.5rem] text-right">{post.views || 0}</span>
               </div>
-              <div className="ml-auto inline-flex items-center gap-2 text-xs text-slate-500">
+              <div className="ml-auto inline-flex items-center gap-2 text-xs text-zinc-500">
                 <span>Community Discussion</span>
               </div>
             </div>
@@ -357,7 +357,7 @@ const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChan
 
         {/* Comments Section */}
         {showComments && (
-          <div className="mt-4 border-t border-slate-700/50 pt-4">
+          <div className="mt-4 border-t border-zinc-700/50 pt-4">
             <CommentsList
               postId={post.id}
               onCommentCountChange={handleCommentCountChange}
@@ -368,13 +368,13 @@ const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChan
         {/* Edit Modal */}
         {showEditModal && (
           <div className="fixed inset-0 bg-black/50 flex items-start justify-center z-50 p-4 overflow-y-auto">
-            <div className="bg-slate-800 rounded-lg max-w-2xl w-full my-8 max-h-[calc(100vh-4rem)] overflow-y-auto">
+            <div className="bg-zinc-800 rounded-lg max-w-2xl w-full my-8 max-h-[calc(100vh-4rem)] overflow-y-auto">
               <div className="p-6">
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-xl font-semibold text-white">Edit Tip</h3>
                   <button
                     onClick={handleEditCancel}
-                    className="p-2 text-slate-400 hover:text-white transition"
+                    className="p-2 text-zinc-400 hover:text-white transition"
                   >
                     <X className="w-5 h-5" />
                   </button>
@@ -383,14 +383,14 @@ const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChan
                 <form onSubmit={handleEditSubmit} className="space-y-4">
                   {/* Title */}
                   <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">
+                    <label className="block text-sm font-medium text-zinc-300 mb-2">
                       Tip Title
                     </label>
                     <input
                       type="text"
                       value={editForm.title}
                       onChange={(e) => setEditForm(prev => ({ ...prev, title: e.target.value }))}
-                      className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary"
                       placeholder="Enter tip title..."
                       required
                     />
@@ -398,13 +398,13 @@ const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChan
 
                   {/* Content */}
                   <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">
+                    <label className="block text-sm font-medium text-zinc-300 mb-2">
                       Analysis & Reasoning
                     </label>
                     <textarea
                       value={editForm.content}
                       onChange={(e) => setEditForm(prev => ({ ...prev, content: e.target.value }))}
-                      className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 h-32 resize-none"
+                      className="w-full px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary h-32 resize-none"
                       placeholder="Share your analysis and reasoning..."
                       required
                     />
@@ -413,13 +413,13 @@ const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChan
                   {/* Sport and Odds */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-2">
+                      <label className="block text-sm font-medium text-zinc-300 mb-2">
                         Sport
                       </label>
                       <select
                         value={editForm.sport}
                         onChange={(e) => setEditForm(prev => ({ ...prev, sport: e.target.value }))}
-                        className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary"
                         required
                       >
                         <option value="American Football">American Football</option>
@@ -451,14 +451,14 @@ const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChan
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-2">
+                      <label className="block text-sm font-medium text-zinc-300 mb-2">
                         Odds (Optional)
                       </label>
                       <input
                         type="text"
                         value={editForm.odds}
                         onChange={(e) => setEditForm(prev => ({ ...prev, odds: e.target.value }))}
-                        className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary"
                         placeholder="e.g., 2.5, 3/1, +150"
                       />
                     </div>
@@ -466,14 +466,14 @@ const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChan
 
                   {/* Tags */}
                   <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">
+                    <label className="block text-sm font-medium text-zinc-300 mb-2">
                       Tags (comma-separated)
                     </label>
                     <input
                       type="text"
                       value={editForm.tags}
                       onChange={(e) => setEditForm(prev => ({ ...prev, tags: e.target.value }))}
-                      className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary"
                       placeholder="e.g., prediction, analysis, hot-tip"
                     />
                   </div>
@@ -484,14 +484,14 @@ const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChan
                       type="button"
                       onClick={handleEditCancel}
                       disabled={isUpdating}
-                      className="px-4 py-2 text-slate-300 hover:text-white transition disabled:opacity-50"
+                      className="px-4 py-2 text-zinc-300 hover:text-white transition disabled:opacity-50"
                     >
                       Cancel
                     </button>
                     <button
                       type="submit"
                       disabled={isUpdating || !editForm.title.trim() || !editForm.content.trim()}
-                      className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center gap-2"
+                      className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center gap-2"
                     >
                       {isUpdating ? (
                         <>

@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export default function CookiesPage() {
     return (
-        <div className="min-h-screen bg-[#0A0A14] text-white">
+        <div className="min-h-screen bg-surface-0 text-white">
             {/* Background Effects */}
             <div className="fixed inset-0 -z-20">
                 <div className="absolute inset-0 bg-gradient-to-br from-[#0A0A14] via-[#1a0d2e] to-[#0A0A14]"></div>
@@ -90,7 +90,7 @@ export default function CookiesPage() {
                                 </div>
 
                                 <div className="bg-white/5 border border-white/10 rounded-lg p-6">
-                                    <h3 className="text-xl font-semibold mb-3 text-blue-400">Analytics Cookies</h3>
+                                    <h3 className="text-xl font-semibold mb-3 text-primary">Analytics Cookies</h3>
                                     <p className="text-white/70 leading-relaxed mb-3">
                                         These cookies help us understand how visitors interact with our website by collecting and reporting information anonymously.
                                     </p>

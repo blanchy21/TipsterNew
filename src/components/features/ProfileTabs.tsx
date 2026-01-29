@@ -42,7 +42,7 @@ const ProfileTabs: React.FC<ProfileTabsProps> = ({ activeTab, onTabChange, stats
     ];
 
     return (
-        <div className="border-b border-slate-700/50 mb-6">
+        <div className="border-b border-zinc-700/50 mb-6">
             <nav className="flex space-x-8">
                 {tabs.map((tab) => {
                     const Icon = tab.icon;
@@ -54,7 +54,7 @@ const ProfileTabs: React.FC<ProfileTabsProps> = ({ activeTab, onTabChange, stats
                             onClick={() => onTabChange(tab.id)}
                             className={`flex items-center gap-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors ${isActive
                                 ? 'border-amber-500 text-amber-400'
-                                : 'border-transparent text-slate-400 hover:text-slate-300 hover:border-slate-600'
+                                : 'border-transparent text-zinc-400 hover:text-zinc-300 hover:border-zinc-600'
                                 }`}
                         >
                             <Icon className="w-4 h-4" />
@@ -62,7 +62,7 @@ const ProfileTabs: React.FC<ProfileTabsProps> = ({ activeTab, onTabChange, stats
                             {tab.count !== null && (
                                 <span className={`px-2 py-1 rounded-full text-xs ${isActive
                                     ? 'bg-amber-500/20 text-amber-400'
-                                    : 'bg-slate-700 text-slate-400'
+                                    : 'bg-zinc-700 text-zinc-400'
                                     }`}>
                                     {tab.count}
                                 </span>

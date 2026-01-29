@@ -36,7 +36,7 @@ export default function AdminAccessModal({ isOpen, onClose, onSuccess }: AdminAc
 
     return (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div className="bg-slate-800 rounded-xl border border-white/10 w-full max-w-md overflow-hidden">
+            <div className="bg-zinc-800 rounded-xl border border-white/10 w-full max-w-md overflow-hidden">
                 <div className="flex items-center justify-between p-6 border-b border-white/10">
                     <div className="flex items-center gap-3">
                         <div className="p-2 rounded-lg bg-red-500/20">
@@ -44,33 +44,33 @@ export default function AdminAccessModal({ isOpen, onClose, onSuccess }: AdminAc
                         </div>
                         <div>
                             <h2 className="text-xl font-semibold text-white">Access Denied</h2>
-                            <p className="text-sm text-slate-400">Admin area restricted</p>
+                            <p className="text-sm text-zinc-400">Admin area restricted</p>
                         </div>
                     </div>
                     <button
                         onClick={onClose}
                         className="p-2 rounded-lg hover:bg-white/10 transition-colors"
                     >
-                        <X className="w-5 h-5 text-slate-400" />
+                        <X className="w-5 h-5 text-zinc-400" />
                     </button>
                 </div>
 
                 <div className="p-6">
-                    <p className="text-slate-300 mb-4">
+                    <p className="text-zinc-300 mb-4">
                         {user
                             ? 'Your account does not have admin privileges. Only authorized admin accounts can access this area.'
                             : 'You must be signed in with an authorized admin account to access this area.'}
                     </p>
                     <button
                         onClick={onClose}
-                        className="w-full px-4 py-3 rounded-lg bg-white/5 text-slate-300 hover:bg-white/10 transition-colors"
+                        className="w-full px-4 py-3 rounded-lg bg-white/5 text-zinc-300 hover:bg-white/10 transition-colors"
                     >
                         Go Back
                     </button>
                 </div>
 
-                <div className="px-6 py-4 bg-slate-900/50 border-t border-white/10">
-                    <p className="text-xs text-slate-500 text-center">
+                <div className="px-6 py-4 bg-zinc-900/50 border-t border-white/10">
+                    <p className="text-xs text-zinc-500 text-center">
                         This area is restricted to authorized administrators only.
                     </p>
                 </div>

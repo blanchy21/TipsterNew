@@ -74,7 +74,7 @@ export default function FollowButton({
   if (isChecking) {
     return (
       <div className={`inline-flex items-center justify-center ${className}`}>
-        <Loader2 className="w-4 h-4 animate-spin text-slate-400" />
+        <Loader2 className="w-4 h-4 animate-spin text-zinc-400" />
       </div>
     );
   }
@@ -111,21 +111,21 @@ export default function FollowButton({
 
     if (variant === 'compact') {
       return `${baseClasses} px-3 py-1.5 text-sm rounded-lg ${isFollowing
-        ? 'bg-slate-600/50 text-slate-300 hover:bg-slate-600/70 hover:text-slate-200 border border-slate-500/30'
-        : 'bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 hover:text-blue-300 border border-blue-500/30'
+        ? 'bg-zinc-600/50 text-zinc-300 hover:bg-zinc-600/70 hover:text-zinc-200 border border-zinc-500/30'
+        : 'bg-primary/20 text-primary hover:bg-primary/30 hover:text-primary border border-primary/30'
         }`;
     }
 
     if (variant === 'minimal') {
       return `${baseClasses} p-2 rounded-lg ${isFollowing
-        ? 'text-slate-400 hover:text-slate-200 hover:bg-slate-600/30'
-        : 'text-blue-400 hover:text-blue-300 hover:bg-blue-500/20'
+        ? 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-600/30'
+        : 'text-primary hover:text-primary hover:bg-primary/20'
         }`;
     }
 
     // Default variant
     return `${baseClasses} px-4 py-2 rounded-xl ${isFollowing
-      ? 'bg-slate-600/50 text-slate-300 hover:bg-slate-600/70 hover:text-slate-200 border border-slate-500/30 hover:scale-105'
+      ? 'bg-zinc-600/50 text-zinc-300 hover:bg-zinc-600/70 hover:text-zinc-200 border border-zinc-500/30 hover:scale-105'
       : 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white hover:from-blue-600 hover:to-indigo-600 hover:scale-105 shadow-lg hover:shadow-blue-500/25'
       }`;
   };

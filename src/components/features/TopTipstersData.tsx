@@ -119,8 +119,8 @@ const TopTipstersData: React.FC<TopTipstersDataProps> = ({
         <div className="space-y-4">
             {tipsters.length === 0 ? (
                 <div className="text-center py-12">
-                    <div className="text-slate-400 text-lg mb-2">No tipsters found</div>
-                    <div className="text-slate-500 text-sm">Be the first to share a tip and appear on the leaderboard!</div>
+                    <div className="text-zinc-400 text-lg mb-2">No tipsters found</div>
+                    <div className="text-zinc-500 text-sm">Be the first to share a tip and appear on the leaderboard!</div>
                 </div>
             ) : (
                 tipsters.map((tipster, index) => (
@@ -149,7 +149,7 @@ const TopTipstersData: React.FC<TopTipstersDataProps> = ({
                                     className="rounded-full border-2 border-white/20 group-hover:border-white/40 transition-all duration-300"
                                 />
                                 {tipster.isVerified && (
-                                    <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-emerald-500 rounded-full border-2 border-slate-900 flex items-center justify-center">
+                                    <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-emerald-500 rounded-full border-2 border-zinc-900 flex items-center justify-center">
                                         <Check className="w-3 h-3 text-white" style={{ strokeWidth: 3 }} />
                                     </div>
                                 )}

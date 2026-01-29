@@ -193,9 +193,9 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate, userId }) => {
 
   if (!profileUser) {
     return (
-      <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-screen flex items-center justify-center">
+      <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
           <p className="text-neutral-400">Loading profile...</p>
         </div>
       </div>
@@ -274,7 +274,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate, userId }) => {
   };
 
   return (
-    <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+    <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900">
       <div className="max-w-7xl mx-auto px-4 lg:px-8 py-12 space-y-16 opacity-0 translate-y-8 blur-sm" style={{ animation: 'fadeInSlideUp 1.2s ease-out 0.3s forwards' }}>
         {/* GRID */}
         <section className="grid lg:grid-cols-3 gap-8">
@@ -342,12 +342,12 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate, userId }) => {
                 )}
                 <div className="absolute -top-6 right-8 flex space-x-3 opacity-0 translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500 delay-200">
                   {profileUser.socialMedia?.facebook && (
-                    <a href={`https://facebook.com/${profileUser.socialMedia.facebook}`} target="_blank" rel="noopener noreferrer" aria-label="facebook" className="text-neutral-300 hover:text-blue-400 transition-all duration-300 p-2 rounded-xl hover:bg-blue-500/10 border border-transparent hover:border-blue-500/20 hover:scale-110 backdrop-blur-sm">
+                    <a href={`https://facebook.com/${profileUser.socialMedia.facebook}`} target="_blank" rel="noopener noreferrer" aria-label="facebook" className="text-neutral-300 hover:text-primary transition-all duration-300 p-2 rounded-xl hover:bg-primary/10 border border-transparent hover:border-primary/20 hover:scale-110 backdrop-blur-sm">
                       <Facebook className="w-4 h-4" />
                     </a>
                   )}
                   {profileUser.socialMedia?.twitter && (
-                    <a href={`https://twitter.com/${profileUser.socialMedia.twitter}`} target="_blank" rel="noopener noreferrer" aria-label="twitter" className="text-neutral-300 hover:text-sky-400 transition-all duration-300 p-2 rounded-xl hover:bg-sky-500/10 border border-transparent hover:border-sky-500/20 hover:scale-110 backdrop-blur-sm">
+                    <a href={`https://twitter.com/${profileUser.socialMedia.twitter}`} target="_blank" rel="noopener noreferrer" aria-label="twitter" className="text-neutral-300 hover:text-primary transition-all duration-300 p-2 rounded-xl hover:bg-primary/10 border border-transparent hover:border-primary/20 hover:scale-110 backdrop-blur-sm">
                       <Twitter className="w-4 h-4" />
                     </a>
                   )}
@@ -359,7 +359,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate, userId }) => {
                   {currentUser?.uid === profileUser.id && (
                     <button
                       onClick={() => setIsEditModalOpen(true)}
-                      className="text-neutral-300 hover:text-blue-400 transition-all duration-300 p-2 rounded-xl hover:bg-blue-500/10 border border-transparent hover:border-blue-500/20 hover:scale-110 backdrop-blur-sm"
+                      className="text-neutral-300 hover:text-primary transition-all duration-300 p-2 rounded-xl hover:bg-primary/10 border border-transparent hover:border-primary/20 hover:scale-110 backdrop-blur-sm"
                       aria-label="edit profile"
                     >
                       <Edit3 className="w-4 h-4" />
@@ -547,20 +547,20 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate, userId }) => {
                   <div className="text-sm text-emerald-300">Risk Level Indicator</div>
                 </div>
 
-                <div className="p-6 rounded-2xl bg-gradient-to-br from-blue-500/10 to-blue-600/10 border border-blue-500/20 hover:scale-105 transition-all duration-300 backdrop-blur-md">
+                <div className="p-6 rounded-2xl bg-gradient-to-br from-blue-500/10 to-blue-600/10 border border-primary/20 hover:scale-105 transition-all duration-300 backdrop-blur-md">
                   <div className="flex items-start gap-1 mb-3">
-                    <div className="p-2 bg-blue-500/20 rounded-xl flex-shrink-0">
-                      <Award className="w-5 h-5 text-blue-400" />
+                    <div className="p-2 bg-primary/20 rounded-xl flex-shrink-0">
+                      <Award className="w-5 h-5 text-primary" />
                     </div>
                     <div className="flex flex-col flex-1">
-                      <span className="font-semibold text-blue-400">Winning</span>
-                      <span className="font-semibold text-blue-400">Streak</span>
+                      <span className="font-semibold text-primary">Winning</span>
+                      <span className="font-semibold text-primary">Streak</span>
                     </div>
                   </div>
                   <div className="text-3xl font-bold text-white mb-1">
                     {statsLoading ? '...' : userStats.winningStreak}
                   </div>
-                  <div className="text-sm text-blue-300">Consecutive Wins</div>
+                  <div className="text-sm text-primary">Consecutive Wins</div>
                 </div>
               </div>
 
@@ -603,7 +603,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate, userId }) => {
                       <div className="w-16 h-16 group-hover:border-4 group-hover:border-emerald-400/50 group-hover:scale-110 transition-all duration-300 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 border-white/20 border-2 rounded-full flex items-center justify-center">
                         <Trophy className="w-6 h-6 text-emerald-400" />
                       </div>
-                      <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 rounded-full border-2 border-slate-900 flex items-center justify-center">
+                      <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 rounded-full border-2 border-zinc-900 flex items-center justify-center">
                         <Check className="w-3 h-3 text-white" style={{ strokeWidth: 3 }} />
                       </div>
                     </div>
@@ -654,13 +654,13 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate, userId }) => {
                 {currentUser?.uid === profileUser.id && (
                   <>
                     <div className="flex items-center gap-4 p-4 rounded-2xl hover:bg-white/5 transition-all duration-300 group opacity-0 translate-x-8 blur-sm hover:scale-105 backdrop-blur-md" style={{ animation: 'fadeInSlideLeft 0.6s ease-out 3.7s forwards' }}>
-                      <div className="p-2 rounded-xl bg-blue-500/20 text-blue-400 group-hover:scale-110 transition-transform duration-300 backdrop-blur-sm">
+                      <div className="p-2 rounded-xl bg-primary/20 text-primary group-hover:scale-110 transition-transform duration-300 backdrop-blur-sm">
                         <Settings className="w-4 h-4" />
                       </div>
                       <div>
                         <button
                           onClick={() => setIsEditModalOpen(true)}
-                          className="font-medium text-white hover:text-blue-400 transition-colors"
+                          className="font-medium text-white hover:text-primary transition-colors"
                         >
                           Edit Profile
                         </button>

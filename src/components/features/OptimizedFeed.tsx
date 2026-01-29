@@ -92,8 +92,8 @@ const OptimizedFeed: React.FC<OptimizedFeedProps> = ({
     if (posts.length === 0) {
         return (
             <div className="flex flex-col items-center justify-center py-12">
-                <p className="text-slate-400 mb-2">No posts found</p>
-                <p className="text-slate-500 text-sm">Try adjusting your filters or check back later</p>
+                <p className="text-zinc-400 mb-2">No posts found</p>
+                <p className="text-zinc-500 text-sm">Try adjusting your filters or check back later</p>
             </div>
         );
     }
@@ -116,14 +116,14 @@ const OptimizedFeed: React.FC<OptimizedFeedProps> = ({
             {hasNextPage && (
                 <div ref={loadMoreRef} className="flex justify-center py-8">
                     {isFetchingNextPage ? (
-                        <div className="flex items-center gap-2 text-slate-400">
+                        <div className="flex items-center gap-2 text-zinc-400">
                             <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-amber-500"></div>
                             Loading more posts...
                         </div>
                     ) : (
                         <button
                             onClick={() => fetchNextPage()}
-                            className="px-6 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
+                            className="px-6 py-2 bg-zinc-700 hover:bg-zinc-600 text-white rounded-lg transition-colors"
                         >
                             Load More
                         </button>
@@ -134,7 +134,7 @@ const OptimizedFeed: React.FC<OptimizedFeedProps> = ({
             {/* End of feed indicator */}
             {!hasNextPage && posts.length > 0 && (
                 <div className="text-center py-8">
-                    <p className="text-slate-500">You&apos;ve reached the end of the feed</p>
+                    <p className="text-zinc-500">You&apos;ve reached the end of the feed</p>
                 </div>
             )}
         </div>

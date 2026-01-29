@@ -35,9 +35,9 @@ const ProfileStats: React.FC<ProfileStatsProps> = ({ stats, loading }) => {
         return (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                 {[...Array(8)].map((_, i) => (
-                    <div key={i} className="bg-slate-800/50 rounded-lg p-4 animate-pulse">
-                        <div className="h-4 bg-slate-700 rounded w-3/4 mb-2"></div>
-                        <div className="h-6 bg-slate-700 rounded w-1/2"></div>
+                    <div key={i} className="bg-zinc-800/50 rounded-lg p-4 animate-pulse">
+                        <div className="h-4 bg-zinc-700 rounded w-3/4 mb-2"></div>
+                        <div className="h-6 bg-zinc-700 rounded w-1/2"></div>
                     </div>
                 ))}
             </div>
@@ -49,9 +49,9 @@ const ProfileStats: React.FC<ProfileStatsProps> = ({ stats, loading }) => {
             label: 'Total Tips',
             value: stats.totalTips,
             icon: Target,
-            color: 'text-blue-400',
-            bgColor: 'bg-blue-500/10',
-            borderColor: 'border-blue-500/20'
+            color: 'text-primary',
+            bgColor: 'bg-primary/10',
+            borderColor: 'border-primary/20'
         },
         {
             label: 'Win Rate',

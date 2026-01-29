@@ -129,9 +129,9 @@ const TopTipsters: React.FC<TopTipstersProps> = ({ onNavigateToProfile }) => {
 
     if (loading) {
         return (
-            <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-screen flex items-center justify-center">
+            <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 min-h-screen flex items-center justify-center">
                 <div className="text-center">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
                     <p className="text-neutral-400">Loading leaderboard...</p>
                 </div>
             </div>
@@ -139,7 +139,7 @@ const TopTipsters: React.FC<TopTipstersProps> = ({ onNavigateToProfile }) => {
     }
 
     return (
-        <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-full">
+        <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 min-h-full">
             <div className="max-w-7xl mx-auto px-4 lg:px-8 py-12">
                 {/* Header */}
                 <div className="text-center mb-12">
@@ -153,7 +153,7 @@ const TopTipsters: React.FC<TopTipstersProps> = ({ onNavigateToProfile }) => {
                             disabled={loading}
                             className="p-2 bg-white/10 hover:bg-white/20 rounded-xl transition-all duration-300 disabled:opacity-50"
                         >
-                            <RefreshCw className={`w-5 h-5 text-slate-300 ${loading ? 'animate-spin' : ''}`} />
+                            <RefreshCw className={`w-5 h-5 text-zinc-300 ${loading ? 'animate-spin' : ''}`} />
                         </button>
                     </div>
                     <p className="text-xl text-neutral-300 max-w-2xl mx-auto mb-6">
@@ -195,7 +195,7 @@ const TopTipsters: React.FC<TopTipstersProps> = ({ onNavigateToProfile }) => {
                         <button
                             onClick={() => sortTipsters('winRate')}
                             className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 ${sortBy === 'winRate'
-                                ? 'bg-blue-500 text-white shadow-lg'
+                                ? 'bg-primary text-white shadow-lg'
                                 : 'bg-white/10 text-neutral-300 hover:bg-white/20'
                                 }`}
                         >
@@ -204,7 +204,7 @@ const TopTipsters: React.FC<TopTipstersProps> = ({ onNavigateToProfile }) => {
                         <button
                             onClick={() => sortTipsters('totalTips')}
                             className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 ${sortBy === 'totalTips'
-                                ? 'bg-blue-500 text-white shadow-lg'
+                                ? 'bg-primary text-white shadow-lg'
                                 : 'bg-white/10 text-neutral-300 hover:bg-white/20'
                                 }`}
                         >
@@ -213,7 +213,7 @@ const TopTipsters: React.FC<TopTipstersProps> = ({ onNavigateToProfile }) => {
                         <button
                             onClick={() => sortTipsters('totalWins')}
                             className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 ${sortBy === 'totalWins'
-                                ? 'bg-blue-500 text-white shadow-lg'
+                                ? 'bg-primary text-white shadow-lg'
                                 : 'bg-white/10 text-neutral-300 hover:bg-white/20'
                                 }`}
                         >
@@ -222,7 +222,7 @@ const TopTipsters: React.FC<TopTipstersProps> = ({ onNavigateToProfile }) => {
                         <button
                             onClick={() => sortTipsters('averageOdds')}
                             className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 ${sortBy === 'averageOdds'
-                                ? 'bg-blue-500 text-white shadow-lg'
+                                ? 'bg-primary text-white shadow-lg'
                                 : 'bg-white/10 text-neutral-300 hover:bg-white/20'
                                 }`}
                         >
@@ -253,8 +253,8 @@ const TopTipsters: React.FC<TopTipstersProps> = ({ onNavigateToProfile }) => {
                 <div className="space-y-4">
                     {tipsters.length === 0 ? (
                         <div className="text-center py-12">
-                            <div className="text-slate-400 text-lg mb-2">No tipsters found</div>
-                            <div className="text-slate-500 text-sm">Be the first to share a tip and appear on the leaderboard!</div>
+                            <div className="text-zinc-400 text-lg mb-2">No tipsters found</div>
+                            <div className="text-zinc-500 text-sm">Be the first to share a tip and appear on the leaderboard!</div>
                         </div>
                     ) : (
                         tipsters.map((tipster, index) => (
@@ -280,7 +280,7 @@ const TopTipsters: React.FC<TopTipstersProps> = ({ onNavigateToProfile }) => {
                                             className="rounded-full border-2 border-white/20 group-hover:border-white/40 transition-all duration-300"
                                         />
                                         {tipster.isVerified && (
-                                            <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-emerald-500 rounded-full border-2 border-slate-900 flex items-center justify-center">
+                                            <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-emerald-500 rounded-full border-2 border-zinc-900 flex items-center justify-center">
                                                 <Check className="w-3 h-3 text-white" style={{ strokeWidth: 3 }} />
                                             </div>
                                         )}

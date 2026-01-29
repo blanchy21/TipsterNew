@@ -74,20 +74,20 @@ export default function GifPicker({ onSelect }: GifPickerProps) {
 
   return (
     <div
-      className="absolute z-20 mt-1 bg-slate-800 border border-white/20 rounded-lg shadow-xl p-4 max-w-md max-h-80 overflow-y-auto"
+      className="absolute z-20 mt-1 bg-zinc-800 border border-white/20 rounded-lg shadow-xl p-4 max-w-md max-h-80 overflow-y-auto"
       onClick={(e) => e.stopPropagation()}
       data-gif-picker
     >
       <div className="space-y-3">
         <div>
-          <h4 className="text-sm font-medium text-slate-200 mb-2">Search GIFs</h4>
+          <h4 className="text-sm font-medium text-zinc-200 mb-2">Search GIFs</h4>
           <div className="flex gap-2">
             <input
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search for GIFs..."
-              className="flex-1 px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/50 placeholder-slate-400"
+              className="flex-1 px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-zinc-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 placeholder-zinc-400"
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
                   searchGifs(searchTerm);
@@ -98,7 +98,7 @@ export default function GifPicker({ onSelect }: GifPickerProps) {
               type="button"
               onClick={() => searchGifs(searchTerm)}
               disabled={isLoading || !searchTerm.trim()}
-              className="px-4 py-2 bg-sky-600 hover:bg-sky-700 disabled:bg-slate-600 disabled:cursor-not-allowed text-white text-sm rounded-lg transition"
+              className="px-4 py-2 bg-primary hover:bg-primary-hover disabled:bg-zinc-600 disabled:cursor-not-allowed text-white text-sm rounded-lg transition"
             >
               {isLoading ? '...' : 'Search'}
             </button>
@@ -107,14 +107,14 @@ export default function GifPicker({ onSelect }: GifPickerProps) {
 
         {gifs.length > 0 && (
           <div>
-            <h4 className="text-sm font-medium text-slate-200 mb-2">Results</h4>
+            <h4 className="text-sm font-medium text-zinc-200 mb-2">Results</h4>
             <div className="grid grid-cols-2 gap-2">
               {gifs.map((gif) => (
                 <button
                   key={gif.id}
                   type="button"
                   onClick={() => onSelect(gif)}
-                  className="relative group rounded-lg overflow-hidden hover:ring-2 hover:ring-sky-500/50 transition"
+                  className="relative group rounded-lg overflow-hidden hover:ring-2 hover:ring-primary/50 transition"
                 >
                   <NextImage
                     src={gif.images.fixed_height_small.url}
@@ -131,7 +131,7 @@ export default function GifPicker({ onSelect }: GifPickerProps) {
         )}
 
         {searchTerm && gifs.length === 0 && !isLoading && (
-          <div className="text-center text-slate-400 text-sm py-4">
+          <div className="text-center text-zinc-400 text-sm py-4">
             No GIFs found for &quot;{searchTerm}&quot;
           </div>
         )}

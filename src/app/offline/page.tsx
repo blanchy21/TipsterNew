@@ -9,21 +9,21 @@ export default function OfflinePage() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
+        <div className="min-h-screen bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 flex items-center justify-center p-4">
             <div className="text-center max-w-md mx-auto">
                 <div className="mb-8">
-                    <WifiOff className="w-16 h-16 text-slate-400 mx-auto mb-4" />
-                    <h1 className="text-2xl font-bold text-slate-100 mb-2">
+                    <WifiOff className="w-16 h-16 text-zinc-400 mx-auto mb-4" />
+                    <h1 className="text-2xl font-bold text-zinc-100 mb-2">
                         You&apos;re Offline
                     </h1>
-                    <p className="text-slate-400 mb-6">
+                    <p className="text-zinc-400 mb-6">
                         It looks like you&apos;re not connected to the internet. Check your connection and try again.
                     </p>
                 </div>
 
                 <button
                     onClick={handleRefresh}
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-sky-500/20 text-sky-300 rounded-lg hover:bg-sky-500/30 transition-colors ring-1 ring-sky-500/30"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-colors ring-1 ring-primary/30"
                 >
                     <RefreshCw className="w-5 h-5" />
                     Try Again
