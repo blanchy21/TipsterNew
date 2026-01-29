@@ -5,12 +5,9 @@ import {
     Trophy,
     Award,
     TrendingUp,
-    Users,
     Target,
-    Clock,
     CheckCircle,
-    XCircle,
-    AlertCircle
+    Clock
 } from 'lucide-react';
 
 interface ProfileStatsProps {
@@ -23,8 +20,6 @@ interface ProfileStatsProps {
         pendingTips: number;
         followers: number;
         following: number;
-        currentWinStreak: number;
-        longestWinStreak: number;
         leaderboardPosition: number;
     };
     loading: boolean;
@@ -33,13 +28,15 @@ interface ProfileStatsProps {
 const ProfileStats: React.FC<ProfileStatsProps> = ({ stats, loading }) => {
     if (loading) {
         return (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                {[...Array(8)].map((_, i) => (
-                    <div key={i} className="bg-surface-2/50 rounded-lg p-4 animate-pulse">
-                        <div className="h-4 bg-surface-3 rounded w-3/4 mb-2"></div>
-                        <div className="h-6 bg-surface-3 rounded w-1/2"></div>
-                    </div>
-                ))}
+            <div className="mb-8">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    {[...Array(4)].map((_, i) => (
+                        <div key={i} className="bg-surface-2/40 rounded-xl p-5 animate-pulse border border-white/[0.04]">
+                            <div className="h-3 bg-surface-3/60 rounded w-2/3 mb-3" />
+                            <div className="h-8 bg-surface-3/60 rounded w-1/2" />
+                        </div>
+                    ))}
+                </div>
             </div>
         );
     }
@@ -47,96 +44,61 @@ const ProfileStats: React.FC<ProfileStatsProps> = ({ stats, loading }) => {
     const statCards = [
         {
             label: 'Total Tips',
-            value: stats.totalTips,
+            value: stats.totalTips.toString(),
             icon: Target,
-            color: 'text-primary',
-            bgColor: 'bg-primary/10',
-            borderColor: 'border-primary/20'
+            accent: 'text-accent',
+            glow: 'bg-accent/[0.08]',
+            border: 'border-accent/[0.12]',
         },
         {
             label: 'Win Rate',
             value: `${stats.winRate.toFixed(1)}%`,
             icon: TrendingUp,
-            color: 'text-green-400',
-            bgColor: 'bg-green-500/10',
-            borderColor: 'border-green-500/20'
+            accent: 'text-emerald-400',
+            glow: 'bg-emerald-500/[0.08]',
+            border: 'border-emerald-500/[0.12]',
         },
         {
             label: 'Total Wins',
-            value: stats.totalWins,
+            value: stats.totalWins.toString(),
             icon: Trophy,
-            color: 'text-yellow-400',
-            bgColor: 'bg-yellow-500/10',
-            borderColor: 'border-yellow-500/20'
+            accent: 'text-amber-400',
+            glow: 'bg-amber-500/[0.08]',
+            border: 'border-amber-500/[0.12]',
         },
         {
             label: 'Avg Odds',
             value: stats.averageOdds.toFixed(2),
             icon: Award,
-            color: 'text-purple-400',
-            bgColor: 'bg-purple-500/10',
-            borderColor: 'border-purple-500/20'
+            accent: 'text-violet-400',
+            glow: 'bg-violet-500/[0.08]',
+            border: 'border-violet-500/[0.12]',
         },
-        {
-            label: 'Verified Tips',
-            value: stats.verifiedTips,
-            icon: CheckCircle,
-            color: 'text-emerald-400',
-            bgColor: 'bg-emerald-500/10',
-            borderColor: 'border-emerald-500/20'
-        },
-        {
-            label: 'Pending Tips',
-            value: stats.pendingTips,
-            icon: Clock,
-            color: 'text-orange-400',
-            bgColor: 'bg-orange-500/10',
-            borderColor: 'border-orange-500/20'
-        },
-        {
-            label: 'Followers',
-            value: stats.followers,
-            icon: Users,
-            color: 'text-cyan-400',
-            bgColor: 'bg-cyan-500/10',
-            borderColor: 'border-cyan-500/20'
-        },
-        {
-            label: 'Current Streak',
-            value: stats.currentWinStreak,
-            icon: TrendingUp,
-            color: 'text-pink-400',
-            bgColor: 'bg-pink-500/10',
-            borderColor: 'border-pink-500/20'
-        },
-        {
-            label: 'Best Streak',
-            value: stats.longestWinStreak,
-            icon: Trophy,
-            color: 'text-amber-400',
-            bgColor: 'bg-amber-500/10',
-            borderColor: 'border-amber-500/20'
-        }
+    ];
+
+    const secondaryStats = [
+        { label: 'Verified', value: stats.verifiedTips, icon: CheckCircle, color: 'text-emerald-400' },
+        { label: 'Pending', value: stats.pendingTips, icon: Clock, color: 'text-orange-400' },
     ];
 
     return (
-        <div className="mb-6">
-            <h2 className="text-xl font-semibold text-white mb-4">Performance Stats</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {statCards.map((stat, index) => {
+        <div className="mb-8 space-y-4">
+            {/* Primary stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                {statCards.map((stat) => {
                     const Icon = stat.icon;
                     return (
                         <div
-                            key={index}
-                            className={`${stat.bgColor} ${stat.borderColor} border rounded-lg p-4 hover:scale-105 transition-transform`}
+                            key={stat.label}
+                            className={`${stat.glow} ${stat.border} border rounded-xl p-5 transition-all hover:scale-[1.02] hover:shadow-lg`}
                         >
-                            <div className="flex items-center justify-between mb-2">
-                                <Icon className={`w-5 h-5 ${stat.color}`} />
-                                <span className={`text-xs font-medium ${stat.color}`}>
+                            <div className="flex items-center gap-2 mb-2">
+                                <Icon className={`w-4 h-4 ${stat.accent} opacity-70`} />
+                                <span className="text-xs font-medium text-zinc-500 uppercase tracking-wider">
                                     {stat.label}
                                 </span>
                             </div>
-                            <div className={`text-2xl font-bold ${stat.color}`}>
+                            <div className={`text-3xl font-display italic ${stat.accent}`}>
                                 {stat.value}
                             </div>
                         </div>
@@ -144,15 +106,29 @@ const ProfileStats: React.FC<ProfileStatsProps> = ({ stats, loading }) => {
                 })}
             </div>
 
-            {/* Leaderboard Position */}
+            {/* Secondary stats row */}
+            <div className="flex items-center gap-4">
+                {secondaryStats.map((stat) => {
+                    const Icon = stat.icon;
+                    return (
+                        <div key={stat.label} className="flex items-center gap-2 text-sm">
+                            <Icon className={`w-3.5 h-3.5 ${stat.color}`} />
+                            <span className="text-zinc-400">
+                                <span className="text-white font-medium">{stat.value}</span> {stat.label}
+                            </span>
+                        </div>
+                    );
+                })}
+            </div>
+
+            {/* Leaderboard position */}
             {stats.leaderboardPosition > 0 && (
-                <div className="mt-4 p-4 bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border border-yellow-500/20 rounded-lg">
-                    <div className="flex items-center gap-2">
-                        <Trophy className="w-5 h-5 text-yellow-400" />
-                        <span className="text-yellow-400 font-medium">
-                            Ranked #{stats.leaderboardPosition} on the leaderboard
-                        </span>
-                    </div>
+                <div className="flex items-center gap-2.5 px-4 py-3 bg-accent/[0.06] border border-accent/[0.12] rounded-xl">
+                    <Trophy className="w-4.5 h-4.5 text-accent" />
+                    <span className="text-sm">
+                        <span className="text-accent font-semibold">#{stats.leaderboardPosition}</span>
+                        <span className="text-zinc-400 ml-1.5">on the leaderboard</span>
+                    </span>
                 </div>
             )}
         </div>

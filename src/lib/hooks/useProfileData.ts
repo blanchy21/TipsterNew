@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { User } from '@/lib/types';
 import { getUserVerificationStats } from '@/lib/firebase/tipVerification';
+import { getUserLeaderboardPosition } from '@/lib/leaderboardUtils';
 import { collection, query, where, onSnapshot } from 'firebase/firestore';
 import { db } from '@/lib/firebase/firebase';
 
@@ -13,8 +14,6 @@ interface ProfileStats {
     pendingTips: number;
     followers: number;
     following: number;
-    currentWinStreak: number;
-    longestWinStreak: number;
     leaderboardPosition: number;
 }
 
@@ -34,8 +33,6 @@ export function useProfileData({ userId, followers, following }: UseProfileDataP
         pendingTips: 0,
         followers: 0,
         following: 0,
-        currentWinStreak: 0,
-        longestWinStreak: 0,
         leaderboardPosition: 0
     });
     const [statsLoading, setStatsLoading] = useState(true);
@@ -43,7 +40,10 @@ export function useProfileData({ userId, followers, following }: UseProfileDataP
     const loadUserStats = useCallback(async (profileUserId: string) => {
         setStatsLoading(true);
         try {
-            const verificationStats = await getUserVerificationStats(profileUserId);
+            const [verificationStats, leaderboardPosition] = await Promise.all([
+                getUserVerificationStats(profileUserId),
+                getUserLeaderboardPosition(profileUserId)
+            ]);
             setUserStats({
                 totalTips: verificationStats.totalTips,
                 totalWins: verificationStats.totalWins,
@@ -53,36 +53,31 @@ export function useProfileData({ userId, followers, following }: UseProfileDataP
                 pendingTips: verificationStats.pendingTips,
                 followers: followers.length,
                 following: following.length,
-                currentWinStreak: verificationStats.currentWinStreak,
-                longestWinStreak: verificationStats.longestWinStreak,
-                leaderboardPosition: Math.floor(Math.random() * 50 + 1) // Random position between 1-50
+                leaderboardPosition
             });
         } catch (error) {
-            // Console statement removed for production
+            // Stats load failed silently
         } finally {
             setStatsLoading(false);
         }
     }, [followers.length, following.length]);
 
-    // Load user stats when userId changes
     useEffect(() => {
         if (userId) {
             loadUserStats(userId);
         }
     }, [userId, followers.length, following.length, loadUserStats]);
 
-    // Real-time listener for verification updates
     useEffect(() => {
         if (!userId) return;
 
         const unsubscribe = onSnapshot(
             query(collection(db, 'tipVerifications'), where('tipsterId', '==', userId)),
-            (snapshot) => {
-                // Reload stats when verifications change
+            () => {
                 loadUserStats(userId);
             },
-            (error) => {
-                // Console statement removed for production
+            () => {
+                // Listener error, silent
             }
         );
 

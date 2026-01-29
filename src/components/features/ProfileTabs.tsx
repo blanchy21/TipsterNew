@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { MessageCircle, Heart, Users, Trophy, BarChart3 } from 'lucide-react';
+import { MessageCircle, UserCheck, Users, BarChart3 } from 'lucide-react';
 
 interface ProfileTabsProps {
     activeTab: string;
@@ -30,7 +30,7 @@ const ProfileTabs: React.FC<ProfileTabsProps> = ({ activeTab, onTabChange, stats
         {
             id: 'following',
             label: 'Following',
-            icon: Heart,
+            icon: UserCheck,
             count: stats.following
         },
         {
@@ -42,8 +42,8 @@ const ProfileTabs: React.FC<ProfileTabsProps> = ({ activeTab, onTabChange, stats
     ];
 
     return (
-        <div className="border-b border-surface-3/50 mb-6">
-            <nav className="flex space-x-8">
+        <div className="mb-6">
+            <nav className="flex gap-1 p-1 bg-surface-2/30 rounded-xl border border-white/[0.04]">
                 {tabs.map((tab) => {
                     const Icon = tab.icon;
                     const isActive = activeTab === tab.id;
@@ -52,17 +52,17 @@ const ProfileTabs: React.FC<ProfileTabsProps> = ({ activeTab, onTabChange, stats
                         <button
                             key={tab.id}
                             onClick={() => onTabChange(tab.id)}
-                            className={`flex items-center gap-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors ${isActive
-                                ? 'border-amber-500 text-amber-400'
-                                : 'border-transparent text-zinc-400 hover:text-zinc-300 hover:border-zinc-600'
+                            className={`flex items-center justify-center gap-2 flex-1 py-2.5 px-3 rounded-lg text-sm font-medium transition-all ${isActive
+                                ? 'bg-surface-3/70 text-white shadow-sm border border-white/[0.06]'
+                                : 'text-zinc-500 hover:text-zinc-300 hover:bg-surface-3/30'
                                 }`}
                         >
                             <Icon className="w-4 h-4" />
-                            {tab.label}
+                            <span className="hidden sm:inline">{tab.label}</span>
                             {tab.count !== null && (
-                                <span className={`px-2 py-1 rounded-full text-xs ${isActive
-                                    ? 'bg-amber-500/20 text-amber-400'
-                                    : 'bg-surface-3 text-zinc-400'
+                                <span className={`px-1.5 py-0.5 rounded-md text-xs tabular-nums ${isActive
+                                    ? 'bg-accent/15 text-accent'
+                                    : 'bg-surface-3/50 text-zinc-500'
                                     }`}>
                                     {tab.count}
                                 </span>

@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect, useMemo, memo, useCallback } from 'react';
-import Image from 'next/image';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { useProfile } from '@/lib/contexts/ProfileContext';
 import { useFollowing } from '@/lib/contexts/FollowingContext';
@@ -14,9 +13,11 @@ import ProfileEditModal from '@/components/modals/ProfileEditModal';
 import { useProfileData } from '@/lib/hooks/useProfileData';
 import { PageLoadingState } from '@/components/ui/LoadingState';
 import PostCard from '@/components/features/PostCard';
+import AvatarWithFallback from '@/components/ui/AvatarWithFallback';
 import { Post } from '@/lib/types';
-import { collection, query, where, orderBy, onSnapshot, limit } from 'firebase/firestore';
+import { collection, query, where, onSnapshot, limit } from 'firebase/firestore';
 import { db } from '@/lib/firebase/firebase';
+import { MessageCircle, Users } from 'lucide-react';
 
 interface ProfilePageProps {
   userId?: string;
@@ -32,7 +33,6 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
   const [userPosts, setUserPosts] = useState<Post[]>([]);
   const [postsLoading, setPostsLoading] = useState(true);
 
-  // Use real user data or fallback to current user - memoized for performance
   const profileUser = useMemo(() => {
     return profile || (currentUser ? {
       id: currentUser.uid,
@@ -46,21 +46,18 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
     } : null);
   }, [profile, currentUser]);
 
-  // Load user profile when userId changes
   useEffect(() => {
     if (userId && userId !== currentUser?.uid) {
       loadUserProfile(userId);
     }
   }, [userId, currentUser?.uid, loadUserProfile]);
 
-  // Use custom hook for profile data
   const { userStats, statsLoading } = useProfileData({
     userId: profileUser?.id,
     followers,
     following
   });
 
-  // Fetch user posts
   useEffect(() => {
     if (!profileUser?.id) return;
 
@@ -68,7 +65,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
     const postsQuery = query(
       collection(db, 'posts'),
       where('userId', '==', profileUser.id),
-      limit(50) // Add limit to reduce data transfer
+      limit(50)
     );
 
     const unsubscribe = onSnapshot(postsQuery, (snapshot) => {
@@ -77,17 +74,15 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
         ...doc.data()
       })) as Post[];
 
-      // Sort posts by createdAt on the client side
       const sortedPosts = posts.sort((a, b) => {
         const aTime = new Date(a.createdAt).getTime();
         const bTime = new Date(b.createdAt).getTime();
-        return bTime - aTime; // Descending order
+        return bTime - aTime;
       });
 
       setUserPosts(sortedPosts);
       setPostsLoading(false);
-    }, (error) => {
-      // Console statement removed for production
+    }, () => {
       setPostsLoading(false);
     });
 
@@ -112,51 +107,44 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
     switch (activeTab) {
       case 'tips':
         return (
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-white mb-4">
-              Recent Tips ({userPosts.length})
-            </h3>
+          <div>
             {postsLoading ? (
-              <div className="space-y-4">
+              <div className="space-y-3">
                 {[...Array(3)].map((_, i) => (
-                  <div key={i} className="bg-surface-2/50 rounded-xl p-6 animate-pulse">
-                    <div className="flex items-start space-x-4">
-                      <div className="w-10 h-10 bg-surface-3 rounded-full" />
-                      <div className="flex-1 space-y-2">
-                        <div className="h-4 bg-surface-3 rounded w-1/4" />
-                        <div className="h-4 bg-surface-3 rounded w-1/2" />
-                        <div className="h-20 bg-surface-3 rounded" />
-                        <div className="flex space-x-4">
-                          <div className="h-4 bg-surface-3 rounded w-16" />
-                          <div className="h-4 bg-surface-3 rounded w-20" />
-                        </div>
+                  <div key={i} className="bg-surface-2/30 rounded-xl p-5 animate-pulse border border-white/[0.04]">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 bg-surface-3/50 rounded-full flex-shrink-0" />
+                      <div className="flex-1 space-y-2.5">
+                        <div className="h-3.5 bg-surface-3/50 rounded w-1/4" />
+                        <div className="h-3.5 bg-surface-3/50 rounded w-2/3" />
+                        <div className="h-16 bg-surface-3/50 rounded" />
                       </div>
                     </div>
                   </div>
                 ))}
               </div>
             ) : userPosts.length === 0 ? (
-              <div className="text-center py-12">
-                <div className="w-16 h-16 bg-surface-2 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-2xl">📝</span>
+              <div className="text-center py-16">
+                <div className="w-14 h-14 bg-surface-2/50 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-white/[0.06]">
+                  <MessageCircle className="w-6 h-6 text-zinc-600" />
                 </div>
-                <p className="text-zinc-400">No tips yet</p>
-                <p className="text-zinc-500 text-sm">Start sharing your predictions!</p>
+                <p className="text-zinc-400 font-medium mb-1">No tips yet</p>
+                <p className="text-zinc-600 text-sm">
+                  {isOwnProfile ? 'Share your first prediction to get started' : 'This user hasn\'t posted any tips yet'}
+                </p>
               </div>
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-3">
                 {userPosts.map((post) => (
                   <PostCard
                     key={post.id}
                     post={post}
-                    onLikeChange={() => { }} // Handle like changes if needed
+                    onLikeChange={() => { }}
                     onNavigateToProfile={onNavigateToProfile}
                     onPostDeleted={() => {
-                      // Remove post from local state
                       setUserPosts(prev => prev.filter(p => p.id !== post.id));
                     }}
                     onPostUpdated={(postId, updatedPost) => {
-                      // Update post in local state
                       setUserPosts(prev => prev.map(p => p.id === postId ? updatedPost : p));
                     }}
                   />
@@ -167,36 +155,36 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
         );
       case 'followers':
         return (
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-white mb-4">Followers ({followers.length})</h3>
+          <div>
             {followers.length === 0 ? (
-              <div className="text-center py-12">
-                <div className="w-16 h-16 bg-surface-2 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-2xl">👥</span>
+              <div className="text-center py-16">
+                <div className="w-14 h-14 bg-surface-2/50 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-white/[0.06]">
+                  <Users className="w-6 h-6 text-zinc-600" />
                 </div>
-                <p className="text-zinc-400">No followers yet</p>
-                <p className="text-zinc-500 text-sm">Share great tips to gain followers!</p>
+                <p className="text-zinc-400 font-medium mb-1">No followers yet</p>
+                <p className="text-zinc-600 text-sm">
+                  {isOwnProfile ? 'Share great tips to gain followers' : 'This user doesn\'t have followers yet'}
+                </p>
               </div>
             ) : (
-              <div className="grid gap-4">
+              <div className="space-y-2">
                 {followers.map((follower) => (
-                  <div key={follower.id} className="flex items-center gap-3 p-4 bg-surface-2/50 rounded-lg">
-                    <Image
-                      src={normalizeImageUrl(follower.avatar)}
+                  <button
+                    key={follower.id}
+                    onClick={() => onNavigateToProfile?.(follower.id)}
+                    className="flex items-center gap-3 w-full p-3.5 bg-surface-2/30 hover:bg-surface-2/50 rounded-xl border border-white/[0.04] hover:border-white/[0.08] transition-all text-left"
+                  >
+                    <AvatarWithFallback
+                      src={follower.avatar}
                       alt={follower.name}
-                      width={40}
-                      height={40}
-                      className="w-10 h-10 rounded-full"
-                      loading="lazy"
+                      name={follower.name}
+                      size={40}
                     />
-                    <div className="flex-1">
-                      <h4 className="text-white font-medium">{follower.name}</h4>
-                      <p className="text-zinc-400 text-sm">{follower.handle}</p>
+                    <div className="flex-1 min-w-0">
+                      <h4 className="text-white font-medium text-sm truncate">{follower.name}</h4>
+                      <p className="text-zinc-500 text-xs truncate">{follower.handle}</p>
                     </div>
-                    <button className="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-lg text-sm font-medium transition-colors">
-                      Follow
-                    </button>
-                  </div>
+                  </button>
                 ))}
               </div>
             )}
@@ -204,36 +192,39 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
         );
       case 'following':
         return (
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-white mb-4">Following ({following.length})</h3>
+          <div>
             {following.length === 0 ? (
-              <div className="text-center py-12">
-                <div className="w-16 h-16 bg-surface-2 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-2xl">👥</span>
+              <div className="text-center py-16">
+                <div className="w-14 h-14 bg-surface-2/50 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-white/[0.06]">
+                  <Users className="w-6 h-6 text-zinc-600" />
                 </div>
-                <p className="text-zinc-400">Not following anyone yet</p>
-                <p className="text-zinc-500 text-sm">Discover great tipsters to follow!</p>
+                <p className="text-zinc-400 font-medium mb-1">Not following anyone</p>
+                <p className="text-zinc-600 text-sm">
+                  {isOwnProfile ? 'Discover great tipsters to follow' : 'This user isn\'t following anyone yet'}
+                </p>
               </div>
             ) : (
-              <div className="grid gap-4">
+              <div className="space-y-2">
                 {following.map((user) => (
-                  <div key={user.id} className="flex items-center gap-3 p-4 bg-surface-2/50 rounded-lg">
-                    <Image
-                      src={normalizeImageUrl(user.avatar)}
+                  <button
+                    key={user.id}
+                    onClick={() => onNavigateToProfile?.(user.id)}
+                    className="flex items-center gap-3 w-full p-3.5 bg-surface-2/30 hover:bg-surface-2/50 rounded-xl border border-white/[0.04] hover:border-white/[0.08] transition-all text-left"
+                  >
+                    <AvatarWithFallback
+                      src={user.avatar}
                       alt={user.name}
-                      width={40}
-                      height={40}
-                      className="w-10 h-10 rounded-full"
-                      loading="lazy"
+                      name={user.name}
+                      size={40}
                     />
-                    <div className="flex-1">
-                      <h4 className="text-white font-medium">{user.name}</h4>
-                      <p className="text-zinc-400 text-sm">{user.handle}</p>
+                    <div className="flex-1 min-w-0">
+                      <h4 className="text-white font-medium text-sm truncate">{user.name}</h4>
+                      <p className="text-zinc-500 text-xs truncate">{user.handle}</p>
                     </div>
-                    <button className="px-4 py-2 bg-surface-3 hover:bg-surface-4 text-white rounded-lg text-sm font-medium transition-colors">
+                    <span className="px-3 py-1.5 bg-surface-3/50 text-zinc-400 rounded-lg text-xs font-medium">
                       Following
-                    </button>
-                  </div>
+                    </span>
+                  </button>
                 ))}
               </div>
             )}
@@ -241,10 +232,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
         );
       case 'analytics':
         return (
-          <div className="space-y-6">
-            <h3 className="text-lg font-semibold text-white mb-4">Analytics</h3>
-            <TipVerificationAnalytics userId={profileUser.id} />
-          </div>
+          <TipVerificationAnalytics userId={profileUser.id} />
         );
       default:
         return null;
@@ -252,9 +240,8 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
   };
 
   return (
-    <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-surface-0 via-surface-1 to-surface-0 min-h-screen">
-      <div className="max-w-4xl mx-auto">
-        {/* Profile Header */}
+    <div className="w-full text-gray-100 font-body bg-surface-0 min-h-screen">
+      <div className="max-w-3xl mx-auto">
         <ProfileHeader
           user={profileUser}
           isOwnProfile={isOwnProfile}
@@ -262,13 +249,9 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
           onNavigateToProfile={onNavigateToProfile}
         />
 
-        {/* Profile Stats */}
-        <div className="px-6">
+        <div className="px-6 space-y-0">
           <ProfileStats stats={userStats} loading={statsLoading} />
-        </div>
 
-        {/* Profile Tabs */}
-        <div className="px-6">
           <ProfileTabs
             activeTab={activeTab}
             onTabChange={setActiveTab}
@@ -278,15 +261,13 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
               following: userStats.following
             }}
           />
-        </div>
 
-        {/* Tab Content */}
-        <div className="px-6 pb-8">
-          {renderTabContent()}
+          <div className="pb-8">
+            {renderTabContent()}
+          </div>
         </div>
       </div>
 
-      {/* Edit Profile Modal */}
       {showEditModal && (
         <ProfileEditModal
           isOpen={showEditModal}
