@@ -128,7 +128,7 @@ export default function MobileMenu({
             />
 
             {/* Mobile Menu */}
-            <div className="fixed inset-y-0 left-0 w-80 max-w-[90vw] sm:max-w-[85vw] bg-zinc-900/95 backdrop-blur-xl border-r border-white/10 z-50 md:hidden transform transition-transform duration-300 ease-in-out">
+            <div className="fixed inset-y-0 left-0 w-80 max-w-[90vw] sm:max-w-[85vw] bg-surface-1/95 backdrop-blur-xl border-r border-white/10 z-50 md:hidden transform transition-transform duration-300 ease-in-out">
                 <div className="flex flex-col h-full">
                     {/* Header */}
                     <div className="flex items-center justify-between p-3 sm:p-4 border-b border-white/10">

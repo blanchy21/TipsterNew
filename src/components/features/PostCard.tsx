@@ -260,12 +260,12 @@ const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChan
                     </button>
 
                     {showMenu && (
-                      <div className="absolute right-0 top-full mt-1 w-48 bg-zinc-800 border border-zinc-700 rounded-lg shadow-lg z-50">
+                      <div className="absolute right-0 top-full mt-1 w-48 bg-surface-2 border border-surface-3 rounded-lg shadow-lg z-50">
                         <div className="py-1">
                           {canEdit && (
                             <button
                               onClick={handleEditPost}
-                              className="w-full px-4 py-2 text-left text-sm text-zinc-200 hover:bg-zinc-700 flex items-center gap-2"
+                              className="w-full px-4 py-2 text-left text-sm text-zinc-200 hover:bg-surface-3 flex items-center gap-2"
                             >
                               <Edit className="w-4 h-4" />
                               Edit Tip
@@ -275,7 +275,7 @@ const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChan
                             <button
                               onClick={handleDeletePost}
                               disabled={isDeleting}
-                              className="w-full px-4 py-2 text-left text-sm text-red-400 hover:bg-zinc-700 flex items-center gap-2 disabled:opacity-50"
+                              className="w-full px-4 py-2 text-left text-sm text-red-400 hover:bg-surface-3 flex items-center gap-2 disabled:opacity-50"
                             >
                               <Trash2 className="w-4 h-4" />
                               {isDeleting ? 'Deleting...' : 'Delete Tip'}
@@ -357,7 +357,7 @@ const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChan
 
         {/* Comments Section */}
         {showComments && (
-          <div className="mt-4 border-t border-zinc-700/50 pt-4">
+          <div className="mt-4 border-t border-surface-3/50 pt-4">
             <CommentsList
               postId={post.id}
               onCommentCountChange={handleCommentCountChange}
@@ -368,7 +368,7 @@ const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChan
         {/* Edit Modal */}
         {showEditModal && (
           <div className="fixed inset-0 bg-black/50 flex items-start justify-center z-50 p-4 overflow-y-auto">
-            <div className="bg-zinc-800 rounded-lg max-w-2xl w-full my-8 max-h-[calc(100vh-4rem)] overflow-y-auto">
+            <div className="bg-surface-2 rounded-lg max-w-2xl w-full my-8 max-h-[calc(100vh-4rem)] overflow-y-auto">
               <div className="p-6">
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-xl font-semibold text-white">Edit Tip</h3>
@@ -390,7 +390,7 @@ const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChan
                       type="text"
                       value={editForm.title}
                       onChange={(e) => setEditForm(prev => ({ ...prev, title: e.target.value }))}
-                      className="w-full px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary"
+                      className="w-full px-3 py-2 bg-surface-3 border border-zinc-600 rounded-lg text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary"
                       placeholder="Enter tip title..."
                       required
                     />
@@ -404,7 +404,7 @@ const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChan
                     <textarea
                       value={editForm.content}
                       onChange={(e) => setEditForm(prev => ({ ...prev, content: e.target.value }))}
-                      className="w-full px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary h-32 resize-none"
+                      className="w-full px-3 py-2 bg-surface-3 border border-zinc-600 rounded-lg text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary h-32 resize-none"
                       placeholder="Share your analysis and reasoning..."
                       required
                     />
@@ -419,7 +419,7 @@ const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChan
                       <select
                         value={editForm.sport}
                         onChange={(e) => setEditForm(prev => ({ ...prev, sport: e.target.value }))}
-                        className="w-full px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary"
+                        className="w-full px-3 py-2 bg-surface-3 border border-zinc-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary"
                         required
                       >
                         <option value="American Football">American Football</option>
@@ -458,7 +458,7 @@ const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChan
                         type="text"
                         value={editForm.odds}
                         onChange={(e) => setEditForm(prev => ({ ...prev, odds: e.target.value }))}
-                        className="w-full px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary"
+                        className="w-full px-3 py-2 bg-surface-3 border border-zinc-600 rounded-lg text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary"
                         placeholder="e.g., 2.5, 3/1, +150"
                       />
                     </div>
@@ -473,7 +473,7 @@ const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChan
                       type="text"
                       value={editForm.tags}
                       onChange={(e) => setEditForm(prev => ({ ...prev, tags: e.target.value }))}
-                      className="w-full px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary"
+                      className="w-full px-3 py-2 bg-surface-3 border border-zinc-600 rounded-lg text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary"
                       placeholder="e.g., prediction, analysis, hot-tip"
                     />
                   </div>

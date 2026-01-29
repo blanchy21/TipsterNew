@@ -129,7 +129,7 @@ const TopTipsters: React.FC<TopTipstersProps> = ({ onNavigateToProfile }) => {
 
     if (loading) {
         return (
-            <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 min-h-screen flex items-center justify-center">
+            <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-surface-0 via-surface-1 to-surface-0 min-h-screen flex items-center justify-center">
                 <div className="text-center">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
                     <p className="text-neutral-400">Loading leaderboard...</p>
@@ -139,7 +139,7 @@ const TopTipsters: React.FC<TopTipstersProps> = ({ onNavigateToProfile }) => {
     }
 
     return (
-        <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 min-h-full">
+        <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-surface-0 via-surface-1 to-surface-0 min-h-full">
             <div className="max-w-7xl mx-auto px-4 lg:px-8 py-12">
                 {/* Header */}
                 <div className="text-center mb-12">
@@ -280,7 +280,7 @@ const TopTipsters: React.FC<TopTipstersProps> = ({ onNavigateToProfile }) => {
                                             className="rounded-full border-2 border-white/20 group-hover:border-white/40 transition-all duration-300"
                                         />
                                         {tipster.isVerified && (
-                                            <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-emerald-500 rounded-full border-2 border-zinc-900 flex items-center justify-center">
+                                            <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-emerald-500 rounded-full border-2 border-surface-1 flex items-center justify-center">
                                                 <Check className="w-3 h-3 text-white" style={{ strokeWidth: 3 }} />
                                             </div>
                                         )}

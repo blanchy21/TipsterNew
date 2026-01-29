@@ -87,7 +87,7 @@ export default function NotificationToast({
       </div>
 
       {/* Progress bar */}
-      <div className="h-1 bg-zinc-700 rounded-b-lg overflow-hidden">
+      <div className="h-1 bg-surface-3 rounded-b-lg overflow-hidden">
         <div
           className="h-full bg-primary transition-all duration-100 ease-linear"
           style={{

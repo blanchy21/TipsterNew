@@ -193,7 +193,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate, userId }) => {
 
   if (!profileUser) {
     return (
-      <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 min-h-screen flex items-center justify-center">
+      <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-surface-0 via-surface-1 to-surface-0 min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
           <p className="text-neutral-400">Loading profile...</p>
@@ -274,7 +274,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate, userId }) => {
   };
 
   return (
-    <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900">
+    <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-surface-0 via-surface-1 to-surface-0">
       <div className="max-w-7xl mx-auto px-4 lg:px-8 py-12 space-y-16 opacity-0 translate-y-8 blur-sm" style={{ animation: 'fadeInSlideUp 1.2s ease-out 0.3s forwards' }}>
         {/* GRID */}
         <section className="grid lg:grid-cols-3 gap-8">
@@ -603,7 +603,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigate, userId }) => {
                       <div className="w-16 h-16 group-hover:border-4 group-hover:border-emerald-400/50 group-hover:scale-110 transition-all duration-300 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 border-white/20 border-2 rounded-full flex items-center justify-center">
                         <Trophy className="w-6 h-6 text-emerald-400" />
                       </div>
-                      <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 rounded-full border-2 border-zinc-900 flex items-center justify-center">
+                      <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 rounded-full border-2 border-surface-1 flex items-center justify-center">
                         <Check className="w-3 h-3 text-white" style={{ strokeWidth: 3 }} />
                       </div>
                     </div>

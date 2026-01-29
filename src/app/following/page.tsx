@@ -15,7 +15,7 @@ export default function Following() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 flex items-center justify-center">
+            <div className="min-h-screen bg-gradient-to-br from-surface-0 via-surface-1 to-surface-0 flex items-center justify-center">
                 <div className="text-center">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-500 mx-auto mb-4"></div>
                     <p className="text-white">Loading following...</p>
@@ -26,7 +26,7 @@ export default function Following() {
 
     if (error || !user) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 flex items-center justify-center">
+            <div className="min-h-screen bg-gradient-to-br from-surface-0 via-surface-1 to-surface-0 flex items-center justify-center">
                 <div className="text-center">
                     <h1 className="text-2xl font-bold text-white mb-4">Following Access Required</h1>
                     <p className="text-zinc-400 mb-6">{error || 'Please sign in to view following users'}</p>
@@ -42,7 +42,7 @@ export default function Following() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900">
+        <div className="min-h-screen bg-gradient-to-br from-surface-0 via-surface-1 to-surface-0">
             <div className="max-w-4xl mx-auto px-4 py-8">
                 <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
                     <div className="text-center mb-8">

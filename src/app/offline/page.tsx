@@ -9,7 +9,7 @@ export default function OfflinePage() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 flex items-center justify-center p-4">
+        <div className="min-h-screen bg-gradient-to-br from-surface-0 via-surface-1 to-surface-0 flex items-center justify-center p-4">
             <div className="text-center max-w-md mx-auto">
                 <div className="mb-8">
                     <WifiOff className="w-16 h-16 text-zinc-400 mx-auto mb-4" />

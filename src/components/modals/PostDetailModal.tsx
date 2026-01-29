@@ -248,7 +248,7 @@ export default function PostDetailModal({
 
                                 {/* Comments Section */}
                                 {showComments && (
-                                    <div className="mt-4 border-t border-zinc-700/50 pt-4">
+                                    <div className="mt-4 border-t border-surface-3/50 pt-4">
                                         <CommentsList
                                             postId={post.id}
                                             onCommentCountChange={handleCommentCountChange}

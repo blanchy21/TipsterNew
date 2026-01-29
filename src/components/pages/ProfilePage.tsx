@@ -119,16 +119,16 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
             {postsLoading ? (
               <div className="space-y-4">
                 {[...Array(3)].map((_, i) => (
-                  <div key={i} className="bg-zinc-800/50 rounded-xl p-6 animate-pulse">
+                  <div key={i} className="bg-surface-2/50 rounded-xl p-6 animate-pulse">
                     <div className="flex items-start space-x-4">
-                      <div className="w-10 h-10 bg-zinc-700 rounded-full" />
+                      <div className="w-10 h-10 bg-surface-3 rounded-full" />
                       <div className="flex-1 space-y-2">
-                        <div className="h-4 bg-zinc-700 rounded w-1/4" />
-                        <div className="h-4 bg-zinc-700 rounded w-1/2" />
-                        <div className="h-20 bg-zinc-700 rounded" />
+                        <div className="h-4 bg-surface-3 rounded w-1/4" />
+                        <div className="h-4 bg-surface-3 rounded w-1/2" />
+                        <div className="h-20 bg-surface-3 rounded" />
                         <div className="flex space-x-4">
-                          <div className="h-4 bg-zinc-700 rounded w-16" />
-                          <div className="h-4 bg-zinc-700 rounded w-20" />
+                          <div className="h-4 bg-surface-3 rounded w-16" />
+                          <div className="h-4 bg-surface-3 rounded w-20" />
                         </div>
                       </div>
                     </div>
@@ -137,7 +137,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
               </div>
             ) : userPosts.length === 0 ? (
               <div className="text-center py-12">
-                <div className="w-16 h-16 bg-zinc-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-surface-2 rounded-full flex items-center justify-center mx-auto mb-4">
                   <span className="text-2xl">📝</span>
                 </div>
                 <p className="text-zinc-400">No tips yet</p>
@@ -171,7 +171,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
             <h3 className="text-lg font-semibold text-white mb-4">Followers ({followers.length})</h3>
             {followers.length === 0 ? (
               <div className="text-center py-12">
-                <div className="w-16 h-16 bg-zinc-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-surface-2 rounded-full flex items-center justify-center mx-auto mb-4">
                   <span className="text-2xl">👥</span>
                 </div>
                 <p className="text-zinc-400">No followers yet</p>
@@ -180,7 +180,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
             ) : (
               <div className="grid gap-4">
                 {followers.map((follower) => (
-                  <div key={follower.id} className="flex items-center gap-3 p-4 bg-zinc-800/50 rounded-lg">
+                  <div key={follower.id} className="flex items-center gap-3 p-4 bg-surface-2/50 rounded-lg">
                     <Image
                       src={normalizeImageUrl(follower.avatar)}
                       alt={follower.name}
@@ -208,7 +208,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
             <h3 className="text-lg font-semibold text-white mb-4">Following ({following.length})</h3>
             {following.length === 0 ? (
               <div className="text-center py-12">
-                <div className="w-16 h-16 bg-zinc-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-surface-2 rounded-full flex items-center justify-center mx-auto mb-4">
                   <span className="text-2xl">👥</span>
                 </div>
                 <p className="text-zinc-400">Not following anyone yet</p>
@@ -217,7 +217,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
             ) : (
               <div className="grid gap-4">
                 {following.map((user) => (
-                  <div key={user.id} className="flex items-center gap-3 p-4 bg-zinc-800/50 rounded-lg">
+                  <div key={user.id} className="flex items-center gap-3 p-4 bg-surface-2/50 rounded-lg">
                     <Image
                       src={normalizeImageUrl(user.avatar)}
                       alt={user.name}
@@ -230,7 +230,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
                       <h4 className="text-white font-medium">{user.name}</h4>
                       <p className="text-zinc-400 text-sm">{user.handle}</p>
                     </div>
-                    <button className="px-4 py-2 bg-zinc-700 hover:bg-zinc-600 text-white rounded-lg text-sm font-medium transition-colors">
+                    <button className="px-4 py-2 bg-surface-3 hover:bg-surface-4 text-white rounded-lg text-sm font-medium transition-colors">
                       Following
                     </button>
                   </div>
@@ -252,7 +252,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
   };
 
   return (
-    <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 min-h-screen">
+    <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-surface-0 via-surface-1 to-surface-0 min-h-screen">
       <div className="max-w-4xl mx-auto">
         {/* Profile Header */}
         <ProfileHeader

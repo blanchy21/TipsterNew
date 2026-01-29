@@ -36,7 +36,7 @@ export default function AdminAccessModal({ isOpen, onClose, onSuccess }: AdminAc
 
     return (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div className="bg-zinc-800 rounded-xl border border-white/10 w-full max-w-md overflow-hidden">
+            <div className="bg-surface-2 rounded-xl border border-white/10 w-full max-w-md overflow-hidden">
                 <div className="flex items-center justify-between p-6 border-b border-white/10">
                     <div className="flex items-center gap-3">
                         <div className="p-2 rounded-lg bg-red-500/20">
@@ -69,7 +69,7 @@ export default function AdminAccessModal({ isOpen, onClose, onSuccess }: AdminAc
                     </button>
                 </div>
 
-                <div className="px-6 py-4 bg-zinc-900/50 border-t border-white/10">
+                <div className="px-6 py-4 bg-surface-1/50 border-t border-white/10">
                     <p className="text-xs text-zinc-500 text-center">
                         This area is restricted to authorized administrators only.
                     </p>

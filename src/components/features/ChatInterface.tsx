@@ -161,9 +161,9 @@ export default function ChatInterface() {
     };
 
     return (
-        <div className="flex flex-col h-screen bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900">
+        <div className="flex flex-col h-screen bg-gradient-to-br from-surface-0 via-surface-1 to-surface-0">
             {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b border-white/10 bg-zinc-800/50 backdrop-blur-sm">
+            <div className="flex items-center justify-between p-4 border-b border-white/10 bg-surface-2/50 backdrop-blur-sm">
                 <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-gradient-to-r from-sky-500 to-blue-600 flex items-center justify-center">
                         <Bot className="w-5 h-5 text-white" />
@@ -197,7 +197,7 @@ export default function ChatInterface() {
             </div>
 
             {/* Model Selector */}
-            <div className="px-4 py-3 border-b border-white/10 bg-zinc-800/30">
+            <div className="px-4 py-3 border-b border-white/10 bg-surface-2/30">
                 <div className="flex items-center justify-between mb-3">
                     <h3 className="text-sm font-medium text-zinc-300">AI Model</h3>
                     {error && (
@@ -218,7 +218,7 @@ export default function ChatInterface() {
             </div>
 
             {/* Quick Actions */}
-            <div className="px-4 py-2 border-b border-white/10 bg-zinc-800/30">
+            <div className="px-4 py-2 border-b border-white/10 bg-surface-2/30">
                 <div className="flex gap-2 overflow-x-auto scrollbar-thin">
                     {QUICK_ACTIONS.map((action) => (
                         <button

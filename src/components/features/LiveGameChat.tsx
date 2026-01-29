@@ -23,7 +23,7 @@ export default function LiveGameChat({
     const [onlineCount] = useState(Math.floor(Math.random() * 50) + 10);
 
     return (
-        <div className={`bg-zinc-800/30 rounded-lg border border-white/10 ${className}`}>
+        <div className={`bg-surface-2/30 rounded-lg border border-white/10 ${className}`}>
             {/* Header */}
             <div
                 className="flex items-center justify-between p-4 cursor-pointer hover:bg-white/5 transition-colors"

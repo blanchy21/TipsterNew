@@ -123,7 +123,7 @@ const OptimizedFeed: React.FC<OptimizedFeedProps> = ({
                     ) : (
                         <button
                             onClick={() => fetchNextPage()}
-                            className="px-6 py-2 bg-zinc-700 hover:bg-zinc-600 text-white rounded-lg transition-colors"
+                            className="px-6 py-2 bg-surface-3 hover:bg-surface-4 text-white rounded-lg transition-colors"
                         >
                             Load More
                         </button>

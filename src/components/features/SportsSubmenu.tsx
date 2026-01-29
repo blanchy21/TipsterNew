@@ -44,7 +44,7 @@ export default function SportsSubmenu({ isOpen, selectedSport, onSportSelect, on
 
   return (
     <div
-      className="absolute left-0 top-full mt-1 w-64 border border-white/40 rounded-lg shadow-2xl bg-zinc-800"
+      className="absolute left-0 top-full mt-1 w-64 border border-white/40 rounded-lg shadow-2xl bg-surface-2"
       style={{
         opacity: 1,
         backdropFilter: 'none',
@@ -57,7 +57,7 @@ export default function SportsSubmenu({ isOpen, selectedSport, onSportSelect, on
       }}
     >
       <div
-        className="p-3 rounded-lg bg-zinc-800"
+        className="p-3 rounded-lg bg-surface-2"
         style={{
           position: 'relative',
           zIndex: 1
@@ -73,7 +73,7 @@ export default function SportsSubmenu({ isOpen, selectedSport, onSportSelect, on
           </button>
         </div>
         <div
-          className="max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent bg-zinc-800"
+          className="max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent bg-surface-2"
           style={{
             position: 'relative',
             zIndex: 1

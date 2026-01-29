@@ -10,7 +10,7 @@ interface EmojiPickerProps {
 export default function EmojiPicker({ onSelect }: EmojiPickerProps) {
   return (
     <div
-      className="absolute z-20 mt-1 bg-zinc-800 border border-white/20 rounded-lg shadow-xl p-4 max-w-sm max-h-80 overflow-y-auto"
+      className="absolute z-20 mt-1 bg-surface-2 border border-white/20 rounded-lg shadow-xl p-4 max-w-sm max-h-80 overflow-y-auto"
       onClick={(e) => e.stopPropagation()}
       data-emoji-picker
     >

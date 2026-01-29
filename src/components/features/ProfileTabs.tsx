@@ -42,7 +42,7 @@ const ProfileTabs: React.FC<ProfileTabsProps> = ({ activeTab, onTabChange, stats
     ];
 
     return (
-        <div className="border-b border-zinc-700/50 mb-6">
+        <div className="border-b border-surface-3/50 mb-6">
             <nav className="flex space-x-8">
                 {tabs.map((tab) => {
                     const Icon = tab.icon;
@@ -62,7 +62,7 @@ const ProfileTabs: React.FC<ProfileTabsProps> = ({ activeTab, onTabChange, stats
                             {tab.count !== null && (
                                 <span className={`px-2 py-1 rounded-full text-xs ${isActive
                                     ? 'bg-amber-500/20 text-amber-400'
-                                    : 'bg-zinc-700 text-zinc-400'
+                                    : 'bg-surface-3 text-zinc-400'
                                     }`}>
                                     {tab.count}
                                 </span>

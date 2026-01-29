@@ -15,7 +15,7 @@ export default function ProfileAccessModal({ isOpen, onClose, onLogin, onSignup 
 
     return (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div className="bg-zinc-800 rounded-xl border border-white/10 w-full max-w-md overflow-hidden">
+            <div className="bg-surface-2 rounded-xl border border-white/10 w-full max-w-md overflow-hidden">
                 {/* Header */}
                 <div className="flex items-center justify-between p-6 border-b border-white/10">
                     <div className="flex items-center gap-3">
@@ -74,7 +74,7 @@ export default function ProfileAccessModal({ isOpen, onClose, onLogin, onSignup 
                 </div>
 
                 {/* Footer */}
-                <div className="px-6 py-4 bg-zinc-900/50 border-t border-white/10">
+                <div className="px-6 py-4 bg-surface-1/50 border-t border-white/10">
                     <p className="text-xs text-zinc-500 text-center">
                         Create an account to access all features and manage your profile.
                     </p>

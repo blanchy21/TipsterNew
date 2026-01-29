@@ -74,7 +74,7 @@ export default function GifPicker({ onSelect }: GifPickerProps) {
 
   return (
     <div
-      className="absolute z-20 mt-1 bg-zinc-800 border border-white/20 rounded-lg shadow-xl p-4 max-w-md max-h-80 overflow-y-auto"
+      className="absolute z-20 mt-1 bg-surface-2 border border-white/20 rounded-lg shadow-xl p-4 max-w-md max-h-80 overflow-y-auto"
       onClick={(e) => e.stopPropagation()}
       data-gif-picker
     >
@@ -87,7 +87,7 @@ export default function GifPicker({ onSelect }: GifPickerProps) {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search for GIFs..."
-              className="flex-1 px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-zinc-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 placeholder-zinc-400"
+              className="flex-1 px-3 py-2 bg-surface-3 border border-zinc-600 rounded-lg text-zinc-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 placeholder-zinc-400"
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
                   searchGifs(searchTerm);

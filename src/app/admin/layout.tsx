@@ -28,7 +28,7 @@ function AdminLayoutContent({
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-zinc-900 to-[#2c1376]/70 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-surface-0 to-surface-2 flex items-center justify-center">
         <div className="text-white text-lg">Loading...</div>
       </div>
     );
@@ -39,7 +39,7 @@ function AdminLayoutContent({
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-zinc-900 to-[#2c1376]/70">
+    <div className="min-h-screen bg-gradient-to-br from-surface-0 to-surface-2">
       {children}
     </div>
   );

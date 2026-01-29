@@ -68,7 +68,7 @@ export default function PostModal({ open, onClose, onSubmit, selectedSport }: Po
         className="fixed inset-0 bg-black/60 backdrop-blur-sm"
         onClick={onClose}
       />
-      <div className="relative w-full max-w-4xl bg-zinc-900/95 border border-white/20 rounded-2xl shadow-2xl">
+      <div className="relative w-full max-w-4xl bg-surface-1/95 border border-white/20 rounded-2xl shadow-2xl">
         <div className="flex items-center justify-between p-6 border-b border-white/10">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
@@ -103,7 +103,7 @@ export default function PostModal({ open, onClose, onSubmit, selectedSport }: Po
                   <ChevronDown className={`w-4 h-4 text-zinc-400 transition-transform ${showSportDropdown ? 'rotate-180' : ''}`} />
                 </button>
                 {showSportDropdown && (
-                  <div className="absolute top-full left-0 right-0 mt-1 bg-zinc-800 border border-white/20 rounded-lg shadow-xl z-10 max-h-48 overflow-y-auto">
+                  <div className="absolute top-full left-0 right-0 mt-1 bg-surface-2 border border-white/20 rounded-lg shadow-xl z-10 max-h-48 overflow-y-auto">
                     {sports.map((sportOption) => (
                       <button
                         key={sportOption}

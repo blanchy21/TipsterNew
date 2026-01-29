@@ -60,7 +60,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
             <div className="relative px-6 pb-6">
                 {/* Profile Picture */}
                 <div className="relative -mt-16 mb-4">
-                    <div className="w-32 h-32 rounded-full border-4 border-zinc-900 overflow-hidden bg-zinc-800">
+                    <div className="w-32 h-32 rounded-full border-4 border-surface-1 overflow-hidden bg-surface-2">
                         <Image
                             src={normalizeImageUrl(user.avatar)}
                             alt={user.name}
@@ -70,7 +70,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
                         />
                     </div>
                     {isOwnProfile && (
-                        <button className="absolute bottom-2 right-2 p-2 bg-zinc-800 hover:bg-zinc-700 rounded-full border-2 border-zinc-900 transition-colors">
+                        <button className="absolute bottom-2 right-2 p-2 bg-surface-2 hover:bg-surface-3 rounded-full border-2 border-surface-1 transition-colors">
                             <Camera className="w-4 h-4 text-white" />
                         </button>
                     )}
@@ -136,7 +136,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
                                         href={user.socialMedia.facebook}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="p-2 bg-zinc-800 hover:bg-primary-hover rounded-lg transition-colors"
+                                        className="p-2 bg-surface-2 hover:bg-primary-hover rounded-lg transition-colors"
                                     >
                                         <Facebook className="w-4 h-4 text-white" />
                                     </a>
@@ -146,7 +146,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
                                         href={user.socialMedia.twitter}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="p-2 bg-zinc-800 hover:bg-primary rounded-lg transition-colors"
+                                        className="p-2 bg-surface-2 hover:bg-primary rounded-lg transition-colors"
                                     >
                                         <Twitter className="w-4 h-4 text-white" />
                                     </a>
@@ -156,7 +156,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
                                         href={user.socialMedia.instagram}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="p-2 bg-zinc-800 hover:bg-pink-600 rounded-lg transition-colors"
+                                        className="p-2 bg-surface-2 hover:bg-pink-600 rounded-lg transition-colors"
                                     >
                                         <Instagram className="w-4 h-4 text-white" />
                                     </a>
@@ -171,12 +171,12 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
                             <>
                                 <button
                                     onClick={onEditProfile}
-                                    className="flex items-center gap-2 px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-white rounded-lg transition-colors"
+                                    className="flex items-center gap-2 px-4 py-2 bg-surface-2 hover:bg-surface-3 text-white rounded-lg transition-colors"
                                 >
                                     <Edit3 className="w-4 h-4" />
                                     Edit Profile
                                 </button>
-                                <button className="flex items-center gap-2 px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-white rounded-lg transition-colors">
+                                <button className="flex items-center gap-2 px-4 py-2 bg-surface-2 hover:bg-surface-3 text-white rounded-lg transition-colors">
                                     <Settings className="w-4 h-4" />
                                     Settings
                                 </button>

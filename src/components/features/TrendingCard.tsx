@@ -49,13 +49,13 @@ export default function TrendingCard({ limit = 5, onNavigateToProfile }: Trendin
           <div className="animate-pulse space-y-3">
             {Array.from({ length: limit }).map((_, i) => (
               <div key={i} className="flex items-center gap-3">
-                <div className="w-4 h-4 bg-zinc-700 rounded"></div>
-                <div className="w-8 h-8 bg-zinc-700 rounded-full"></div>
+                <div className="w-4 h-4 bg-surface-3 rounded"></div>
+                <div className="w-8 h-8 bg-surface-3 rounded-full"></div>
                 <div className="flex-1 space-y-1">
-                  <div className="h-3 bg-zinc-700 rounded w-3/4"></div>
-                  <div className="h-2 bg-zinc-700 rounded w-1/2"></div>
+                  <div className="h-3 bg-surface-3 rounded w-3/4"></div>
+                  <div className="h-2 bg-surface-3 rounded w-1/2"></div>
                 </div>
-                <div className="h-6 bg-zinc-700 rounded w-12"></div>
+                <div className="h-6 bg-surface-3 rounded w-12"></div>
               </div>
             ))}
           </div>
@@ -103,7 +103,7 @@ export default function TrendingCard({ limit = 5, onNavigateToProfile }: Trendin
                   blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
                 />
                 {tipster.isVerified && (
-                  <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border border-zinc-900 flex items-center justify-center">
+                  <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border border-surface-1 flex items-center justify-center">
                     <Check className="w-2 h-2 text-white" style={{ strokeWidth: 3 }} />
                   </div>
                 )}

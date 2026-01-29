@@ -149,7 +149,7 @@ const TopTipstersData: React.FC<TopTipstersDataProps> = ({
                                     className="rounded-full border-2 border-white/20 group-hover:border-white/40 transition-all duration-300"
                                 />
                                 {tipster.isVerified && (
-                                    <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-emerald-500 rounded-full border-2 border-zinc-900 flex items-center justify-center">
+                                    <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-emerald-500 rounded-full border-2 border-surface-1 flex items-center justify-center">
                                         <Check className="w-3 h-3 text-white" style={{ strokeWidth: 3 }} />
                                     </div>
                                 )}

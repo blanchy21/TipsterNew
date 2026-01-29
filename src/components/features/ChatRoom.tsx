@@ -156,7 +156,7 @@ export default function ChatRoom({ gameId, sport, title = "Live Chat", className
 
     if (!user) {
         return (
-            <div className={`flex items-center justify-center h-64 bg-zinc-800/50 rounded-lg ${className}`}>
+            <div className={`flex items-center justify-center h-64 bg-surface-2/50 rounded-lg ${className}`}>
                 <div className="text-center">
                     <MessageCircle className="w-12 h-12 text-zinc-400 mx-auto mb-4" />
                     <p className="text-zinc-400">Please sign in to join the chat</p>
@@ -166,7 +166,7 @@ export default function ChatRoom({ gameId, sport, title = "Live Chat", className
     }
 
     return (
-        <div className={`flex flex-col h-full bg-zinc-800/30 rounded-lg border border-white/10 ${className}`}>
+        <div className={`flex flex-col h-full bg-surface-2/30 rounded-lg border border-white/10 ${className}`}>
             {/* Header */}
             <div className="flex items-center justify-between p-3 sm:p-4 border-b border-white/10">
                 <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
@@ -211,7 +211,7 @@ export default function ChatRoom({ gameId, sport, title = "Live Chat", className
                             <div key={message.id}>
                                 {showDate && (
                                     <div className="flex items-center justify-center my-4">
-                                        <div className="bg-zinc-700/50 px-3 py-1 rounded-full text-xs text-zinc-400">
+                                        <div className="bg-surface-3/50 px-3 py-1 rounded-full text-xs text-zinc-400">
                                             {formatDate(message.createdAt)}
                                         </div>
                                     </div>

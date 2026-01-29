@@ -105,9 +105,9 @@ export default function FilterModal({ isOpen, onClose, onApplyFilters, currentFi
 
     return (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-start justify-center p-2 sm:p-4 pt-4 sm:pt-8 md:pt-16" onClick={onClose}>
-            <div className="bg-zinc-800 rounded-xl border border-white/10 w-full max-w-4xl max-h-[95vh] sm:max-h-[90vh] md:max-h-[85vh] overflow-hidden flex flex-col mt-2 sm:mt-4" onClick={(e) => e.stopPropagation()}>
+            <div className="bg-surface-2 rounded-xl border border-white/10 w-full max-w-4xl max-h-[95vh] sm:max-h-[90vh] md:max-h-[85vh] overflow-hidden flex flex-col mt-2 sm:mt-4" onClick={(e) => e.stopPropagation()}>
                 {/* Header */}
-                <div className="flex-shrink-0 flex items-center justify-between p-4 sm:p-6 border-b border-white/10 bg-zinc-800">
+                <div className="flex-shrink-0 flex items-center justify-between p-4 sm:p-6 border-b border-white/10 bg-surface-2">
                     <div className="flex items-center gap-3">
                         <Filter className="w-5 h-5 text-primary" />
                         <h2 className="text-xl font-semibold text-white">Filter Tips</h2>
@@ -256,7 +256,7 @@ export default function FilterModal({ isOpen, onClose, onApplyFilters, currentFi
                 </div>
 
                 {/* Footer */}
-                <div className="flex-shrink-0 flex items-center justify-between p-4 sm:p-6 border-t border-white/10 bg-zinc-800">
+                <div className="flex-shrink-0 flex items-center justify-between p-4 sm:p-6 border-t border-white/10 bg-surface-2">
                     <button
                         onClick={handleReset}
                         className="px-4 py-2 text-zinc-400 hover:text-white transition-colors"

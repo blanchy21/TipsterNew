@@ -90,7 +90,7 @@ export default function CommentItem({
   };
 
   return (
-    <div className={`group ${isReply ? 'ml-8 border-l border-zinc-700/50 pl-4' : ''}`}>
+    <div className={`group ${isReply ? 'ml-8 border-l border-surface-3/50 pl-4' : ''}`}>
       <div className="flex items-start gap-3">
         <AvatarWithFallback
           src={comment.user.avatar}
@@ -126,7 +126,7 @@ export default function CommentItem({
                 <textarea
                   value={editContent}
                   onChange={(e) => setEditContent(e.target.value)}
-                  className="w-full bg-zinc-800/50 border border-zinc-600 rounded-lg px-3 py-2 text-zinc-100 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  className="w-full bg-surface-2/50 border border-zinc-600 rounded-lg px-3 py-2 text-zinc-100 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary/50"
                   rows={3}
                   placeholder="Edit your comment..."
                 />
@@ -139,7 +139,7 @@ export default function CommentItem({
                   </button>
                   <button
                     onClick={handleCancelEdit}
-                    className="px-3 py-1.5 bg-zinc-600 hover:bg-zinc-700 text-zinc-200 text-xs rounded-md transition"
+                    className="px-3 py-1.5 bg-zinc-600 hover:bg-surface-3 text-zinc-200 text-xs rounded-md transition"
                   >
                     Cancel
                   </button>
@@ -188,11 +188,11 @@ export default function CommentItem({
                 </button>
 
                 {showActions && (
-                  <div className="absolute right-0 top-6 bg-zinc-800 border border-zinc-700 rounded-lg shadow-lg z-10 min-w-[120px]">
+                  <div className="absolute right-0 top-6 bg-surface-2 border border-surface-3 rounded-lg shadow-lg z-10 min-w-[120px]">
                     {canEdit && (
                       <button
                         onClick={handleEdit}
-                        className="w-full flex items-center gap-2 px-3 py-2 text-xs text-zinc-300 hover:bg-zinc-700 transition"
+                        className="w-full flex items-center gap-2 px-3 py-2 text-xs text-zinc-300 hover:bg-surface-3 transition"
                       >
                         <Edit2 className="w-3 h-3" />
                         Edit

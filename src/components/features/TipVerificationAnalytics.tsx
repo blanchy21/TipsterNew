@@ -175,7 +175,7 @@ export default function TipVerificationAnalytics({
                                             }`}>
                                             {sport.winRate}%
                                         </span>
-                                        <div className="w-16 bg-zinc-700 rounded-full h-2">
+                                        <div className="w-16 bg-surface-3 rounded-full h-2">
                                             <div
                                                 className={`h-2 rounded-full ${sport.winRate >= 60 ? 'bg-green-400' :
                                                     sport.winRate >= 40 ? 'bg-yellow-400' : 'bg-red-400'
@@ -391,7 +391,7 @@ export default function TipVerificationAnalytics({
                     <div className="text-center">
                         <div className="text-3xl font-bold text-amber-400 mb-2">{stats.winRate}%</div>
                         <div className="text-sm text-zinc-300">Overall Win Rate</div>
-                        <div className="w-full bg-zinc-700 rounded-full h-2 mt-2">
+                        <div className="w-full bg-surface-3 rounded-full h-2 mt-2">
                             <div
                                 className="bg-gradient-to-r from-amber-400 to-orange-500 h-2 rounded-full transition-all duration-1000"
                                 style={{ width: `${Math.min(stats.winRate, 100)}%` }}

@@ -180,7 +180,7 @@ const AdminPage: React.FC = () => {
   };
 
   return (
-    <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-zinc-900 to-[#2c1376]/70 min-h-screen">
+    <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-surface-0 to-surface-2 min-h-screen">
       <div className="max-w-6xl mx-auto px-4 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">

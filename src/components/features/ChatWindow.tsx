@@ -163,7 +163,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                 <div key={message.id}>
                   {showDate && (
                     <div className="flex items-center justify-center my-4">
-                      <div className="bg-zinc-700/50 px-3 py-1 rounded-full text-xs text-zinc-400">
+                      <div className="bg-surface-3/50 px-3 py-1 rounded-full text-xs text-zinc-400">
                         {new Date(message.timestamp).toLocaleDateString()}
                       </div>
                     </div>

@@ -3,7 +3,7 @@ import App from '@/components/App';
 
 export default function Home() {
   return (
-    <Suspense fallback={<div className="h-screen flex items-center justify-center bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900">
+    <Suspense fallback={<div className="h-screen flex items-center justify-center bg-gradient-to-br from-surface-0 via-surface-1 to-surface-0">
       <div className="text-center">
         <div className="w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
         <p className="text-white/70">Loading...</p>

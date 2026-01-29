@@ -61,7 +61,7 @@ const TopTipsters: React.FC<TopTipstersProps> = ({ onNavigateToProfile }) => {
 
     if (loading) {
         return (
-            <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 min-h-screen flex items-center justify-center">
+            <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-surface-0 via-surface-1 to-surface-0 min-h-screen flex items-center justify-center">
                 <div className="text-center">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
                     <p className="text-neutral-400">Loading leaderboard...</p>
@@ -71,7 +71,7 @@ const TopTipsters: React.FC<TopTipstersProps> = ({ onNavigateToProfile }) => {
     }
 
     return (
-        <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 min-h-full">
+        <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-surface-0 via-surface-1 to-surface-0 min-h-full">
             <div className="max-w-7xl mx-auto px-4 lg:px-8 py-12">
                 {/* Header */}
                 <div className="text-center mb-12">

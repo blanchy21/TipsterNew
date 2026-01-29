@@ -85,9 +85,9 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="flex h-screen bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900">
+    <div className="flex h-screen bg-gradient-to-br from-surface-0 via-surface-1 to-surface-0">
       {/* Mobile Header */}
-      <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-zinc-800/90 backdrop-blur-sm border-b border-white/10 p-4">
+      <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-surface-2/90 backdrop-blur-sm border-b border-white/10 p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <button
@@ -118,7 +118,7 @@ export default function ChatPage() {
 
 
       {/* Sidebar */}
-      <div className={`${showSidebar ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 fixed md:relative z-50 md:z-auto w-80 h-full bg-zinc-800/50 backdrop-blur-sm border-r border-white/10 flex flex-col transition-transform duration-300 ease-in-out`}>
+      <div className={`${showSidebar ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 fixed md:relative z-50 md:z-auto w-80 h-full bg-surface-2/50 backdrop-blur-sm border-r border-white/10 flex flex-col transition-transform duration-300 ease-in-out`}>
         {/* Header */}
         <div className="p-6 border-b border-white/10">
           <div className="flex items-center justify-between mb-2">
@@ -166,7 +166,7 @@ export default function ChatPage() {
 
         {/* Footer */}
         <div className="p-4 border-t border-white/10">
-          <div className="bg-zinc-700/50 rounded-lg p-3">
+          <div className="bg-surface-3/50 rounded-lg p-3">
             <h4 className="text-sm font-semibold text-white mb-1">Chat Rules</h4>
             <ul className="text-xs text-zinc-400 space-y-1">
               <li>• Be respectful to other users</li>

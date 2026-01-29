@@ -513,7 +513,7 @@ export default function CommentForm({
       <div className="flex items-start gap-3">
         <div className="flex-1">
           {/* Formatting Toolbar */}
-          <div className="relative flex items-center gap-2 p-2 bg-zinc-800/30 border border-zinc-600 rounded-t-lg border-b-0">
+          <div className="relative flex items-center gap-2 p-2 bg-surface-2/30 border border-zinc-600 rounded-t-lg border-b-0">
             <button
               type="button"
               onClick={() => handleFormat('bold')}
@@ -579,7 +579,7 @@ export default function CommentForm({
           {/* Emoji Picker */}
           {showEmojiPicker && (
             <div
-              className="absolute z-20 mt-1 bg-zinc-800 border border-white/20 rounded-lg shadow-xl p-4 max-w-sm max-h-80 overflow-y-auto"
+              className="absolute z-20 mt-1 bg-surface-2 border border-white/20 rounded-lg shadow-xl p-4 max-w-sm max-h-80 overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
               data-emoji-picker
             >
@@ -639,7 +639,7 @@ export default function CommentForm({
           {/* GIF Picker */}
           {showGifPicker && (
             <div
-              className="absolute z-20 mt-1 bg-zinc-800 border border-white/20 rounded-lg shadow-xl p-4 max-w-md max-h-80 overflow-y-auto"
+              className="absolute z-20 mt-1 bg-surface-2 border border-white/20 rounded-lg shadow-xl p-4 max-w-md max-h-80 overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
               data-gif-picker
             >
@@ -652,7 +652,7 @@ export default function CommentForm({
                       value={gifSearchTerm}
                       onChange={(e) => setGifSearchTerm(e.target.value)}
                       placeholder="Search for GIFs..."
-                      className="flex-1 px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-lg text-zinc-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 placeholder-zinc-400"
+                      className="flex-1 px-3 py-2 bg-surface-3 border border-zinc-600 rounded-lg text-zinc-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 placeholder-zinc-400"
                       onKeyDown={(e) => {
                         if (e.key === 'Enter') {
                           searchGifs(gifSearchTerm);
@@ -712,7 +712,7 @@ export default function CommentForm({
             onKeyUp={updateFormattingState}
             onMouseUp={updateFormattingState}
             onKeyDown={handleKeyDown}
-            className="w-full bg-zinc-800/50 border border-zinc-600 rounded-b-lg px-3 py-2 text-zinc-100 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary/50 placeholder-zinc-400 empty:before:content-[attr(data-placeholder)] empty:before:text-zinc-500 empty:before:pointer-events-none"
+            className="w-full bg-surface-2/50 border border-zinc-600 rounded-b-lg px-3 py-2 text-zinc-100 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary/50 placeholder-zinc-400 empty:before:content-[attr(data-placeholder)] empty:before:text-zinc-500 empty:before:pointer-events-none"
             style={{ minHeight: isReply ? '48px' : '72px' }}
             data-placeholder={placeholder}
             suppressContentEditableWarning={true}

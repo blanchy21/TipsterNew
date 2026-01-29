@@ -104,8 +104,8 @@ class ErrorBoundary extends Component<Props, State> {
 
             // Default error UI
             return (
-                <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 p-4">
-                    <div className="max-w-md w-full bg-zinc-800/50 backdrop-blur-sm rounded-2xl border border-zinc-700/50 p-8 text-center">
+                <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-surface-0 via-surface-1 to-surface-0 p-4">
+                    <div className="max-w-md w-full bg-surface-2/50 backdrop-blur-sm rounded-2xl border border-surface-3/50 p-8 text-center">
                         <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
                             <AlertTriangle className="w-8 h-8 text-red-400" />
                         </div>
@@ -123,7 +123,7 @@ class ErrorBoundary extends Component<Props, State> {
                                 <summary className="text-zinc-400 cursor-pointer hover:text-white transition-colors">
                                     Error Details (Development)
                                 </summary>
-                                <div className="mt-2 p-4 bg-zinc-900/50 rounded-lg border border-zinc-700/50">
+                                <div className="mt-2 p-4 bg-surface-1/50 rounded-lg border border-surface-3/50">
                                     <pre className="text-xs text-red-400 whitespace-pre-wrap overflow-auto max-h-32">
                                         {this.state.error.toString()}
                                         {this.state.errorInfo?.componentStack}
@@ -143,7 +143,7 @@ class ErrorBoundary extends Component<Props, State> {
 
                             <button
                                 onClick={this.handleGoHome}
-                                className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-zinc-700 hover:bg-zinc-600 text-white rounded-lg font-medium transition-colors"
+                                className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-surface-3 hover:bg-surface-4 text-white rounded-lg font-medium transition-colors"
                             >
                                 <Home className="w-4 h-4" />
                                 Go Home

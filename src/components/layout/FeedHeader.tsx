@@ -42,7 +42,7 @@ export default function FeedHeader({ isLoaded, query, onQueryChange, selected, o
     <div className={[
       "flex items-center justify-between px-4 md:px-6 py-4 md:py-6",
       "border-b border-white/5 sticky top-0 z-20",
-      "bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900/80 backdrop-blur"
+      "bg-gradient-to-br from-surface-0 via-surface-1 to-surface-0/80 backdrop-blur"
     ].join(' ')}
     >
       <div className={[

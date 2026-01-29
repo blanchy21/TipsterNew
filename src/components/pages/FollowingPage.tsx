@@ -288,7 +288,7 @@ const FollowingPage: React.FC<FollowingPageProps> = ({ initialTab = 'following',
   };
 
   return (
-    <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 min-h-screen">
+    <div className="w-full text-gray-100 font-[Inter] bg-gradient-to-br from-surface-0 via-surface-1 to-surface-0 min-h-screen">
       <div className="max-w-4xl mx-auto px-4 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">

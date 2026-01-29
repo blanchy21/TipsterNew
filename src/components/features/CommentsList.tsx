@@ -127,7 +127,7 @@ export default function CommentsList({ postId, onCommentCountChange }: CommentsL
   return (
     <div className="space-y-4">
       {/* Comment Form */}
-      <div className="border-t border-zinc-700/50 pt-4">
+      <div className="border-t border-surface-3/50 pt-4">
         <CommentForm
           postId={postId}
           onCommentAdded={handleCommentAdded}
@@ -160,7 +160,7 @@ export default function CommentsList({ postId, onCommentCountChange }: CommentsL
 
                 {/* Reply Form */}
                 {replyingTo === comment.id && (
-                  <div className="mt-3 ml-8 border-l border-zinc-700/50 pl-4">
+                  <div className="mt-3 ml-8 border-l border-surface-3/50 pl-4">
                     <CommentForm
                       postId={postId}
                       parentId={comment.id}

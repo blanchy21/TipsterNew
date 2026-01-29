@@ -149,7 +149,7 @@ class AsyncErrorBoundary extends Component<Props, State> {
 
             return (
                 <div className="min-h-[400px] flex items-center justify-center p-4">
-                    <div className="max-w-sm w-full bg-zinc-800/50 backdrop-blur-sm rounded-xl border border-zinc-700/50 p-6 text-center">
+                    <div className="max-w-sm w-full bg-surface-2/50 backdrop-blur-sm rounded-xl border border-surface-3/50 p-6 text-center">
                         <div className={`w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 ${isNetworkError ? 'bg-orange-500/20' : 'bg-red-500/20'
                             }`}>
                             {isNetworkError ? (
@@ -172,7 +172,7 @@ class AsyncErrorBoundary extends Component<Props, State> {
                                 <summary className="text-zinc-400 cursor-pointer hover:text-white transition-colors text-xs">
                                     Error Details
                                 </summary>
-                                <div className="mt-2 p-3 bg-zinc-900/50 rounded border border-zinc-700/50">
+                                <div className="mt-2 p-3 bg-surface-1/50 rounded border border-surface-3/50">
                                     <pre className="text-xs text-red-400 whitespace-pre-wrap overflow-auto max-h-20">
                                         {error.toString()}
                                     </pre>

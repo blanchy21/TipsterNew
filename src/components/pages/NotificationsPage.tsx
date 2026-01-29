@@ -91,7 +91,7 @@ export default function NotificationsPage() {
   };
 
   return (
-    <div className="h-full flex flex-col bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900">
+    <div className="h-full flex flex-col bg-gradient-to-br from-surface-0 via-surface-1 to-surface-0">
       {/* Header */}
       <div className="border-b border-white/10 px-6 py-4">
         <div className="flex items-center justify-between">
@@ -177,7 +177,7 @@ export default function NotificationsPage() {
             <select
               value={typeFilter}
               onChange={(e) => setTypeFilter(e.target.value as Notification['type'] | 'all')}
-              className="text-sm bg-zinc-700 border border-zinc-600 text-zinc-200 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-primary"
+              className="text-sm bg-surface-3 border border-zinc-600 text-zinc-200 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-primary"
             >
               <option value="all">All Types</option>
               {(['like', 'comment', 'follow', 'tip', 'match_result', 'system'] as const).map((type) => (
@@ -264,7 +264,7 @@ export default function NotificationsPage() {
                       </p>
                     )}
                     <div className="flex items-center space-x-2 mt-2">
-                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-zinc-700 text-zinc-200">
+                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-surface-3 text-zinc-200">
                         {getTypeLabel(notification.type)}
                       </span>
                     </div>

@@ -56,7 +56,7 @@ export default function InputField({
     }, [value]);
 
     return (
-        <div className={`p-4 border-t border-white/10 bg-zinc-800/50 backdrop-blur-sm ${className}`}>
+        <div className={`p-4 border-t border-white/10 bg-surface-2/50 backdrop-blur-sm ${className}`}>
             <form onSubmit={handleSubmit} className="flex items-end gap-3">
                 <button
                     type="button"

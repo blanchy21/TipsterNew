@@ -552,7 +552,7 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
             {/* User Detail Modal */}
             {selectedUser && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-                    <div className="bg-zinc-800 rounded-2xl p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+                    <div className="bg-surface-2 rounded-2xl p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto">
                         <div className="flex items-center justify-between mb-6">
                             <h2 className="text-2xl font-bold text-white">User Details</h2>
                             <button
@@ -639,7 +639,7 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
             {/* Delete User Confirmation Modal */}
             {deleteConfirmUser && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-                    <div className="bg-zinc-800 rounded-2xl p-6 max-w-md w-full">
+                    <div className="bg-surface-2 rounded-2xl p-6 max-w-md w-full">
                         <div className="flex items-center gap-3 mb-4">
                             <div className="p-2 bg-red-500/20 rounded-lg">
                                 <AlertTriangle className="w-6 h-6 text-red-400" />
@@ -662,7 +662,7 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
                         <div className="flex gap-3">
                             <button
                                 onClick={() => setDeleteConfirmUser(null)}
-                                className="flex-1 px-4 py-2 bg-zinc-600 text-white rounded-lg hover:bg-zinc-700 transition-colors"
+                                className="flex-1 px-4 py-2 bg-zinc-600 text-white rounded-lg hover:bg-surface-3 transition-colors"
                             >
                                 Cancel
                             </button>
@@ -686,7 +686,7 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
             {/* Bulk Delete Test Users Confirmation Modal */}
             {showBulkDelete && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-                    <div className="bg-zinc-800 rounded-2xl p-6 max-w-md w-full">
+                    <div className="bg-surface-2 rounded-2xl p-6 max-w-md w-full">
                         <div className="flex items-center gap-3 mb-4">
                             <div className="p-2 bg-red-500/20 rounded-lg">
                                 <AlertTriangle className="w-6 h-6 text-red-400" />
@@ -698,7 +698,7 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
                             This will delete all test users matching these names:
                         </p>
 
-                        <div className="bg-zinc-700/50 rounded-lg p-3 mb-6">
+                        <div className="bg-surface-3/50 rounded-lg p-3 mb-6">
                             <ul className="text-sm text-zinc-300 space-y-1">
                                 <li>• David Chen</li>
                                 <li>• Mike Rodriguez</li>
@@ -717,7 +717,7 @@ const UserManagement: React.FC<UserManagementProps> = ({ onUserSelect }) => {
                         <div className="flex gap-3">
                             <button
                                 onClick={() => setShowBulkDelete(false)}
-                                className="flex-1 px-4 py-2 bg-zinc-600 text-white rounded-lg hover:bg-zinc-700 transition-colors"
+                                className="flex-1 px-4 py-2 bg-zinc-600 text-white rounded-lg hover:bg-surface-3 transition-colors"
                             >
                                 Cancel
                             </button>

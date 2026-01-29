@@ -111,21 +111,21 @@ export default function FollowButton({
 
     if (variant === 'compact') {
       return `${baseClasses} px-3 py-1.5 text-sm rounded-lg ${isFollowing
-        ? 'bg-zinc-600/50 text-zinc-300 hover:bg-zinc-600/70 hover:text-zinc-200 border border-zinc-500/30'
+        ? 'bg-zinc-600/50 text-zinc-300 hover:bg-surface-4/70 hover:text-zinc-200 border border-zinc-500/30'
         : 'bg-primary/20 text-primary hover:bg-primary/30 hover:text-primary border border-primary/30'
         }`;
     }
 
     if (variant === 'minimal') {
       return `${baseClasses} p-2 rounded-lg ${isFollowing
-        ? 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-600/30'
+        ? 'text-zinc-400 hover:text-zinc-200 hover:bg-surface-4/30'
         : 'text-primary hover:text-primary hover:bg-primary/20'
         }`;
     }
 
     // Default variant
     return `${baseClasses} px-4 py-2 rounded-xl ${isFollowing
-      ? 'bg-zinc-600/50 text-zinc-300 hover:bg-zinc-600/70 hover:text-zinc-200 border border-zinc-500/30 hover:scale-105'
+      ? 'bg-zinc-600/50 text-zinc-300 hover:bg-surface-4/70 hover:text-zinc-200 border border-zinc-500/30 hover:scale-105'
       : 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white hover:from-blue-600 hover:to-indigo-600 hover:scale-105 shadow-lg hover:shadow-blue-500/25'
       }`;
   };
