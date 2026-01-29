@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
+import { sanitizeHtml } from '@/lib/sanitize';
 import {
     CheckCircle,
     XCircle,
@@ -501,7 +502,7 @@ export default function TipVerificationPanel({ onTipVerified }: TipVerificationP
                                     <h3 className="text-xl font-semibold text-white mb-3">{post.title}</h3>
                                     <div
                                         className="text-slate-300 mb-4 line-clamp-3"
-                                        dangerouslySetInnerHTML={{ __html: post.content }}
+                                        dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }}
                                     />
 
                                     <div className="flex items-center gap-6 text-sm text-slate-400 mb-4">

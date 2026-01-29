@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect, memo, useCallback, useMemo } from 'react';
 import Image from 'next/image';
+import { sanitizeHtml } from '@/lib/sanitize';
 import { MoreHorizontal, MessageCircle, Eye, Hash, ChevronDown, ChevronUp, CheckCircle, XCircle, Clock, AlertCircle, Trophy, Edit, Trash2, X } from 'lucide-react';
 import { Post, TipStatus } from '@/lib/types';
 import { timeAgo } from '@/lib/utils';
@@ -295,7 +296,7 @@ const PostCard = memo(function PostCard({ post, onLikeChange, onCommentCountChan
 
               <div
                 className="text-sm text-slate-300/90 leading-relaxed"
-                dangerouslySetInnerHTML={{ __html: post.content }}
+                dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }}
               />
 
               <div className="flex flex-wrap items-center gap-2">

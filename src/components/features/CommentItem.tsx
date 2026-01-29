@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { Heart, Reply, MoreHorizontal, Edit2, Trash2 } from 'lucide-react';
+import { sanitizeHtml } from '@/lib/sanitize';
 import { Comment } from '@/lib/types';
 import { timeAgo } from '@/lib/utils';
 import { useAuth } from '@/lib/hooks/useAuth';
@@ -147,7 +148,7 @@ export default function CommentItem({
             ) : (
               <div
                 className="text-slate-300 text-sm leading-relaxed mt-1"
-                dangerouslySetInnerHTML={{ __html: comment.content }}
+                dangerouslySetInnerHTML={{ __html: sanitizeHtml(comment.content) }}
               />
             )}
           </div>

@@ -3,13 +3,9 @@ service cloud.firestore {
   match /databases/{database}/documents {
     // Helper function to check if user is admin
     function isAdmin(auth) {
-      // Check if user email is in admin list or has admin custom claim
       return auth != null && (
         auth.token.email in ['paulblanche@gmail.com', 'admin@tipsterarena.com'] ||
-        auth.token.admin == true ||
-        // Allow any authenticated user to perform admin operations for development
-        // TODO: Remove this in production and use proper admin authentication
-        auth != null
+        auth.token.admin == true
       );
     }
     // Users collection - users can read all profiles (for leaderboard) and write their own profile
@@ -49,10 +45,8 @@ service cloud.firestore {
         (request.auth != null && request.auth.uid == resource.data.userId) ||
         // Admins can update any post for verification
         (request.auth != null && isAdmin(request.auth)) ||
-        // Allow like updates for demo users (only likes and likedBy fields)
-        (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likes', 'likedBy'])) ||
-        // Fallback: allow any update for demo mode (temporary for development)
-        true
+        // Allow like updates for authenticated users (only likes and likedBy fields)
+        (request.auth != null && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likes', 'likedBy']))
       );
       allow delete: if request.auth != null && (
         request.auth.uid == resource.data.userId || // User can delete their own posts

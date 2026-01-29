@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { sanitizeHtml } from '@/lib/sanitize';
 import { Database, Trash2, Users, FileText, Loader2, CheckCircle, XCircle, Clock, AlertCircle, Trophy, Eye, ArrowLeft, BarChart3, TrendingUp, Activity, Shield } from 'lucide-react';
 import { populateTestData, clearTestData } from '@/lib/populateTestData';
 import { Post, TipStatus } from '@/lib/types';
@@ -575,7 +576,7 @@ const AdminPage: React.FC = () => {
                         <h3 className="text-lg font-semibold text-white mb-2">{post.title}</h3>
                         <div
                           className="text-slate-300 text-sm mb-3 line-clamp-2"
-                          dangerouslySetInnerHTML={{ __html: post.content }}
+                          dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }}
                         />
                         <div className="flex items-center gap-4 text-sm text-slate-400">
                           <span>By {post.user.name}</span>
