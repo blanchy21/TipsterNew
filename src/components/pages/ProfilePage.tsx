@@ -18,6 +18,8 @@ import { Post } from '@/lib/types';
 import { collection, query, where, onSnapshot, limit } from 'firebase/firestore';
 import { db } from '@/lib/firebase/firebase';
 import { MessageCircle, Users } from 'lucide-react';
+import { getUserFollowers, getUserFollowing } from '@/lib/firebase/follow-utils';
+import { User } from '@/lib/types';
 
 interface ProfilePageProps {
   userId?: string;
@@ -27,11 +29,13 @@ interface ProfilePageProps {
 const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }) => {
   const { user: currentUser } = useAuth();
   const { profile, loadUserProfile } = useProfile();
-  const { followers, following } = useFollowing();
+  const { followers: ownFollowers, following: ownFollowing } = useFollowing();
   const [activeTab, setActiveTab] = useState('tips');
   const [showEditModal, setShowEditModal] = useState(false);
   const [userPosts, setUserPosts] = useState<Post[]>([]);
   const [postsLoading, setPostsLoading] = useState(true);
+  const [profileFollowers, setProfileFollowers] = useState<User[]>([]);
+  const [profileFollowing, setProfileFollowing] = useState<User[]>([]);
 
   const profileUser = useMemo(() => {
     return profile || (currentUser ? {
@@ -46,11 +50,37 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
     } : null);
   }, [profile, currentUser]);
 
+  const isOwnProfile = !userId || userId === currentUser?.uid;
+  const followers = isOwnProfile ? ownFollowers : profileFollowers;
+  const following = isOwnProfile ? ownFollowing : profileFollowing;
+
   useEffect(() => {
     if (userId && userId !== currentUser?.uid) {
       loadUserProfile(userId);
     }
   }, [userId, currentUser?.uid, loadUserProfile]);
+
+  useEffect(() => {
+    if (!userId || userId === currentUser?.uid) return;
+
+    let cancelled = false;
+    const fetchProfileFollows = async () => {
+      try {
+        const [fetchedFollowers, fetchedFollowing] = await Promise.all([
+          getUserFollowers(userId),
+          getUserFollowing(userId)
+        ]);
+        if (!cancelled) {
+          setProfileFollowers(fetchedFollowers);
+          setProfileFollowing(fetchedFollowing);
+        }
+      } catch {
+        // Failed to load followers/following for this profile
+      }
+    };
+    fetchProfileFollows();
+    return () => { cancelled = true; };
+  }, [userId, currentUser?.uid]);
 
   const { userStats, statsLoading } = useProfileData({
     userId: profileUser?.id,
@@ -100,8 +130,6 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
   if (!profileUser) {
     return <PageLoadingState />;
   }
-
-  const isOwnProfile = !userId || userId === currentUser?.uid;
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -249,7 +277,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ userId, onNavigateToProfile }
           onNavigateToProfile={onNavigateToProfile}
         />
 
-        <div className="px-6 space-y-0">
+        <div className="px-4 md:px-6 space-y-0">
           <ProfileStats stats={userStats} loading={statsLoading} />
 
           <ProfileTabs

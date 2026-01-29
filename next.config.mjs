@@ -155,16 +155,17 @@ const pwaConfig = withPWA({
   runtimeCaching: [
     {
       urlPattern: /^https:\/\/firestore\.googleapis\.com\/.*/i,
-      handler: 'CacheFirst',
+      handler: 'NetworkFirst',
       options: {
         cacheName: 'firestore-cache',
         expiration: {
           maxEntries: 50,
-          maxAgeSeconds: 60 * 60 * 24 * 7, // 7 days
+          maxAgeSeconds: 60 * 60 * 24, // 1 day
         },
         cacheableResponse: {
           statuses: [0, 200],
         },
+        networkTimeoutSeconds: 10,
       },
     },
     {

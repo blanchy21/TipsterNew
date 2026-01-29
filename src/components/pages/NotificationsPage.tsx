@@ -84,27 +84,26 @@ export default function NotificationsPage() {
     if (!notification.read) {
       markAsRead(notification.id);
     }
-    // Here you would navigate to the relevant page/post
     if (notification.actionUrl) {
-      // router.push(notification.actionUrl);
+      window.location.href = notification.actionUrl;
     }
   };
 
   return (
     <div className="h-full flex flex-col bg-gradient-to-br from-surface-0 via-surface-1 to-surface-0">
       {/* Header */}
-      <div className="border-b border-white/10 px-6 py-4">
+      <div className="border-b border-white/10 px-4 md:px-6 py-3 md:py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <Bell className="w-6 h-6 text-zinc-300" />
+            <Bell className="w-5 h-5 md:w-6 md:h-6 text-zinc-300" />
             <div>
-              <h1 className="text-xl font-semibold text-zinc-100">Notifications</h1>
-              <p className="text-sm text-zinc-400">
-                {unreadCount} unread notification{unreadCount !== 1 ? 's' : ''}
+              <h1 className="text-lg md:text-xl font-semibold text-zinc-100">Notifications</h1>
+              <p className="text-xs md:text-sm text-zinc-400">
+                {unreadCount} unread
               </p>
             </div>
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-1 md:space-x-2">
             <button
               onClick={() => setShowSettings(!showSettings)}
               className="p-2 text-zinc-400 hover:text-zinc-200 hover:bg-white/5 rounded-lg transition-colors"
@@ -125,9 +124,9 @@ export default function NotificationsPage() {
 
       {/* Settings Panel */}
       {showSettings && (
-        <div className="border-b border-white/10 px-6 py-4 bg-white/5">
+        <div className="border-b border-white/10 px-4 md:px-6 py-4 bg-white/5">
           <h3 className="font-medium text-zinc-100 mb-3">Notification Settings</h3>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
             {Object.entries(settings).map(([key, value]) => (
               <label key={key} className="flex items-center justify-between">
                 <span className="text-sm text-zinc-300 capitalize">
@@ -150,43 +149,38 @@ export default function NotificationsPage() {
       )}
 
       {/* Filters */}
-      <div className="border-b border-white/10 px-6 py-3">
-        <div className="flex items-center space-x-4">
-          <div className="flex items-center space-x-2">
+      <div className="border-b border-white/10 px-4 md:px-6 py-3">
+        <div className="flex flex-wrap items-center gap-2 md:gap-4">
+          <div className="flex items-center gap-2">
             <Filter className="w-4 h-4 text-zinc-400" />
-            <span className="text-sm text-zinc-300">Filter:</span>
-          </div>
-
-          <div className="flex space-x-2">
-            {(['all', 'unread', 'read'] as const).map((filterType) => (
-              <button
-                key={filterType}
-                onClick={() => setFilter(filterType)}
-                className={`px-3 py-1 text-sm rounded-full transition-colors ${filter === filterType
-                  ? 'bg-primary/20 text-primary'
-                  : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/5'
-                  }`}
-              >
-                {filterType === 'all' ? 'All' : filterType}
-              </button>
-            ))}
-          </div>
-
-          <div className="flex items-center space-x-2 ml-4">
-            <span className="text-sm text-zinc-300">Type:</span>
-            <select
-              value={typeFilter}
-              onChange={(e) => setTypeFilter(e.target.value as Notification['type'] | 'all')}
-              className="text-sm bg-surface-3 border border-zinc-600 text-zinc-200 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-primary"
-            >
-              <option value="all">All Types</option>
-              {(['like', 'comment', 'follow', 'tip', 'match_result', 'system'] as const).map((type) => (
-                <option key={type} value={type}>
-                  {getTypeLabel(type)}
-                </option>
+            <div className="flex gap-1">
+              {(['all', 'unread', 'read'] as const).map((filterType) => (
+                <button
+                  key={filterType}
+                  onClick={() => setFilter(filterType)}
+                  className={`px-2.5 py-1 text-xs md:text-sm rounded-full transition-colors ${filter === filterType
+                    ? 'bg-primary/20 text-primary'
+                    : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/5'
+                    }`}
+                >
+                  {filterType === 'all' ? 'All' : filterType.charAt(0).toUpperCase() + filterType.slice(1)}
+                </button>
               ))}
-            </select>
+            </div>
           </div>
+
+          <select
+            value={typeFilter}
+            onChange={(e) => setTypeFilter(e.target.value as Notification['type'] | 'all')}
+            className="text-xs md:text-sm bg-surface-3 border border-zinc-600 text-zinc-200 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-primary"
+          >
+            <option value="all">All Types</option>
+            {(['like', 'comment', 'follow', 'tip', 'match_result', 'system'] as const).map((type) => (
+              <option key={type} value={type}>
+                {getTypeLabel(type)}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 
@@ -224,11 +218,11 @@ export default function NotificationsPage() {
               <div
                 key={notification.id}
                 onClick={() => handleNotificationClick(notification)}
-                className={`p-6 hover:bg-white/5 cursor-pointer transition-all duration-300 ${!notification.read ? 'bg-primary/10 border-l-4 border-l-primary' : ''
+                className={`px-4 md:px-6 py-4 md:py-6 hover:bg-white/5 cursor-pointer transition-all duration-300 ${!notification.read ? 'bg-primary/10 border-l-4 border-l-primary' : ''
                   }`}
               >
-                <div className="flex items-start space-x-4">
-                  <div className="text-2xl">{getNotificationIcon(notification.type)}</div>
+                <div className="flex items-start space-x-3 md:space-x-4">
+                  <div className="text-xl md:text-2xl">{getNotificationIcon(notification.type)}</div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
