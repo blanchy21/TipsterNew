@@ -1,7 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
+import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '@/lib/hooks/useAuth';
 
 interface LandingPageProps {
@@ -11,525 +10,676 @@ interface LandingPageProps {
 
 export default function LandingPage({ onGetStarted, onShowAuthModal }: LandingPageProps) {
   const { user } = useAuth();
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(true);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeFeature, setActiveFeature] = useState(0);
+  const heroRef = useRef<HTMLDivElement>(null);
 
+  // Auto-cycle features
   useEffect(() => {
-    // Reduce delay for faster LCP
-    const timer = setTimeout(() => {
-      setIsLoaded(true);
-    }, 0);
-    return () => clearTimeout(timer);
+    const interval = setInterval(() => {
+      setActiveFeature(prev => (prev + 1) % 6);
+    }, 4000);
+    return () => clearInterval(interval);
   }, []);
 
   const features = [
     {
-      icon: '🎯',
-      title: 'Share Your Tips',
-      description: 'Post your sports predictions and tips for any sport. Share your insights with the community and build your reputation.',
-      color: 'from-emerald-500 to-teal-600'
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/>
+        </svg>
+      ),
+      title: 'Share Tips',
+      description: 'Post predictions for any sport. Build your reputation through transparent results.',
+      label: '01',
     },
     {
-      icon: '💬',
-      title: 'Live Sports Chat',
-      description: 'Join dedicated chat rooms for each sport - Football, Horse Racing, Golf, Tennis, Basketball & General. Real-time discussions with fellow tipsters during games.',
-      color: 'from-cyan-500 to-blue-600'
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+      ),
+      title: 'Live Chat',
+      description: 'Dedicated rooms for Football, Racing, Golf, Tennis, Basketball. Real-time during games.',
+      label: '02',
     },
     {
-      icon: '📊',
-      title: 'Transparent Tracking',
-      description: 'Automatic win/loss tracking with transparent statistics. See real performance data including win rates and average odds.',
-      color: 'from-violet-500 to-purple-600'
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M3 3v18h18"/><path d="M7 16l4-8 4 5 5-9"/>
+        </svg>
+      ),
+      title: 'Track Record',
+      description: 'Automatic win/loss tracking. Transparent statistics with real performance data.',
+      label: '03',
     },
     {
-      icon: '🔍',
-      title: 'Find Top Tipsters',
-      description: 'Search user profiles to find the best performing tipsters. No more scrolling through message boards - find winners easily.',
-      color: 'from-orange-500 to-red-600'
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+      ),
+      title: 'Find Winners',
+      description: 'Search and follow the best performing tipsters. Filter by sport, win rate, and more.',
+      label: '04',
     },
     {
-      icon: '👥',
-      title: 'Community Driven',
-      description: 'Celebrate everyday punters who consistently find winners. No bookmaker bias or conflicts of interest - just pure community tips.',
-      color: 'from-blue-500 to-indigo-600'
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+      ),
+      title: 'Community',
+      description: 'No bookmaker bias. No conflicts of interest. Just sports fans helping sports fans.',
+      label: '05',
     },
     {
-      icon: '🛡️',
-      title: 'Sports Only',
-      description: 'A politics-free zone focused purely on sports. No distractions from politics, religion, or drama - just sports discussion.',
-      color: 'from-pink-500 to-rose-600'
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+      ),
+      title: 'Free Forever',
+      description: 'No hidden fees. No premium tiers. Unlimited tips, notifications, and full statistics.',
+      label: '06',
     },
-    {
-      icon: '💰',
-      title: '100% Free',
-      description: 'Completely free forever with no hidden fees or premium tiers. Unlimited tips, real-time notifications, and full statistics.',
-      color: 'from-gray-500 to-slate-600'
-    }
   ];
 
   const sports = [
-    { name: 'Football', icon: '⚽', color: 'text-green-400' },
-    { name: 'Horse Racing', icon: '🏇', color: 'text-amber-400' },
-    { name: 'Golf', icon: '⛳', color: 'text-emerald-400' },
-    { name: 'Tennis', icon: '🎾', color: 'text-yellow-400' },
-    { name: 'Basketball', icon: '🏀', color: 'text-orange-400' },
-    { name: 'Cricket', icon: '🏏', color: 'text-blue-400' }
+    { name: 'Football', icon: '\u26BD', color: '#22c55e', desc: 'Premier League, Champions League & more' },
+    { name: 'Horse Racing', icon: '\uD83C\uDFC7', color: '#f59e0b', desc: 'Flat, Jump Racing & Major Festivals' },
+    { name: 'Golf', icon: '\u26F3', color: '#10b981', desc: 'Masters, PGA & Ryder Cup' },
+    { name: 'Tennis', icon: '\uD83C\uDFBE', color: '#eab308', desc: 'Grand Slams, ATP & WTA Tours' },
+    { name: 'Basketball', icon: '\uD83C\uDFC0', color: '#f97316', desc: 'NBA, EuroLeague & College' },
+    { name: 'Cricket', icon: '\uD83C\uDFCF', color: '#3b82f6', desc: 'Intl Tests, IPL & T20 World Cup' },
   ];
 
+  const chatRooms = [
+    { name: 'General Chat', icon: '\uD83D\uDCAC', members: '2.1k', color: '#6366f1' },
+    { name: 'Football', icon: '\u26BD', members: '4.8k', color: '#22c55e' },
+    { name: 'Horse Racing', icon: '\uD83C\uDFC7', members: '1.9k', color: '#f59e0b' },
+    { name: 'Golf', icon: '\u26F3', members: '890', color: '#10b981' },
+    { name: 'Tennis', icon: '\uD83C\uDFBE', members: '1.2k', color: '#a855f7' },
+    { name: 'Basketball', icon: '\uD83C\uDFC0', members: '2.4k', color: '#f97316' },
+  ];
+
+  const ctaText = user ? 'Continue to App' : 'Get Started Free';
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white overflow-x-hidden">
-      <style>{`
-        .glass-footer {
-          background: rgba(11, 20, 38, 0.7);
-          backdrop-filter: blur(32px);
-          -webkit-backdrop-filter: blur(32px);
-          border-top: 1px solid rgba(255, 255, 255, 0.08);
-          box-shadow:
-            0 -1px 0 0 rgba(255, 255, 255, 0.05) inset,
-            0 -20px 60px -10px rgba(245, 158, 11, 0.1);
-        }
-      `}</style>
-      {/* Background Effects - Optimized for performance */}
-      <div className="fixed inset-0 -z-20">
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"></div>
-        {/* Minimal blur effects for better performance */}
-        <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-amber-500/5 rounded-full blur-xl"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-32 h-32 bg-orange-500/5 rounded-full blur-xl"></div>
+    <div className="min-h-screen bg-surface-0 text-white overflow-x-hidden grain-overlay font-body">
+      {/* ═══════ BACKGROUND ATMOSPHERE ═══════ */}
+      <div className="fixed inset-0 -z-10 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-b from-surface-0 via-surface-1 to-surface-0" />
+        {/* Hero radial glow */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-[radial-gradient(ellipse_at_center,rgba(232,145,58,0.08)_0%,transparent_70%)]" />
+        {/* Subtle grid pattern */}
+        <div
+          className="absolute inset-0 opacity-[0.02]"
+          style={{
+            backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
+            backgroundSize: '64px 64px',
+          }}
+        />
       </div>
 
-      {/* Navigation */}
-      <nav className="sticky top-0 z-40">
+      {/* ═══════ NAVIGATION ═══════ */}
+      <nav className="sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mt-4 rounded-full border border-white/10 bg-white/5 backdrop-blur supports-[backdrop-filter]:bg-white/5">
-            <div className="flex items-center justify-between px-4 py-3">
+          <div className="mt-3 rounded-2xl nav-glass">
+            <div className="flex items-center justify-between px-5 py-3">
+              {/* Logo */}
               <div className="flex items-center gap-3">
-                {/* Using regular img tag instead of Next.js Image due to SVG with embedded JPEG causing optimization issues */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/tipster-logo2.svg"
-                  alt="Tipster Arena"
-                  className="h-8 w-auto"
-                />
+                <img src="/tipster-logo2.svg" alt="Tipster Arena" className="h-8 w-auto" />
               </div>
 
-              <div className="hidden md:flex items-center gap-8">
-                <a href="#features" className="text-white/70 hover:text-white transition-colors">Features</a>
-                <a href="#sports" className="text-white/70 hover:text-white transition-colors">Sports</a>
-                <a href="#features" className="text-white/70 hover:text-white transition-colors">Community</a>
+              {/* Desktop links */}
+              <div className="hidden md:flex items-center gap-1">
+                {['Features', 'Sports', 'Community'].map((item) => (
+                  <a
+                    key={item}
+                    href={`#${item.toLowerCase()}`}
+                    className="px-4 py-2 text-[13px] font-medium text-white/50 hover:text-white transition-colors rounded-lg hover:bg-white/[0.04]"
+                  >
+                    {item}
+                  </a>
+                ))}
                 <button
-                  onClick={() => {
-                    // Create a temporary popup element
-                    const popup = document.createElement('div');
-                    popup.innerHTML = '🎉 FREE FOREVER! 🎉';
-                    popup.className = 'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-green-500 text-black text-2xl font-bold px-8 py-4 rounded-full shadow-2xl z-50 animate-bounce';
-                    popup.style.animation = 'bounce 1s ease-in-out 3';
-                    document.body.appendChild(popup);
-
-                    // Remove popup after animation
-                    setTimeout(() => {
-                      popup.remove();
-                    }, 3000);
-
-                    // Also scroll to pricing section
-                    document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="text-white/70 hover:text-white transition-colors cursor-pointer"
+                  onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="px-4 py-2 text-[13px] font-medium text-white/50 hover:text-white transition-colors rounded-lg hover:bg-white/[0.04]"
                 >
                   Pricing
                 </button>
               </div>
 
-              <div className="flex items-center gap-2">
+              {/* Right actions */}
+              <div className="flex items-center gap-3">
                 {!user && onShowAuthModal && (
                   <button
                     onClick={() => onShowAuthModal('login')}
-                    className="inline-flex items-center rounded-full px-4 py-2 text-sm text-white/80 hover:text-white transition-colors"
+                    className="hidden sm:inline-flex text-[13px] font-medium text-white/60 hover:text-white transition-colors px-4 py-2"
                   >
                     Sign in
                   </button>
                 )}
-                <a
-                  href="#"
+                <button
                   onClick={onGetStarted}
-                  className="inline-flex items-center gap-2 rounded-full bg-gradient-to-tr from-amber-600 to-orange-600 px-4 py-2 text-sm font-medium tracking-tight text-white shadow-[0_8px_30px_rgba(245,158,11,0.35)] ring-1 ring-white/10 hover:from-amber-500 hover:to-orange-500 transition-all duration-200 hover:shadow-[0_12px_40px_rgba(245,158,11,0.45)]"
+                  className="btn-primary-glow inline-flex items-center gap-2 rounded-xl px-4 py-2 text-[13px] font-semibold tracking-wide"
                 >
-                  {user ? (
-                    <>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
-                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                        <polyline points="9,22 9,12 15,12 15,22"></polyline>
-                      </svg>
-                      Continue to App
-                    </>
-                  ) : (
-                    <>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
-                        <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path>
-                        <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path>
-                        <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path>
-                        <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path>
-                      </svg>
-                      Get started
-                    </>
-                  )}
-                </a>
-                <button data-testid="mobile-menu" className="md:hidden inline-flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/5">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-white/80">
-                    <path d="M4 12h16"></path>
-                    <path d="M4 18h16"></path>
-                    <path d="M4 6h16"></path>
+                  <span>{ctaText}</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+                  </svg>
+                </button>
+
+                {/* Mobile menu */}
+                <button
+                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                  className="md:hidden inline-flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] transition-colors"
+                  aria-label="Toggle menu"
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                    {mobileMenuOpen ? (
+                      <>
+                        <path d="M18 6L6 18"/><path d="M6 6l12 12"/>
+                      </>
+                    ) : (
+                      <>
+                        <path d="M4 8h16"/><path d="M4 16h16"/>
+                      </>
+                    )}
                   </svg>
                 </button>
               </div>
             </div>
+
+            {/* Mobile menu dropdown */}
+            {mobileMenuOpen && (
+              <div className="md:hidden border-t border-white/[0.06] px-4 pb-4 pt-2">
+                <div className="flex flex-col gap-1">
+                  {['Features', 'Sports', 'Community'].map((item) => (
+                    <a
+                      key={item}
+                      href={`#${item.toLowerCase()}`}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="px-3 py-2.5 text-sm text-white/70 hover:text-white hover:bg-white/[0.04] rounded-lg transition-colors"
+                    >
+                      {item}
+                    </a>
+                  ))}
+                  {!user && onShowAuthModal && (
+                    <button
+                      onClick={() => { onShowAuthModal('login'); setMobileMenuOpen(false); }}
+                      className="px-3 py-2.5 text-sm text-white/70 hover:text-white hover:bg-white/[0.04] rounded-lg transition-colors text-left"
+                    >
+                      Sign in
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section className="relative">
+      {/* ═══════ HERO ═══════ */}
+      <section ref={heroRef} className="relative pt-20 sm:pt-28 lg:pt-36 pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative flex flex-col sm:pt-16 lg:pt-20 text-center mr-auto ml-auto pt-12 items-center">
-            {/* Badge */}
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2 text-sm text-emerald-300">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          <div className="max-w-4xl mx-auto text-center">
+            {/* Status pill */}
+            <div
+              className={`inline-flex items-center gap-2.5 rounded-full border border-accent/20 bg-accent/[0.06] px-4 py-1.5 text-[13px] text-accent-light mb-8 transition-all duration-700 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+            >
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-accent" />
               </span>
-              <span>Now with transparent tip tracking</span>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
-                <path d="M5 12h14"></path>
-                <path d="m12 5 7 7-7 7"></path>
-              </svg>
+              <span className="font-medium">Now with transparent tip tracking</span>
             </div>
 
-            <h1 className="max-w-5xl text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold tracking-tight" style={{ minHeight: '200px' }}>
-              The world&apos;s premier platform for
-              <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-400 bg-clip-text text-transparent"> sports tip sharing</span>
+            {/* Main headline */}
+            <h1
+              className={`font-display text-5xl sm:text-6xl md:text-7xl lg:text-[5.25rem] tracking-tight leading-[1.05] text-balance transition-all duration-1000 delay-100 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
+            >
+              Where sports fans{' '}
+              <span className="italic text-accent">prove</span>
+              <br className="hidden sm:block" />
+              {' '}their expertise
             </h1>
-            <p className="mt-6 max-w-2xl text-lg sm:text-xl text-white/70 leading-relaxed">
-              The ultimate platform for sports tipsters. Share tips, track performance, and connect with fellow sports fans. Built by sports fans for sports fans - completely free, with transparent statistics and no bookmaker bias.
+
+            {/* Subheadline */}
+            <p
+              className={`mt-6 max-w-xl mx-auto text-base sm:text-lg text-white/45 leading-relaxed transition-all duration-1000 delay-200 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
+            >
+              Share tips, track your win rate, and build a real reputation.
+              No bookmaker bias. No hidden fees. Just results.
             </p>
 
-
-            {/* CTA */}
-            <div className="flex flex-col gap-4 sm:flex-row mt-16 items-center">
-              <a
-                href="#"
+            {/* CTAs */}
+            <div
+              className={`flex flex-col sm:flex-row gap-3 justify-center mt-10 transition-all duration-1000 delay-300 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
+            >
+              <button
                 onClick={onGetStarted}
-                className="inline-flex items-center gap-2 ring-1 ring-white/10 shadow-[0_10px_40px_-10px_rgba(245,158,11,0.6)] hover:shadow-[0_15px_50px_-10px_rgba(245,158,11,0.8)] transition-all duration-300 relative overflow-hidden text-sm font-medium text-white tracking-tight bg-gradient-to-tr from-amber-600 to-orange-600 border-2 rounded-full pt-3 pr-6 pb-3 pl-6"
-                style={{ borderColor: 'rgba(255, 255, 255, 0.3)' }}
+                className="btn-primary-glow inline-flex items-center justify-center gap-2 rounded-xl px-7 py-3.5 text-sm font-semibold tracking-wide"
               >
-                {user ? (
-                  <>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
-                      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                      <polyline points="9,22 9,12 15,12 15,22"></polyline>
-                    </svg>
-                    Continue to App
-                  </>
-                ) : (
-                  <>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
-                      <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path>
-                      <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path>
-                      <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path>
-                      <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path>
-                    </svg>
-                    Start sharing tips now
-                  </>
-                )}
-              </a>
-              <a href="#demo-video" className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm text-white/80 hover:bg-white/10 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
-                  <path d="M9 9.003a1 1 0 0 1 1.517-.859l4.997 2.997a1 1 0 0 1 0 1.718l-4.997 2.997A1 1 0 0 1 9 14.996z"></path>
-                  <circle cx="12" cy="12" r="10"></circle>
+                <span>{ctaText}</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
                 </svg>
-                Watch product demo
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Interactive Dashboard Preview */}
-      <section id="demo-video" className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-white mb-4">
-              Where Sports Fans <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-400 bg-clip-text text-transparent">Share Tips</span>
-            </h2>
-            <p className="text-lg text-white/70 max-w-2xl mx-auto leading-relaxed">
-              From living rooms to stadiums, see how sports fans around the world use Tipster Arena to share tips, track performance, and build their reputation.
-            </p>
-          </div>
-
-          {/* Demo Video - Simplified */}
-          <div className="relative max-w-6xl mx-auto">
-            <div className="relative rounded-2xl overflow-hidden shadow-[0_30px_120px_-20px_rgba(245,158,11,0.45)]">
-              <video
-                className="w-full h-auto object-cover"
-                controls
-                preload="metadata"
-                poster="/hero-feed.png"
-                onError={(e) => {
-                  // Video error handling - could be logged to analytics in production
-                }}
+              </button>
+              <button
+                onClick={onGetStarted}
+                className="btn-ghost inline-flex items-center justify-center gap-2 rounded-xl px-7 py-3.5 text-sm font-medium text-white/70 hover:text-white"
               >
-                <source src="/demo.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
+                Browse Top Tipsters
+              </button>
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Founder Story Section */}
-      <section className="py-20 bg-black/20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-white mb-6">
-              Why We Built <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-400 bg-clip-text text-transparent">Tipster Arena</span>
-            </h2>
-            <div className="max-w-3xl mx-auto">
-              <p className="text-lg text-white/70 leading-relaxed mb-8">
-                &ldquo;We were tired of traditional tipster services with hidden fees, bookmaker bias, and marketing hype.
-                We wanted a platform where everyday punters could share their tips and track their performance transparently.
-                No politics, no drama - just pure sports tip sharing.&rdquo;
-              </p>
-              <div className="bg-gradient-to-r from-amber-500/10 to-orange-500/10 rounded-2xl p-8 border border-amber-500/20">
-                <p className="text-white/80 text-lg italic">
-                  &ldquo;Sports tip sharing should be about community, transparency, and celebrating those who consistently find winners.
-                  We built Tipster Arena to give every sports fan a voice and a way to prove their expertise through real results.&rdquo;
-                </p>
-                <div className="mt-6 flex items-center justify-center gap-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-500 rounded-full flex items-center justify-center">
-                    <span className="text-white font-bold text-lg">TA</span>
-                  </div>
-                  <div className="text-left">
-                    <div className="text-white font-semibold">Tipster Arena Founders</div>
-                    <div className="text-white/60 text-sm">Built by sports fans, for sports fans</div>
-                  </div>
+            {/* Social proof bar */}
+            <div
+              className={`mt-14 flex flex-wrap items-center justify-center gap-8 sm:gap-12 transition-all duration-1000 delay-500 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
+            >
+              {[
+                { value: '12k+', label: 'Tips shared' },
+                { value: '3.2k', label: 'Active tipsters' },
+                { value: '67%', label: 'Avg win rate' },
+              ].map((stat) => (
+                <div key={stat.label} className="text-center">
+                  <div className="stat-number text-3xl sm:text-4xl">{stat.value}</div>
+                  <div className="text-[11px] uppercase tracking-[0.15em] text-white/30 mt-1 font-medium">{stat.label}</div>
                 </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
+      <div className="section-divider max-w-xl mx-auto" />
 
-      {/* Features Section */}
-      <section id="features" className="py-20">
+      {/* ═══════ SOCIAL PROOF MARQUEE ═══════ */}
+      <section className="py-16 overflow-hidden">
+        <div className="relative">
+          <div className="marquee-track">
+            {[...Array(2)].map((_, setIdx) => (
+              <React.Fragment key={setIdx}>
+                {[
+                  '"Finally a platform where results actually matter"',
+                  '\u26BD Football \u2022 \uD83C\uDFC7 Racing \u2022 \u26F3 Golf \u2022 \uD83C\uDFBE Tennis \u2022 \uD83C\uDFC0 Basketball \u2022 \uD83C\uDFCF Cricket',
+                  '"Best tipster community I\'ve found"',
+                  'Transparent \u2022 Free forever \u2022 No bookmaker bias',
+                  '"Love the live chat during games"',
+                  'Win rate tracking \u2022 Real stats \u2022 No hidden fees',
+                ].map((text, i) => (
+                  <span key={`${setIdx}-${i}`} className="text-white/15 text-lg font-medium whitespace-nowrap">
+                    {text}
+                  </span>
+                ))}
+              </React.Fragment>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <div className="section-divider max-w-xl mx-auto" />
+
+      {/* ═══════ FEATURES ═══════ */}
+      <section id="features" className="py-24 sm:py-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">
-              Everything You Need for <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-400 bg-clip-text text-transparent">Tip Sharing</span>
+          {/* Section header */}
+          <div className="max-w-2xl mb-16 sm:mb-20">
+            <div className="text-[11px] uppercase tracking-[0.2em] text-accent font-semibold mb-4">Features</div>
+            <h2 className="font-display text-4xl sm:text-5xl tracking-tight">
+              Everything you need,{' '}
+              <span className="italic text-white/40">nothing you don&apos;t</span>
             </h2>
-            <p className="text-xl text-white/70 max-w-2xl mx-auto">
-              Powerful features designed specifically for sports tip sharing, performance tracking, and community building. Built by sports fans for sports fans.
-            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* Feature grid: bento-style */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {features.map((feature, index) => (
               <div
                 key={index}
-                className={`group relative rounded-2xl border border-white/10 bg-white/[0.04] p-6 transition-all duration-300 hover:transform hover:scale-105 cursor-pointer ${activeFeature === index ? 'ring-2 ring-amber-500/50' : ''
-                  }`}
+                className={`glow-card rounded-2xl p-7 cursor-pointer group ${index === 0 ? 'lg:col-span-2 lg:row-span-1' : ''}`}
                 onMouseEnter={() => setActiveFeature(index)}
-                onClick={() => setActiveFeature(index)}
               >
-                <div className={`w-16 h-16 bg-gradient-to-br ${feature.color} rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                  {feature.icon}
+                <div className="flex items-start justify-between mb-6">
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors duration-300 ${activeFeature === index ? 'bg-accent/20 text-accent' : 'bg-white/[0.06] text-white/40'}`}>
+                    {feature.icon}
+                  </div>
+                  <span className="text-[11px] font-mono text-white/20">{feature.label}</span>
                 </div>
-                <h3 className="text-xl font-semibold mb-4">{feature.title}</h3>
-                <p className="text-white/70 leading-relaxed">{feature.description}</p>
+                <h3 className="text-lg font-semibold mb-2 tracking-tight">{feature.title}</h3>
+                <p className="text-sm text-white/40 leading-relaxed">{feature.description}</p>
 
-                {/* Hover effect */}
-                <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-orange-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                {/* Active indicator bar */}
+                <div className={`mt-6 h-[2px] rounded-full transition-all duration-700 ${activeFeature === index ? 'bg-accent/50 w-12' : 'bg-white/[0.06] w-8'}`} />
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Live Chat Rooms Section */}
-      <section className="py-20 bg-black/20">
+      {/* ═══════ LIVE CHAT ═══════ */}
+      <section id="community" className="py-24 sm:py-32 relative">
+        {/* Background texture shift */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-surface-2/50 to-transparent pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            {/* Left: Content */}
+            <div>
+              <div className="text-[11px] uppercase tracking-[0.2em] text-accent font-semibold mb-4">Live chat</div>
+              <h2 className="font-display text-4xl sm:text-5xl tracking-tight mb-6">
+                Six rooms,{' '}
+                <span className="italic text-white/40">one community</span>
+              </h2>
+              <p className="text-white/40 text-base leading-relaxed mb-10 max-w-lg">
+                Dedicated chat rooms for every major sport. Discuss tips, strategies, and live action
+                with fellow tipsters. Each room is isolated so you only see what matters to you.
+              </p>
+
+              <div className="flex flex-col gap-2">
+                {chatRooms.map((room) => (
+                  <div
+                    key={room.name}
+                    className="sport-card flex items-center gap-4 rounded-xl bg-white/[0.02] border border-white/[0.04] px-5 py-3.5 cursor-pointer"
+                    style={{ '--sport-color': room.color } as React.CSSProperties}
+                  >
+                    <span className="text-2xl">{room.icon}</span>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm font-semibold text-white/80">{room.name}</div>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                      <span className="text-[11px] text-white/30 font-medium">{room.members} online</span>
+                    </div>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/15">
+                      <path d="m9 18 6-6-6-6"/>
+                    </svg>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Right: Visual mockup */}
+            <div className="hidden lg:block">
+              <div className="relative">
+                {/* Chat preview card */}
+                <div className="rounded-2xl border border-white/[0.06] bg-surface-2/80 backdrop-blur-xl overflow-hidden shadow-2xl">
+                  {/* Chat header */}
+                  <div className="flex items-center gap-3 px-5 py-4 border-b border-white/[0.06]">
+                    <span className="text-lg">{'\u26BD'}</span>
+                    <div>
+                      <div className="text-sm font-semibold">Football</div>
+                      <div className="text-[11px] text-white/30">4,831 members</div>
+                    </div>
+                    <div className="ml-auto flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                      <span className="text-[10px] text-white/30">Live</span>
+                    </div>
+                  </div>
+                  {/* Mock messages */}
+                  <div className="px-5 py-4 space-y-4">
+                    {[
+                      { user: 'JW', msg: 'Arsenal to win @ 1.85 looks solid', time: '2m ago', color: '#22c55e' },
+                      { user: 'SK', msg: 'Liverpool over 2.5 goals at home, great odds', time: '5m ago', color: '#6366f1' },
+                      { user: 'MT', msg: 'Both teams to score in the Chelsea match', time: '8m ago', color: '#f97316' },
+                    ].map((m, i) => (
+                      <div key={i} className="flex gap-3" style={{ opacity: 1 - i * 0.2 }}>
+                        <div className="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0" style={{ backgroundColor: `${m.color}20`, color: m.color }}>
+                          {m.user}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="text-sm text-white/70">{m.msg}</div>
+                          <div className="text-[10px] text-white/20 mt-0.5">{m.time}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {/* Mock input */}
+                  <div className="px-5 pb-4">
+                    <div className="rounded-xl bg-white/[0.04] border border-white/[0.06] px-4 py-3 text-sm text-white/20">
+                      Type a message...
+                    </div>
+                  </div>
+                </div>
+
+                {/* Floating accent glow */}
+                <div className="absolute -bottom-20 -right-20 w-60 h-60 bg-accent/[0.06] rounded-full blur-3xl pointer-events-none" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="section-divider max-w-xl mx-auto" />
+
+      {/* ═══════ SPORTS ═══════ */}
+      <section id="sports" className="py-24 sm:py-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">
-              <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-400 bg-clip-text text-transparent">Live Sports Chat</span> Rooms
+            <div className="text-[11px] uppercase tracking-[0.2em] text-accent font-semibold mb-4">Sports covered</div>
+            <h2 className="font-display text-4xl sm:text-5xl tracking-tight">
+              Tips for <span className="italic text-white/40">every sport</span>
             </h2>
-            <p className="text-xl text-white/70 max-w-3xl mx-auto">
-              Join dedicated chat rooms for each sport and discuss tips, strategies, and live action with fellow tipsters.
-              Each room is isolated so you only see relevant discussions for your sport.
-            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              { name: 'General Chat', icon: '💬', description: 'Discuss anything sports-related', color: 'from-blue-500 to-cyan-600' },
-              { name: 'Football', icon: '⚽', description: 'Premier League, Champions League & more', color: 'from-green-500 to-emerald-600' },
-              { name: 'Horse Racing', icon: '🏇', description: 'Flat Racing, Jump Racing & Major Festivals', color: 'from-amber-500 to-yellow-600' },
-              { name: 'Golf', icon: '⛳', description: 'Masters, PGA Championship & Ryder Cup', color: 'from-emerald-500 to-teal-600' },
-              { name: 'Tennis', icon: '🎾', description: 'Grand Slams, ATP & WTA Tours', color: 'from-purple-500 to-pink-600' },
-              { name: 'Basketball', icon: '🏀', description: 'NBA, EuroLeague & College Basketball', color: 'from-orange-500 to-red-600' }
-            ].map((room, index) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
+            {sports.map((sport) => (
               <div
-                key={index}
-                className="group relative rounded-2xl border border-white/10 bg-white/[0.04] p-6 transition-all duration-300 hover:transform hover:scale-105 cursor-pointer hover:border-white/20"
+                key={sport.name}
+                className="sport-card rounded-2xl bg-white/[0.02] border border-white/[0.04] px-6 py-5 cursor-pointer"
+                style={{ '--sport-color': sport.color } as React.CSSProperties}
               >
-                <div className={`w-16 h-16 bg-gradient-to-br ${room.color} rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                  {room.icon}
+                <div className="flex items-center gap-4">
+                  <span className="text-3xl">{sport.icon}</span>
+                  <div>
+                    <div className="font-semibold text-white/80">{sport.name}</div>
+                    <div className="text-xs text-white/30 mt-0.5">{sport.desc}</div>
+                  </div>
                 </div>
-                <h3 className="text-xl font-semibold mb-2 text-white">{room.name}</h3>
-                <p className="text-white/70 text-sm leading-relaxed">{room.description}</p>
-
-                {/* Hover effect */}
-                <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-orange-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
             ))}
           </div>
+        </div>
+      </section>
 
-          <div className="text-center mt-12">
-            <p className="text-white/60 text-lg mb-6">
-              Real-time messaging • Channel isolation • Live during games
+      {/* ═══════ FOUNDER QUOTE ═══════ */}
+      <section className="py-24 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-surface-2/30 to-transparent pointer-events-none" />
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
+          {/* Large quote mark */}
+          <div className="font-display text-[120px] sm:text-[160px] leading-none text-accent/[0.08] select-none mb-[-60px] sm:mb-[-80px]">
+            &ldquo;
+          </div>
+          <blockquote className="font-display text-2xl sm:text-3xl md:text-4xl italic text-white/70 leading-snug tracking-tight">
+            Sports tip sharing should be about community, transparency, and celebrating those who consistently find winners.
+          </blockquote>
+          <div className="mt-8 flex items-center justify-center gap-4">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-accent to-accent-dark flex items-center justify-center">
+              <span className="text-white font-bold text-xs">TA</span>
+            </div>
+            <div className="text-left">
+              <div className="text-sm font-semibold text-white/60">Tipster Arena Founders</div>
+              <div className="text-xs text-white/25">Built by sports fans, for sports fans</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="section-divider max-w-xl mx-auto" />
+
+      {/* ═══════ PRICING / FREE SECTION ═══════ */}
+      <section id="pricing" className="py-24 sm:py-32">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <div className="text-[11px] uppercase tracking-[0.2em] text-accent font-semibold mb-4">Pricing</div>
+            <h2 className="font-display text-4xl sm:text-5xl tracking-tight mb-4">
+              Free. <span className="italic text-white/40">Forever.</span>
+            </h2>
+            <p className="text-white/40 text-base max-w-md mx-auto">
+              No hidden fees, no premium tiers, no credit card required. Every feature is available to everyone.
             </p>
+          </div>
+
+          {/* Pricing card */}
+          <div className="glow-card rounded-2xl p-8 sm:p-10 text-center max-w-md mx-auto">
+            <div className="stat-number text-6xl sm:text-7xl mb-2">$0</div>
+            <div className="text-sm text-white/30 font-medium mb-8">per month, forever</div>
+
+            <ul className="space-y-3 text-left mb-8">
+              {[
+                'Unlimited tips & predictions',
+                'Full performance analytics',
+                'All 6 live chat rooms',
+                'Follow unlimited tipsters',
+                'Real-time notifications',
+                'Complete track record history',
+              ].map((item) => (
+                <li key={item} className="flex items-center gap-3 text-sm text-white/50">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-accent shrink-0">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                  {item}
+                </li>
+              ))}
+            </ul>
+
             <button
               onClick={onGetStarted}
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-600 to-orange-600 px-8 py-4 rounded-full font-semibold text-lg hover:from-amber-500 hover:to-orange-500 transition-all duration-200 transform hover:scale-105 shadow-2xl shadow-amber-500/25"
+              className="btn-primary-glow w-full inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3.5 text-sm font-semibold"
             >
-              {user ? (
-                <>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
-                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                    <polyline points="9,22 9,12 15,12 15,22"></polyline>
-                  </svg>
-                  Continue to App
-                </>
-              ) : (
-                <>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                  </svg>
-                  Join Live Chat Now
-                </>
-              )}
+              <span>{ctaText}</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+              </svg>
             </button>
           </div>
         </div>
       </section>
 
-      {/* Sports Section */}
-      <section id="sports" className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">
-              Tips for <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-400 bg-clip-text text-transparent">All Sports</span>
-            </h2>
-            <p className="text-xl text-white/70 max-w-2xl mx-auto">
-              From football to tennis, basketball to cricket - share your tips for any sport and help others discover winning strategies.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-            {sports.map((sport, index) => (
-              <div
-                key={index}
-                className="group rounded-xl border border-white/10 bg-white/[0.04] p-6 text-center hover:border-white/20 transition-all duration-300 hover:transform hover:scale-105 cursor-pointer"
-              >
-                <div className="text-4xl mb-3 group-hover:scale-110 transition-transform duration-300">
-                  {sport.icon}
-                </div>
-                <div className={`font-semibold ${sport.color}`}>{sport.name}</div>
-              </div>
-            ))}
-          </div>
+      {/* ═══════ FINAL CTA ═══════ */}
+      <section className="py-24 sm:py-32 relative overflow-hidden">
+        {/* Ambient glow */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-[radial-gradient(ellipse_at_center,rgba(232,145,58,0.1)_0%,transparent_70%)]" />
         </div>
-      </section>
 
-      {/* CTA Section */}
-      <section className="py-20">
-        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-bold mb-6">
-            Ready to Start <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-400 bg-clip-text text-transparent">Sharing Tips</span>?
+        <div className="max-w-3xl mx-auto text-center px-4 sm:px-6 lg:px-8 relative">
+          <h2 className="font-display text-4xl sm:text-5xl md:text-6xl tracking-tight mb-6">
+            Ready to prove{' '}
+            <span className="italic text-accent">your edge</span>?
           </h2>
-          <p className="text-xl text-white/70 mb-12 max-w-2xl mx-auto">
-            Join sports fans who are sharing tips, tracking performance, and building their reputation in a community focused purely on sports success.
+          <p className="text-white/40 text-base sm:text-lg max-w-lg mx-auto mb-10">
+            Join a community of sports fans who track their predictions with real data. Start building your reputation today.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <button
               onClick={onGetStarted}
-              className="bg-gradient-to-r from-amber-600 to-orange-600 px-8 py-4 rounded-full font-semibold text-lg hover:from-amber-500 hover:to-orange-500 transition-all duration-200 transform hover:scale-105 shadow-2xl shadow-amber-500/25"
+              className="btn-primary-glow inline-flex items-center justify-center gap-2 rounded-xl px-8 py-4 text-base font-semibold"
             >
-              {user ? 'Continue to App' : 'Start Sharing Tips Now'}
+              <span>{ctaText}</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+              </svg>
             </button>
-            <button className="border border-white/20 bg-white/5 px-8 py-4 rounded-full font-semibold text-lg hover:bg-white/10 transition-all duration-200 backdrop-blur-sm">
+            <button
+              onClick={onGetStarted}
+              className="btn-ghost inline-flex items-center justify-center gap-2 rounded-xl px-8 py-4 text-base font-medium text-white/60 hover:text-white"
+            >
               Browse Top Tipsters
             </button>
           </div>
 
-          <p className="text-sm text-white/50 mt-6">
-            Completely free forever • No hidden fees • No credit card required
+          <p className="text-[11px] text-white/20 mt-8 uppercase tracking-[0.15em] font-medium">
+            Free forever &middot; No credit card &middot; No bookmaker bias
           </p>
         </div>
       </section>
 
-      {/* Call to Action Section */}
-
-      {/* Footer */}
+      {/* ═══════ FOOTER ═══════ */}
       <footer className="glass-footer">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="col-span-1 md:col-span-1">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 bg-gradient-to-br from-amber-500 to-orange-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">TA</span>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+            {/* Brand */}
+            <div className="col-span-2 md:col-span-1">
+              <div className="flex items-center gap-2.5 mb-4">
+                <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-accent to-accent-dark flex items-center justify-center">
+                  <span className="text-white font-bold text-[10px]">TA</span>
                 </div>
-                <span className="text-xl font-bold">Tipster Arena</span>
+                <span className="text-sm font-bold tracking-tight">Tipster Arena</span>
               </div>
-              <p className="text-white/70 max-w-md mb-6">
-                The world&apos;s premier platform for sports tip sharing. Share tips, track performance, and connect with fellow sports fans - completely free and transparent.
+              <p className="text-xs text-white/30 leading-relaxed max-w-[200px]">
+                The community-driven platform for sports tip sharing and performance tracking.
               </p>
-              <div className="flex gap-4">
-                <a href="#" className="text-white/60 hover:text-white transition-colors">
-                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
-                  </svg>
-                </a>
-                <a href="#" className="text-white/60 hover:text-white transition-colors">
-                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z" />
-                  </svg>
-                </a>
-                <a href="#" className="text-white/60 hover:text-white transition-colors">
-                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                  </svg>
-                </a>
-              </div>
             </div>
 
-
+            {/* Product */}
             <div>
-              <h4 className="font-semibold mb-4">Support</h4>
-              <ul className="space-y-2 text-white/70">
-                <li><a href="#" className="hover:text-white transition-colors">Help Center</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Community</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Status</a></li>
+              <h4 className="text-[11px] uppercase tracking-[0.15em] font-semibold text-white/50 mb-4">Product</h4>
+              <ul className="space-y-2.5">
+                {['Features', 'Live Chat', 'Sports', 'Top Tipsters'].map((item) => (
+                  <li key={item}>
+                    <a href="#" className="text-sm text-white/30 hover:text-white/60 transition-colors">{item}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Community */}
+            <div>
+              <h4 className="text-[11px] uppercase tracking-[0.15em] font-semibold text-white/50 mb-4">Community</h4>
+              <ul className="space-y-2.5">
+                {['Help Center', 'Blog', 'Contact', 'Status'].map((item) => (
+                  <li key={item}>
+                    <a href="#" className="text-sm text-white/30 hover:text-white/60 transition-colors">{item}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Legal */}
+            <div>
+              <h4 className="text-[11px] uppercase tracking-[0.15em] font-semibold text-white/50 mb-4">Legal</h4>
+              <ul className="space-y-2.5">
+                {[
+                  { label: 'Privacy', href: '/privacy' },
+                  { label: 'Terms', href: '/terms' },
+                  { label: 'Cookies', href: '/cookies' },
+                ].map((item) => (
+                  <li key={item.label}>
+                    <a href={item.href} className="text-sm text-white/30 hover:text-white/60 transition-colors">{item.label}</a>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
 
-          <div className="border-t border-white/10 mt-8 pt-8 flex flex-col sm:flex-row justify-between items-center">
-            <p className="text-white/60 text-sm">© 2024 Tipster Arena. All rights reserved.</p>
-            <div className="flex gap-6 mt-4 sm:mt-0">
-              <a href="/privacy" className="text-white/60 hover:text-white text-sm transition-colors">Privacy</a>
-              <a href="/terms" className="text-white/60 hover:text-white text-sm transition-colors">Terms</a>
-              <a href="/cookies" className="text-white/60 hover:text-white text-sm transition-colors">Cookies</a>
+          {/* Bottom bar */}
+          <div className="border-t border-white/[0.06] pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <p className="text-xs text-white/20">&copy; {new Date().getFullYear()} Tipster Arena. All rights reserved.</p>
+            <div className="flex gap-5">
+              {/* Twitter / X */}
+              <a href="#" className="text-white/20 hover:text-white/40 transition-colors" aria-label="Twitter">
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                </svg>
+              </a>
+              {/* Discord */}
+              <a href="#" className="text-white/20 hover:text-white/40 transition-colors" aria-label="Discord">
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189z"/>
+                </svg>
+              </a>
+              {/* GitHub */}
+              <a href="#" className="text-white/20 hover:text-white/40 transition-colors" aria-label="GitHub">
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+                </svg>
+              </a>
             </div>
           </div>
         </div>

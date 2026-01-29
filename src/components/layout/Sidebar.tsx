@@ -66,23 +66,24 @@ export default function Sidebar({ selected, onSelect, onOpenPost, isLoaded, sele
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [showSportsSubmenu]);
+
   return (
     <aside className={[
       "hidden md:flex md:flex-col shrink-0",
-      "border-r border-white/5",
-      "backdrop-blur",
+      "border-r border-white/[0.04]",
+      "bg-surface-1/50 backdrop-blur-sm",
       "px-3 py-4",
-      "h-screen overflow-y-auto",
+      "h-screen overflow-y-auto scrollbar-thin",
       "transition-all duration-700",
       isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
     ].join(' ')}
       style={{ width: '260px' }}
     >
-      <div className="px-1 mb-4">
+      <div className="px-1 mb-5">
         <Logo />
       </div>
 
-      <nav className="flex-1 flex flex-col gap-1">
+      <nav className="flex-1 flex flex-col gap-0.5">
         {items.map((item, idx) => (
           <div
             key={item.key}
@@ -120,35 +121,40 @@ export default function Sidebar({ selected, onSelect, onOpenPost, isLoaded, sele
         ))}
       </nav>
 
-      <div className="mt-3 pt-3 border-t border-white/5 space-y-2">
+      {/* Action buttons with clear hierarchy */}
+      <div className="mt-3 pt-3 border-t border-white/[0.04] flex flex-col gap-2">
+        {/* Primary: Share a Tip */}
         <button
           onClick={onOpenPost}
-          className="w-full inline-flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg bg-sky-500/20 text-sky-300 hover:bg-sky-500/30 hover:text-sky-200 transition ring-1 ring-inset ring-sky-500/30 hover:ring-sky-500/40"
+          className="w-full btn-primary-glow inline-flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl text-sm"
           title="Share a Tip"
         >
-          <PlusCircle className="w-5 h-5" />
-          <span className="font-medium">Share a Tip</span>
+          <PlusCircle className="w-4 h-4" />
+          <span className="font-semibold">Share a Tip</span>
         </button>
 
-        {onShowLandingPage && (
+        {/* Secondary actions - muted and compact */}
+        <div className="flex gap-2">
+          {onShowLandingPage && (
+            <button
+              onClick={onShowLandingPage}
+              className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium text-white/30 hover:text-white/60 hover:bg-white/[0.04] transition-colors border border-white/[0.04]"
+              title="View Landing Page"
+            >
+              <ExternalLink className="w-3.5 h-3.5" />
+              <span>About</span>
+            </button>
+          )}
+
           <button
-            onClick={onShowLandingPage}
-            className="w-full inline-flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg bg-gradient-to-r from-emerald-500/20 to-blue-500/20 text-emerald-300 hover:from-emerald-500/30 hover:to-blue-500/30 hover:text-emerald-200 transition ring-1 ring-inset ring-emerald-500/30 hover:ring-emerald-500/40"
-            title="View Landing Page"
+            onClick={signOut}
+            className={`${onShowLandingPage ? 'flex-1' : 'w-full'} inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium text-white/30 hover:text-red-400 hover:bg-red-500/[0.06] transition-colors border border-white/[0.04]`}
+            title="Sign Out"
           >
-            <ExternalLink className="w-5 h-5" />
-            <span className="font-medium">About Tipster Arena</span>
+            <LogOut className="w-3.5 h-3.5" />
+            <span>Sign Out</span>
           </button>
-        )}
-
-        <button
-          onClick={signOut}
-          className="w-full inline-flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg bg-red-500/20 text-red-300 hover:bg-red-500/30 hover:text-red-200 transition ring-1 ring-inset ring-red-500/30 hover:ring-red-500/40"
-          title="Sign Out"
-        >
-          <LogOut className="w-5 h-5" />
-          <span className="font-medium">Sign Out</span>
-        </button>
+        </div>
       </div>
     </aside>
   );
