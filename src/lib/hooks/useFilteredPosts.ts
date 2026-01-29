@@ -25,6 +25,8 @@ export function useFilteredPosts(
     if (selected === 'top') {
       filtered = filtered.filter(post => post.likes >= 20);
     } else if (selected === 'top-articles') {
+      // Only show pending (unplayed) tips — verified results disappear
+      filtered = filtered.filter(post => !post.tipStatus || post.tipStatus === 'pending');
       filtered = filtered.sort((a, b) => (b.likes + b.comments) - (a.likes + a.comments));
     }
 
