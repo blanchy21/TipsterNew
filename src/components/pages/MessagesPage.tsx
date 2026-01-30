@@ -6,7 +6,7 @@ import MessagesList from '@/components/features/MessagesList';
 import ChatWindow from '@/components/features/ChatWindow';
 import { normalizeImageUrl, getDefaultAvatar } from '@/lib/imageUtils';
 import { useAuth } from '@/lib/hooks/useAuth';
-import { subscribeToConversations, getOrCreateConversation, sendMessage } from '@/lib/firebase/messagingUtils';
+import { subscribeToConversations, getOrCreateConversation, sendMessage, setUserPresence } from '@/lib/firebase/messagingUtils';
 
 const MessagesPage: React.FC = () => {
   const { user } = useAuth();
@@ -14,6 +14,7 @@ const MessagesPage: React.FC = () => {
   const [showMobileChat, setShowMobileChat] = useState(false);
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [loading, setLoading] = useState(true);
+  const [triggerNewConversation, setTriggerNewConversation] = useState(false);
 
   // Current user from auth context
   const currentUser: User = user ? {
@@ -54,6 +55,22 @@ const MessagesPage: React.FC = () => {
     };
   }, [user]);
 
+  // Set user as online when viewing messages
+  useEffect(() => {
+    if (!user) return;
+    setUserPresence(user.uid, true);
+
+    const handleBeforeUnload = () => {
+      setUserPresence(user.uid, false);
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      setUserPresence(user.uid, false);
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [user]);
+
   const selectedConversation = conversations.find(conv => conv.id === selectedConversationId);
 
   const handleSelectConversation = (conversation: Conversation) => {
@@ -73,6 +90,10 @@ const MessagesPage: React.FC = () => {
 
   const handleBack = () => {
     setShowMobileChat(false);
+  };
+
+  const handleStartNewConversation = () => {
+    setTriggerNewConversation(true);
   };
 
   if (!user) {
@@ -107,6 +128,8 @@ const MessagesPage: React.FC = () => {
             currentUser={currentUser}
             onSelectConversation={handleSelectConversation}
             selectedConversationId={selectedConversationId || undefined}
+            showNewConversationForm={triggerNewConversation}
+            onShowNewConversationForm={setTriggerNewConversation}
           />
         </div>
 
@@ -116,6 +139,7 @@ const MessagesPage: React.FC = () => {
             currentUser={currentUser}
             onSendMessage={handleSendMessage}
             onBack={handleBack}
+            onStartNewConversation={handleStartNewConversation}
           />
         </div>
       </div>
@@ -128,6 +152,8 @@ const MessagesPage: React.FC = () => {
             currentUser={currentUser}
             onSelectConversation={handleSelectConversation}
             selectedConversationId={selectedConversationId || undefined}
+            showNewConversationForm={triggerNewConversation}
+            onShowNewConversationForm={setTriggerNewConversation}
           />
         ) : (
           <ChatWindow
@@ -135,6 +161,7 @@ const MessagesPage: React.FC = () => {
             currentUser={currentUser}
             onSendMessage={handleSendMessage}
             onBack={handleBack}
+            onStartNewConversation={handleStartNewConversation}
           />
         )}
       </div>

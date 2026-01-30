@@ -155,7 +155,7 @@ export const getConversations = async (userId: string): Promise<Conversation[]> 
                     {
                         id: otherParticipantId,
                         name: userData.displayName || userData.name || 'Unknown',
-                        handle: userData.handle || `@user${otherParticipantId.slice(0, 8)}`,
+                        handle: userData.handle || `@${(userData.displayName || userData.name || 'user').toLowerCase().replace(/\s+/g, '')}`,
                         avatar: normalizeImageUrl(userData.photoURL || userData.avatar || getDefaultAvatar())
                     }
                 ],
@@ -294,7 +294,7 @@ export const subscribeToConversations = (
                                 {
                                     id: otherParticipantId,
                                     name: userData.displayName || userData.name || 'Unknown',
-                                    handle: userData.handle || `@user${otherParticipantId.slice(0, 8)}`,
+                                    handle: userData.handle || `@${(userData.displayName || userData.name || 'user').toLowerCase().replace(/\s+/g, '')}`,
                                     avatar: normalizeImageUrl(userData.photoURL || userData.avatar || getDefaultAvatar())
                                 }
                             ],
@@ -351,5 +351,96 @@ export const searchConversations = async (userId: string, searchQuery: string): 
             otherParticipant?.handle.toLowerCase().includes(query) ||
             conversation.lastMessage?.content.toLowerCase().includes(query)
         );
+    });
+};
+
+// ============================================
+// Online Presence
+// ============================================
+
+export interface PresenceData {
+    isOnline: boolean;
+    lastSeen: string;
+}
+
+// Set user online/offline presence
+export const setUserPresence = async (userId: string, isOnline: boolean): Promise<void> => {
+    if (!db) return;
+
+    try {
+        await setDoc(doc(db, 'presence', userId), {
+            isOnline,
+            lastSeen: serverTimestamp()
+        }, { merge: true });
+    } catch {
+        // Silently fail - presence is non-critical
+    }
+};
+
+// Subscribe to a user's online presence
+export const subscribeToUserPresence = (
+    userId: string,
+    callback: (presence: PresenceData) => void
+): (() => void) => {
+    if (!db || !userId) return () => { };
+
+    return onSnapshot(doc(db, 'presence', userId), (snapshot) => {
+        const data = snapshot.data();
+        if (data) {
+            callback({
+                isOnline: data.isOnline || false,
+                lastSeen: data.lastSeen?.toDate?.()?.toISOString() || new Date().toISOString()
+            });
+        } else {
+            callback({ isOnline: false, lastSeen: '' });
+        }
+    }, () => {
+        callback({ isOnline: false, lastSeen: '' });
+    });
+};
+
+// ============================================
+// Typing Indicator
+// ============================================
+
+// Set typing status for a conversation
+export const setTypingStatus = async (
+    conversationId: string,
+    userId: string,
+    isTyping: boolean
+): Promise<void> => {
+    if (!db) return;
+
+    try {
+        await setDoc(doc(db, 'conversations', conversationId, 'typing', userId), {
+            isTyping,
+            updatedAt: serverTimestamp()
+        });
+    } catch {
+        // Silently fail - typing status is non-critical
+    }
+};
+
+// Subscribe to typing status in a conversation
+export const subscribeToTypingStatus = (
+    conversationId: string,
+    otherUserId: string,
+    callback: (isTyping: boolean) => void
+): (() => void) => {
+    if (!db || !conversationId || !otherUserId) return () => { };
+
+    return onSnapshot(doc(db, 'conversations', conversationId, 'typing', otherUserId), (snapshot) => {
+        const data = snapshot.data();
+        if (data?.isTyping) {
+            // Consider typing stale after 5 seconds
+            const updatedAt = data.updatedAt?.toDate?.();
+            if (updatedAt && (Date.now() - updatedAt.getTime()) < 5000) {
+                callback(true);
+                return;
+            }
+        }
+        callback(false);
+    }, () => {
+        callback(false);
     });
 };
