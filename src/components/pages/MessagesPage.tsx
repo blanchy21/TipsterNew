@@ -78,6 +78,11 @@ const MessagesPage: React.FC = () => {
     setShowMobileChat(true);
   };
 
+  const handleConversationCreated = (conversationId: string) => {
+    setSelectedConversationId(conversationId);
+    setShowMobileChat(true);
+  };
+
   const handleSendMessage = async (content: string) => {
     if (!user || !selectedConversationId) return;
 
@@ -127,6 +132,7 @@ const MessagesPage: React.FC = () => {
             conversations={conversations}
             currentUser={currentUser}
             onSelectConversation={handleSelectConversation}
+            onConversationCreated={handleConversationCreated}
             selectedConversationId={selectedConversationId || undefined}
             showNewConversationForm={triggerNewConversation}
             onShowNewConversationForm={setTriggerNewConversation}
@@ -151,6 +157,7 @@ const MessagesPage: React.FC = () => {
             conversations={conversations}
             currentUser={currentUser}
             onSelectConversation={handleSelectConversation}
+            onConversationCreated={handleConversationCreated}
             selectedConversationId={selectedConversationId || undefined}
             showNewConversationForm={triggerNewConversation}
             onShowNewConversationForm={setTriggerNewConversation}

@@ -13,6 +13,7 @@ interface MessagesListProps {
   conversations: Conversation[];
   currentUser: User;
   onSelectConversation: (conversation: Conversation) => void;
+  onConversationCreated?: (conversationId: string) => void;
   selectedConversationId?: string;
   showNewConversationForm?: boolean;
   onShowNewConversationForm?: (show: boolean) => void;
@@ -22,6 +23,7 @@ const MessagesList: React.FC<MessagesListProps> = ({
   conversations,
   currentUser,
   onSelectConversation,
+  onConversationCreated,
   selectedConversationId,
   showNewConversationForm,
   onShowNewConversationForm
@@ -106,9 +108,13 @@ const MessagesList: React.FC<MessagesListProps> = ({
     try {
       const conversationId = await getOrCreateConversation(user.uid, selectedUser.id);
 
+      // Try to select existing conversation, otherwise notify parent with the ID
+      // so it gets selected once the real-time listener picks it up
       const conversation = conversations.find(conv => conv.id === conversationId);
       if (conversation) {
         onSelectConversation(conversation);
+      } else {
+        onConversationCreated?.(conversationId);
       }
 
       setSelectedUser(null);
