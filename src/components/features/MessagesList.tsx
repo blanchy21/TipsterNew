@@ -120,8 +120,8 @@ const MessagesList: React.FC<MessagesListProps> = ({
       setSelectedUser(null);
       setUserSearchQuery('');
       setShowNewConversation(false);
-    } catch {
-      // Failed to create conversation
+    } catch (err) {
+      console.error('Error creating conversation:', err);
     }
     setIsCreatingConversation(false);
   };

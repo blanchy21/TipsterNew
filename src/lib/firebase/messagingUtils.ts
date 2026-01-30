@@ -234,8 +234,9 @@ export const subscribeToMessages = (
         });
 
         callback(messages);
-    }, (error) => {
-        // Console statement removed for production
+    }, () => {
+        // Return empty array on error so loading state clears
+        callback([]);
     });
 };
 
