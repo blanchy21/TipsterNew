@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import LoginForm from '@/components/forms/LoginForm';
 import SignupForm from '@/components/forms/SignupForm';
-import { useAuth } from '@/lib/hooks/useAuth';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -13,7 +12,6 @@ interface AuthModalProps {
 
 export default function AuthModal({ isOpen, onClose, initialMode = 'login' }: AuthModalProps) {
   const [mode, setMode] = useState<'login' | 'signup'>(initialMode);
-  const { loading } = useAuth();
 
   useEffect(() => {
     setMode(initialMode);
@@ -44,14 +42,6 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login' }: Au
       {/* Modal */}
       <div className="relative z-10 w-full max-w-md mx-4" data-testid="auth-modal">
         <div className="bg-surface-0 border border-white/10 rounded-2xl p-8 shadow-2xl">
-          {loading && (
-            <div className="absolute inset-0 bg-surface-0/80 backdrop-blur-sm rounded-2xl flex items-center justify-center z-20">
-              <div className="text-center">
-                <div className="w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-                <p className="text-white/70">Signing in...</p>
-              </div>
-            </div>
-          )}
           {/* Close button */}
           <button
             onClick={onClose}

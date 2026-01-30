@@ -1,17 +1,11 @@
 'use client';
 
-import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { AuthProvider } from '@/lib/contexts/AuthContext';
 import { useAuth } from '@/lib/hooks/useAuth';
 
 function ChatPageContent() {
     const { user, loading } = useAuth();
     const router = useRouter();
-
-    useEffect(() => {
-
-    }, [user, loading]);
 
     if (loading) {
         return (
@@ -72,9 +66,5 @@ function ChatPageContent() {
 }
 
 export default function ChatPageRoute() {
-    return (
-        <AuthProvider>
-            <ChatPageContent />
-        </AuthProvider>
-    );
+    return <ChatPageContent />;
 }

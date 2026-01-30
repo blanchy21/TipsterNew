@@ -53,7 +53,8 @@ export default function SignupForm({ onSwitchToLogin, onClose }: SignupFormProps
       await signInWithGoogle();
       // Don't close modal here - let the auth state change handle it
     } catch (error: any) {
-      setError(getAuthErrorMessage(error.code) || error.message || 'Failed to sign in with Google');
+      const message = getAuthErrorMessage(error.code);
+      if (message) setError(message);
       setLoading(false);
     }
   };

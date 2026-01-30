@@ -58,18 +58,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     const provider = new GoogleAuthProvider();
-    try {
-      const result = await signInWithPopup(auth, provider);
+    const result = await signInWithPopup(auth, provider);
 
-      // Create user profile in Firestore if it doesn't exist
+    // Create user profile in Firestore if it doesn't exist
+    // Fire-and-forget is fine here since createUserProfile checks existence first
+    // and the profile data is non-critical for immediate use
+    try {
       await createUserProfile(result.user, {
         bio: '',
         favoriteSports: [],
         followers: [],
         following: []
       });
-    } catch (error) {
-      throw error;
+    } catch (profileError) {
+      // Profile creation failure shouldn't block sign-in
+      console.error('Failed to create user profile:', profileError);
     }
   };
 
@@ -78,11 +81,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-    } catch (error) {
-      throw error;
-    }
+    await signInWithEmailAndPassword(auth, email, password);
   };
 
   const signUpWithEmail = async (email: string, password: string, displayName: string) => {
@@ -90,11 +89,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      await updateProfile(userCredential.user, { displayName });
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    await updateProfile(userCredential.user, { displayName });
 
-      // Create user profile in Firestore
+    // Create user profile in Firestore
+    try {
       await createUserProfile(userCredential.user, {
         displayName,
         email,
@@ -103,8 +102,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         followers: [],
         following: []
       });
-    } catch (error) {
-      throw error;
+    } catch (profileError) {
+      // Profile creation failure shouldn't block sign-up - auth already succeeded
+      console.error('Failed to create user profile:', profileError);
     }
   };
 
@@ -113,11 +113,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    try {
-      await sendPasswordResetEmail(auth, email);
-    } catch (error) {
-      throw error;
-    }
+    await sendPasswordResetEmail(auth, email);
   };
 
   const signOutUser = async () => {
@@ -125,11 +121,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    try {
-      await firebaseSignOut(auth);
-    } catch (error) {
-      throw error;
-    }
+    await firebaseSignOut(auth);
   };
 
   return (

@@ -21,6 +21,16 @@ export const getAuthErrorMessage = (errorCode: string): string => {
       return 'Network error. Please check your connection and try again.';
     case 'auth/operation-not-allowed':
       return 'This sign-in method is not enabled. Please contact support.';
+    case 'auth/popup-closed-by-user':
+      return 'Sign-in was cancelled. Please try again.';
+    case 'auth/cancelled-popup-request':
+      return '';
+    case 'auth/popup-blocked':
+      return 'Sign-in popup was blocked by your browser. Please allow popups and try again.';
+    case 'auth/account-exists-with-different-credential':
+      return 'An account already exists with the same email but a different sign-in method.';
+    case 'auth/requires-recent-login':
+      return 'Please sign in again to complete this action.';
     default:
       return 'An error occurred. Please try again.';
   }

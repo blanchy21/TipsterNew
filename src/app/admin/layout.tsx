@@ -4,7 +4,6 @@ import React from 'react';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { AuthProvider } from '@/lib/contexts/AuthContext';
 
 const ADMIN_EMAILS = ['paulblanche@gmail.com', 'admin@tipsterarena.com'];
 
@@ -51,10 +50,8 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <AuthProvider>
-      <AdminLayoutContent>
-        {children}
-      </AdminLayoutContent>
-    </AuthProvider>
+    <AdminLayoutContent>
+      {children}
+    </AdminLayoutContent>
   );
 }

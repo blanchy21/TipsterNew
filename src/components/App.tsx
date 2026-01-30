@@ -32,7 +32,6 @@ const FollowingPage = lazy(() => import('./pages/FollowingPage'));
 const LandingPage = lazy(() => import('./pages/LandingPage'));
 // Lazy load context providers and heavy components
 const NotificationsProvider = lazy(() => import('@/lib/contexts/NotificationsContext').then(m => ({ default: m.NotificationsProvider })));
-const AuthProvider = lazy(() => import('@/lib/contexts/AuthContext').then(m => ({ default: m.AuthProvider })));
 const ProfileProvider = lazy(() => import('@/lib/contexts/ProfileContext').then(m => ({ default: m.ProfileProvider })));
 const FollowingProvider = lazy(() => import('@/lib/contexts/FollowingContext').then(m => ({ default: m.FollowingProvider })));
 const QueryProvider = lazy(() => import('@/lib/providers/QueryProvider'));
@@ -642,30 +641,26 @@ export default function App() {
         <Suspense fallback={<div className="h-screen bg-surface-1 flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div></div>}>
           <QueryProvider>
             <Suspense fallback={<div className="h-screen bg-surface-1 flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div></div>}>
-              <AuthProvider>
+              <ProfileProvider>
                 <Suspense fallback={<div className="h-screen bg-surface-1 flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div></div>}>
-                  <ProfileProvider>
+                  <FollowingProvider>
                     <Suspense fallback={<div className="h-screen bg-surface-1 flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div></div>}>
-                      <FollowingProvider>
-                        <Suspense fallback={<div className="h-screen bg-surface-1 flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div></div>}>
-                          <AsyncErrorBoundary
-                            onError={(error, errorInfo) => {
-                              if (process.env.NODE_ENV === 'development') {
-                                // eslint-disable-next-line no-console
-                                // Console statement removed for production
-                              }
-                            }}
-                            maxRetries={2}
-                            retryDelay={1000}
-                          >
-                            <AppContent />
-                          </AsyncErrorBoundary>
-                        </Suspense>
-                      </FollowingProvider>
+                      <AsyncErrorBoundary
+                        onError={(error, errorInfo) => {
+                          if (process.env.NODE_ENV === 'development') {
+                            // eslint-disable-next-line no-console
+                            // Console statement removed for production
+                          }
+                        }}
+                        maxRetries={2}
+                        retryDelay={1000}
+                      >
+                        <AppContent />
+                      </AsyncErrorBoundary>
                     </Suspense>
-                  </ProfileProvider>
+                  </FollowingProvider>
                 </Suspense>
-              </AuthProvider>
+              </ProfileProvider>
             </Suspense>
           </QueryProvider>
         </Suspense>

@@ -1,5 +1,6 @@
 import React from 'react';
 import "./globals.css";
+import { AuthProvider } from '@/lib/contexts/AuthContext';
 
 export default function RootLayout({
   children,
@@ -36,7 +37,11 @@ export default function RootLayout({
         <link rel="prefetch" href="/chat" />
         <link rel="prefetch" href="/following" />
       </head>
-      <body>{children}</body>
+      <body>
+        <AuthProvider>
+          {children}
+        </AuthProvider>
+      </body>
     </html>
   );
 }
