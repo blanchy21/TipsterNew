@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
-import { collection, addDoc, query, orderBy, onSnapshot, limit, serverTimestamp, where } from 'firebase/firestore';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { collection, addDoc, query, orderBy, onSnapshot, limit, serverTimestamp, where, doc, setDoc, deleteDoc, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase/firebase';
 import { useAuth } from '@/lib/hooks/useAuth';
-import { Send, Users, MessageCircle, Clock } from 'lucide-react';
+import { Send, Users, MessageCircle, Clock, ArrowDown } from 'lucide-react';
 import Image from 'next/image';
 import { getDefaultAvatar } from '@/lib/imageUtils';
 
@@ -35,16 +35,35 @@ export default function ChatRoom({ gameId, sport, title = "Live Chat", className
     const [newMessage, setNewMessage] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const [onlineUsers, setOnlineUsers] = useState<number>(0);
+    const [showScrollButton, setShowScrollButton] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
+    const messagesContainerRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
+    const isNearBottomRef = useRef(true);
 
-    const scrollToBottom = () => {
+    const scrollToBottom = useCallback(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    };
+        setShowScrollButton(false);
+    }, []);
 
+    // Check if user is near bottom of chat
+    const handleScroll = useCallback(() => {
+        const container = messagesContainerRef.current;
+        if (!container) return;
+        const threshold = 100;
+        const isNear = container.scrollHeight - container.scrollTop - container.clientHeight < threshold;
+        isNearBottomRef.current = isNear;
+        setShowScrollButton(!isNear);
+    }, []);
+
+    // Auto-scroll only if user is near bottom
     useEffect(() => {
-        scrollToBottom();
-    }, [messages]);
+        if (isNearBottomRef.current) {
+            scrollToBottom();
+        } else {
+            setShowScrollButton(true);
+        }
+    }, [messages, scrollToBottom]);
 
     // Set up real-time listener for messages
     useEffect(() => {
@@ -101,14 +120,36 @@ export default function ChatRoom({ gameId, sport, title = "Live Chat", className
         return () => unsubscribe();
     }, [user, gameId, sport]);
 
-    // Set up online users count (simplified - in production you'd use presence)
+    // Real-time presence tracking
     useEffect(() => {
-        const interval = setInterval(() => {
-            setOnlineUsers(Math.floor(Math.random() * 50) + 10); // Mock online count
-        }, 5000);
+        if (!user || !db) return;
 
-        return () => clearInterval(interval);
-    }, []);
+        const channelKey = gameId || sport || 'general';
+        const presenceRef = doc(db, 'chatPresence', `${channelKey}_${user.uid}`);
+
+        // Mark user as online in this channel
+        setDoc(presenceRef, {
+            userId: user.uid,
+            channel: channelKey,
+            lastSeen: serverTimestamp()
+        }).catch(() => {});
+
+        // Listen for online users in this channel
+        const presenceQuery = query(
+            collection(db, 'chatPresence'),
+            where('channel', '==', channelKey)
+        );
+
+        const unsubPresence = onSnapshot(presenceQuery, (snapshot) => {
+            setOnlineUsers(snapshot.size);
+        }, () => {});
+
+        // Cleanup: remove presence on unmount
+        return () => {
+            deleteDoc(presenceRef).catch(() => {});
+            unsubPresence();
+        };
+    }, [user, gameId, sport]);
 
     const sendMessage = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -144,15 +185,15 @@ export default function ChatRoom({ gameId, sport, title = "Live Chat", className
     const formatDate = (timestamp: Date) => {
         const now = new Date();
         const messageDate = new Date(timestamp);
-        const diffInHours = (now.getTime() - messageDate.getTime()) / (1000 * 60 * 60);
 
-        if (diffInHours < 24) {
-            return messageDate.toLocaleDateString() === now.toLocaleDateString()
-                ? 'Today'
-                : 'Yesterday';
-        } else {
-            return messageDate.toLocaleDateString();
-        }
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const yesterday = new Date(today);
+        yesterday.setDate(yesterday.getDate() - 1);
+        const msgDay = new Date(messageDate.getFullYear(), messageDate.getMonth(), messageDate.getDate());
+
+        if (msgDay.getTime() === today.getTime()) return 'Today';
+        if (msgDay.getTime() === yesterday.getTime()) return 'Yesterday';
+        return messageDate.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
     };
 
     if (!user) {
@@ -190,72 +231,81 @@ export default function ChatRoom({ gameId, sport, title = "Live Chat", className
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3 sm:space-y-4">
+            <div
+                ref={messagesContainerRef}
+                onScroll={handleScroll}
+                className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-1 relative"
+            >
                 {isLoading ? (
                     <div className="flex items-center justify-center h-32">
                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
                     </div>
                 ) : messages.length === 0 ? (
-                    <div className="text-center text-zinc-400 py-8">
-                        <MessageCircle className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                        <p>No messages yet. Start the conversation!</p>
+                    <div className="flex flex-col items-center justify-center h-full text-center py-16">
+                        <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-4">
+                            <MessageCircle className="w-8 h-8 text-zinc-500" />
+                        </div>
+                        <p className="text-zinc-300 font-medium mb-1">No messages yet</p>
+                        <p className="text-zinc-500 text-sm max-w-[240px]">Be the first to say something in {title}.</p>
                     </div>
                 ) : (
                     messages.map((message, index) => {
                         const isCurrentUser = message.user.id === user.uid;
                         const prevMessage = index > 0 ? messages[index - 1] : null;
-                        const showAvatar = !prevMessage || prevMessage.user.id !== message.user.id;
+                        const showAvatar = !isCurrentUser && (!prevMessage || prevMessage.user.id !== message.user.id);
+                        const showName = !isCurrentUser && (!prevMessage || prevMessage.user.id !== message.user.id);
                         const showDate = !prevMessage ||
                             formatDate(prevMessage.createdAt) !== formatDate(message.createdAt);
+                        // Add spacing between different users
+                        const differentUser = prevMessage && prevMessage.user.id !== message.user.id;
 
                         return (
-                            <div key={message.id}>
+                            <div key={message.id} className={differentUser && !showDate ? 'pt-3' : ''}>
                                 {showDate && (
                                     <div className="flex items-center justify-center my-4">
-                                        <div className="bg-surface-3/50 px-3 py-1 rounded-full text-xs text-zinc-400">
+                                        <div className="bg-surface-3/50 px-3 py-1 rounded-full text-xs text-zinc-500">
                                             {formatDate(message.createdAt)}
                                         </div>
                                     </div>
                                 )}
 
-                                <div className={`flex gap-3 ${isCurrentUser ? 'flex-row-reverse' : 'flex-row'}`}>
-                                    {showAvatar && (
-                                        <div className={`w-8 h-8 rounded-full flex-shrink-0 ${isCurrentUser ? 'order-1' : ''}`}>
-                                            <Image
-                                                src={message.user.avatar}
-                                                alt={message.user.name}
-                                                width={32}
-                                                height={32}
-                                                className="rounded-full object-cover"
-                                            />
+                                <div className={`flex gap-2.5 ${isCurrentUser ? 'justify-end' : 'justify-start'}`}>
+                                    {/* Avatar for other users only */}
+                                    {!isCurrentUser && (
+                                        <div className="w-7 h-7 rounded-full flex-shrink-0 mt-auto">
+                                            {showAvatar ? (
+                                                <Image
+                                                    src={message.user.avatar}
+                                                    alt={message.user.name}
+                                                    width={28}
+                                                    height={28}
+                                                    className="rounded-full object-cover w-7 h-7"
+                                                />
+                                            ) : (
+                                                <div className="w-7 h-7" /> // spacer for alignment
+                                            )}
                                         </div>
                                     )}
 
-                                    <div className={`flex-1 ${isCurrentUser ? 'text-right' : 'text-left'}`}>
-                                        {showAvatar && (
-                                            <div className={`text-xs text-zinc-400 mb-1 ${isCurrentUser ? 'text-right' : 'text-left'}`}>
-                                                <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
-                                                    <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
-                                                        <span>{message.user.name}</span>
-                                                        <span>{message.user.handle}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                    <div className={`max-w-[75%] sm:max-w-[65%] ${isCurrentUser ? 'items-end' : 'items-start'} flex flex-col`}>
+                                        {showName && (
+                                            <span className="text-xs text-zinc-500 mb-0.5 ml-1">
+                                                {message.user.name} <span className="text-zinc-600">{message.user.handle}</span>
+                                            </span>
                                         )}
 
                                         <div
-                                            className={`inline-block max-w-[85%] sm:max-w-[70%] rounded-2xl px-3 py-2 sm:px-4 ${isCurrentUser
-                                                ? 'bg-gradient-to-r from-sky-500 to-blue-600 text-white'
-                                                : 'bg-white/10 text-zinc-100'
+                                            className={`rounded-2xl px-3.5 py-2 ${isCurrentUser
+                                                ? 'bg-accent text-white rounded-br-md'
+                                                : 'bg-white/[0.08] text-zinc-100 rounded-bl-md'
                                                 }`}
                                         >
                                             <p className="text-sm leading-relaxed">{message.text}</p>
                                         </div>
 
-                                        <div className={`text-xs text-zinc-400 mt-1 flex items-center gap-1 ${isCurrentUser ? 'justify-end' : 'justify-start'}`}>
-                                            <Clock className="w-3 h-3" />
+                                        <span className="text-[10px] text-zinc-600 mt-0.5 mx-1">
                                             {formatTime(message.createdAt)}
-                                        </div>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -263,6 +313,17 @@ export default function ChatRoom({ gameId, sport, title = "Live Chat", className
                     })
                 )}
                 <div ref={messagesEndRef} />
+
+                {/* Scroll to bottom button */}
+                {showScrollButton && (
+                    <button
+                        onClick={scrollToBottom}
+                        className="sticky bottom-2 left-1/2 -translate-x-1/2 mx-auto flex items-center gap-1.5 bg-surface-3 border border-white/10 text-zinc-300 text-xs font-medium px-3 py-1.5 rounded-full shadow-lg hover:bg-surface-4 transition-colors"
+                    >
+                        <ArrowDown className="w-3 h-3" />
+                        New messages
+                    </button>
+                )}
             </div>
 
             {/* Input */}

@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
-import { MessageCircle, Users, Trophy, Zap, TrendingUp, CircleDot, Target, Menu, X, ArrowLeft } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import React, { useState, useEffect } from 'react';
+import { MessageCircle, Users, Trophy, Zap, TrendingUp, CircleDot, Target, Menu, X } from 'lucide-react';
+import { collection, query, where, onSnapshot } from 'firebase/firestore';
+import { db } from '@/lib/firebase/firebase';
 import ChatRoom from '@/components/features/ChatRoom';
 
 interface ChatChannel {
@@ -12,7 +13,7 @@ interface ChatChannel {
   icon: React.ReactNode;
   sport?: string;
   gameId?: string;
-  onlineCount: number;
+  presenceKey: string;
   color: string;
 }
 
@@ -22,7 +23,7 @@ const CHAT_CHANNELS: ChatChannel[] = [
     name: 'General Chat',
     description: 'Discuss anything sports-related',
     icon: <MessageCircle className="w-5 h-5" />,
-    onlineCount: 127,
+    presenceKey: 'general',
     color: 'from-blue-500 to-cyan-600'
   },
   {
@@ -31,7 +32,7 @@ const CHAT_CHANNELS: ChatChannel[] = [
     description: 'Premier League, Champions League & more',
     icon: <Trophy className="w-5 h-5" />,
     sport: 'Football',
-    onlineCount: 89,
+    presenceKey: 'Football',
     color: 'from-green-500 to-emerald-600'
   },
   {
@@ -40,7 +41,7 @@ const CHAT_CHANNELS: ChatChannel[] = [
     description: 'Flat Racing, Jump Racing & Major Festivals',
     icon: <CircleDot className="w-5 h-5" />,
     sport: 'Horse Racing',
-    onlineCount: 38,
+    presenceKey: 'Horse Racing',
     color: 'from-amber-500 to-yellow-600'
   },
   {
@@ -49,7 +50,7 @@ const CHAT_CHANNELS: ChatChannel[] = [
     description: 'Masters, PGA Championship & Ryder Cup',
     icon: <Target className="w-5 h-5" />,
     sport: 'Golf',
-    onlineCount: 31,
+    presenceKey: 'Golf',
     color: 'from-emerald-500 to-teal-600'
   },
   {
@@ -58,7 +59,7 @@ const CHAT_CHANNELS: ChatChannel[] = [
     description: 'Grand Slams, ATP & WTA Tours',
     icon: <TrendingUp className="w-5 h-5" />,
     sport: 'Tennis',
-    onlineCount: 42,
+    presenceKey: 'Tennis',
     color: 'from-purple-500 to-pink-600'
   },
   {
@@ -67,15 +68,32 @@ const CHAT_CHANNELS: ChatChannel[] = [
     description: 'NBA, EuroLeague & College Basketball',
     icon: <Zap className="w-5 h-5" />,
     sport: 'Basketball',
-    onlineCount: 64,
+    presenceKey: 'Basketball',
     color: 'from-orange-500 to-red-600'
   }
 ];
 
 export default function ChatPage() {
-  const router = useRouter();
   const [selectedChannel, setSelectedChannel] = useState<string>('general');
   const [showSidebar, setShowSidebar] = useState(false);
+  const [onlineCounts, setOnlineCounts] = useState<Record<string, number>>({});
+
+  // Listen to real presence counts for all channels
+  useEffect(() => {
+    if (!db) return;
+
+    const unsubscribes = CHAT_CHANNELS.map((channel) => {
+      const presenceQuery = query(
+        collection(db, 'chatPresence'),
+        where('channel', '==', channel.presenceKey)
+      );
+      return onSnapshot(presenceQuery, (snapshot) => {
+        setOnlineCounts(prev => ({ ...prev, [channel.id]: snapshot.size }));
+      }, () => {});
+    });
+
+    return () => unsubscribes.forEach(unsub => unsub());
+  }, []);
 
   const selectedChannelData = CHAT_CHANNELS.find(channel => channel.id === selectedChannel);
 
@@ -85,26 +103,27 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="flex h-screen bg-gradient-to-br from-surface-0 via-surface-1 to-surface-0">
-      {/* Mobile Header */}
-      <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-surface-2/90 backdrop-blur-sm border-b border-white/10 p-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => router.push('/')}
-              className="p-2 rounded-lg hover:bg-white/5 transition-colors"
-            >
-              <ArrowLeft className="w-5 h-5 text-zinc-300" />
-            </button>
-            <button
-              onClick={() => setShowSidebar(!showSidebar)}
-              className="p-2 rounded-lg hover:bg-white/5 transition-colors"
-            >
-              <Menu className="w-5 h-5 text-zinc-300" />
-            </button>
+    <div className="flex h-full bg-gradient-to-br from-surface-0 via-surface-1 to-surface-0">
+      {/* Mobile Channel Selector Bar */}
+      <div className="md:hidden fixed top-[52px] left-0 right-0 z-20 bg-surface-2/90 backdrop-blur-sm border-b border-white/10 px-3 py-2">
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setShowSidebar(!showSidebar)}
+            className="p-2 rounded-lg hover:bg-white/5 transition-colors shrink-0"
+          >
+            <Menu className="w-4 h-4 text-zinc-300" />
+          </button>
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-medium text-white truncate">
+              {selectedChannelData?.name || 'Live Chat'}
+            </p>
           </div>
-          <h1 className="text-lg font-bold text-white">Live Chat</h1>
-          <div className="w-9"></div> {/* Spacer for centering */}
+          {selectedChannelData && (onlineCounts[selectedChannelData.id] ?? 0) > 0 && (
+            <div className="flex items-center gap-1 text-xs text-zinc-500 shrink-0">
+              <Users className="w-3 h-3" />
+              {onlineCounts[selectedChannelData.id]}
+            </div>
+          )}
         </div>
       </div>
 
@@ -116,13 +135,12 @@ export default function ChatPage() {
         />
       )}
 
-
       {/* Sidebar */}
-      <div className={`${showSidebar ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 fixed md:relative z-50 md:z-auto w-80 h-full bg-surface-2/50 backdrop-blur-sm border-r border-white/10 flex flex-col transition-transform duration-300 ease-in-out`}>
+      <div className={`${showSidebar ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 fixed md:relative z-50 md:z-auto w-80 max-w-[85vw] h-full bg-surface-2/50 backdrop-blur-sm border-r border-white/10 flex flex-col transition-transform duration-300 ease-in-out`}>
         {/* Header */}
-        <div className="p-6 border-b border-white/10">
+        <div className="p-4 md:p-6 border-b border-white/10">
           <div className="flex items-center justify-between mb-2">
-            <h1 className="text-2xl font-bold text-white">Live Chat</h1>
+            <h1 className="text-xl md:text-2xl font-bold text-white">Live Chat</h1>
             <button
               onClick={() => setShowSidebar(false)}
               className="md:hidden p-2 rounded-lg hover:bg-white/5 transition-colors"
@@ -155,10 +173,12 @@ export default function ChatPage() {
                   <h3 className="font-semibold">{channel.name}</h3>
                   <p className="text-sm opacity-80">{channel.description}</p>
                 </div>
-                <div className="flex items-center gap-1 text-xs opacity-70">
-                  <Users className="w-3 h-3" />
-                  {channel.onlineCount}
-                </div>
+                {(onlineCounts[channel.id] ?? 0) > 0 && (
+                  <div className="flex items-center gap-1 text-xs opacity-70">
+                    <Users className="w-3 h-3" />
+                    {onlineCounts[channel.id]}
+                  </div>
+                )}
               </div>
             </button>
           ))}
@@ -179,7 +199,7 @@ export default function ChatPage() {
       </div>
 
       {/* Main Chat Area */}
-      <div className="flex-1 flex flex-col pt-16 md:pt-0">
+      <div className="flex-1 flex flex-col pt-[52px] md:pt-0">
         {selectedChannelData ? (
           <ChatRoom
             gameId={selectedChannelData.gameId}

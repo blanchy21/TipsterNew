@@ -52,30 +52,24 @@ export const getAllUsersWithStats = async (): Promise<LeaderboardEntry[]> => {
             try {
                 const verificationStats = await getUserVerificationStats(user.id);
 
-                // Only include users who have made tips
-                if (verificationStats.totalTips > 0) {
-                    const entry: LeaderboardEntry = {
-                        id: user.id,
-                        name: user.displayName || user.name || 'Unknown User',
-                        handle: user.handle || `@user${user.id.slice(0, 8)}`,
-                        avatar: normalizeImageUrl(user.photoURL || user.avatar || getDefaultAvatar()),
-                        totalTips: verificationStats.totalTips,
-                        totalWins: verificationStats.totalWins,
-                        totalLosses: verificationStats.totalLosses,
-                        winRate: verificationStats.winRate,
-                        averageOdds: verificationStats.avgOdds,
-                        verifiedTips: verificationStats.verifiedTips,
-                        pendingTips: verificationStats.pendingTips,
-                        isVerified: user.isVerified || false,
-                        specializations: user.specializations || [],
-                        position: 0 // Will be set after sorting
-                    };
+                const entry: LeaderboardEntry = {
+                    id: user.id,
+                    name: user.displayName || user.name || 'Unknown User',
+                    handle: user.handle || `@user${user.id.slice(0, 8)}`,
+                    avatar: normalizeImageUrl(user.photoURL || user.avatar || getDefaultAvatar()),
+                    totalTips: verificationStats.totalTips,
+                    totalWins: verificationStats.totalWins,
+                    totalLosses: verificationStats.totalLosses,
+                    winRate: verificationStats.winRate,
+                    averageOdds: verificationStats.avgOdds,
+                    verifiedTips: verificationStats.verifiedTips,
+                    pendingTips: verificationStats.pendingTips,
+                    isVerified: user.isVerified || false,
+                    specializations: user.specializations || [],
+                    position: 0 // Will be set after sorting
+                };
 
-                    leaderboardEntries.push(entry);
-
-                } else {
-                    // User has no tips
-                }
+                leaderboardEntries.push(entry);
             } catch (error) {
                 // Console statement removed for production
                 // Continue with other users even if one fails
@@ -90,12 +84,13 @@ export const getAllUsersWithStats = async (): Promise<LeaderboardEntry[]> => {
             return b.totalTips - a.totalTips;
         });
 
-        // Set positions
-        leaderboardEntries.forEach((entry, index) => {
+        // Cap at top 50 and set positions
+        const top50 = leaderboardEntries.slice(0, 50);
+        top50.forEach((entry, index) => {
             entry.position = index + 1;
         });
 
-        return leaderboardEntries;
+        return top50;
     } catch (error) {
         // Console statement removed for production
         return [];
