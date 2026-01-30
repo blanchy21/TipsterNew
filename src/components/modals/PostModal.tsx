@@ -63,20 +63,20 @@ export default function PostModal({ open, onClose, onSubmit, selectedSport }: Po
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center sm:p-4">
       <div
         className="fixed inset-0 bg-black/60 backdrop-blur-sm"
         onClick={onClose}
       />
-      <div className="relative w-full max-w-4xl bg-surface-1/95 border border-white/20 rounded-2xl shadow-2xl">
-        <div className="flex items-center justify-between p-6 border-b border-white/10">
+      <div className="relative w-full sm:max-w-4xl bg-surface-1/95 border border-white/20 rounded-t-2xl sm:rounded-2xl shadow-2xl max-h-[92vh] sm:max-h-[90vh] flex flex-col">
+        <div className="flex items-center justify-between p-4 md:p-6 border-b border-white/10 shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+            <div className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-primary/20 flex items-center justify-center">
               <PlusCircle className="w-5 h-5 text-primary" />
             </div>
             <div>
-              <h2 className="text-xl font-semibold text-zinc-100">Share Tip</h2>
-              <p className="text-sm text-zinc-400">Share your sports tip with the community</p>
+              <h2 className="text-lg md:text-xl font-semibold text-zinc-100">Share Tip</h2>
+              <p className="text-xs md:text-sm text-zinc-400 hidden sm:block">Share your sports tip with the community</p>
             </div>
           </div>
           <button
@@ -87,7 +87,7 @@ export default function PostModal({ open, onClose, onSubmit, selectedSport }: Po
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-6 max-h-[80vh] overflow-y-auto">
+        <form onSubmit={handleSubmit} className="p-4 md:p-6 space-y-4 md:space-y-6 overflow-y-auto flex-1">
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-zinc-200 mb-2">
@@ -181,18 +181,18 @@ export default function PostModal({ open, onClose, onSubmit, selectedSport }: Po
             </div>
           </div>
 
-          <div className="flex items-center justify-end gap-3 pt-4 border-t border-white/10">
+          <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2 sm:gap-3 pt-4 border-t border-white/10">
             <button
               type="button"
               onClick={onClose}
-              className="px-6 py-2.5 text-zinc-400 hover:text-zinc-200 transition-colors"
+              className="px-6 py-2.5 text-zinc-400 hover:text-zinc-200 transition-colors rounded-lg"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={!title.trim() || !content.trim()}
-              className="inline-flex items-center gap-2 px-6 py-2.5 bg-primary hover:bg-primary disabled:bg-zinc-600 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-primary hover:bg-primary disabled:bg-zinc-600 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors"
             >
               <Send className="w-4 h-4" />
               Share Tip
