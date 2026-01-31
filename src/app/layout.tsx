@@ -1,7 +1,7 @@
 import React from 'react';
 import './globals.css';
 import { AuthProvider } from '@/lib/contexts/AuthContext';
-import { Analytics } from '@vercel/analytics/react';
+import { Analytics } from '@vercel/analytics/next';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
