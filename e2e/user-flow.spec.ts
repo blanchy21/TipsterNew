@@ -10,7 +10,7 @@ test.describe('User Authentication Flow', () => {
 
     test('should complete signup flow', async ({ page }) => {
         // Click Get Started Free
-        const getStartedLink = page.getByRole('link', { name: /Get Started Free/ }).first()
+        const getStartedLink = page.getByRole('button', { name: /Get Started Free/ }).first()
         await expect(getStartedLink).toBeVisible()
         await getStartedLink.click()
 
@@ -57,7 +57,7 @@ test.describe('Post Creation Flow', () => {
         await expect(page.getByText(/Share tips, track your win rate, and build a real reputation/)).toBeVisible()
 
         // Verify Get Started Free link works
-        const getStartedLink = page.getByRole('link', { name: /Get Started Free/ }).first()
+        const getStartedLink = page.getByRole('button', { name: /Get Started Free/ }).first()
         await expect(getStartedLink).toBeVisible()
 
         // Click Get Started to test functionality
@@ -148,8 +148,8 @@ test.describe('Chat Flow', () => {
         // Verify chat feature description
         await expect(page.getByText(/Dedicated rooms for Football, Racing, Golf/)).toBeAttached()
 
-        // Verify live chat section heading
-        await expect(page.getByText(/Six rooms, one community/)).toBeVisible()
+        // Verify live chat section heading (text split across elements)
+        await expect(page.getByText(/Six rooms,/)).toBeVisible()
     })
 })
 

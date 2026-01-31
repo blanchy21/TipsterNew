@@ -17,17 +17,17 @@ test.describe('Landing Page', () => {
     })
 
     test('should show all feature cards', async ({ page }) => {
-        // Feature cards cycle, so check they exist in the DOM (not necessarily visible)
-        await expect(page.getByText('Share Tips')).toBeAttached()
-        await expect(page.getByText('Live Chat')).toBeAttached()
-        await expect(page.getByText('Track Record')).toBeAttached()
-        await expect(page.getByText('Find Winners')).toBeAttached()
-        await expect(page.getByText('Community')).toBeAttached()
-        await expect(page.getByText('Free Forever')).toBeAttached()
+        // All features are rendered in a grid, check by their label numbers
+        await expect(page.getByText('01')).toBeAttached()
+        await expect(page.getByText('02')).toBeAttached()
+        await expect(page.getByText('03')).toBeAttached()
+        await expect(page.getByText('04')).toBeAttached()
+        await expect(page.getByText('05')).toBeAttached()
+        await expect(page.getByText('06')).toBeAttached()
     })
 
     test('should navigate to auth when Get Started is clicked', async ({ page }) => {
-        const getStartedButton = page.getByRole('link', { name: /Get Started Free/ }).first()
+        const getStartedButton = page.getByRole('button', { name: /Get Started Free/ }).first()
         await expect(getStartedButton).toBeVisible()
         await getStartedButton.click()
         await expect(page.locator('h1')).toBeVisible()
