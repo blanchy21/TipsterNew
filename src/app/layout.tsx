@@ -1,26 +1,35 @@
 import React from 'react';
-import "./globals.css";
+import './globals.css';
 import { AuthProvider } from '@/lib/contexts/AuthContext';
+import { Analytics } from '@vercel/analytics/react';
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
         {/* Primary Meta Tags */}
         <title>Tipster Arena - Free Sports Tips with Verified Track Records</title>
-        <meta name="description" content="Free sports tipping platform with verified track records. Share betting tips, track your win rate automatically, and follow proven tipsters. No fees, no fake records." />
-        <meta name="keywords" content="sports tips, betting tips, tipster, free tipster, verified track record, sports betting community, horse racing tips, football tips, betting picks" />
+        <meta
+          name="description"
+          content="Free sports tipping platform with verified track records. Share betting tips, track your win rate automatically, and follow proven tipsters. No fees, no fake records."
+        />
+        <meta
+          name="keywords"
+          content="sports tips, betting tips, tipster, free tipster, verified track record, sports betting community, horse racing tips, football tips, betting picks"
+        />
         <link rel="canonical" href="https://tipster-arena.com" />
 
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://tipster-arena.com" />
-        <meta property="og:title" content="Tipster Arena - Free Sports Tips with Verified Track Records" />
-        <meta property="og:description" content="The only sports tipping platform where every record is transparent. Share tips, track performance, follow winning tipsters - 100% free." />
+        <meta
+          property="og:title"
+          content="Tipster Arena - Free Sports Tips with Verified Track Records"
+        />
+        <meta
+          property="og:description"
+          content="The only sports tipping platform where every record is transparent. Share tips, track performance, follow winning tipsters - 100% free."
+        />
         <meta property="og:image" content="https://tipster-arena.com/og-image.png" />
         <meta property="og:site_name" content="Tipster Arena" />
 
@@ -28,8 +37,14 @@ export default function RootLayout({
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@tipsterarena1" />
         <meta name="twitter:creator" content="@tipsterarena1" />
-        <meta name="twitter:title" content="Tipster Arena - Free Sports Tips with Verified Track Records" />
-        <meta name="twitter:description" content="Share tips, track performance, follow winning tipsters - 100% free with transparent records." />
+        <meta
+          name="twitter:title"
+          content="Tipster Arena - Free Sports Tips with Verified Track Records"
+        />
+        <meta
+          name="twitter:description"
+          content="Share tips, track performance, follow winning tipsters - 100% free with transparent records."
+        />
         <meta name="twitter:image" content="https://tipster-arena.com/og-image.png" />
 
         {/* Structured Data - JSON-LD */}
@@ -37,26 +52,27 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebApplication",
-              "name": "Tipster Arena",
-              "description": "Free sports tip sharing platform with transparent, verified track records. Share betting tips, track your win rate automatically, and follow proven tipsters.",
-              "url": "https://tipster-arena.com",
-              "applicationCategory": "SportsApplication",
-              "operatingSystem": "Web",
-              "offers": {
-                "@type": "Offer",
-                "price": "0",
-                "priceCurrency": "USD"
+              '@context': 'https://schema.org',
+              '@type': 'WebApplication',
+              name: 'Tipster Arena',
+              description:
+                'Free sports tip sharing platform with transparent, verified track records. Share betting tips, track your win rate automatically, and follow proven tipsters.',
+              url: 'https://tipster-arena.com',
+              applicationCategory: 'SportsApplication',
+              operatingSystem: 'Web',
+              offers: {
+                '@type': 'Offer',
+                price: '0',
+                priceCurrency: 'USD',
               },
-              "featureList": [
-                "Free sports tip sharing",
-                "Verified track records",
-                "Real-time performance tracking",
-                "Community chat",
-                "Tipster leaderboards"
-              ]
-            })
+              featureList: [
+                'Free sports tip sharing',
+                'Verified track records',
+                'Real-time performance tracking',
+                'Community chat',
+                'Tipster leaderboards',
+              ],
+            }),
           }}
         />
 
@@ -85,9 +101,8 @@ export default function RootLayout({
         <link rel="prefetch" href="/following" />
       </head>
       <body>
-        <AuthProvider>
-          {children}
-        </AuthProvider>
+        <AuthProvider>{children}</AuthProvider>
+        <Analytics />
       </body>
     </html>
   );

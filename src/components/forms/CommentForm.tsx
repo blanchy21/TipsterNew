@@ -18,9 +18,762 @@ interface CommentFormProps {
 
 // Emoji categories for the picker
 const emojiCategories = {
-  sports: ['⚽', '🏀', '🏈', '⚾', '🎾', '🏐', '🏉', '🎱', '🏓', '🏸', '🏒', '🏑', '🏏', '🎯', '🏹', '🎣', '🤸', '🤾', '🏋️', '🚴', '🏇', '🏊', '🏄', '🏃', '🤺', '🥊', '🥋', '🎽', '🏅', '🥇', '🥈', '🥉', '🏆', '🏵️', '🎖️', '🏟️', '🏛️', '🏗️', '🏘️', '🏙️', '🏚️', '🏠', '🏡', '🏢', '🏣', '🏤', '🏥', '🏦', '🏧', '🏨', '🏩', '🏪', '🏫', '🏬', '🏭', '🏮', '🏯', '🏰', '💒', '🗼', '🗽', '⛪', '🕌', '🛕', '🕍', '⛩️', '🕋', '⛲', '⛺', '🌉', '🌁', '🚠', '🚡', '🚢', '⛵', '🛥️', '🚤', '⛴️', '🛳️', '🚁', '🚟', '🚠', '🚡', '🎠', '🎡', '🎢', '💈', '🎪', '🚂', '🚃', '🚄', '🚅', '🚆', '🚇', '🚈', '🚉', '🚊', '🚝', '🚞', '🚋', '🚌', '🚍', '🚎', '🚐', '🚑', '🚒', '🚓', '🚔', '🚕', '🚖', '🚗', '🚘', '🚙', '🚚', '🚛', '🚜', '🏎️', '🏍️', '🛵', '🚲', '🛴', '🛹', '🛼', '🛻', '🚁', '🚟', '🚠', '🚡', '🎠', '🎡', '🎢', '💈', '🎪'],
-  general: ['😀', '😃', '😄', '😁', '😆', '😅', '🤣', '😂', '🙂', '🙃', '😉', '😊', '😇', '🥰', '😍', '🤩', '😘', '😗', '😚', '😙', '😋', '😛', '😜', '🤪', '😝', '🤑', '🤗', '🤭', '🤫', '🤔', '🤐', '🤨', '😐', '😑', '😶', '😏', '😒', '🙄', '😬', '🤥', '😌', '😔', '😪', '🤤', '😴', '😷', '🤒', '🤕', '🤢', '🤮', '🤧', '🥵', '🥶', '🥴', '😵', '🤯', '🤠', '🥳', '😎', '🤓', '🧐', '😕', '😟', '🙁', '☹️', '😮', '😯', '😲', '😳', '🥺', '😦', '😧', '😨', '😰', '😥', '😢', '😭', '😱', '😖', '😣', '😞', '😓', '😩', '😫', '🥱', '😤', '😡', '😠', '🤬', '😈', '👿', '💀', '☠️', '💩', '🤡', '👹', '👺', '👻', '👽', '👾', '🤖', '😺', '😸', '😹', '😻', '😼', '😽', '🙀', '😿', '😾', '👶', '🧒', '👦', '👧', '🧑', '👨', '👩', '🧓', '👴', '👵', '👤', '👥', '🫂', '👋', '🤚', '🖐️', '✋', '🖖', '👌', '🤌', '🤏', '✌️', '🤞', '🤟', '🤘', '🤙', '👈', '👉', '👆', '🖕', '👇', '☝️', '👍', '👎', '✊', '👊', '🤛', '🤜', '👏', '🙌', '👐', '🤲', '🤝', '🙏', '✍️', '💅', '🤳', '💪', '🦾', '🦿', '🦵', '🦶', '👂', '🦻', '👃', '🧠', '🦷', '🦴', '👀', '👁️', '👅', '👄', '💋', '🩸', '🦠', '💊', '💉', '🩹', '🩺', '🧬', '🦠', '🧫', '🧪', '🌡️', '🧹', '🧺', '🧻', '🚽', '🚰', '🚿', '🛁', '🛀', '🧴', '🧷', '🧸', '🧵', '🧶', '🪡', '🪢', '🪣', '🧽', '🧯', '🛒', '🛍️', '🛎️', '🧾', '📋', '📌', '📍', '📎', '🖇️', '📏', '📐', '✂️', '🗃️', '🗄️', '🗑️', '🔒', '🔓', '🔏', '🔐', '🔑', '🗝️', '🔨', '🪓', '⛏️', '⚒️', '🛠️', '🗡️', '⚔️', '🔫', '🪃', '🏹', '🛡️', '🪚', '🔧', '🪛', '🔩', '⚙️', '🪤', '🧰', '🧲', '⚗️', '🧪', '🧫', '🧬', '🔬', '🔭', '📡', '💉', '🩸', '💊', '🩹', '🩺', '🩻', '🩼', '🦽', '🦼', '🦯', '🦮', '🦺', '🦿', '🦾', '🦵', '🦶', '🦴', '🦷', '🦻', '🦳', '🦲', '🦱', '🦰', '🦸', '🦹', '🦷', '🦴', '🦵', '🦶', '🦿', '🦾', '🦺', '🦮', '🦯', '🦼', '🦽', '🩼', '🩻', '🩺', '🩹', '💊', '🩸', '💉', '📡', '🔭', '🔬', '🧬', '🧫', '🧪', '⚗️', '🧲', '🧰', '🪤', '⚙️', '🔩', '🪛', '🔧', '🪚', '🛡️', '🏹', '🪃', '🔫', '⚔️', '🗡️', '🛠️', '⚒️', '⛏️', '🪓', '🔨', '🗝️', '🔑', '🔐', '🔏', '🔓', '🔒', '🗑️', '🗄️', '🗃️', '✂️', '📐', '📏', '🖇️', '📎', '📍', '📌', '📋', '🧾', '🛎️', '🛍️', '🛒', '🧯', '🧽', '🪣', '🪢', '🪡', '🧶', '🧵', '🧸', '🧷', '🧴', '🛀', '🛁', '🚿', '🚰', '🚽', '🧻', '🧺', '🧹', '🌡️', '🧪', '🧫', '🧬', '🦠', '🩸', '💊', '💉', '🩹', '🩺', '🩻', '🩼', '🦽', '🦼', '🦯', '🦮', '🦺', '🦿', '🦾', '🦵', '🦶', '🦴', '🦷', '🦻', '🦳', '🦲', '🦱', '🦰', '🦸', '🦹'],
-  symbols: ['❤️', '🧡', '💛', '💚', '💙', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '💕', '💞', '💓', '💗', '💖', '💘', '💝', '💟', '☮️', '✝️', '☪️', '🕉️', '☸️', '✡️', '🔯', '🕎', '☯️', '☦️', '🛐', '⛎', '♈', '♉', '♊', '♋', '♌', '♍', '♎', '♏', '♐', '♑', '♒', '♓', '🆔', '⚛️', '🉑', '☢️', '☣️', '📴', '📳', '🈶', '🈚', '🈸', '🈺', '🈷️', '✴️', '🆚', '💮', '🉐', '㊙️', '㊗️', '🈴', '🈵', '🈹', '🈲', '🅰️', '🅱️', '🆎', '🆑', '🅾️', '🆘', '❌', '⭕', '🛑', '⛔', '📛', '🚫', '💯', '💢', '♨️', '🚷', '🚯', '🚳', '🚱', '🔞', '📵', '🚭', '⭐', '🌟', '💫', '✨', '⚡', '🔥', '💥', '💢', '💨', '💦', '💧', '🌊', '🌪️', '🌩️', '⛈️', '🌦️', '🌧️', '🌤️', '⛅', '☀️', '🌞', '🌝', '🌛', '🌜', '🌚', '🌕', '🌖', '🌗', '🌘', '🌑', '🌒', '🌓', '🌔', '🌙', '🌍', '🌎', '🌏', '🌋', '🏔️', '⛰️', '🏕️', '🏖️', '🏜️', '🏝️', '🏞️', '🏟️', '🏛️', '🏗️', '🏘️', '🏙️', '🏚️', '🏠', '🏡', '🏢', '🏣', '🏤', '🏥', '🏦', '🏧', '🏨', '🏩', '🏪', '🏫', '🏬', '🏭', '🏮', '🏯', '🏰', '💒', '🗼', '🗽', '⛪', '🕌', '🛕', '🕍', '⛩️', '🕋', '⛲', '⛺', '🌉', '🌁', '🚠', '🚡', '🚢', '⛵', '🛥️', '🚤', '⛴️', '🛳️', '🚁', '🚟', '🚠', '🚡', '🎠', '🎡', '🎢', '💈', '🎪', '🚂', '🚃', '🚄', '🚅', '🚆', '🚇', '🚈', '🚉', '🚊', '🚝', '🚞', '🚋', '🚌', '🚍', '🚎', '🚐', '🚑', '🚒', '🚓', '🚔', '🚕', '🚖', '🚗', '🚘', '🚙', '🚚', '🚛', '🚜', '🏎️', '🏍️', '🛵', '🚲', '🛴', '🛹', '🛼', '🛻', '🚁', '🚟', '🚠', '🚡', '🎠', '🎡', '🎢', '💈', '🎪']
+  sports: [
+    '⚽',
+    '🏀',
+    '🏈',
+    '⚾',
+    '🎾',
+    '🏐',
+    '🏉',
+    '🎱',
+    '🏓',
+    '🏸',
+    '🏒',
+    '🏑',
+    '🏏',
+    '🎯',
+    '🏹',
+    '🎣',
+    '🤸',
+    '🤾',
+    '🏋️',
+    '🚴',
+    '🏇',
+    '🏊',
+    '🏄',
+    '🏃',
+    '🤺',
+    '🥊',
+    '🥋',
+    '🎽',
+    '🏅',
+    '🥇',
+    '🥈',
+    '🥉',
+    '🏆',
+    '🏵️',
+    '🎖️',
+    '🏟️',
+    '🏛️',
+    '🏗️',
+    '🏘️',
+    '🏙️',
+    '🏚️',
+    '🏠',
+    '🏡',
+    '🏢',
+    '🏣',
+    '🏤',
+    '🏥',
+    '🏦',
+    '🏧',
+    '🏨',
+    '🏩',
+    '🏪',
+    '🏫',
+    '🏬',
+    '🏭',
+    '🏮',
+    '🏯',
+    '🏰',
+    '💒',
+    '🗼',
+    '🗽',
+    '⛪',
+    '🕌',
+    '🛕',
+    '🕍',
+    '⛩️',
+    '🕋',
+    '⛲',
+    '⛺',
+    '🌉',
+    '🌁',
+    '🚠',
+    '🚡',
+    '🚢',
+    '⛵',
+    '🛥️',
+    '🚤',
+    '⛴️',
+    '🛳️',
+    '🚁',
+    '🚟',
+    '🚠',
+    '🚡',
+    '🎠',
+    '🎡',
+    '🎢',
+    '💈',
+    '🎪',
+    '🚂',
+    '🚃',
+    '🚄',
+    '🚅',
+    '🚆',
+    '🚇',
+    '🚈',
+    '🚉',
+    '🚊',
+    '🚝',
+    '🚞',
+    '🚋',
+    '🚌',
+    '🚍',
+    '🚎',
+    '🚐',
+    '🚑',
+    '🚒',
+    '🚓',
+    '🚔',
+    '🚕',
+    '🚖',
+    '🚗',
+    '🚘',
+    '🚙',
+    '🚚',
+    '🚛',
+    '🚜',
+    '🏎️',
+    '🏍️',
+    '🛵',
+    '🚲',
+    '🛴',
+    '🛹',
+    '🛼',
+    '🛻',
+    '🚁',
+    '🚟',
+    '🚠',
+    '🚡',
+    '🎠',
+    '🎡',
+    '🎢',
+    '💈',
+    '🎪',
+  ],
+  general: [
+    '😀',
+    '😃',
+    '😄',
+    '😁',
+    '😆',
+    '😅',
+    '🤣',
+    '😂',
+    '🙂',
+    '🙃',
+    '😉',
+    '😊',
+    '😇',
+    '🥰',
+    '😍',
+    '🤩',
+    '😘',
+    '😗',
+    '😚',
+    '😙',
+    '😋',
+    '😛',
+    '😜',
+    '🤪',
+    '😝',
+    '🤑',
+    '🤗',
+    '🤭',
+    '🤫',
+    '🤔',
+    '🤐',
+    '🤨',
+    '😐',
+    '😑',
+    '😶',
+    '😏',
+    '😒',
+    '🙄',
+    '😬',
+    '🤥',
+    '😌',
+    '😔',
+    '😪',
+    '🤤',
+    '😴',
+    '😷',
+    '🤒',
+    '🤕',
+    '🤢',
+    '🤮',
+    '🤧',
+    '🥵',
+    '🥶',
+    '🥴',
+    '😵',
+    '🤯',
+    '🤠',
+    '🥳',
+    '😎',
+    '🤓',
+    '🧐',
+    '😕',
+    '😟',
+    '🙁',
+    '☹️',
+    '😮',
+    '😯',
+    '😲',
+    '😳',
+    '🥺',
+    '😦',
+    '😧',
+    '😨',
+    '😰',
+    '😥',
+    '😢',
+    '😭',
+    '😱',
+    '😖',
+    '😣',
+    '😞',
+    '😓',
+    '😩',
+    '😫',
+    '🥱',
+    '😤',
+    '😡',
+    '😠',
+    '🤬',
+    '😈',
+    '👿',
+    '💀',
+    '☠️',
+    '💩',
+    '🤡',
+    '👹',
+    '👺',
+    '👻',
+    '👽',
+    '👾',
+    '🤖',
+    '😺',
+    '😸',
+    '😹',
+    '😻',
+    '😼',
+    '😽',
+    '🙀',
+    '😿',
+    '😾',
+    '👶',
+    '🧒',
+    '👦',
+    '👧',
+    '🧑',
+    '👨',
+    '👩',
+    '🧓',
+    '👴',
+    '👵',
+    '👤',
+    '👥',
+    '🫂',
+    '👋',
+    '🤚',
+    '🖐️',
+    '✋',
+    '🖖',
+    '👌',
+    '🤌',
+    '🤏',
+    '✌️',
+    '🤞',
+    '🤟',
+    '🤘',
+    '🤙',
+    '👈',
+    '👉',
+    '👆',
+    '🖕',
+    '👇',
+    '☝️',
+    '👍',
+    '👎',
+    '✊',
+    '👊',
+    '🤛',
+    '🤜',
+    '👏',
+    '🙌',
+    '👐',
+    '🤲',
+    '🤝',
+    '🙏',
+    '✍️',
+    '💅',
+    '🤳',
+    '💪',
+    '🦾',
+    '🦿',
+    '🦵',
+    '🦶',
+    '👂',
+    '🦻',
+    '👃',
+    '🧠',
+    '🦷',
+    '🦴',
+    '👀',
+    '👁️',
+    '👅',
+    '👄',
+    '💋',
+    '🩸',
+    '🦠',
+    '💊',
+    '💉',
+    '🩹',
+    '🩺',
+    '🧬',
+    '🦠',
+    '🧫',
+    '🧪',
+    '🌡️',
+    '🧹',
+    '🧺',
+    '🧻',
+    '🚽',
+    '🚰',
+    '🚿',
+    '🛁',
+    '🛀',
+    '🧴',
+    '🧷',
+    '🧸',
+    '🧵',
+    '🧶',
+    '🪡',
+    '🪢',
+    '🪣',
+    '🧽',
+    '🧯',
+    '🛒',
+    '🛍️',
+    '🛎️',
+    '🧾',
+    '📋',
+    '📌',
+    '📍',
+    '📎',
+    '🖇️',
+    '📏',
+    '📐',
+    '✂️',
+    '🗃️',
+    '🗄️',
+    '🗑️',
+    '🔒',
+    '🔓',
+    '🔏',
+    '🔐',
+    '🔑',
+    '🗝️',
+    '🔨',
+    '🪓',
+    '⛏️',
+    '⚒️',
+    '🛠️',
+    '🗡️',
+    '⚔️',
+    '🔫',
+    '🪃',
+    '🏹',
+    '🛡️',
+    '🪚',
+    '🔧',
+    '🪛',
+    '🔩',
+    '⚙️',
+    '🪤',
+    '🧰',
+    '🧲',
+    '⚗️',
+    '🧪',
+    '🧫',
+    '🧬',
+    '🔬',
+    '🔭',
+    '📡',
+    '💉',
+    '🩸',
+    '💊',
+    '🩹',
+    '🩺',
+    '🩻',
+    '🩼',
+    '🦽',
+    '🦼',
+    '🦯',
+    '🦮',
+    '🦺',
+    '🦿',
+    '🦾',
+    '🦵',
+    '🦶',
+    '🦴',
+    '🦷',
+    '🦻',
+    '🦳',
+    '🦲',
+    '🦱',
+    '🦰',
+    '🦸',
+    '🦹',
+    '🦷',
+    '🦴',
+    '🦵',
+    '🦶',
+    '🦿',
+    '🦾',
+    '🦺',
+    '🦮',
+    '🦯',
+    '🦼',
+    '🦽',
+    '🩼',
+    '🩻',
+    '🩺',
+    '🩹',
+    '💊',
+    '🩸',
+    '💉',
+    '📡',
+    '🔭',
+    '🔬',
+    '🧬',
+    '🧫',
+    '🧪',
+    '⚗️',
+    '🧲',
+    '🧰',
+    '🪤',
+    '⚙️',
+    '🔩',
+    '🪛',
+    '🔧',
+    '🪚',
+    '🛡️',
+    '🏹',
+    '🪃',
+    '🔫',
+    '⚔️',
+    '🗡️',
+    '🛠️',
+    '⚒️',
+    '⛏️',
+    '🪓',
+    '🔨',
+    '🗝️',
+    '🔑',
+    '🔐',
+    '🔏',
+    '🔓',
+    '🔒',
+    '🗑️',
+    '🗄️',
+    '🗃️',
+    '✂️',
+    '📐',
+    '📏',
+    '🖇️',
+    '📎',
+    '📍',
+    '📌',
+    '📋',
+    '🧾',
+    '🛎️',
+    '🛍️',
+    '🛒',
+    '🧯',
+    '🧽',
+    '🪣',
+    '🪢',
+    '🪡',
+    '🧶',
+    '🧵',
+    '🧸',
+    '🧷',
+    '🧴',
+    '🛀',
+    '🛁',
+    '🚿',
+    '🚰',
+    '🚽',
+    '🧻',
+    '🧺',
+    '🧹',
+    '🌡️',
+    '🧪',
+    '🧫',
+    '🧬',
+    '🦠',
+    '🩸',
+    '💊',
+    '💉',
+    '🩹',
+    '🩺',
+    '🩻',
+    '🩼',
+    '🦽',
+    '🦼',
+    '🦯',
+    '🦮',
+    '🦺',
+    '🦿',
+    '🦾',
+    '🦵',
+    '🦶',
+    '🦴',
+    '🦷',
+    '🦻',
+    '🦳',
+    '🦲',
+    '🦱',
+    '🦰',
+    '🦸',
+    '🦹',
+  ],
+  symbols: [
+    '❤️',
+    '🧡',
+    '💛',
+    '💚',
+    '💙',
+    '💜',
+    '🖤',
+    '🤍',
+    '🤎',
+    '💔',
+    '❣️',
+    '💕',
+    '💞',
+    '💓',
+    '💗',
+    '💖',
+    '💘',
+    '💝',
+    '💟',
+    '☮️',
+    '✝️',
+    '☪️',
+    '🕉️',
+    '☸️',
+    '✡️',
+    '🔯',
+    '🕎',
+    '☯️',
+    '☦️',
+    '🛐',
+    '⛎',
+    '♈',
+    '♉',
+    '♊',
+    '♋',
+    '♌',
+    '♍',
+    '♎',
+    '♏',
+    '♐',
+    '♑',
+    '♒',
+    '♓',
+    '🆔',
+    '⚛️',
+    '🉑',
+    '☢️',
+    '☣️',
+    '📴',
+    '📳',
+    '🈶',
+    '🈚',
+    '🈸',
+    '🈺',
+    '🈷️',
+    '✴️',
+    '🆚',
+    '💮',
+    '🉐',
+    '㊙️',
+    '㊗️',
+    '🈴',
+    '🈵',
+    '🈹',
+    '🈲',
+    '🅰️',
+    '🅱️',
+    '🆎',
+    '🆑',
+    '🅾️',
+    '🆘',
+    '❌',
+    '⭕',
+    '🛑',
+    '⛔',
+    '📛',
+    '🚫',
+    '💯',
+    '💢',
+    '♨️',
+    '🚷',
+    '🚯',
+    '🚳',
+    '🚱',
+    '🔞',
+    '📵',
+    '🚭',
+    '⭐',
+    '🌟',
+    '💫',
+    '✨',
+    '⚡',
+    '🔥',
+    '💥',
+    '💢',
+    '💨',
+    '💦',
+    '💧',
+    '🌊',
+    '🌪️',
+    '🌩️',
+    '⛈️',
+    '🌦️',
+    '🌧️',
+    '🌤️',
+    '⛅',
+    '☀️',
+    '🌞',
+    '🌝',
+    '🌛',
+    '🌜',
+    '🌚',
+    '🌕',
+    '🌖',
+    '🌗',
+    '🌘',
+    '🌑',
+    '🌒',
+    '🌓',
+    '🌔',
+    '🌙',
+    '🌍',
+    '🌎',
+    '🌏',
+    '🌋',
+    '🏔️',
+    '⛰️',
+    '🏕️',
+    '🏖️',
+    '🏜️',
+    '🏝️',
+    '🏞️',
+    '🏟️',
+    '🏛️',
+    '🏗️',
+    '🏘️',
+    '🏙️',
+    '🏚️',
+    '🏠',
+    '🏡',
+    '🏢',
+    '🏣',
+    '🏤',
+    '🏥',
+    '🏦',
+    '🏧',
+    '🏨',
+    '🏩',
+    '🏪',
+    '🏫',
+    '🏬',
+    '🏭',
+    '🏮',
+    '🏯',
+    '🏰',
+    '💒',
+    '🗼',
+    '🗽',
+    '⛪',
+    '🕌',
+    '🛕',
+    '🕍',
+    '⛩️',
+    '🕋',
+    '⛲',
+    '⛺',
+    '🌉',
+    '🌁',
+    '🚠',
+    '🚡',
+    '🚢',
+    '⛵',
+    '🛥️',
+    '🚤',
+    '⛴️',
+    '🛳️',
+    '🚁',
+    '🚟',
+    '🚠',
+    '🚡',
+    '🎠',
+    '🎡',
+    '🎢',
+    '💈',
+    '🎪',
+    '🚂',
+    '🚃',
+    '🚄',
+    '🚅',
+    '🚆',
+    '🚇',
+    '🚈',
+    '🚉',
+    '🚊',
+    '🚝',
+    '🚞',
+    '🚋',
+    '🚌',
+    '🚍',
+    '🚎',
+    '🚐',
+    '🚑',
+    '🚒',
+    '🚓',
+    '🚔',
+    '🚕',
+    '🚖',
+    '🚗',
+    '🚘',
+    '🚙',
+    '🚚',
+    '🚛',
+    '🚜',
+    '🏎️',
+    '🏍️',
+    '🛵',
+    '🚲',
+    '🛴',
+    '🛹',
+    '🛼',
+    '🛻',
+    '🚁',
+    '🚟',
+    '🚠',
+    '🚡',
+    '🎠',
+    '🎡',
+    '🎢',
+    '💈',
+    '🎪',
+  ],
 };
 
 export default function CommentForm({
@@ -28,8 +781,8 @@ export default function CommentForm({
   parentId,
   onCommentAdded,
   onCancel,
-  placeholder = "Write a comment...",
-  isReply = false
+  placeholder = 'Write a comment...',
+  isReply = false,
 }: CommentFormProps) {
   const { user } = useAuth();
   const [content, setContent] = useState('');
@@ -54,16 +807,22 @@ export default function CommentForm({
 
       if (showEmojiPicker) {
         // Only close if clicking outside both the content area and emoji picker
-        if (contentRef.current && !contentRef.current.contains(target) &&
-          (!emojiPicker || !emojiPicker.contains(target))) {
+        if (
+          contentRef.current &&
+          !contentRef.current.contains(target) &&
+          (!emojiPicker || !emojiPicker.contains(target))
+        ) {
           setShowEmojiPicker(false);
         }
       }
 
       if (showGifPicker) {
         // Only close if clicking outside both the content area and GIF picker
-        if (contentRef.current && !contentRef.current.contains(target) &&
-          (!gifPicker || !gifPicker.contains(target))) {
+        if (
+          contentRef.current &&
+          !contentRef.current.contains(target) &&
+          (!gifPicker || !gifPicker.contains(target))
+        ) {
           setShowGifPicker(false);
         }
       }
@@ -168,81 +927,81 @@ export default function CommentForm({
         title: 'Happy',
         images: {
           fixed_height: { url: 'https://media.giphy.com/media/3o7btPCcdNniyf0ArS/giphy.gif' },
-          fixed_height_small: { url: 'https://media.giphy.com/media/3o7btPCcdNniyf0ArS/100.gif' }
-        }
+          fixed_height_small: { url: 'https://media.giphy.com/media/3o7btPCcdNniyf0ArS/100.gif' },
+        },
       },
       {
         id: 'excited-1',
         title: 'Excited',
         images: {
           fixed_height: { url: 'https://media.giphy.com/media/26ufdipQqU2lhNA4g/giphy.gif' },
-          fixed_height_small: { url: 'https://media.giphy.com/media/26ufdipQqU2lhNA4g/100.gif' }
-        }
+          fixed_height_small: { url: 'https://media.giphy.com/media/26ufdipQqU2lhNA4g/100.gif' },
+        },
       },
       {
         id: 'celebration-1',
         title: 'Celebration',
         images: {
           fixed_height: { url: 'https://media.giphy.com/media/3o6Zt4HUhqJqJqJqJq/giphy.gif' },
-          fixed_height_small: { url: 'https://media.giphy.com/media/3o6Zt4HUhqJqJqJqJq/100.gif' }
-        }
+          fixed_height_small: { url: 'https://media.giphy.com/media/3o6Zt4HUhqJqJqJqJq/100.gif' },
+        },
       },
       {
         id: 'sports-1',
         title: 'Sports',
         images: {
           fixed_height: { url: 'https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif' },
-          fixed_height_small: { url: 'https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/100.gif' }
-        }
+          fixed_height_small: { url: 'https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/100.gif' },
+        },
       },
       {
         id: 'win-1',
         title: 'Win',
         images: {
           fixed_height: { url: 'https://media.giphy.com/media/3o7btPCcdNniyf0ArS/giphy.gif' },
-          fixed_height_small: { url: 'https://media.giphy.com/media/3o7btPCcdNniyf0ArS/100.gif' }
-        }
+          fixed_height_small: { url: 'https://media.giphy.com/media/3o7btPCcdNniyf0ArS/100.gif' },
+        },
       },
       {
         id: 'victory-1',
         title: 'Victory',
         images: {
           fixed_height: { url: 'https://media.giphy.com/media/26ufdipQqU2lhNA4g/giphy.gif' },
-          fixed_height_small: { url: 'https://media.giphy.com/media/26ufdipQqU2lhNA4g/100.gif' }
-        }
+          fixed_height_small: { url: 'https://media.giphy.com/media/26ufdipQqU2lhNA4g/100.gif' },
+        },
       },
       {
         id: 'football-1',
         title: 'Football',
         images: {
           fixed_height: { url: 'https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif' },
-          fixed_height_small: { url: 'https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/100.gif' }
-        }
+          fixed_height_small: { url: 'https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/100.gif' },
+        },
       },
       {
         id: 'basketball-1',
         title: 'Basketball',
         images: {
           fixed_height: { url: 'https://media.giphy.com/media/3o7btPCcdNniyf0ArS/giphy.gif' },
-          fixed_height_small: { url: 'https://media.giphy.com/media/3o7btPCcdNniyf0ArS/100.gif' }
-        }
+          fixed_height_small: { url: 'https://media.giphy.com/media/3o7btPCcdNniyf0ArS/100.gif' },
+        },
       },
       {
         id: 'success-1',
         title: 'Success',
         images: {
           fixed_height: { url: 'https://media.giphy.com/media/26ufdipQqU2lhNA4g/giphy.gif' },
-          fixed_height_small: { url: 'https://media.giphy.com/media/26ufdipQqU2lhNA4g/100.gif' }
-        }
+          fixed_height_small: { url: 'https://media.giphy.com/media/26ufdipQqU2lhNA4g/100.gif' },
+        },
       },
       {
         id: 'thumbs-up-1',
         title: 'Thumbs Up',
         images: {
           fixed_height: { url: 'https://media.giphy.com/media/3o6Zt4HUhqJqJqJqJq/giphy.gif' },
-          fixed_height_small: { url: 'https://media.giphy.com/media/3o6Zt4HUhqJqJqJqJq/100.gif' }
-        }
-      }
+          fixed_height_small: { url: 'https://media.giphy.com/media/3o6Zt4HUhqJqJqJqJq/100.gif' },
+        },
+      },
     ];
 
     // If no query, return a random selection
@@ -256,24 +1015,43 @@ export default function CommentForm({
     // Create different GIF sets based on search terms
     let relevantGifs = [];
 
-    if (searchQuery.includes('happy') || searchQuery.includes('smile') || searchQuery.includes('joy')) {
-      relevantGifs = fallbackGifs.filter(gif => gif.title.toLowerCase().includes('happy'));
-    } else if (searchQuery.includes('sport') || searchQuery.includes('football') || searchQuery.includes('basketball')) {
-      relevantGifs = fallbackGifs.filter(gif =>
-        gif.title.toLowerCase().includes('sports') ||
-        gif.title.toLowerCase().includes('football') ||
-        gif.title.toLowerCase().includes('basketball')
+    if (
+      searchQuery.includes('happy') ||
+      searchQuery.includes('smile') ||
+      searchQuery.includes('joy')
+    ) {
+      relevantGifs = fallbackGifs.filter((gif) => gif.title.toLowerCase().includes('happy'));
+    } else if (
+      searchQuery.includes('sport') ||
+      searchQuery.includes('football') ||
+      searchQuery.includes('basketball')
+    ) {
+      relevantGifs = fallbackGifs.filter(
+        (gif) =>
+          gif.title.toLowerCase().includes('sports') ||
+          gif.title.toLowerCase().includes('football') ||
+          gif.title.toLowerCase().includes('basketball')
       );
-    } else if (searchQuery.includes('win') || searchQuery.includes('victory') || searchQuery.includes('success')) {
-      relevantGifs = fallbackGifs.filter(gif =>
-        gif.title.toLowerCase().includes('win') ||
-        gif.title.toLowerCase().includes('victory') ||
-        gif.title.toLowerCase().includes('success')
+    } else if (
+      searchQuery.includes('win') ||
+      searchQuery.includes('victory') ||
+      searchQuery.includes('success')
+    ) {
+      relevantGifs = fallbackGifs.filter(
+        (gif) =>
+          gif.title.toLowerCase().includes('win') ||
+          gif.title.toLowerCase().includes('victory') ||
+          gif.title.toLowerCase().includes('success')
       );
-    } else if (searchQuery.includes('celebrat') || searchQuery.includes('party') || searchQuery.includes('excit')) {
-      relevantGifs = fallbackGifs.filter(gif =>
-        gif.title.toLowerCase().includes('celebration') ||
-        gif.title.toLowerCase().includes('excited')
+    } else if (
+      searchQuery.includes('celebrat') ||
+      searchQuery.includes('party') ||
+      searchQuery.includes('excit')
+    ) {
+      relevantGifs = fallbackGifs.filter(
+        (gif) =>
+          gif.title.toLowerCase().includes('celebration') ||
+          gif.title.toLowerCase().includes('excited')
       );
     } else {
       // For any other search, return a random selection
@@ -391,7 +1169,6 @@ export default function CommentForm({
       ctx?.drawImage(img, 0, 0, width, height);
       const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.7); // 70% quality
 
-
       insertImage(compressedDataUrl);
     };
 
@@ -475,7 +1252,7 @@ export default function CommentForm({
 
     try {
       const commentData: CommentFormData = {
-        content: content // Don't trim HTML content
+        content: content, // Don't trim HTML content
       };
 
       // Only add parentId if it exists
@@ -501,11 +1278,7 @@ export default function CommentForm({
   };
 
   if (!user) {
-    return (
-      <div className="p-4 text-center text-zinc-400 text-sm">
-        Please sign in to comment
-      </div>
-    );
+    return <div className="p-4 text-center text-zinc-400 text-sm">Please sign in to comment</div>;
   }
 
   return (
@@ -517,8 +1290,9 @@ export default function CommentForm({
             <button
               type="button"
               onClick={() => handleFormat('bold')}
-              className={`p-2 rounded hover:bg-white/10 transition-colors ${isBold ? 'bg-primary/20 text-primary' : 'text-zinc-400'
-                }`}
+              className={`p-2 rounded hover:bg-white/10 transition-colors ${
+                isBold ? 'bg-primary/20 text-primary' : 'text-zinc-400'
+              }`}
               title="Bold"
             >
               <Bold className="w-4 h-4" />
@@ -526,8 +1300,9 @@ export default function CommentForm({
             <button
               type="button"
               onClick={() => handleFormat('italic')}
-              className={`p-2 rounded hover:bg-white/10 transition-colors ${isItalic ? 'bg-primary/20 text-primary' : 'text-zinc-400'
-                }`}
+              className={`p-2 rounded hover:bg-white/10 transition-colors ${
+                isItalic ? 'bg-primary/20 text-primary' : 'text-zinc-400'
+              }`}
               title="Italic"
             >
               <Italic className="w-4 h-4" />
@@ -535,8 +1310,9 @@ export default function CommentForm({
             <button
               type="button"
               onClick={() => handleFormat('underline')}
-              className={`p-2 rounded hover:bg-white/10 transition-colors ${isUnderline ? 'bg-primary/20 text-primary' : 'text-zinc-400'
-                }`}
+              className={`p-2 rounded hover:bg-white/10 transition-colors ${
+                isUnderline ? 'bg-primary/20 text-primary' : 'text-zinc-400'
+              }`}
               title="Underline"
             >
               <Underline className="w-4 h-4" />
@@ -544,8 +1320,9 @@ export default function CommentForm({
             <button
               type="button"
               onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-              className={`p-2 rounded hover:bg-white/10 transition-colors ${showEmojiPicker ? 'bg-primary/20 text-primary' : 'text-zinc-400'
-                }`}
+              className={`p-2 rounded hover:bg-white/10 transition-colors ${
+                showEmojiPicker ? 'bg-primary/20 text-primary' : 'text-zinc-400'
+              }`}
               title="Emoji"
             >
               <Smile className="w-4 h-4" />
@@ -553,10 +1330,12 @@ export default function CommentForm({
             <button
               type="button"
               onClick={() => setShowGifPicker(!showGifPicker)}
-              className={`p-2 rounded hover:bg-white/10 transition-colors ${showGifPicker ? 'bg-primary/20 text-primary' : 'text-zinc-400'
-                }`}
+              className={`p-2 rounded hover:bg-white/10 transition-colors ${
+                showGifPicker ? 'bg-primary/20 text-primary' : 'text-zinc-400'
+              }`}
               title="GIF"
             >
+              {/* eslint-disable-next-line jsx-a11y/alt-text */}
               <Image className="w-4 h-4" />
             </button>
             <button
@@ -721,9 +1500,7 @@ export default function CommentForm({
       </div>
 
       <div className="flex items-center justify-between">
-        <div className="text-xs text-zinc-500">
-          Press Cmd+Enter to submit
-        </div>
+        <div className="text-xs text-zinc-500">Press Cmd+Enter to submit</div>
 
         <div className="flex items-center gap-2">
           {onCancel && (
@@ -743,7 +1520,7 @@ export default function CommentForm({
             className="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-hover disabled:bg-zinc-600 disabled:cursor-not-allowed text-white text-sm rounded-lg transition"
           >
             <Send className="w-4 h-4" />
-            {isSubmitting ? 'Posting...' : (isReply ? 'Reply' : 'Comment')}
+            {isSubmitting ? 'Posting...' : isReply ? 'Reply' : 'Comment'}
           </button>
         </div>
       </div>
