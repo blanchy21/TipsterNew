@@ -17,13 +17,13 @@ test.describe('Landing Page', () => {
     })
 
     test('should show all feature cards', async ({ page }) => {
-        // All features are rendered in a grid, check by their label numbers
-        await expect(page.getByText('01')).toBeAttached()
-        await expect(page.getByText('02')).toBeAttached()
-        await expect(page.getByText('03')).toBeAttached()
-        await expect(page.getByText('04')).toBeAttached()
-        await expect(page.getByText('05')).toBeAttached()
-        await expect(page.getByText('06')).toBeAttached()
+        // All features rendered in a grid with h3 titles
+        await expect(page.locator('h3', { hasText: 'Share Tips' })).toBeAttached()
+        await expect(page.locator('h3', { hasText: 'Live Chat' })).toBeAttached()
+        await expect(page.locator('h3', { hasText: 'Track Record' })).toBeAttached()
+        await expect(page.locator('h3', { hasText: 'Find Winners' })).toBeAttached()
+        await expect(page.locator('h3', { hasText: 'Community' })).toBeAttached()
+        await expect(page.locator('h3', { hasText: 'Free Forever' })).toBeAttached()
     })
 
     test('should navigate to auth when Get Started is clicked', async ({ page }) => {

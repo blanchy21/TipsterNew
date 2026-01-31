@@ -142,14 +142,14 @@ test.describe('Chat Flow', () => {
 
     test('should verify chat feature description', async ({ page }) => {
 
-        // Verify chat feature is mentioned in the features section
-        await expect(page.getByText('Live Chat')).toBeAttached()
+        // Verify chat feature card exists
+        await expect(page.locator('h3', { hasText: 'Live Chat' })).toBeAttached()
 
         // Verify chat feature description
         await expect(page.getByText(/Dedicated rooms for Football, Racing, Golf/)).toBeAttached()
 
-        // Verify live chat section heading (text split across elements)
-        await expect(page.getByText(/Six rooms,/)).toBeVisible()
+        // Verify live chat section heading
+        await expect(page.locator('h2', { hasText: 'Six rooms' })).toBeVisible()
     })
 })
 
