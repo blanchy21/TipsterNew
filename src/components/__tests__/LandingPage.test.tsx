@@ -1,165 +1,162 @@
-import React from 'react'
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
-import LandingPage from '../pages/LandingPage'
+import React from 'react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import LandingPage from '../pages/LandingPage';
 
 // Mock the useAuth hook
 jest.mock('@/lib/hooks/useAuth', () => ({
-    useAuth: () => ({
-        user: null,
-        loading: false,
-    }),
-}))
+  useAuth: () => ({
+    user: null,
+    loading: false,
+  }),
+}));
 
 describe('LandingPage', () => {
-    const defaultProps = {
-        onGetStarted: jest.fn(),
-        onShowAuthModal: jest.fn(),
-    }
+  const defaultProps = {
+    onGetStarted: jest.fn(),
+    onShowAuthModal: jest.fn(),
+  };
 
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
 
-    it('renders the main heading', () => {
-        render(<LandingPage {...defaultProps} />)
+  it('renders the main heading', () => {
+    render(<LandingPage {...defaultProps} />);
 
-        expect(screen.getAllByText('Tipster Arena')[0]).toBeInTheDocument()
-    })
+    expect(screen.getAllByText('Tipster Arena')[0]).toBeInTheDocument();
+  });
 
-    it('renders the tagline', () => {
-        render(<LandingPage {...defaultProps} />)
+  it('renders the tagline', () => {
+    render(<LandingPage {...defaultProps} />);
 
-        expect(screen.getByText(/The ultimate platform for sports tipsters/)).toBeInTheDocument()
-    })
+    expect(screen.getByText(/Where sports fans/)).toBeInTheDocument();
+  });
 
-    it('displays all feature cards', () => {
-        render(<LandingPage {...defaultProps} />)
+  it('displays all feature cards', () => {
+    render(<LandingPage {...defaultProps} />);
 
-        expect(screen.getByText('Share Your Tips')).toBeInTheDocument()
-        expect(screen.getAllByText('Live Sports Chat')[0]).toBeInTheDocument()
-        expect(screen.getByText('Transparent Tracking')).toBeInTheDocument()
-        expect(screen.getByText('Find Top Tipsters')).toBeInTheDocument()
-        expect(screen.getByText('Community Driven')).toBeInTheDocument()
-        expect(screen.getByText('Sports Only')).toBeInTheDocument()
-    })
+    expect(screen.getByText('Share Tips')).toBeInTheDocument();
+    expect(screen.getAllByText('Live Chat')[0]).toBeInTheDocument();
+    expect(screen.getByText('Track Record')).toBeInTheDocument();
+    expect(screen.getByText('Find Winners')).toBeInTheDocument();
+    expect(screen.getAllByText('Community').length).toBeGreaterThan(0);
+    expect(screen.getByText('Free Forever')).toBeInTheDocument();
+  });
 
-    it('calls onGetStarted when Get Started button is clicked', () => {
-        render(<LandingPage {...defaultProps} />)
+  it('calls onGetStarted when Get Started button is clicked', () => {
+    render(<LandingPage {...defaultProps} />);
 
-        const getStartedButton = screen.getByText('Get started')
-        fireEvent.click(getStartedButton)
+    const getStartedButtons = screen.getAllByText('Get Started Free');
+    fireEvent.click(getStartedButtons[0]);
 
-        expect(defaultProps.onGetStarted).toHaveBeenCalled()
-    })
+    expect(defaultProps.onGetStarted).toHaveBeenCalled();
+  });
 
-    it('calls onShowAuthModal when Sign In button is clicked', () => {
-        render(<LandingPage {...defaultProps} />)
+  it('calls onShowAuthModal when Sign In button is clicked', () => {
+    render(<LandingPage {...defaultProps} />);
 
-        const signInButton = screen.getByText('Sign in')
-        fireEvent.click(signInButton)
+    const signInButton = screen.getByText('Sign in');
+    fireEvent.click(signInButton);
 
-        expect(defaultProps.onShowAuthModal).toHaveBeenCalledWith('login')
-    })
+    expect(defaultProps.onShowAuthModal).toHaveBeenCalledWith('login');
+  });
 
-    it('displays feature descriptions', () => {
-        render(<LandingPage {...defaultProps} />)
+  it('displays feature descriptions', () => {
+    render(<LandingPage {...defaultProps} />);
 
-        expect(screen.getByText(/Post your sports predictions and tips/)).toBeInTheDocument()
-        expect(screen.getAllByText(/Join dedicated chat rooms for each sport/)[0]).toBeInTheDocument()
-        expect(screen.getByText(/Automatic win\/loss tracking/)).toBeInTheDocument()
-    })
+    expect(screen.getByText(/Post predictions for any sport/)).toBeInTheDocument();
+    expect(screen.getByText(/Dedicated rooms for Football/)).toBeInTheDocument();
+    expect(screen.getByText(/Automatic win\/loss tracking/)).toBeInTheDocument();
+  });
 
-    it('shows navigation items', () => {
-        render(<LandingPage {...defaultProps} />)
+  it('shows navigation items', () => {
+    render(<LandingPage {...defaultProps} />);
 
-        expect(screen.getByText('Features')).toBeInTheDocument()
-        expect(screen.getByText('Sports')).toBeInTheDocument()
-        expect(screen.getAllByText('Community')[0]).toBeInTheDocument()
-    })
+    expect(screen.getAllByText('Features')[0]).toBeInTheDocument();
+    expect(screen.getAllByText('Sports')[0]).toBeInTheDocument();
+    expect(screen.getAllByText('Community')[0]).toBeInTheDocument();
+    expect(screen.getAllByText('Pricing')[0]).toBeInTheDocument();
+  });
 
-    it('displays the logo', () => {
-        render(<LandingPage {...defaultProps} />)
+  it('displays the logo', () => {
+    render(<LandingPage {...defaultProps} />);
 
-        const logo = screen.getByAltText('Tipster Arena')
-        expect(logo).toBeInTheDocument()
-    })
+    const logo = screen.getByAltText('Tipster Arena');
+    expect(logo).toBeInTheDocument();
+  });
 
-    it('has proper accessibility attributes', () => {
-        render(<LandingPage {...defaultProps} />)
+  it('has proper accessibility attributes', () => {
+    render(<LandingPage {...defaultProps} />);
 
-        const mainHeading = screen.getByRole('heading', { level: 1 })
-        expect(mainHeading).toBeInTheDocument()
+    const mainHeading = screen.getByRole('heading', { level: 1 });
+    expect(mainHeading).toBeInTheDocument();
 
-        const buttons = screen.getAllByRole('button')
-        expect(buttons.length).toBeGreaterThan(0)
-    })
+    const buttons = screen.getAllByRole('button');
+    expect(buttons.length).toBeGreaterThan(0);
+  });
 
-    it('renders feature icons', () => {
-        render(<LandingPage {...defaultProps} />)
+  it('renders feature card labels', () => {
+    render(<LandingPage {...defaultProps} />);
 
-        // Check for emoji icons in feature cards - use getAllByText for duplicates
-        expect(screen.getByText('🎯')).toBeInTheDocument() // Share Your Tips
-        expect(screen.getAllByText('💬')[0]).toBeInTheDocument() // Live Sports Chat
-        expect(screen.getByText('📊')).toBeInTheDocument() // Transparent Tracking
-        expect(screen.getByText('🔍')).toBeInTheDocument() // Find Top Tipsters
-        expect(screen.getByText('👥')).toBeInTheDocument() // Community Driven
-        expect(screen.getByText('🛡️')).toBeInTheDocument() // Sports Only
-    })
+    // Feature cards now use numbered labels and SVG icons
+    expect(screen.getByText('01')).toBeInTheDocument();
+    expect(screen.getByText('02')).toBeInTheDocument();
+    expect(screen.getByText('03')).toBeInTheDocument();
+    expect(screen.getByText('04')).toBeInTheDocument();
+    expect(screen.getByText('05')).toBeInTheDocument();
+    expect(screen.getByText('06')).toBeInTheDocument();
+  });
 
-    it('displays statistics section', () => {
-        render(<LandingPage {...defaultProps} />)
+  it('displays pricing section', () => {
+    render(<LandingPage {...defaultProps} />);
 
-        // Look for common statistics text - updated to match current content
-        expect(screen.getByText(/100% free/i)).toBeInTheDocument()
-        expect(screen.getAllByText(/completely free forever/i)).toHaveLength(2)
-    })
+    expect(screen.getByText('$0')).toBeInTheDocument();
+    expect(screen.getByText(/per month, forever/)).toBeInTheDocument();
+  });
 
-    it('handles loading state', async () => {
-        render(<LandingPage {...defaultProps} />)
+  it('handles loading state', async () => {
+    render(<LandingPage {...defaultProps} />);
 
-        // The component should handle loading state gracefully
-        await waitFor(() => {
-            expect(screen.getAllByText('Tipster Arena')[0]).toBeInTheDocument()
-        })
-    })
+    // The component should handle loading state gracefully
+    await waitFor(() => {
+      expect(screen.getAllByText('Tipster Arena')[0]).toBeInTheDocument();
+    });
+  });
 
-    it('shows call-to-action section', () => {
-        render(<LandingPage {...defaultProps} />)
+  it('shows call-to-action section', () => {
+    render(<LandingPage {...defaultProps} />);
 
-        const ctaSection = screen.getAllByText((content, element) => {
-            return element?.textContent?.includes('Ready to Start Sharing Tips') || false
-        })[0]
-        expect(ctaSection).toBeInTheDocument()
-    })
+    expect(screen.getByText(/Ready to prove/)).toBeInTheDocument();
+  });
 
-    it('displays footer information', () => {
-        render(<LandingPage {...defaultProps} />)
+  it('displays footer information', () => {
+    render(<LandingPage {...defaultProps} />);
 
-        // Look for footer content
-        expect(screen.getByText(/© 2024 Tipster Arena/i)).toBeInTheDocument()
-    })
+    const currentYear = new Date().getFullYear();
+    expect(
+      screen.getByText(`© ${currentYear} Tipster Arena. All rights reserved.`)
+    ).toBeInTheDocument();
+  });
 
-    it('has responsive design elements', () => {
-        render(<LandingPage {...defaultProps} />)
+  it('has responsive design elements', () => {
+    render(<LandingPage {...defaultProps} />);
 
-        // Check for responsive classes or mobile-friendly elements
-        // The current landing page doesn't have a main role, so check for navigation instead
-        const navigation = screen.getByRole('navigation')
-        expect(navigation).toBeInTheDocument()
-    })
+    // Check for responsive classes or mobile-friendly elements
+    const navigation = screen.getByRole('navigation');
+    expect(navigation).toBeInTheDocument();
+  });
 
-    it('handles feature card interactions', () => {
-        render(<LandingPage {...defaultProps} />)
+  it('handles feature card interactions', () => {
+    render(<LandingPage {...defaultProps} />);
 
-        // Test if feature cards are interactive
-        const featureCards = screen.getAllByText(/Share Your Tips|Live Sports Chat|Transparent Tracking/)
-        expect(featureCards.length).toBeGreaterThan(0)
-    })
+    // Test if feature cards are rendered
+    const featureCards = screen.getAllByText(/Share Tips|Live Chat|Track Record/);
+    expect(featureCards.length).toBeGreaterThan(0);
+  });
 
-    it('displays proper meta information', () => {
-        render(<LandingPage {...defaultProps} />)
+  it('displays subheadline text', () => {
+    render(<LandingPage {...defaultProps} />);
 
-        // Check for meta content like descriptions
-        expect(screen.getByText(/ultimate platform/i)).toBeInTheDocument()
-    })
-})
+    expect(screen.getByText(/Share tips, track your win rate/)).toBeInTheDocument();
+  });
+});
