@@ -57,6 +57,14 @@ module.exports = {
                 priority: 1.0,
                 changefreq: 'daily'
             },
+            '/blog': {
+                priority: 0.9,
+                changefreq: 'daily'
+            },
+            '/blog/how-to-verify-tipster-track-record': {
+                priority: 0.8,
+                changefreq: 'monthly'
+            },
             '/profile': {
                 priority: 0.8,
                 changefreq: 'weekly'
