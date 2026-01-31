@@ -1,13 +1,17 @@
+// Blog page for verifying tipster track records
 import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'How to Verify a Sports Tipster\'s Track Record (2026 Guide) | Tipster Arena',
-  description: 'Learn how to verify if a sports tipster is legitimate. Our complete guide covers red flags, verification methods, and where to find tipsters with proven, transparent records.',
-  keywords: 'verify tipster, tipster track record, betting tips verification, fake tipster, legitimate tipster, sports betting tips, tipster red flags',
+  title: "How to Verify a Sports Tipster's Track Record (2026 Guide) | Tipster Arena",
+  description:
+    'Learn how to verify if a sports tipster is legitimate. Our complete guide covers red flags, verification methods, and where to find tipsters with proven, transparent records.',
+  keywords:
+    'verify tipster, tipster track record, betting tips verification, fake tipster, legitimate tipster, sports betting tips, tipster red flags',
   openGraph: {
-    title: 'How to Verify a Sports Tipster\'s Track Record (Complete Guide)',
-    description: 'Learn the essential steps to verify if a tipster is legitimate. Avoid scams and find tipsters with proven, transparent records.',
+    title: "How to Verify a Sports Tipster's Track Record (Complete Guide)",
+    description:
+      'Learn the essential steps to verify if a tipster is legitimate. Avoid scams and find tipsters with proven, transparent records.',
     url: 'https://tipster-arena.com/blog/how-to-verify-tipster-track-record',
     type: 'article',
     publishedTime: '2026-01-30',
@@ -15,8 +19,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'How to Verify a Sports Tipster\'s Track Record',
-    description: 'Complete guide to spotting fake tipsters and finding legitimate ones with verified records.',
+    title: "How to Verify a Sports Tipster's Track Record",
+    description:
+      'Complete guide to spotting fake tipsters and finding legitimate ones with verified records.',
   },
 };
 
@@ -26,9 +31,13 @@ export default function BlogPost() {
       <article className="max-w-3xl mx-auto px-4 py-16">
         {/* Breadcrumb */}
         <nav className="mb-8">
-          <Link href="/" className="text-slate-400 hover:text-amber-400">Home</Link>
+          <Link href="/" className="text-slate-400 hover:text-amber-400">
+            Home
+          </Link>
           <span className="text-slate-600 mx-2">/</span>
-          <Link href="/blog" className="text-slate-400 hover:text-amber-400">Blog</Link>
+          <Link href="/blog" className="text-slate-400 hover:text-amber-400">
+            Blog
+          </Link>
           <span className="text-slate-600 mx-2">/</span>
           <span className="text-amber-500">Verify Tipster Track Record</span>
         </nav>
@@ -45,8 +54,8 @@ export default function BlogPost() {
             How to Verify a Sports Tipster&apos;s Track Record (Complete 2026 Guide)
           </h1>
           <p className="text-xl text-slate-300">
-            Tired of following tipsters who delete losing picks and show fake screenshots?
-            Learn exactly how to verify if a tipster is legitimate before you risk your money.
+            Tired of following tipsters who delete losing picks and show fake screenshots? Learn
+            exactly how to verify if a tipster is legitimate before you risk your money.
           </p>
         </header>
 
@@ -54,13 +63,15 @@ export default function BlogPost() {
         <div className="prose prose-invert prose-lg max-w-none">
           {/* Introduction */}
           <p className="text-slate-300 leading-relaxed">
-            The sports betting world is flooded with self-proclaimed &quot;expert tipsters&quot; promising
-            80%+ win rates and guaranteed profits. The reality? Most are running scams, cherry-picking
-            their results, or simply deleting losing picks when nobody&apos;s looking.
+            The sports betting world is flooded with self-proclaimed &quot;expert tipsters&quot;
+            promising 80%+ win rates and guaranteed profits. The reality? Most are running scams,
+            cherry-picking their results, or simply deleting losing picks when nobody&apos;s
+            looking.
           </p>
           <p className="text-slate-300 leading-relaxed">
-            In this guide, we&apos;ll show you exactly how to verify a tipster&apos;s track record, spot the
-            red flags that expose fakes, and find legitimate tipsters with transparent, verifiable results.
+            In this guide, we&apos;ll show you exactly how to verify a tipster&apos;s track record,
+            spot the red flags that expose fakes, and find legitimate tipsters with transparent,
+            verifiable results.
           </p>
 
           {/* Section 1 */}
@@ -68,25 +79,37 @@ export default function BlogPost() {
             Why Most Tipster &quot;Proof&quot; Is Worthless
           </h2>
           <p className="text-slate-300 leading-relaxed">
-            Before diving into verification methods, let&apos;s understand why the standard &quot;proof&quot;
-            tipsters share is often meaningless:
+            Before diving into verification methods, let&apos;s understand why the standard
+            &quot;proof&quot; tipsters share is often meaningless:
           </p>
           <ul className="text-slate-300 space-y-3 my-6">
             <li className="flex items-start gap-3">
               <span className="text-red-400 font-bold">✗</span>
-              <span><strong className="text-white">Screenshots can be faked</strong> — Photoshop makes it trivially easy to create winning bet slips</span>
+              <span>
+                <strong className="text-white">Screenshots can be faked</strong> — Photoshop makes
+                it trivially easy to create winning bet slips
+              </span>
             </li>
             <li className="flex items-start gap-3">
               <span className="text-red-400 font-bold">✗</span>
-              <span><strong className="text-white">Deleted tweets disappear</strong> — That losing prediction from last week? Gone without a trace</span>
+              <span>
+                <strong className="text-white">Deleted tweets disappear</strong> — That losing
+                prediction from last week? Gone without a trace
+              </span>
             </li>
             <li className="flex items-start gap-3">
               <span className="text-red-400 font-bold">✗</span>
-              <span><strong className="text-white">Cherry-picked results</strong> — Show 10 wins, hide 50 losses</span>
+              <span>
+                <strong className="text-white">Cherry-picked results</strong> — Show 10 wins, hide
+                50 losses
+              </span>
             </li>
             <li className="flex items-start gap-3">
               <span className="text-red-400 font-bold">✗</span>
-              <span><strong className="text-white">No odds verification</strong> — Claiming wins at odds that were never available</span>
+              <span>
+                <strong className="text-white">No odds verification</strong> — Claiming wins at odds
+                that were never available
+              </span>
             </li>
           </ul>
 
@@ -99,34 +122,54 @@ export default function BlogPost() {
             1. Check the Length of Their Track Record
           </h3>
           <p className="text-slate-300 leading-relaxed">
-            Anyone can go on a hot streak for a week or even a month. A legitimate tipster should have:
+            Anyone can go on a hot streak for a week or even a month. A legitimate tipster should
+            have:
           </p>
           <ul className="text-slate-300 space-y-2 my-4">
-            <li>• <strong className="text-white">Minimum 100+ tracked tips</strong> — Anything less is statistically meaningless</li>
-            <li>• <strong className="text-white">At least 3-6 months of history</strong> — To account for variance and different sports seasons</li>
-            <li>• <strong className="text-white">Consistent posting</strong> — Gaps in the record are suspicious</li>
+            <li>
+              • <strong className="text-white">Minimum 100+ tracked tips</strong> — Anything less is
+              statistically meaningless
+            </li>
+            <li>
+              • <strong className="text-white">At least 3-6 months of history</strong> — To account
+              for variance and different sports seasons
+            </li>
+            <li>
+              • <strong className="text-white">Consistent posting</strong> — Gaps in the record are
+              suspicious
+            </li>
           </ul>
 
           <h3 className="text-xl font-semibold text-amber-400 mt-8 mb-4">
             2. Verify the Platform, Not the Person
           </h3>
           <p className="text-slate-300 leading-relaxed">
-            The key question isn&apos;t &quot;do I trust this tipster?&quot; — it&apos;s &quot;do I trust the platform
-            tracking their results?&quot;
+            The key question isn&apos;t &quot;do I trust this tipster?&quot; — it&apos;s &quot;do I
+            trust the platform tracking their results?&quot;
           </p>
-          <p className="text-slate-300 leading-relaxed">
-            Look for platforms that offer:
-          </p>
+          <p className="text-slate-300 leading-relaxed">Look for platforms that offer:</p>
           <ul className="text-slate-300 space-y-2 my-4">
-            <li>• <strong className="text-white">Automatic result tracking</strong> — No manual input that can be manipulated</li>
-            <li>• <strong className="text-white">Time-stamped predictions</strong> — Posted BEFORE the event starts</li>
-            <li>• <strong className="text-white">Odds verification</strong> — Cross-referenced with actual bookmaker odds</li>
-            <li>• <strong className="text-white">No deletion allowed</strong> — Once posted, it&apos;s permanent</li>
+            <li>
+              • <strong className="text-white">Automatic result tracking</strong> — No manual input
+              that can be manipulated
+            </li>
+            <li>
+              • <strong className="text-white">Time-stamped predictions</strong> — Posted BEFORE the
+              event starts
+            </li>
+            <li>
+              • <strong className="text-white">Odds verification</strong> — Cross-referenced with
+              actual bookmaker odds
+            </li>
+            <li>
+              • <strong className="text-white">No deletion allowed</strong> — Once posted, it&apos;s
+              permanent
+            </li>
           </ul>
           <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-6 my-8">
             <p className="text-amber-200 font-medium">
-              💡 <strong>Pro Tip:</strong> Platforms like Tipster Arena automatically track every tip
-              with timestamps and don&apos;t allow deletions — making fake records impossible.
+              💡 <strong>Pro Tip:</strong> Platforms like Tipster Arena automatically track every
+              tip with timestamps and don&apos;t allow deletions — making fake records impossible.
             </p>
           </div>
 
@@ -138,13 +181,22 @@ export default function BlogPost() {
             Here&apos;s what actually matters:
           </p>
           <ul className="text-slate-300 space-y-2 my-4">
-            <li>• <strong className="text-white">ROI (Return on Investment)</strong> — The only metric that shows actual profitability</li>
-            <li>• <strong className="text-white">Average odds</strong> — Higher odds = more value, but also more risk</li>
-            <li>• <strong className="text-white">Yield percentage</strong> — Profit divided by total stakes</li>
+            <li>
+              • <strong className="text-white">ROI (Return on Investment)</strong> — The only metric
+              that shows actual profitability
+            </li>
+            <li>
+              • <strong className="text-white">Average odds</strong> — Higher odds = more value, but
+              also more risk
+            </li>
+            <li>
+              • <strong className="text-white">Yield percentage</strong> — Profit divided by total
+              stakes
+            </li>
           </ul>
           <p className="text-slate-300 leading-relaxed">
-            A tipster with 55% win rate at +100 average odds is more profitable than one with
-            75% win rate at -250 odds.
+            A tipster with 55% win rate at +100 average odds is more profitable than one with 75%
+            win rate at -250 odds.
           </p>
 
           <h3 className="text-xl font-semibold text-amber-400 mt-8 mb-4">
@@ -154,9 +206,18 @@ export default function BlogPost() {
             The best tipsters specialize. Be wary of anyone claiming expertise across all sports:
           </p>
           <ul className="text-slate-300 space-y-2 my-4">
-            <li>• <strong className="text-white">Sport-specific knowledge</strong> — Do they understand the league deeply?</li>
-            <li>• <strong className="text-white">Market specialization</strong> — Over/under? Asian handicaps? Match results?</li>
-            <li>• <strong className="text-white">Consistent focus</strong> — Jumping between sports is a red flag</li>
+            <li>
+              • <strong className="text-white">Sport-specific knowledge</strong> — Do they
+              understand the league deeply?
+            </li>
+            <li>
+              • <strong className="text-white">Market specialization</strong> — Over/under? Asian
+              handicaps? Match results?
+            </li>
+            <li>
+              • <strong className="text-white">Consistent focus</strong> — Jumping between sports is
+              a red flag
+            </li>
           </ul>
 
           <h3 className="text-xl font-semibold text-amber-400 mt-8 mb-4">
@@ -166,9 +227,18 @@ export default function BlogPost() {
             Never pay for tips or follow blindly without testing first:
           </p>
           <ul className="text-slate-300 space-y-2 my-4">
-            <li>• <strong className="text-white">Paper trade for 2-4 weeks</strong> — Track their tips without real money</li>
-            <li>• <strong className="text-white">Compare to their historical results</strong> — Is recent performance consistent?</li>
-            <li>• <strong className="text-white">Check community feedback</strong> — What do other followers say?</li>
+            <li>
+              • <strong className="text-white">Paper trade for 2-4 weeks</strong> — Track their tips
+              without real money
+            </li>
+            <li>
+              • <strong className="text-white">Compare to their historical results</strong> — Is
+              recent performance consistent?
+            </li>
+            <li>
+              • <strong className="text-white">Check community feedback</strong> — What do other
+              followers say?
+            </li>
           </ul>
 
           {/* Section 3 - Red Flags */}
@@ -181,27 +251,45 @@ export default function BlogPost() {
           <ul className="text-slate-300 space-y-3 my-6">
             <li className="flex items-start gap-3">
               <span className="text-red-400">🚩</span>
-              <span><strong className="text-white">Guaranteeing profits</strong> — No legitimate tipster guarantees wins</span>
+              <span>
+                <strong className="text-white">Guaranteeing profits</strong> — No legitimate tipster
+                guarantees wins
+              </span>
             </li>
             <li className="flex items-start gap-3">
               <span className="text-red-400">🚩</span>
-              <span><strong className="text-white">Only showing screenshots</strong> — Demand verifiable platform records</span>
+              <span>
+                <strong className="text-white">Only showing screenshots</strong> — Demand verifiable
+                platform records
+              </span>
             </li>
             <li className="flex items-start gap-3">
               <span className="text-red-400">🚩</span>
-              <span><strong className="text-white">Deleted tweet history</strong> — Use archive tools to check for deletions</span>
+              <span>
+                <strong className="text-white">Deleted tweet history</strong> — Use archive tools to
+                check for deletions
+              </span>
             </li>
             <li className="flex items-start gap-3">
               <span className="text-red-400">🚩</span>
-              <span><strong className="text-white">Unrealistic win rates</strong> — 80%+ sustained is virtually impossible</span>
+              <span>
+                <strong className="text-white">Unrealistic win rates</strong> — 80%+ sustained is
+                virtually impossible
+              </span>
             </li>
             <li className="flex items-start gap-3">
               <span className="text-red-400">🚩</span>
-              <span><strong className="text-white">High-pressure sales tactics</strong> — &quot;Limited spots!&quot; &quot;Price going up!&quot;</span>
+              <span>
+                <strong className="text-white">High-pressure sales tactics</strong> — &quot;Limited
+                spots!&quot; &quot;Price going up!&quot;
+              </span>
             </li>
             <li className="flex items-start gap-3">
               <span className="text-red-400">🚩</span>
-              <span><strong className="text-white">No losing picks shown</strong> — Everyone loses sometimes</span>
+              <span>
+                <strong className="text-white">No losing picks shown</strong> — Everyone loses
+                sometimes
+              </span>
             </li>
           </ul>
 
@@ -215,31 +303,39 @@ export default function BlogPost() {
           <ul className="text-slate-300 space-y-3 my-6">
             <li className="flex items-start gap-3">
               <span className="text-green-400">✓</span>
-              <span><strong className="text-white">Tipster Arena</strong> — Free platform where every tip is automatically tracked with no deletion allowed</span>
+              <span>
+                <strong className="text-white">Tipster Arena</strong> — Free platform where every
+                tip is automatically tracked with no deletion allowed
+              </span>
             </li>
             <li className="flex items-start gap-3">
               <span className="text-green-400">✓</span>
-              <span><strong className="text-white">Platforms with odds verification</strong> — Results cross-referenced with bookmaker odds</span>
+              <span>
+                <strong className="text-white">Platforms with odds verification</strong> — Results
+                cross-referenced with bookmaker odds
+              </span>
             </li>
             <li className="flex items-start gap-3">
               <span className="text-green-400">✓</span>
-              <span><strong className="text-white">Community-vetted tipsters</strong> — Real user reviews and feedback</span>
+              <span>
+                <strong className="text-white">Community-vetted tipsters</strong> — Real user
+                reviews and feedback
+              </span>
             </li>
           </ul>
 
           {/* Conclusion */}
-          <h2 className="text-2xl font-bold text-white mt-12 mb-6">
-            The Bottom Line
-          </h2>
+          <h2 className="text-2xl font-bold text-white mt-12 mb-6">The Bottom Line</h2>
           <p className="text-slate-300 leading-relaxed">
-            Verifying a tipster&apos;s track record comes down to one principle: <strong className="text-white">trust the platform,
-            not the person</strong>. Any tipster worth following should be happy to have their results
-            tracked on a transparent platform where manipulation is impossible.
+            Verifying a tipster&apos;s track record comes down to one principle:{' '}
+            <strong className="text-white">trust the platform, not the person</strong>. Any tipster
+            worth following should be happy to have their results tracked on a transparent platform
+            where manipulation is impossible.
           </p>
           <p className="text-slate-300 leading-relaxed">
-            If a tipster refuses to use a verification platform, asks you to trust screenshots,
-            or gets defensive when you ask about their full record — that tells you everything
-            you need to know.
+            If a tipster refuses to use a verification platform, asks you to trust screenshots, or
+            gets defensive when you ask about their full record — that tells you everything you need
+            to know.
           </p>
         </div>
 
@@ -249,8 +345,8 @@ export default function BlogPost() {
             Find Verified Tipsters on Tipster Arena
           </h2>
           <p className="text-slate-300 mb-6">
-            Every tipster on our platform has a fully transparent, automatically tracked record.
-            No fake screenshots. No deleted losses. Just real, verifiable results.
+            Every tipster on our platform has a fully transparent, automatically tracked record. No
+            fake screenshots. No deleted losses. Just real, verifiable results.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <Link
