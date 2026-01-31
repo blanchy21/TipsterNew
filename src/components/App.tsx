@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useEffect, useCallback, lazy, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useState, useEffect, useCallback, lazy, Suspense, useSyncExternalStore } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Post } from '@/lib/types';
 import { createPost, getUserProfile } from '@/lib/firebase/firebaseUtils';
 import { useRealtimePosts } from '@/lib/hooks/useRealtimePosts';
@@ -31,15 +31,23 @@ const NotificationsPage = lazy(() => import('./pages/NotificationsPage'));
 const FollowingPage = lazy(() => import('./pages/FollowingPage'));
 const LandingPage = lazy(() => import('./pages/LandingPage'));
 // Lazy load context providers and heavy components
-const NotificationsProvider = lazy(() => import('@/lib/contexts/NotificationsContext').then(m => ({ default: m.NotificationsProvider })));
-const ProfileProvider = lazy(() => import('@/lib/contexts/ProfileContext').then(m => ({ default: m.ProfileProvider })));
-const FollowingProvider = lazy(() => import('@/lib/contexts/FollowingContext').then(m => ({ default: m.FollowingProvider })));
+const NotificationsProvider = lazy(() =>
+  import('@/lib/contexts/NotificationsContext').then((m) => ({ default: m.NotificationsProvider }))
+);
+const ProfileProvider = lazy(() =>
+  import('@/lib/contexts/ProfileContext').then((m) => ({ default: m.ProfileProvider }))
+);
+const FollowingProvider = lazy(() =>
+  import('@/lib/contexts/FollowingContext').then((m) => ({ default: m.FollowingProvider }))
+);
 const QueryProvider = lazy(() => import('@/lib/providers/QueryProvider'));
 const NotificationToastManager = lazy(() => import('./features/NotificationToastManager'));
 const RealtimeIndicator = lazy(() => import('./ui/RealtimeIndicator'));
 const ErrorBoundary = lazy(() => import('./ui/ErrorBoundary'));
 const AsyncErrorBoundary = lazy(() => import('./ui/AsyncErrorBoundary'));
-const PageLoadingState = lazy(() => import('./ui/LoadingState').then(m => ({ default: m.PageLoadingState })));
+const PageLoadingState = lazy(() =>
+  import('./ui/LoadingState').then((m) => ({ default: m.PageLoadingState }))
+);
 
 // Keep useAuth as regular import since it's used immediately
 import { useAuth } from '@/lib/hooks/useAuth';
@@ -48,7 +56,6 @@ import { initializeServiceWorker, setupOfflineHandlers } from '@/lib/serviceWork
 
 function AppContent() {
   const { user, loading } = useAuth();
-  const router = useRouter();
   const searchParams = useSearchParams();
   const [selected, setSelected] = useState('home');
   const { posts, setPosts } = useRealtimePosts(user, loading);
@@ -56,7 +63,11 @@ function AppContent() {
   const [showPostDetail, setShowPostDetail] = useState(false);
   const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isClient, setIsClient] = useState(false);
+  const isClient = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
   const [query, setQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
   const [selectedSport, setSelectedSport] = useState('All Sports');
@@ -66,9 +77,13 @@ function AppContent() {
     engagement: 'all',
     userType: 'all',
     oddsRange: 'all',
-    selectedTags: [] as string[]
+    selectedTags: [] as string[],
   });
-  const [showLandingPage, setShowLandingPage] = useState(true); // Default to true for new users
+  const [showLandingPage, setShowLandingPage] = useState(() => {
+    if (typeof window === 'undefined') return true;
+    const hasSeenLandingPage = localStorage.getItem('hasSeenLandingPage');
+    return !hasSeenLandingPage;
+  });
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authModalMode, setAuthModalMode] = useState<'login' | 'signup'>('login');
   const [viewingUserId, setViewingUserId] = useState<string | null>(null);
@@ -79,13 +94,11 @@ function AppContent() {
 
   // Handler functions
   const handlePostDeleted = (postId: string) => {
-    setPosts(prev => prev.filter(post => post.id !== postId));
+    setPosts((prev) => prev.filter((post) => post.id !== postId));
   };
 
   const handlePostUpdated = (postId: string, updatedPost: Post) => {
-    setPosts(prev => prev.map(post =>
-      post.id === postId ? updatedPost : post
-    ));
+    setPosts((prev) => prev.map((post) => (post.id === postId ? updatedPost : post)));
   };
 
   const handleOpenPostDetail = (postId: string) => {
@@ -108,16 +121,6 @@ function AppContent() {
       setupOfflineHandlers();
     }
 
-    // Check if user has seen landing page
-    const hasSeenLandingPage = localStorage.getItem('hasSeenLandingPage');
-
-    // Only show landing page for new users who haven't seen it
-    if (!hasSeenLandingPage && !user && !loading) {
-      setShowLandingPage(true);
-    } else {
-      setShowLandingPage(false);
-    }
-
     // Load entrance state
     const timer = setTimeout(() => {
       setIsLoaded(true);
@@ -138,7 +141,7 @@ function AppContent() {
       clearTimeout(timer);
       window.removeEventListener('openPostDetail', handleOpenPostDetailEvent as EventListener);
     };
-  }, [user, loading, isClient]);
+  }, [isClient]);
 
   // Handler functions for navigation
   const handleAdminAccess = useCallback(() => {
@@ -161,19 +164,29 @@ function AppContent() {
   }, [user]);
 
   // Handle URL parameters for direct navigation
+  // Syncing from URL (external system) to React state is a valid use of setState in an effect
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
-    // Use window.location to get URL parameters as a fallback
     const urlParams = new URLSearchParams(window.location.search);
     const tab = searchParams.get('tab') || urlParams.get('tab');
 
-    if (tab && ['home', 'messages', 'chat', 'notifications', 'following', 'top-tipsters', 'sports', 'admin', 'profile'].includes(tab)) {
-      // Close landing page when navigating to any tab
-      setShowLandingPage(false);
-
+    if (
+      tab &&
+      [
+        'home',
+        'messages',
+        'chat',
+        'notifications',
+        'following',
+        'top-tipsters',
+        'sports',
+        'admin',
+        'profile',
+      ].includes(tab)
+    ) {
       if (tab === 'admin') {
         handleAdminAccess();
       } else if (tab === 'profile') {
-        // For profile, check if user is authenticated
         if (user) {
           setSelected('profile');
         } else {
@@ -184,6 +197,7 @@ function AppContent() {
       }
     }
   }, [searchParams, handleAdminAccess, handleProfileAccess, user]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   // Debounce search query
   useEffect(() => {
@@ -194,16 +208,14 @@ function AppContent() {
     return () => clearTimeout(timer);
   }, [query]);
 
-  // Close auth modal when user is successfully authenticated
-  useEffect(() => {
-    if (user && showAuthModal) {
-      setShowAuthModal(false);
-    }
-  }, [user, showAuthModal]);
+  // Derive effective auth modal visibility — auto-close when user authenticates
+  const effectiveShowAuthModal = showAuthModal && !user;
 
   const filteredPosts = useFilteredPosts(posts, selected, selectedSport, debouncedQuery, filters);
 
-  const handleSubmitPost = async (postData: Omit<Post, 'id' | 'user' | 'createdAt' | 'likes' | 'comments' | 'views' | 'likedBy'>) => {
+  const handleSubmitPost = async (
+    postData: Omit<Post, 'id' | 'user' | 'createdAt' | 'likes' | 'comments' | 'views' | 'likedBy'>
+  ) => {
     if (!user) {
       // No user found when trying to create post - handled by auth modal
       return;
@@ -218,9 +230,11 @@ function AppContent() {
         user: {
           id: user.uid,
           name: userProfile?.name || user.displayName || 'Anonymous',
-          handle: userProfile?.handle || `@${user.displayName?.toLowerCase().replace(/\s+/g, '') || 'user'}`,
-          avatar: userProfile?.avatar || normalizeImageUrl(user.photoURL || getDefaultAvatar())
-        }
+          handle:
+            userProfile?.handle ||
+            `@${user.displayName?.toLowerCase().replace(/\s+/g, '') || 'user'}`,
+          avatar: userProfile?.avatar || normalizeImageUrl(user.photoURL || getDefaultAvatar()),
+        },
       };
 
       const newPost = await createPost(newPostData);
@@ -229,25 +243,21 @@ function AppContent() {
 
       setPosts((prev: Post[]) => {
         // Check if post already exists to prevent duplicates
-        const exists = prev.some(post => post.id === formattedPost.id);
+        const exists = prev.some((post) => post.id === formattedPost.id);
         if (exists) {
           return prev;
         }
 
         // Deduplicate existing posts and add new one
-        const uniquePosts = prev.filter((post, index, self) =>
-          index === self.findIndex(p => p.id === post.id)
+        const uniquePosts = prev.filter(
+          (post, index, self) => index === self.findIndex((p) => p.id === post.id)
         );
 
         const updated = [formattedPost, ...uniquePosts];
         return updated;
       });
-
     } catch (error) {
       // Error creating post - handled by UI feedback
-      // Could implement toast notification here if needed
-      // eslint-disable-next-line no-console
-      // Console statement removed for production
     }
   };
 
@@ -255,9 +265,7 @@ function AppContent() {
     // Update the posts state with the new like data
     setPosts((prev: Post[]) =>
       prev.map((post: Post) =>
-        post.id === postId
-          ? { ...post, likes: newLikes, likedBy: newLikedBy }
-          : post
+        post.id === postId ? { ...post, likes: newLikes, likedBy: newLikedBy } : post
       )
     );
   };
@@ -307,28 +315,30 @@ function AppContent() {
     setSelected(page);
   };
 
-  const handleNavigation = useCallback((page: string) => {
-    // Close landing page when navigating to any page
-    setShowLandingPage(false);
+  const handleNavigation = useCallback(
+    (page: string) => {
+      // Close landing page when navigating to any page
+      setShowLandingPage(false);
 
-    if (page === 'admin') {
-      handleAdminAccess();
-    } else if (page === 'profile') {
-      // For profile, check if user is authenticated
-      if (user) {
-        setSelected('profile');
+      if (page === 'admin') {
+        handleAdminAccess();
+      } else if (page === 'profile') {
+        // For profile, check if user is authenticated
+        if (user) {
+          setSelected('profile');
+        } else {
+          handleProfileAccess();
+        }
       } else {
-        handleProfileAccess();
+        setSelected(page);
       }
-    } else {
-      setSelected(page);
-    }
-  }, [handleAdminAccess, handleProfileAccess, user]);
+    },
+    [handleAdminAccess, handleProfileAccess, user]
+  );
 
   const handleShowLandingPage = () => {
     setShowLandingPage(true);
   };
-
 
   const handleAdminSuccess = () => {
     setIsAdminAuthenticated(true);
@@ -340,30 +350,8 @@ function AppContent() {
     setShowMobileMenu(!showMobileMenu);
   };
 
-  // Set client flag to prevent hydration mismatch
-  useEffect(() => {
-    setIsClient(true);
-    if (!isClient) return;
-
-    // Initialize service worker for PWA functionality (production only)
-    if (process.env.NODE_ENV === 'production') {
-      initializeServiceWorker();
-      setupOfflineHandlers();
-    }
-  }, [isClient]);
-
-  // Debug logging
-  useEffect(() => {
-    if (isClient) {
-      // eslint-disable-next-line no-console
-      // Console statement removed for production
-    }
-  }, [loading, user, showLandingPage, isClient]);
-
   // Show loading state while checking authentication (only on client side after hydration)
   if (isClient && loading) {
-    // eslint-disable-next-line no-console
-    // Console statement removed for production
     return (
       <div className="h-screen flex items-center justify-center bg-gradient-to-br from-surface-0 via-surface-1 to-surface-0">
         <div className="text-center">
@@ -375,14 +363,14 @@ function AppContent() {
   }
 
   // Show landing page for new users or when explicitly requested
-  if (showLandingPage) {
+  if (showLandingPage && !user && !loading) {
     return (
       <>
         <Suspense fallback={<PageLoadingState />}>
           <LandingPage onGetStarted={handleGetStarted} onShowAuthModal={handleShowAuthModal} />
         </Suspense>
         <AuthModal
-          isOpen={showAuthModal}
+          isOpen={effectiveShowAuthModal}
           onClose={handleCloseAuthModal}
           initialMode={authModalMode}
         />
@@ -401,7 +389,9 @@ function AppContent() {
               <span className="text-white font-bold text-2xl">TA</span>
             </div>
             <h1 className="text-3xl font-bold text-white mb-4">Welcome to Tipster Arena</h1>
-            <p className="text-white/70 mb-8">Please sign in to access the sports tip sharing platform</p>
+            <p className="text-white/70 mb-8">
+              Please sign in to access the sports tip sharing platform
+            </p>
             <div className="space-y-4">
               <button
                 onClick={() => handleShowAuthModal('login')}
@@ -425,7 +415,7 @@ function AppContent() {
           </div>
         </div>
         <AuthModal
-          isOpen={showAuthModal}
+          isOpen={effectiveShowAuthModal}
           onClose={handleCloseAuthModal}
           initialMode={authModalMode}
         />
@@ -482,7 +472,10 @@ function AppContent() {
           ) : selected === 'profile' ? (
             <div className="flex-1 overflow-y-auto">
               <Suspense fallback={<PageLoadingState />}>
-                <ProfilePage onNavigateToProfile={handleProfileNavigation} userId={viewingUserId || undefined} />
+                <ProfilePage
+                  onNavigateToProfile={handleProfileNavigation}
+                  userId={viewingUserId || undefined}
+                />
               </Suspense>
             </div>
           ) : selected === 'messages' ? (
@@ -534,7 +527,11 @@ function AppContent() {
                 />
               </Suspense>
               <Suspense fallback={<div className="w-80 bg-surface-2 animate-pulse" />}>
-                <RightSidebar posts={posts} isLoaded={isLoaded} onNavigateToProfile={handleNavigateToProfile} />
+                <RightSidebar
+                  posts={posts}
+                  isLoaded={isLoaded}
+                  onNavigateToProfile={handleNavigateToProfile}
+                />
               </Suspense>
             </div>
           ) : (
@@ -588,7 +585,7 @@ function AppContent() {
 
         <Suspense fallback={null}>
           <AuthModal
-            isOpen={showAuthModal}
+            isOpen={effectiveShowAuthModal}
             onClose={handleCloseAuthModal}
             initialMode={authModalMode}
           />
@@ -621,7 +618,6 @@ function AppContent() {
         <Suspense fallback={null}>
           <RealtimeIndicator isConnected={!!user} />
         </Suspense>
-
       </div>
     </NotificationsProvider>
   );
@@ -629,31 +625,51 @@ function AppContent() {
 
 export default function App() {
   return (
-    <Suspense fallback={<div className="h-screen bg-surface-1 flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div></div>}>
+    <Suspense
+      fallback={
+        <div className="h-screen bg-surface-1 flex items-center justify-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div>
+        </div>
+      }
+    >
       <ErrorBoundary
-        onError={(error, errorInfo) => {
+        onError={(_error, _errorInfo) => {
           // Log error to monitoring service in production
-          if (process.env.NODE_ENV === 'development') {
-            // Log errors in development for debugging
-            // eslint-disable-next-line no-console
-            // Console statement removed for production
-          }
         }}
       >
-        <Suspense fallback={<div className="h-screen bg-surface-1 flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div></div>}>
+        <Suspense
+          fallback={
+            <div className="h-screen bg-surface-1 flex items-center justify-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div>
+            </div>
+          }
+        >
           <QueryProvider>
-            <Suspense fallback={<div className="h-screen bg-surface-1 flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div></div>}>
+            <Suspense
+              fallback={
+                <div className="h-screen bg-surface-1 flex items-center justify-center">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div>
+                </div>
+              }
+            >
               <ProfileProvider>
-                <Suspense fallback={<div className="h-screen bg-surface-1 flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div></div>}>
+                <Suspense
+                  fallback={
+                    <div className="h-screen bg-surface-1 flex items-center justify-center">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div>
+                    </div>
+                  }
+                >
                   <FollowingProvider>
-                    <Suspense fallback={<div className="h-screen bg-surface-1 flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div></div>}>
+                    <Suspense
+                      fallback={
+                        <div className="h-screen bg-surface-1 flex items-center justify-center">
+                          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div>
+                        </div>
+                      }
+                    >
                       <AsyncErrorBoundary
-                        onError={(error, errorInfo) => {
-                          if (process.env.NODE_ENV === 'development') {
-                            // eslint-disable-next-line no-console
-                            // Console statement removed for production
-                          }
-                        }}
+                        onError={(_error, _errorInfo) => {}}
                         maxRetries={2}
                         retryDelay={1000}
                       >
