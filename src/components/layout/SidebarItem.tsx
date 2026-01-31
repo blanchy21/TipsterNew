@@ -30,7 +30,7 @@ export default function SidebarItem({
     >
       <Icon className={`w-[18px] h-[18px] ${active ? 'text-zinc-200' : 'text-zinc-500 group-hover:text-zinc-300'} transition-colors duration-150`} />
       {!collapsed && <span className="text-[13px] font-medium">{label}</span>}
-      {badge && badge > 0 && (
+      {badge != null && badge > 0 && (
         <span className="ml-auto bg-red-500/90 text-white text-[10px] rounded-full h-[18px] min-w-[18px] px-1 flex items-center justify-center font-semibold">
           {badge > 9 ? '9+' : badge}
         </span>
