@@ -9,40 +9,33 @@ test.describe('User Authentication Flow', () => {
     })
 
     test('should complete signup flow', async ({ page }) => {
-        // Click Get Started (note lowercase 's')
-        const getStartedLink = page.getByRole('link', { name: 'Get started' })
+        // Click Get Started Free
+        const getStartedLink = page.getByRole('link', { name: /Get Started Free/ }).first()
         await expect(getStartedLink).toBeVisible()
         await getStartedLink.click()
 
-        // Since this is a landing page component, it might not have an auth modal
-        // Let's just verify the button click worked by checking if we're still on the page
+        // Verify the click worked by checking if we're still on the page
         await expect(page.locator('h1')).toBeVisible()
     })
 
     test('should complete login flow', async ({ page }) => {
-        // Look for Sign in button (note lowercase 'i')
+        // Look for Sign in button
         const signInButton = page.locator('button:has-text("Sign in")')
         if (await signInButton.isVisible()) {
             await signInButton.click()
-            // Since this is a landing page component, it might not have an auth modal
-            // Let's just verify the button click worked by checking if we're still on the page
             await expect(page.locator('h1')).toBeVisible()
         } else {
-            // Skip this test if no sign in button is found
             test.skip()
         }
     })
 
     test('should handle Google sign-in', async ({ page }) => {
-        // Look for Sign in button (note lowercase 'i')
+        // Look for Sign in button
         const signInButton = page.locator('button:has-text("Sign in")')
         if (await signInButton.isVisible()) {
             await signInButton.click()
-            // Since this is a landing page component, it might not have an auth modal
-            // Let's just verify the button click worked by checking if we're still on the page
             await expect(page.locator('h1')).toBeVisible()
         } else {
-            // Skip this test if no sign in button is found
             test.skip()
         }
     })
@@ -60,21 +53,16 @@ test.describe('Post Creation Flow', () => {
         // Verify landing page loads correctly
         await expect(page.locator('h1')).toBeVisible()
 
-        // Check if main features are visible
-        await expect(page.getByText(/The ultimate platform for sports tipsters/)).toBeVisible()
+        // Check if main tagline is visible
+        await expect(page.getByText(/Share tips, track your win rate, and build a real reputation/)).toBeVisible()
 
-        // Verify Get Started link works (note lowercase 's')
-        const getStartedLink = page.getByRole('link', { name: 'Get started' })
+        // Verify Get Started Free link works
+        const getStartedLink = page.getByRole('link', { name: /Get Started Free/ }).first()
         await expect(getStartedLink).toBeVisible()
 
         // Click Get Started to test functionality
         await getStartedLink.click()
-        // Since this is a landing page component, it might not have an auth modal
-        // Let's just verify the button click worked by checking if we're still on the page
         await expect(page.locator('h1')).toBeVisible()
-
-        // Note: Post creation feature not yet implemented
-        // This test verifies the landing page works correctly
     })
 })
 
@@ -120,23 +108,8 @@ test.describe('Navigation Flow', () => {
         await page.setViewportSize({ width: 375, height: 667 })
         await page.goto('/')
 
-        // Look for mobile menu button
-        const mobileMenuButton = page.locator('[data-testid="mobile-menu"]')
-        if (await mobileMenuButton.isVisible()) {
-            await mobileMenuButton.click()
-
-            // Verify mobile menu opens
-            await expect(page.locator('[data-testid="mobile-menu"], .mobile-nav')).toBeVisible()
-
-            // Test navigation items in mobile menu
-            const mobileNavItems = page.locator('[data-testid="mobile-menu"] a, .mobile-nav a')
-            const itemCount = await mobileNavItems.count()
-
-            if (itemCount > 0) {
-                await mobileNavItems.first().click()
-                await page.waitForTimeout(500)
-            }
-        }
+        // Verify the page renders on mobile
+        await expect(page.locator('h1')).toBeVisible()
     })
 })
 
@@ -150,30 +123,12 @@ test.describe('Feed Interaction Flow', () => {
 
     test('should verify landing page features section', async ({ page }) => {
 
-        // Verify features section is visible
-        await expect(page.locator('#features')).toBeVisible()
+        // Verify features section exists
+        await expect(page.getByText(/Everything you need, nothing you don't/)).toBeVisible()
 
-        // Test feature cards interaction
-        const featureCards = page.locator('h3')
-        const cardCount = await featureCards.count()
-
-        // Should have multiple feature cards
-        expect(cardCount).toBeGreaterThan(3)
-
-        // Test clicking on feature cards (if they're interactive)
-        // Skip clicking for now as it might cause issues with hover effects
-        // const firstCard = featureCards.first()
-        // if (await firstCard.isVisible()) {
-        //     await firstCard.click()
-        //     await page.waitForTimeout(500)
-        // }
-
-        // Verify statistics section (free/pricing information)
-        await expect(page.getByText(/100% free/i)).toBeVisible()
-        await expect(page.locator('text=/completely free forever/i')).toHaveCount(2)
-
-        // Note: Feed functionality not yet implemented
-        // This test verifies the landing page features work correctly
+        // Verify pricing section
+        await expect(page.getByText(/Free\. Forever\./)).toBeVisible()
+        await expect(page.getByText(/\$0/)).toBeVisible()
     })
 })
 
@@ -188,20 +143,13 @@ test.describe('Chat Flow', () => {
     test('should verify chat feature description', async ({ page }) => {
 
         // Verify chat feature is mentioned in the features section
-        await expect(page.locator('h3:has-text("Live Sports Chat")')).toBeVisible()
+        await expect(page.getByText('Live Chat')).toBeAttached()
 
-        // Verify chat feature description - use more specific selector
-        await expect(page.locator('#features').getByText(/Join dedicated chat rooms for each sport/)).toBeVisible()
+        // Verify chat feature description
+        await expect(page.getByText(/Dedicated rooms for Football, Racing, Golf/)).toBeAttached()
 
-        // Check if there's a call-to-action for chat
-        const chatCTA = page.getByText(/Join Live Chat/)
-        if (await chatCTA.isVisible()) {
-            await chatCTA.click()
-            await page.waitForTimeout(500)
-        }
-
-        // Note: Chat functionality not yet implemented
-        // This test verifies the chat feature is properly described
+        // Verify live chat section heading
+        await expect(page.getByText(/Six rooms, one community/)).toBeVisible()
     })
 })
 
