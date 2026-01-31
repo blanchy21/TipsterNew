@@ -3,12 +3,15 @@ User-agent: *
 Allow: /
 Disallow: /admin
 Disallow: /admin/*
+Disallow: /admin-bypass
 Disallow: /debug
 Disallow: /debug/*
 Disallow: /mobile-debug
 Disallow: /mobile-debug/*
 Disallow: /test
 Disallow: /test/*
+Disallow: /hello
+Disallow: /simple
 Disallow: /api
 Disallow: /api/*
 Disallow: /_next
