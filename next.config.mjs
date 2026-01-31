@@ -16,11 +16,8 @@ const nextConfig = {
     keepAlive: true,
   },
   // Production optimizations
-  swcMinify: true,
   reactStrictMode: true,
   output: 'standalone',
-  // Disable x-powered-by header
-  poweredByHeader: false,
   // Optimize for production
   ...(isProduction && {
     compiler: {

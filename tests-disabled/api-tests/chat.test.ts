@@ -39,7 +39,7 @@ describe('/api/chat', () => {
     it('should handle POST request successfully', async () => {
         const { streamText } = require('ai')
         const mockStream = {
-            toDataStreamResponse: jest.fn().mockReturnValue(new Response('streamed data')),
+            toTextStreamResponse: jest.fn().mockReturnValue(new Response('streamed data')),
         }
         streamText.mockResolvedValue(mockStream)
 
@@ -140,7 +140,7 @@ describe('/api/chat', () => {
     it('should handle different message types', async () => {
         const { streamText } = require('ai')
         const mockStream = {
-            toDataStreamResponse: jest.fn().mockReturnValue(new Response('streamed data')),
+            toTextStreamResponse: jest.fn().mockReturnValue(new Response('streamed data')),
         }
         streamText.mockResolvedValue(mockStream)
 
@@ -173,7 +173,7 @@ describe('/api/chat', () => {
     it('should handle large message arrays', async () => {
         const { streamText } = require('ai')
         const mockStream = {
-            toDataStreamResponse: jest.fn().mockReturnValue(new Response('streamed data')),
+            toTextStreamResponse: jest.fn().mockReturnValue(new Response('streamed data')),
         }
         streamText.mockResolvedValue(mockStream)
 

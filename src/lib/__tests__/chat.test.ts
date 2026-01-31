@@ -18,10 +18,10 @@ jest.mock('@/lib/rate-limit', () => ({
 jest.mock('ai', () => ({
   streamText: jest.fn(() =>
     Promise.resolve({
-      toDataStreamResponse: jest.fn(() => new Response('streamed data')),
+      toTextStreamResponse: jest.fn(() => new Response('streamed data')),
     })
   ),
-  convertToCoreMessages: jest.fn((messages) => messages),
+  convertToModelMessages: jest.fn((messages) => messages),
 }));
 
 jest.mock('@ai-sdk/openai', () => ({

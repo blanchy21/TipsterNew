@@ -1,29 +1,29 @@
-import { openai } from "@ai-sdk/openai";
-import { anthropic } from "@ai-sdk/anthropic";
-import { convertToCoreMessages, streamText } from "ai";
-import { verifyFirebaseToken } from "@/lib/api-auth";
-import { checkRateLimit, rateLimitResponse, getClientIp } from "@/lib/rate-limit";
+import { openai } from '@ai-sdk/openai';
+import { anthropic } from '@ai-sdk/anthropic';
+import { convertToModelMessages, streamText } from 'ai';
+import { verifyFirebaseToken } from '@/lib/api-auth';
+import { checkRateLimit, rateLimitResponse, getClientIp } from '@/lib/rate-limit';
 
-export const runtime = "edge";
+export const runtime = 'edge';
 
 export async function POST(req: Request) {
-    const ip = getClientIp(req);
-    const rl = checkRateLimit(`chat:${ip}`, 20, 60_000);
-    if (!rl.success) return rateLimitResponse(rl);
+  const ip = getClientIp(req);
+  const rl = checkRateLimit(`chat:${ip}`, 20, 60_000);
+  if (!rl.success) return rateLimitResponse(rl);
 
-    const user = await verifyFirebaseToken(req);
-    if (!user) {
-        return new Response("Unauthorized", { status: 401 });
+  const user = await verifyFirebaseToken(req);
+  if (!user) {
+    return new Response('Unauthorized', { status: 401 });
+  }
+
+  try {
+    const { messages, model = 'gpt-4o' } = await req.json();
+
+    if (!messages || !Array.isArray(messages) || messages.length === 0 || messages.length > 50) {
+      return new Response('Invalid messages format', { status: 400 });
     }
 
-    try {
-        const { messages, model = "gpt-4o" } = await req.json();
-
-        if (!messages || !Array.isArray(messages) || messages.length === 0 || messages.length > 50) {
-            return new Response("Invalid messages format", { status: 400 });
-        }
-
-        const systemPrompt = `You are an expert sports analyst and tipster assistant for Tipster Arena. You provide:
+    const systemPrompt = `You are an expert sports analyst and tipster assistant for Tipster Arena. You provide:
 
 - Detailed match analysis and predictions
 - Player performance insights and statistics
@@ -43,30 +43,30 @@ Always be:
 
 Format your responses with clear sections, bullet points, and relevant statistics. Use emojis sparingly but effectively to highlight key points.`;
 
-        let result;
+    let result;
 
-        if (model.startsWith("gpt")) {
-            result = await streamText({
-                model: openai(model),
-                messages: convertToCoreMessages(messages),
-                system: systemPrompt,
-                temperature: 0.7,
-                maxTokens: 2000,
-            });
-        } else if (model.startsWith("claude")) {
-            result = await streamText({
-                model: anthropic(model),
-                messages: convertToCoreMessages(messages),
-                system: systemPrompt,
-                temperature: 0.7,
-                maxTokens: 2000,
-            });
-        } else {
-            return new Response("Unsupported model", { status: 400 });
-        }
-
-        return result.toDataStreamResponse();
-    } catch (error) {
-        return new Response("Internal server error", { status: 500 });
+    if (model.startsWith('gpt')) {
+      result = await streamText({
+        model: openai(model),
+        messages: await convertToModelMessages(messages),
+        system: systemPrompt,
+        temperature: 0.7,
+        maxOutputTokens: 2000,
+      });
+    } else if (model.startsWith('claude')) {
+      result = await streamText({
+        model: anthropic(model),
+        messages: await convertToModelMessages(messages),
+        system: systemPrompt,
+        temperature: 0.7,
+        maxOutputTokens: 2000,
+      });
+    } else {
+      return new Response('Unsupported model', { status: 400 });
     }
+
+    return result.toTextStreamResponse();
+  } catch (error) {
+    return new Response('Internal server error', { status: 500 });
+  }
 }
