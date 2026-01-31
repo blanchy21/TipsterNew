@@ -13,7 +13,7 @@ const buildUserDefaults = (data: any, id: string): User => ({
   id,
   name: data.displayName || data.name || 'Anonymous User',
   handle: data.handle || `@user${id.slice(0, 8)}`,
-  avatar: normalizeImageUrl(data.photoURL || data.avatar || getDefaultAvatar()),
+  avatar: normalizeImageUrl(data.avatar || data.photoURL || getDefaultAvatar()),
   followers: data.followers || [],
   following: data.following || [],
   followersCount: data.followersCount || 0,

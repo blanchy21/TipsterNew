@@ -4,6 +4,7 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { User } from '@/lib/types';
 import { getUserProfile, updateUserProfile, uploadProfileImage, updateUserAvatar, updateUserCoverPhoto, addProfilePhoto, removeProfilePhoto } from '@/lib/firebase/firebaseUtils';
 import { useAuth } from '@/lib/hooks/useAuth';
+import { invalidateUserProfileCache } from '@/lib/hooks/useRealtimePosts';
 
 interface ProfileContextType {
   profile: User | null;
@@ -98,6 +99,8 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) =>
           // If Firestore update fails, still update local state
           setProfile(prev => prev ? { ...prev, avatar: avatarUrl } : null);
         }
+        // Invalidate the feed's user profile cache so posts show the new avatar
+        invalidateUserProfileCache(user.uid);
         return true; // Return true since the image was uploaded successfully
       }
       return false;

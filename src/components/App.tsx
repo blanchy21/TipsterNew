@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback, lazy, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Post } from '@/lib/types';
-import { createPost } from '@/lib/firebase/firebaseUtils';
+import { createPost, getUserProfile } from '@/lib/firebase/firebaseUtils';
 import { useRealtimePosts } from '@/lib/hooks/useRealtimePosts';
 import { useFilteredPosts } from '@/lib/hooks/useFilteredPosts';
 // Lazy load all components to reduce initial bundle size
@@ -210,14 +210,16 @@ function AppContent() {
     }
 
     try {
+      // Fetch the latest profile from Firestore to get the current avatar
+      const userProfile = await getUserProfile(user.uid);
 
       const newPostData = {
         ...postData,
         user: {
           id: user.uid,
-          name: user.displayName || 'Anonymous',
-          handle: `@${user.displayName?.toLowerCase().replace(/\s+/g, '') || 'user'}`,
-          avatar: normalizeImageUrl(user.photoURL || getDefaultAvatar())
+          name: userProfile?.name || user.displayName || 'Anonymous',
+          handle: userProfile?.handle || `@${user.displayName?.toLowerCase().replace(/\s+/g, '') || 'user'}`,
+          avatar: userProfile?.avatar || normalizeImageUrl(user.photoURL || getDefaultAvatar())
         }
       };
 
